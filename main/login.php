@@ -6,18 +6,20 @@
     <title>Web tuyển sinh - Đăng nhập</title>
     <link rel="stylesheet" href="../assets/style/style.css">
     <link rel="stylesheet" href="../assets/style/login.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
 
 <body id="login">
     <div class=blur></div>
-        <div class="loginDiv">
-        <div class="login_anh_div">
+    <div class="loginDiv">
+        <div class="loginAnhDiv">
         </div>
-        <div>
-            <h2>Đăng nhập</h2>
+        <div class="loginDivForm">
+            <img src="../assets/images/logo-01.png" class="uniLogo">
+            <h1>Đăng nhập</h1>
             <form action="" method="POST">
                 <input type="text" name="username" id="username" placeholder="Tên đăng nhập" required>
-                <input type="password" name="password" id="password" placeholder="Mật khẩu" required>
+                <input type="password" name="password" id="password" placeholder="Mật khẩu" minlength="6" maxlength="20">
                 <input type="submit" value="Đăng nhập">
             </form>
         </div>

@@ -1,4 +1,16 @@
 html, body {
     height: 100%;
     margin: 0;
+    font-family: 'Roboto', sans-serif;
+}
+
+input{
+    padding-left: 10px !important;
+    box-sizing: border-box;
+}
+
+input::placeholder{
+    color: #888;
+    font-style: italic;
+    margin-left: 10px;
 }
