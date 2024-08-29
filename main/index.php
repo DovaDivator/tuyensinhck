@@ -1,3 +1,4 @@
+<!-- Hàm kiểm tra trang đã đăng nhập chưa -->
 <?php
 session_start();
 
