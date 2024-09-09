@@ -62,6 +62,10 @@ body {
     justify-content: center;
 }
 
+.loginDivForm h1 {
+    margin-bottom: 20px !important;
+}
+
 img.uniLogo{
     width: 75%;
     height: auto;

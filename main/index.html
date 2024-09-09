@@ -1,0 +1,46 @@
+<!-- Hàm kiểm tra trang đã đăng nhập chưa -->
+<!-- <?php
+session_start();
+
+if (!isset($_SESSION['user_id'])) {
+    header('Location: login.php');
+    exit();
+}
+?> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Tuyển sinh - Trang chủ</title>
+    <link rel="icon" href="../assets/images/logo.png" type="image/png">
+    <link rel="stylesheet" href="../assets/style/style.css">
+</head>
+<body>
+    <!-- Bố cục gồm hai phần: Thanh Nav và Nội dung chính -->
+    <div class="container">
+        <!-- Thanh Nav bên trái -->
+        <div class="sidebar">
+            <!-- Logo -->
+            <div class="logo">
+                <img src="../assets/images/logo-01.png" alt="Logo">
+            </div>
+            <!-- Các lựa chọn -->
+            <ul class="nav-links">
+                <li><a href="#">Lựa chọn 1</a></li>
+                <li><a href="#">Lựa chọn 2</a></li>
+                <li><a href="#">Lựa chọn 3</a></li>
+                <li><a href="#">Lựa chọn 4</a></li>
+                <li><a href="#">Lựa chọn 5</a></li>
+            </ul>
+        </div>
+
+        <!-- Nội dung chính -->
+        <div class="main-content">
+            <h1>Chào mừng đến với Website</h1>
+            <p>Đây là phần nội dung chính của trang web.</p>
+        </div>
+    </div>
+</body>
+</html>
