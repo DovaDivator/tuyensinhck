@@ -18,7 +18,7 @@
         <div class="loginDivForm">
             <img src="../assets/images/logo-01.png" class="uniLogo">
             <h1>Đăng nhập</h1>
-            <!-- Tạm thời chuyển sang index.php sau khi đăng nhập hợp lệ -->
+            <!-- TODO: Tạm thời chuyển sang index.php sau khi đăng nhập hợp lệ -->
             <form action="index.php" method="POST">
                 <input type="text" name="username" id="username" placeholder="Tên đăng nhập" required>
                 <input type="password" name="password" id="password" placeholder="Mật khẩu" minlength="6" maxlength="20">

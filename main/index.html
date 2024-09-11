@@ -16,30 +16,62 @@ if (!isset($_SESSION['user_id'])) {
     <title>Web Tuyển sinh - Trang chủ</title>
     <link rel="icon" href="../assets/images/logo.png" type="image/png">
     <link rel="stylesheet" href="../assets/style/style.css">
+    <script src="../js_backend/events.js"></script>
 </head>
 <body>
-    <!-- Bố cục gồm hai phần: Thanh Nav và Nội dung chính -->
     <div class="container">
+        <!-- Nút hiện ẩn thanh sidebar -->
+        <div class="nav-toggle" onclick="ShowNavigation()">
+            <div class="nav-toggle-icon"></div>
+        </div>
+
         <!-- Thanh Nav bên trái -->
         <div class="sidebar">
             <!-- Logo -->
             <div class="logo">
                 <img src="../assets/images/logo-01.png" alt="Logo">
             </div>
-            <!-- Các lựa chọn -->
+            <!-- Danh sách lựa chọn sidebar -->
             <ul class="nav-links">
+                <li><a href="#" onclick="HideNavigation()">⇐ Ẩn thanh công cụ</a></li>
+                <!-- TODO: Tạo trang danh mục chuyển trang sang các trang php khác, phân luồng hợp lý. Trang sử dụng cấu trúc này-->
                 <li><a href="#">Lựa chọn 1</a></li>
                 <li><a href="#">Lựa chọn 2</a></li>
-                <li><a href="#">Lựa chọn 3</a></li>
-                <li><a href="#">Lựa chọn 4</a></li>
-                <li><a href="#">Lựa chọn 5</a></li>
+                <li><a href="#">Thống kê hồ sơ</a></li>
+                <li><a href="#">lựa chọn</a></li>
+                <li><a href="#">Đăng xuất</a></li>
             </ul>
         </div>
+        
+        <div class="right-side">
+            <!-- Thanh bar trên cùng -->
+            <div class="navbar">
+                <div class="navbar-content">
+                    <span class="username">Tên Tài Khoản</span>
+                    <form action="" method="GET" style="display: inline;">
+                        <button type="submit" class="icon-button" name="notification">
+                            <img src="../assets/icon/noti_icon.png" alt="Thông báo" title="Thông báo">
+                        </button>
+                        <button type="submit" class="icon-button" name="changeinfo">
+                            <img src="../assets/icon/info_icon.png" alt="Chỉnh sửa thông tin" title="Chỉnh sửa thông tin">
+                        </button>
+                        <button type="submit" class="icon-button" name="logout">
+                            <img src="../assets/icon/logout_icon.png" alt="Đăng xuất" title="Đăng xuất">
+                        </button>
+                    </form>
+                </div>
+            </div>
 
-        <!-- Nội dung chính -->
-        <div class="main-content">
-            <h1>Chào mừng đến với Website</h1>
-            <p>Đây là phần nội dung chính của trang web.</p>
+            <!-- Nội dung chính -->
+            <div class="main-content">
+                <h1>Chào mừng đến với Website</h1>
+                <p>Đây là phần nội dung chính của trang web.</p>
+            </div>
+            
+            <!-- Phần footer -->
+            <div class="footer">
+                <p>&copy; Nhóm: Đồng Văn Thịnh & Dương Văn Quý Vương</p>
+            </div>
         </div>
     </div>
 </body>

@@ -1,3 +1,4 @@
+/* Giao diện chung */
 html, body {
     height: 100%;
     margin: 0;
@@ -20,24 +21,64 @@ input::placeholder{
     height: 100vh;
 }
 
-/* Thanh Nav bên trái */
+/* thanh nav bên trái */
 .sidebar {
     width: 250px;
-    background-color: #2c3e50;
+    background-color: #0D47A1;
     padding: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    overflow: hidden;
+    overflow-y: auto;
+    transition: transform 0.3s ease, width 0.3s ease, padding 0.3s ease;
+    transform: translateX(0);
+    z-index: 1000;
+    position: fixed;
+    top: 0;
+    bottom: 0;
 }
 
-/* Khu vực logo */
+.nav-toggle {
+    display: block; 
+    position: fixed;
+    top: 30px;
+    left: 0;
+    z-index: 1000;
+    background-color: #0D47A1b7;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    font-size: 16px;
+    min-width: 30px;
+    min-height: 25px;
+}
+
+.nav-toggle-icon {
+    width: 25px;
+    height: 25px;
+    background-image: url('../icon/nav_toggle_menu.png');
+    background-size: cover;
+    filter: invert(100%) grayscale(100%);
+}
+
+.nav-toggle:hover{
+    background-color: #0D47A1d7;
+}
+
+.nav-toggle:active{
+    background-color: #0D47A1;
+}
+
+
 .logo img {
     width: 100%;
     margin-bottom: 20px;
     background-color: #ecf0f1;
 }
 
-/* Danh sách các mục Nav */
 .nav-links {
     list-style: none;
     width: 100%;
@@ -45,33 +86,155 @@ input::placeholder{
     padding: 0;
 }
 
-/* Các mục Nav */
 .nav-links li {
     margin: 10px 0;
     padding: 0;
-    text-align: center;
+    position: relative;
 }
 
 .nav-links li a {
+    width: calc(100% - 40px);
     text-decoration: none;
     color: white;
     font-size: 18px;
-    padding: 10px;
+    padding: 10px 20px;
     display: block;
     width: 100%;
-    background-color: #2c3e50; /* Màu nền của các ô lựa chọn */
+    background-color: #0D47A1;
     border-radius: 5px;
-    transition: background-color 0.3s;
+    transition: background-color 0.2s, transform 0.2s;
 }
 
-/* Hiệu ứng hover cho các mục Nav */
 .nav-links li a:hover {
-    background-color: #45617c; /* Đổi màu khi hover */
+    background-color: #1E88E5;
+    transform: translateX(20px);
 }
 
-/* Nội dung chính */
-.main-content {
+.nav-links li a:active {
+    background-color: #9cd1ff;
+    transform: translateX(20px);
+}
+
+.nav-links li:first-child a:hover {
+    background-color: #FF6F00;
+    transform: translateX(20px);
+}
+
+/* thanh nav trên cùng */
+.right-side {
     flex: 1;
-    background-color: #ecf0f1; /* Màu nền nội dung chính */
-    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    z-index: 10;
+}
+
+.navbar {
+    width: calc(100% - 290px);
+    height: 70px;
+    background-color: #42A5F5;
+    padding: 0 20px 0 10px;
+    margin-left: 290px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    position: fixed;
+    box-sizing: border-box;
+}
+
+.navbar-content {
+    display: flex;
+    align-items: center;
+}
+
+.username {
+    color: white;
+    font-size: 18px;
+    margin-right: 20px;
+}
+
+.icon-button{
+    background-color: transparent; 
+    border: none; 
+    outline: none;
+    padding: 0; 
+}
+
+.icon-button img {
+    width: 30px; 
+    height: 30px;
+    border-radius: 10%;
+    padding: 10px;
+    border: none; 
+    outline: none; 
+    background-color: transparent; 
+    cursor: pointer; 
+    margin: 0 0 0 5px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 0 0 0 transparent;
+}
+
+.icon-button img:hover {
+    transform: scale(1.1); 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+}
+
+.icon-button img:active {
+    transform: scale(0.9); 
+}
+
+.main-content {
+    margin-top: 70px;
+    flex: 1;
+    background-color: #ecf0f1;
+    padding: 20px 40px;
+    overflow-y: auto;
+}
+
+.footer {
+    background-color: #ddeaff;
+    color: rgb(0, 0, 0);
+    text-align: center;
+    padding: 15px 0;
+    width: 100%;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
+    margin-top: auto;
+}
+
+.footer p {
+    margin: 0;
+    font-size: 14px;
+}
+
+/* Giao diện trang chủ thay đổi*/
+@media (max-width: 1000px) {
+    .nav-toggle {
+        display: block;
+    }
+
+    .sidebar {
+        transform: translateX(-100%);
+        width: 0;
+        padding: 0;
+    }
+
+    .nav-links li:first-child a{
+        display: block;
+    }
+
+    .navbar{
+        width: 100%;
+        margin: 0;
+    }
+}
+
+@media (min-width: 1001px) {
+    .nav-toggle {
+        display: none;
+    }
+
+    .nav-links li:first-child a{
+        display: none;
+    }
 }
