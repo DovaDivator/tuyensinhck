@@ -47,7 +47,22 @@ if (!isset($_SESSION['user_id'])) {
             <!-- Thanh bar trên cùng -->
             <div class="navbar">
                 <div class="navbar-content">
-                    <span class="username">Tên Tài Khoản</span>
+                    <!-- thông tin người dùng -->
+                    <div class="user-info">
+                        <img class="avatar" src="">
+                        <div class="user-details">
+                            <p class="username"> Nguyễn Trọng Quốc Việt
+                                <!-- TODO: (all) Truy vấn tìm tên người dùng -->
+                            </p>
+                            <p class="user-id">ID: 2313131321
+                                <!-- TODO: (all) Truy vấn tìm ID-->
+                            </p>
+                            <p class="user-role">Vai trò: Duck Hunter
+                                <!-- TODO: (all) Truy vấn hiện vai trò -->
+                            </p>
+                        </div>
+                    </div>
+                    <!-- nút điều hướng -->
                     <form action="" method="GET" style="display: inline;">
                         <button type="submit" class="icon-button" name="notification">
                             <img src="../assets/icon/noti_icon.png" alt="Thông báo" title="Thông báo">

@@ -142,6 +142,7 @@ input::placeholder{
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     position: fixed;
     box-sizing: border-box;
+    overflow-x: auto;
 }
 
 .navbar-content {
@@ -149,11 +150,42 @@ input::placeholder{
     align-items: center;
 }
 
-.username {
-    color: white;
-    font-size: 18px;
-    margin-right: 20px;
+.user-info {
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
 }
+
+.avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.user-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: white;
+}
+
+.username {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.user-id, .user-role {
+    font-size: 13px;
+    margin: 0;
+}
+
+.user-id{
+    font-style: italic;
+    color:lightyellow;
+}
+
 
 .icon-button{
     background-color: transparent; 
