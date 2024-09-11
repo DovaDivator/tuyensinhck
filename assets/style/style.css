@@ -224,6 +224,10 @@ input::placeholder{
         display: block;
     }
 
+    .right-side {
+        margin-left: 0;
+    }
+
     .navbar{
         width: 100%;
         margin: 0;
