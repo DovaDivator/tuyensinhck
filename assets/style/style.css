@@ -127,6 +127,8 @@ input::placeholder{
     flex-direction: column;
     height: 100vh;
     z-index: 10;
+    box-sizing: border-box;
+    margin-left: 290px;
 }
 
 .navbar {
@@ -134,7 +136,6 @@ input::placeholder{
     height: 70px;
     background-color: #42A5F5;
     padding: 0 20px 0 10px;
-    margin-left: 290px;
     display: flex;
     justify-content: flex-end;
     align-items: center;
