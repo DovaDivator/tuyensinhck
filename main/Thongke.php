@@ -1,11 +1,11 @@
 <!-- Hàm kiểm tra trang đã đăng nhập chưa -->
 <!-- <?php
-session_start();
+// session_start();
 
-if (!isset($_SESSION['user_id'])) {
-    header('Location: login.php');
-    exit();
-}
+// if (!isset($_SESSION['user_id'])) {
+//     header('Location: login.php');
+//     exit();
+// }
 ?> -->
 
 <!DOCTYPE html>
@@ -79,7 +79,7 @@ if (!isset($_SESSION['user_id'])) {
 
             <!-- Nội dung chính -->
             <div class="main-content">
-                <h1>Chào mừng đến với Website</h1>
+                <h1>Chào mừng đến với trang thống kê</h1>
                 <p>Đây là phần nội dung chính của trang web.</p>
             </div>
             
