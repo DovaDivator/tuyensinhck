@@ -39,7 +39,7 @@ if (!isset($_SESSION['user_id'])) {
                 <li><a href="OP2.php">Lựa chọn 2</a></li>
                 <li><a href="Thongke.php">Thống kê hồ sơ</a></li>
                 <li><a href="#">lựa chọn</a></li>
-                <li><a href="">Đăng xuất</a></li>
+                <li><a href="login.php">Đăng xuất</a></li>
             </ul>
         </div>
         
