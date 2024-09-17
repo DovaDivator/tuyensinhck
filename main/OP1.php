@@ -1,14 +1,13 @@
- 
 <!-- Hàm kiểm tra trang đã đăng nhập chưa -->
- <?php 
-// session_start();
+<!-- <?php
+session_start();
 
-// if (!isset($_SESSION['user_id'])) {
-//     header('Location: login.php');
-//     exit();
-// }
-?> 
- 
+if (!isset($_SESSION['user_id'])) {
+    header('Location: login.php');
+    exit();
+}
+?> -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -80,7 +79,7 @@
 
             <!-- Nội dung chính -->
             <div class="main-content">
-                <h1>Chào mừng đến với Lựa chọn 1</h1>
+                <h1>Chào mừng đến với Website</h1>
                 <p>Đây là phần nội dung chính của trang web.</p>
             </div>
             
