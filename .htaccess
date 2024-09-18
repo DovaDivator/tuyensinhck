@@ -1,5 +1,5 @@
 <IfModule mod_rewrite.c>
     RewriteEngine On
     RewriteCond %{REQUEST_URI} !^/tuyensinhck/main/
-    RewriteRule ^(.*)$ /tuyensinhck/index.php [R=301,L]
+    RewriteRule ^(.*)$ /tuyensinhck/main/index.php [R=301,L]
 </IfModule>
