@@ -1,5 +1,9 @@
 <IfModule mod_rewrite.c>
     RewriteEngine On
     RewriteCond %{REQUEST_URI} !^/tuyensinhck/main/
+<<<<<<< HEAD
     RewriteRule ^(.*)$ /tuyensinhck/index.php [R=301,L]
+=======
+    RewriteRule ^(.*)$ /tuyensinhck/main/index.php [R=301,L]
+>>>>>>> 7d6e68a (cấp quyền url)
 </IfModule>
