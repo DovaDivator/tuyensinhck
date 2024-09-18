@@ -2,7 +2,7 @@
 <div class="sidebar">
     <!-- Logo -->
     <div class="logo">
-        <img src="../assets/images/logo-01.png" alt="Logo">
+        <img src="../assets/images/logo-01.png?v=<?php echo filemtime('../assets/images/logo-01.png'); ?>" alt="Logo">
     </div>
     <!-- Danh sách lựa chọn sidebar -->
     <ul class="nav-links">

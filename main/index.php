@@ -15,8 +15,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Web Tuyển sinh - Trang chủ</title>
     <link rel="icon" href="../assets/images/logo.png" type="image/png">
-    <link rel="stylesheet" href="../assets/style/style.css">
-    <script src="../js_backend/events.js"></script>
+    <link rel="stylesheet" href="../assets/style/style.css?v=<?php echo filemtime('../assets/style/style.css'); ?>">
+    <script src="../js_backend/events.js?v=<?php echo filemtime('../js_backend/events.js'); ?>"></script>
 </head>
 <body>
     <div class="container">
@@ -25,10 +25,9 @@
         
         <div class="right-side">
             <?php include '../php_control/path_side/toolbar.php'; ?>
-            <!-- Nội dung chính -->
+            <!-- Nội dung chính kết nối trang -->
             <div class="main-content">
-                <h1>Chào mừng đến với Website</h1>
-                <p>Đây là phần nội dung chính của trang web.</p>
+                <?php include '../php_control/admin_path/Thongke.php'; ?>
             </div>
 
             <?php include '../php_control/path_side/footer.php'; ?>

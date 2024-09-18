@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Web tuyển sinh - Đăng nhập</title>
     <link rel="icon" href="../assets/images/logo.png" type="image/png">
-    <link rel="stylesheet" href="../assets/style/style.css">
-    <link rel="stylesheet" href="../assets/style/login.css">
+    <link rel="stylesheet" href="../assets/style/style.css?v=<?php echo filemtime("../assets/style/style.css")?>">
+    <link rel="stylesheet" href="../assets/style/login.css?v=<?php echo filemtime("../assets/style/login.css")?>">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
 
@@ -16,7 +16,7 @@
         <div class="loginAnhDiv">
         </div>
         <div class="loginDivForm">
-            <img src="../assets/images/logo-01.png" class="uniLogo">
+            <img src="../assets/images/logo-01.png?v=<?php echo filemtime("../assets/images/logo-01.png")?>" class="uniLogo">
             <h1>Đăng nhập</h1>
             <!-- TODO: Tạm thời chuyển sang index.php sau khi đăng nhập hợp lệ -->
             <form action="index.php" method="POST">
