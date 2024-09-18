@@ -220,7 +220,6 @@ input::placeholder{
 .main-content {
     margin-top: 70px;
     flex: 1;
-    background-color: #ecf0f1;
     padding: 20px 40px;
     overflow-y: auto;
 }
@@ -229,7 +228,7 @@ input::placeholder{
     background-color: #ddeaff;
     color: rgb(0, 0, 0);
     text-align: center;
-    padding: 15px 0;
+    padding: 100px 0;
     width: 100%;
     box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
     margin-top: auto;
@@ -238,6 +237,27 @@ input::placeholder{
 .footer p {
     margin: 0;
     font-size: 14px;
+}
+
+.body_path{
+    width: 100vh;
+    height: 100vh;
+    background-color: #ecf0f1;
+}
+
+.title {
+    display: flex;
+    align-items: center;
+}
+
+.title h1 {
+    margin-right: 20px; 
+    margin: 0; 
+}
+
+.title img {
+    width: 30px; 
+    height: auto;
 }
 
 /* Giao diện trang chủ thay đổi*/

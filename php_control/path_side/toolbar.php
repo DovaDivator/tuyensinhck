@@ -19,13 +19,13 @@
         <!-- nút điều hướng -->
         <form action="" method="GET" style="display: inline;">
             <button type="submit" class="icon-button" name="notification">
-                <img src="../assets/icon/noti_icon.png" alt="Thông báo" title="Thông báo">
+                <img src="../assets/icon/noti_icon.png?v=<?php echo filemtime("../assets/icon/noti_icon.png"); ?>" alt="Thông báo" title="Thông báo">
             </button>
             <button type="submit" class="icon-button" name="changeinfo">
-                <img src="../assets/icon/info_icon.png" alt="Chỉnh sửa thông tin" title="Chỉnh sửa thông tin">
+                <img src="../assets/icon/info_icon.png?v=<?php echo filemtime("../assets/icon/info_icon.png"); ?>" alt="Chỉnh sửa thông tin" title="Chỉnh sửa thông tin">
             </button>
             <button type="submit" class="icon-button" name="logout">
-                <img src="../assets/icon/logout_icon.png" alt="Đăng xuất" title="Đăng xuất">
+                <img src="../assets/icon/logout_icon.png?v=<?php echo filemtime("../assets/icon/logout_icon.png"); ?>" alt="Đăng xuất" title="Đăng xuất">
             </button>
         </form>
     </div>
