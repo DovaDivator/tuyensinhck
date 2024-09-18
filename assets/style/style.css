@@ -3,6 +3,7 @@ html, body {
     height: 100%;
     margin: 0;
     font-family: 'Roboto', sans-serif;
+    white-space: nowrap
 }
 
 input{
@@ -14,6 +15,12 @@ input::placeholder{
     color: #888;
     font-style: italic;
     margin-left: 10px;
+}
+
+select{
+    padding: 5px;
+    border: 1px solid #ccc; 
+    border-radius: 10px;
 }
 
 .container {
@@ -220,15 +227,14 @@ input::placeholder{
 .main-content {
     margin-top: 70px;
     flex: 1;
-    padding: 20px 40px;
-    overflow-y: auto;
+    padding: 0;
 }
 
 .footer {
     background-color: #ddeaff;
     color: rgb(0, 0, 0);
     text-align: center;
-    padding: 100px 0;
+    padding: 15px 0;
     width: 100%;
     box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
     margin-top: auto;
@@ -240,24 +246,26 @@ input::placeholder{
 }
 
 .body_path{
-    width: 100vh;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
+    padding: 30px 40px;
+    box-sizing: border-box;
     background-color: #ecf0f1;
+    overflow: auto;
 }
 
-.title {
+.linediv {
     display: flex;
     align-items: center;
 }
 
 .title h1 {
-    margin-right: 20px; 
-    margin: 0; 
+    margin: 0 20px 0 0; 
 }
 
 .title img {
-    width: 30px; 
-    height: auto;
+    width: 40px; 
+    height: 100%;
 }
 
 /* Giao diện trang chủ thay đổi*/
@@ -268,8 +276,6 @@ input::placeholder{
 
     .sidebar {
         transform: translateX(-100%);
-        width: 0;
-        padding: 0;
     }
 
     .nav-links li:first-child a{
@@ -277,12 +283,12 @@ input::placeholder{
     }
 
     .right-side {
-        margin-left: 0;
+        margin-left: 0 !important;
     }
 
     .navbar{
-        width: 100%;
-        margin: 0;
+        width: 100% !important;
+        margin: 0 !important;
     }
 }
 
@@ -293,5 +299,9 @@ input::placeholder{
 
     .nav-links li:first-child a{
         display: none;
+    }
+
+    .sidebar {
+        transform: translateX(0%) !important;
     }
 }
