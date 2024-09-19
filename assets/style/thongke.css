@@ -1,4 +1,4 @@
-img.chart_option{
+    img.chart_option{
     width: 30px;
     height: auto;
     margin-left: 15px;
@@ -8,7 +8,7 @@ h3{
     text-align: center;
 }
 
-.chart_container{
+.chart_div{
     display: grid;
     place-items: center; 
     height: 500px;
@@ -27,15 +27,49 @@ canvas {
     max-height: 500px;
 }
 
-.info_container{
+.info_div{
     width: 700px;
     margin: auto;
 }
 
-.info_container h4{
+.info_div h4{
     margin: 20px 0;
 }
 
-.info_container p{
+.info_div p{
     margin: 10px 0 10px 20px;
+}
+
+.chart_div_options {
+    width: 225px;
+    margin: 0 auto;
+    position: absolute;
+}
+
+input[type="submit"] {
+    border: none;
+    background-color: #0083ce;
+    padding: 7px 10px;
+    border-radius: 10px;
+    color: white;   
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+input[type="submit"]:hover {
+    background-color: #006bb3;
+}
+
+@media (max-width: 1000px) {
+    .chart_div_options{
+        left: 400px !important;
+    }
+}
+
+@media (min-width: 1001px) {
+    .chart_div_options{
+        left: 700px !important;
+    }
 }

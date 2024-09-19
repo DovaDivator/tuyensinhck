@@ -19,7 +19,7 @@
     <script src="../js_backend/events.js?v=<?php echo filemtime('../js_backend/events.js'); ?>"></script>
 </head>
 <body>
-    <div class="container">
+    <div class="body_container">
         <?php include '../php_control/path_side/nav_toggle.php'; ?>
         <?php include '../php_control/path_side/sidebar.php'; ?>
         
