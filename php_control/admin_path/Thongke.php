@@ -13,7 +13,10 @@
                 <option value="chart4">Thông kê hồ sơ thịt Thắng</option>
             </select>
         </form>
-        <img src="../assets/icon/filter.png?v=<?php echo filemtime("../assets/icon/filter.png"); ?>" alt="Tùy chọn" title="Tùy chọn" class="chart_option" onclick="showChartOption('options layout chart_div_options')">
+        <button type="submit" class="icon-button">
+        <img src="../assets/icon/filter.png?v=<?php echo filemtime("../assets/icon/filter.png"); ?>" 
+        alt="Tùy chọn" title="Tùy chọn" class="chart_option" onclick="showChartOption('options layout chart_div_options')">
+        </button>
     </div>
     <div class="chart_div_options options layout" onsubmit="hideDiv()">
         <form method="GET">

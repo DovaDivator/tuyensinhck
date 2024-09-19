@@ -19,7 +19,8 @@
         <!-- nút điều hướng -->
         <form action="" method="GET" style="display: inline;">
             <button type="submit" class="icon-button" name="notification">
-                <img src="../assets/icon/noti_icon.png?v=<?php echo filemtime("../assets/icon/noti_icon.png"); ?>" alt="Thông báo" title="Thông báo">
+                <img src="../assets/icon/noti_icon.png?v=<?php echo filemtime("../assets/icon/noti_icon.png"); ?>" 
+                alt="Thông báo" title="Thông báo" onclick="showChartOption('notification layout')">
             </button>
             <button type="submit" class="icon-button" name="changeinfo">
                 <img src="../assets/icon/info_icon.png?v=<?php echo filemtime("../assets/icon/info_icon.png"); ?>" alt="Chỉnh sửa thông tin" title="Chỉnh sửa thông tin">

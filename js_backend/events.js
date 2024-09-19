@@ -16,6 +16,7 @@ function HideNavigation(){
 }
 
 function showChartOption(className) {
+    console.log(className);
     var layouts = document.querySelectorAll('.' + className.split(' ').join('.'));
     layouts.forEach(function(layout) {
         if (layout.classList.contains('show')) {
@@ -26,15 +27,14 @@ function showChartOption(className) {
     });
 }
 
-// Hàm để ẩn layout khi click ra ngoài các div có class options layout
 document.addEventListener('click', function(event) {
     var layouts = document.querySelectorAll('.options.layout');
     layouts.forEach(function(layout) {
         var isClickInside = layout.contains(event.target) || event.target.classList.contains('chart_option');
         
-        // Nếu nhấp chuột ra ngoài, ẩn layout
         if (!isClickInside) {
             layout.classList.remove('show');
         }
     });
 });
+

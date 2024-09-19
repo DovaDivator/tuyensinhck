@@ -22,6 +22,10 @@
     <div class="body_container">
         <?php include '../php_control/path_side/nav_toggle.php'; ?>
         <?php include '../php_control/path_side/sidebar.php'; ?>
+
+        <div class="notification layout">
+            <?php include '../php_control/path_side/notification.php'; ?>
+        </div>
         
         <div class="right-side">
             <?php include '../php_control/path_side/toolbar.php'; ?>
