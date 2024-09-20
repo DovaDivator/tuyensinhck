@@ -27,7 +27,7 @@ if (isset($_SESSION['is_logged_in']) && $_SESSION['is_logged_in'] === true) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Web Tuyển sinh - Trang chủ</title>
-    <link rel="icon" href="../assets/images/logo.png" type="image/png">
+    <link rel="icon" href="../assets/images/logo.png?v=<?php echo filemtime('../assets/images/logo.png'); ?>" type="image/png">
     <link rel="stylesheet" href="../assets/style/style.css?v=<?php echo filemtime('../assets/style/style.css'); ?>">
     <script src="../js_backend/events.js?v=<?php echo filemtime('../js_backend/events.js'); ?>"></script>
 </head>
@@ -44,10 +44,8 @@ if (isset($_SESSION['is_logged_in']) && $_SESSION['is_logged_in'] === true) {
             <?php include '../php_control/path_side/toolbar.php'; ?>
             <!-- Nội dung chính kết nối trang -->
             <div class="main-content">
-                <?php include '../php_control/admin_path/Thongke.php'; ?>
+                <?php include '../php_control/admin_path/Thongke.php'; ?>    
             </div>
-
-            <?php include '../php_control/path_side/footer.php'; ?>
         </div>
     </div>
     <?php include '../php_control/backend/Logout.php' ?> 

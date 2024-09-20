@@ -43,6 +43,7 @@ canvas {
     width: 225px;
     margin: 0 auto;
     position: absolute;
+    left: 400px;
 }
 
 input[type="submit"] {
@@ -59,16 +60,4 @@ input[type="submit"] {
 
 input[type="submit"]:hover {
     background-color: #006bb3;
-}
-
-@media (max-width: 1000px) {
-    .chart_div_options{
-        left: 400px !important;
-    }
-}
-
-@media (min-width: 1001px) {
-    .chart_div_options{
-        left: 700px !important;
-    }
 }
