@@ -4,13 +4,13 @@
 session_start();
 
 // Kiểm tra nếu biến session tồn tại và giá trị là true
-if (isset($_SESSION['is_logged_in']) && $_SESSION['is_logged_in'] === true) {
-    // echo "Đã đăng nhập thành công!";
-} else {
-    // Nếu chưa đăng nhập hoặc đăng nhập thất bại, chuyển hướng về trang đăng nhập
-    header("Location: login.php");
-    exit();
-}
+// if (isset($_SESSION['is_logged_in']) && $_SESSION['is_logged_in'] === true) {
+//     // echo "Đã đăng nhập thành công!";
+// } else {
+//     // Nếu chưa đăng nhập hoặc đăng nhập thất bại, chuyển hướng về trang đăng nhập
+//     header("Location: login.php");
+//     exit();
+// }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -39,6 +39,5 @@ if (isset($_SESSION['is_logged_in']) && $_SESSION['is_logged_in'] === true) {
             </div>
         </div>
     </div>
-    <?php include '../php_control/backend/Logout.php' ?> 
 </body>
 </html>

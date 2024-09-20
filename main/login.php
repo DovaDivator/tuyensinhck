@@ -29,7 +29,7 @@
         </div> 
     </div>
     <?php
-    include '../php_control/backend/LoginCheck.php'
+    //include '../php_control/backend/LoginCheck.php'
     ?>
 
 

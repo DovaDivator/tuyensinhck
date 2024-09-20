@@ -28,4 +28,4 @@
     </div>
 </div>
 
-<?php include "../php_control/backend/Logout.php";?>
+<?php //include "../php_control/backend/Logout.php";?>
