@@ -44,7 +44,7 @@ select{
     padding: 20px;
     background-color: #ffffff;
     border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
 }
 
 
@@ -233,7 +233,13 @@ select{
     color:lightyellow;
 }
 
+.user-info{
+    margin-right: 10px;
+}
+
 .listview{
+    max-width: 100%;
+    overflow: hidden;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -243,7 +249,27 @@ select{
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
     transition: background-color 0.3s ease, box-shadow 0.3s ease; 
     margin-bottom: 5px; 
-    cursor: pointer;
+    cursor: pointer; 
+}
+
+.listview div{
+    max-width: calc(100% - 40px);
+}
+
+.listview div p{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.red_dots{
+    width: 15px;
+    height: 15px;
+    background-color: #ff0000;
+    border-radius: 50%;
+    display: inline-block;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border: 2px solid #ddd;
 }
 
 .listview:hover {
@@ -340,10 +366,10 @@ select{
 
 .notification{
     position: fixed;
-    width: 360px;
+    width: 380px;
     height: 480px;
     top: 70px;
-    right: 140px;
+    right: 70px;
     padding: 0 !important;
     font-size: 14px;
     z-index: 100;
