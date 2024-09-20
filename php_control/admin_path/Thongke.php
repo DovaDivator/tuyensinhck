@@ -1,6 +1,7 @@
 <link rel="stylesheet" href="../assets/style/thongke.css?v=<?php echo filemtime("../assets/style/thongke.css")?>">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<div class="body_path">
+<div class="body_container">
+    <div class="body_path">
     <h1>Thống kê chi tiết</h1>
     <!-- Điều hướng thông số -->
     <div class="linediv">
@@ -47,7 +48,9 @@
         <p>Trung bình: eweqeq</p>
         <p>Trung bình: eweqeq</p>
         <p>Trung bình: eweqeq</p>
-    </div>   
+    </div> 
+</div>
+    <?php include '../php_control/path_side/footer.php'; ?>  
 </div>
 
 <script>

@@ -1,0 +1,23 @@
+
+
+
+.notification_details{
+    margin-left: 20px;
+}
+
+.linediv.notifi{
+    justify-content: space-between;
+}
+
+.notifi h1{
+    margin-left: 20px;
+}
+
+.group_button {
+    margin-right: 10px;
+}
+
+.notifi_content{
+    width: 100%;
+    overflow-y: auto;
+}
