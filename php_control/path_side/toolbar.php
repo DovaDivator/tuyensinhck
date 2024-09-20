@@ -20,8 +20,12 @@
             <img src="../assets/icon/noti_icon.png?v=<?php echo filemtime("../assets/icon/noti_icon.png"); ?>" 
             alt="Thông báo" title="Thông báo" onclick="showChartOption('notification layout')">            
         </button>
+        <form method="GET">
         <button type="submit" class="icon-button" name="logout">
             <img src="../assets/icon/logout_icon.png?v=<?php echo filemtime("../assets/icon/logout_icon.png"); ?>" alt="Đăng xuất" title="Đăng xuất">            
         </button>
+        </form>
     </div>
 </div>
+
+<?php include "../php_control/backend/Logout.php";?>

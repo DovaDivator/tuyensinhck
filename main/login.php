@@ -28,7 +28,6 @@
             </form>
         </div> 
     </div>
-ok pp
     <?php
     include '../php_control/backend/LoginCheck.php'
     ?>
