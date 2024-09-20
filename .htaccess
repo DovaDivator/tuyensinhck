@@ -4,4 +4,6 @@
     RewriteRule ^ - [L]
     RewriteCond %{REQUEST_URI} !^/tuyensinhck/main/
     RewriteRule ^(.*)$ /tuyensinhck/main/index.php [R=301,L]
+
+    
 </IfModule>

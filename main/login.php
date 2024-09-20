@@ -19,12 +19,20 @@
             <img src="../assets/images/logo-01.png?v=<?php echo filemtime("../assets/images/logo-01.png")?>" class="uniLogo">
             <h1>Đăng nhập</h1>
             <!-- TODO: Tạm thời chuyển sang index.php sau khi đăng nhập hợp lệ -->
-            <form action="index.php" method="POST">
-                <input type="text" name="username" id="username" placeholder="Tên đăng nhập" required>
+            <form action="" method="POST">
+                <input type="text" name="username" id="username" placeholder="Tên đăng nhập" required> 
+                <br>
                 <input type="password" name="password" id="password" placeholder="Mật khẩu" minlength="6" maxlength="20">
+                <br>
                 <input type="submit" value="Đăng nhập">
             </form>
-        </div>
+        </div> 
     </div>
+ok pp
+    <?php
+    include '../php_control/backend/LoginCheck.php'
+    ?>
+
+
 </body>
 </html>
