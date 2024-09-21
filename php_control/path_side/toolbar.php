@@ -5,7 +5,7 @@
         <div class="user-info info" >
             <img class="avatar" src="">
             <div class="user-details details">
-                <p class="username"> Nguyễn Trọng Quốc Việt
+                <p class="username"> Ngô Đình Minh Trang
                     <!-- TODO: (all) Truy vấn tìm tên người dùng -->
                 </p>
                 <p class="user-id">ID: 2313131321

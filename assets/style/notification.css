@@ -2,7 +2,7 @@
     margin-left: 20px;
 }
 
-.linediv.notifi{
+.linediv.notifi {
     justify-content: space-between;
 }
 
@@ -18,7 +18,7 @@
     width: 100%;
     height: 410px;
     overflow-y: auto;
-}
+}   
 
 .notification_details .title {
     font-size: 20px;
@@ -28,4 +28,37 @@
 .notification_details .date {
     color: #6d6d6d;
     font-style: italic;
+}
+
+.info_notifi_container{
+    width: 380px;
+    box-sizing: border-box;
+    padding: 0 20px;
+}
+
+.info_notifi_container *, p.note{
+    overflow-wrap: normal; 
+    white-space: normal;   
+}
+
+.info_notifi_container h2{
+    color: #002c58
+}
+
+p.type, p.date{
+    margin: 0;
+}
+
+p.date{
+    font-style: italic;
+}
+
+.info_group{
+    display: none;
+}
+
+p.note{
+    margin-left: 20px;
+    font-style: italic;
+    color: rgb(168, 168, 168);
 }

@@ -16,7 +16,6 @@ function HideNavigation(){
 }
 
 function showChartOption(className) {
-    console.log(className);
     var layouts = document.querySelectorAll('.' + className.split(' ').join('.'));
     layouts.forEach(function(layout) {
         if (layout.classList.contains('show')) {
