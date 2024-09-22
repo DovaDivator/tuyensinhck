@@ -15,6 +15,7 @@ function HideNavigation(){
     navToggle.style.display = 'block';
 }
 
+// Hàm hiển thị/ẩn các layout theo tùy chọn
 function showChartOption(className) {
     var layouts = document.querySelectorAll('.' + className.split(' ').join('.'));
     layouts.forEach(function(layout) {
@@ -37,3 +38,15 @@ document.addEventListener('click', function(event) {
     });
 });
 
+// Chặn tải lại trang bằng form
+function denyLoadForm(formId) {
+    var form = document.getElementById(formId);
+
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+    });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    denyLoadForm('notificationForm');
+});
