@@ -21,7 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $is_logged_in = true;
         $_SESSION['is_logged_in'] = $is_logged_in;
         $_SESSION['Role'] = $Role;
-        $_SESSION['message'] = "Login succes, Welcom";
+        // $_SESSION['message'] = "Login succes, Welcom";
         header("Location: index.php");
         //echo '<meta http-equiv="refresh" content="0;url=login.php">'; cái này load sẽ nhanh hơn nhưng bị lỗi  anh có thể xem thử 
         exit();

@@ -9,10 +9,10 @@ if (isset($_SESSION['is_logged_in']) && $_SESSION['is_logged_in'] === true) {
     header("Location: login.php");
     exit();
 }
-if (isset($_SESSION['message'])) {
-    echo "<script>alert('" . $_SESSION['message'] . "');</script>"; 
-    unset($_SESSION['message']); 
-}
+// if (isset($_SESSION['message'])) {
+//     echo "<script>alert('" . $_SESSION['message'] . "');</script>"; 
+//     unset($_SESSION['message']); 
+// }
 ?>
 <!DOCTYPE html>
 <html lang="en">

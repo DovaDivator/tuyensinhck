@@ -73,7 +73,6 @@ img.uniLogo{
 
 form{
     width: 55%;
-    display: flex;
     flex-direction: column;
     margin: 0 auto;
 }
