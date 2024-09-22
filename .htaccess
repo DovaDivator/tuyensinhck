@@ -3,6 +3,9 @@
     RewriteCond %{REQUEST_URI} \.(css|js|png|jpg|jpeg|gif|ico|svg)$ [NC]
     RewriteRule ^ - [L]
     RewriteCond %{REQUEST_URI} !^/tuyensinhck/main/
+
+     RewriteCond %{REQUEST_URI} !^/tuyensinhck/php_control/
+
     RewriteRule ^(.*)$ /tuyensinhck/main/index.php [R=301,L]
 
     

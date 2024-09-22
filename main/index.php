@@ -1,15 +1,17 @@
 <!-- Hàm kiểm tra trang đã đăng nhập chưa -->
 <?php
-// Bắt đầu session để truy cập trạng thái đăng nhập
-session_start();
 
-// Kiểm tra nếu biến session tồn tại và giá trị là true
+session_start();
 if (isset($_SESSION['is_logged_in']) && $_SESSION['is_logged_in'] === true) {
-    // echo "Đã đăng nhập thành công!";
+    //echo "<script>alert('welcom');</script>";
 } else {
-    // Nếu chưa đăng nhập hoặc đăng nhập thất bại, chuyển hướng về trang đăng nhập
+    //echo "<script>alert('pls login');</script>";
     header("Location: login.php");
     exit();
+}
+if (isset($_SESSION['message'])) {
+    echo "<script>alert('" . $_SESSION['message'] . "');</script>"; 
+    unset($_SESSION['message']); 
 }
 ?>
 <!DOCTYPE html>
