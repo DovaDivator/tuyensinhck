@@ -7,10 +7,11 @@
     <!-- Danh sách lựa chọn sidebar -->
     <ul class="nav-links">
         <li><a href="#" onclick="HideNavigation()">⇐ Ẩn thanh công cụ</a></li>
-        <li><a href="OP1.php">Lựa chọn 1</a></li>
+        <li><a href="../php_control/backend/indexRole.php">trang chủ</a></li>
         <li><a href="OP2.php">Lựa chọn 2</a></li>
-        <li><a href="Thongke.php">Thống kê hồ sơ</a></li>
-        <li><a href="#">lựa chọn</a></li>
-        <li><a href="">Đăng xuất</a></li>
+        <li><a href="../php_control/backend/QLHSRole.php">Quản lí hồ sơ</a></li>
+        <li><a href="../php_control/side/CTHS.php">Chi tiết hồ sơ</a</li>
+        <li><a href="../php_control/backend/ThongkeRole.php">Thống kê hồ sơ</a></li>
+       <!-- <li><a href="../php_control/backend/QLHSRole.php">TEST</a></li> -->
     </ul>
 </div>
