@@ -19,7 +19,7 @@
             <img src="../assets/images/logo-01.png?v=<?php echo filemtime("../assets/images/logo-01.png")?>" class="uniLogo">
             <h1>Đăng nhập</h1>
             <!-- TODO: Tạm thời chuyển sang index.php sau khi đăng nhập hợp lệ -->
-            <form action="" method="POST">
+            <form action="" method="POST" id=loginForm>
                 <input type="text" name="username" id="username" placeholder="Tên đăng nhập" required> 
                 <br>
                 <input type="password" name="password" id="password" placeholder="Mật khẩu" minlength="6" maxlength="20" pattern="[\x21-\x7E]+">
@@ -28,10 +28,41 @@
             </form>
         </div> 
     </div>
-    <?php
-    include '../php_control/backend/LoginCheck.php'
-    ?>
-
 
 </body>
 </html>
+
+<script>
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+
+    const formData = new FormData();
+    formData.append('username', username);
+    formData.append('password', password);
+
+    fetch('../php_control/backend/LoginCheck.php', {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    })
+    .then(response => response.text())
+    .then(text => {
+        console.log(text);
+        return JSON.parse(text);
+    })
+    .then(data => {
+        if (data.success) {
+            window.location.href = 'index.php';
+        } else {
+            alert('Tên đăng nhập hoặc mật khẩu không chính xác.');
+        }
+    })
+    .catch(error => console.error('Error:', error));
+});
+
+</script>
