@@ -18,9 +18,10 @@ if (isset($_SESSION['user'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web Tuyển sinh - Trang chủ</title>
+    <title>Web Tuyển sinh - Thống kê số liệu</title>
     <link rel="icon" href="../assets/images/logo.png?v=<?php echo filemtime('../assets/images/logo.png'); ?>" type="image/png">
     <link rel="stylesheet" href="../assets/style/style.css?v=<?php echo filemtime('../assets/style/style.css'); ?>">
+    <link rel="stylesheet" href="../assets/style/thongke.css?v=<?php echo filemtime("../assets/style/thongke.css")?>">
     <script src="../js_backend/events.js?v=<?php echo filemtime('../js_backend/events.js'); ?>"></script>
 </head>
 <body>

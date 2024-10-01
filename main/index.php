@@ -22,6 +22,7 @@ if (isset($_SESSION['user'])) {
     <title>Web Tuyển sinh - Trang chủ</title>
     <link rel="icon" href="../assets/images/logo.png?v=<?php echo filemtime('../assets/images/logo.png'); ?>" type="image/png">
     <link rel="stylesheet" href="../assets/style/style.css?v=<?php echo filemtime('../assets/style/style.css'); ?>">
+    <link rel="stylesheet" href="../assets/style/trangchu.css?v=<?php echo filemtime("../assets/style/trangchu.css")?>">
     <script src="../js_backend/events.js?v=<?php echo filemtime('../js_backend/events.js'); ?>"></script>
 </head>
 <body>
@@ -44,11 +45,11 @@ if (isset($_SESSION['user'])) {
                         break;
                     
                     case "Student":
-                        include "location: ../php_control/Student_path/Student_index.php";
+                        include "../php_control/Student_path/Student_index.php";
                         break;
                     
                     case "Teacher":
-                        include "location: ../php_control/teacher_path/Teacher_index.php";
+                        include "../php_control/teacher_path/Teacher_index.php";
                         break;
                     default:
                         echo "Lựa chọn không hợp lệ!";

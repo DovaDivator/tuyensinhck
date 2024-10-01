@@ -16,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION['is_logged_in'] = true;
         $_SESSION['user'] = [
             'username' => $check_username,
-            'role' => 'Admin', // Tạm thời đặt là admin
+            'role' => 'Student', // Tạm thời đặt là admin
         ];
 
         $response['success'] = true;
