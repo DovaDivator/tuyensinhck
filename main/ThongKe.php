@@ -3,16 +3,15 @@
 
 session_start();
 if (isset($_SESSION['user'])) {
-    //echo "<script>alert('welcom');</script>";
+    if (!($_SESSION['user']['role'] === "Admin")) {
+        header("Location: index.php");
+        exit();
+    }
 } else {
-    //echo "<script>alert('pls login');</script>";
     header("Location: login.php");
     exit();
 }
-// if (isset($_SESSION['message'])) {
-//     echo "<script>alert('" . $_SESSION['message'] . "');</script>"; 
-//     unset($_SESSION['message']); 
-// }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -37,24 +36,7 @@ if (isset($_SESSION['user'])) {
             <?php include '../php_control/path_side/toolbar.php'; ?>
             <!-- Nội dung chính kết nối trang -->
             <div class="main-content">
-            <?php
-                switch ($_SESSION['user']['role']) {
-                    case "Admin":
-                        include "../php_control/admin_path/Admin_index.php";
-                        break;
-                    
-                    case "Student":
-                        include "location: ../php_control/Student_path/Student_index.php";
-                        break;
-                    
-                    case "Teacher":
-                        include "location: ../php_control/teacher_path/Teacher_index.php";
-                        break;
-                    default:
-                        echo "Lựa chọn không hợp lệ!";
-                        break;
-                }
-            ?>
+                <?php include '../php_control/admin_path/ThongKePath.php'; ?>    
             </div>
         </div>
     </div>
