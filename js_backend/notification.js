@@ -58,7 +58,7 @@ function loadUIDetailNotification(notification_id) {
             }else{
                 alert('Không thể xác nhận tin nhắn!');
                 setTimeout(loadUIListNotifications, 50); 
-            }
+            }   
         } else {
             console.log('Error:', xhr.status);
         }
