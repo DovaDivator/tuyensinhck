@@ -1,20 +1,20 @@
-:root{
+:root {
     --login_width: 1200px;
-    --login_height: 600px; 
+    --login_height: 600px;
 }
 
 body {
     background-image: url("../images/LoginBackground.jpg");
-    background-size: cover; 
-    background-repeat: no-repeat; 
+    background-size: cover;
+    background-repeat: no-repeat;
     background-position: center center;
     background-attachment: fixed;
-    display: flex; 
-    justify-content: center; 
+    display: flex;
+    justify-content: center;
     align-items: center;
-    overflow: auto;
-    min-width: var(--login_width);
-    min-height: var(--login_height);
+    min-width: 100vw; /* Đảm bảo trang phủ hết chiều rộng */
+    min-height: 100vh; /* Đảm bảo trang phủ hết chiều cao */
+    margin: 0;
 }
 
 .loginDiv {
@@ -23,29 +23,27 @@ body {
     background-color: rgba(255, 255, 255, 0.8);
     border-radius: 10px;
     box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
-    position: relative; 
+    position: relative;
     z-index: 2;
     animation: FloatIn 0.5s ease-in-out;
+    display: flex;
+    overflow: hidden; /* Đảm bảo không vượt quá kích thước chứa */
 }
 
-.loginAnhDiv{
-    position: absolute;
+.loginAnhDiv {
     width: 50%;
     height: 100%;
-    top: 0;
-    left: 0;
     background-image: url("../images/SquareSchool.jpg");
     background-size: cover;
+    background-position: center;
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
+    display: block; /* Đảm bảo hiển thị ảnh ban đầu */
 }
 
-.loginDivForm{
-    position: absolute;
+.loginDivForm {
     width: 50%;
     height: 100%;
-    right:0;
-    top: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -56,44 +54,45 @@ body {
     margin-bottom: 20px !important;
 }
 
-img.uniLogo{
+img.uniLogo {
     width: 75%;
     height: auto;
 }
 
-form{
+form {
     width: 55%;
+    display: flex;
     flex-direction: column;
     margin: 0 auto;
 }
 
-input{
-    width: 100%; 
-    margin-bottom: 10px; 
+input {
+    width: 100%;
+    margin-bottom: 10px;
     padding-top: 10px;
     padding-bottom: 10px;
-    border: 1px solid #ccc; 
-    border-radius: 10px; 
+    border: 1px solid #ccc;
+    border-radius: 10px;
 }
 
 input[type="submit"] {
-    border: none; 
-    background-color: #00bfff; 
-    color: white; 
-    font-size: 16px; 
-    font-weight: bold; 
-    cursor: pointer; 
+    border: none;
+    background-color: #00bfff;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
     transition: background-color 0.3s, transform 0.3s;
 }
 
 input[type="submit"]:hover {
-    background-color: #1e90ff; 
+    background-color: #1e90ff;
     transform: scale(1.05);
 }
 
 input[type="submit"]:active {
-    background-color: #4682b4; 
-    transform: scale(0.98); 
+    background-color: #4682b4;
+    transform: scale(0.98);
 }
 
 /* Hiệu ứng FloatIn */
@@ -105,5 +104,46 @@ input[type="submit"]:active {
     to {
         opacity: 1;
         transform: translateY(0);
+    }
+}
+
+@media (max-height: 700px) {
+    .loginDiv {
+        flex-direction: column;
+        height: auto; 
+        width: 90vw;
+    }
+
+    .loginDivForm {
+        width: 100%;
+    }
+
+    form {
+        width: 80%;
+    }
+
+    img.uniLogo {
+        width: 50%;
+    }
+}
+
+
+@media (max-width: 1000px) {
+    :root {
+        --login_width: 90vw; 
+    }
+
+    .loginDiv {
+        width: var(--login_width);
+        max-width: 600px;
+        min-width: 400px;
+    }
+
+    .loginDivForm {
+        width: 100%;
+    }
+
+    .loginAnhDiv {
+        display: none;
     }
 }
