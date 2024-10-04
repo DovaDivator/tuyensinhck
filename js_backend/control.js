@@ -23,11 +23,7 @@ function loadTuyenSinh() {
 }
 
 function renderCoursesTuyenSinh(courses, role) {
-<<<<<<< HEAD
     var tbody = document.getElementById('course_table_tuyen_sinh');
-=======
-    var tbody = document.getElementById('course-table-body');
->>>>>>> 2a47d47965ae2a53c5cbe13f6b38375dc275a797
     tbody.innerHTML = '';
 
     if (courses.length === 0) {
@@ -39,17 +35,9 @@ function renderCoursesTuyenSinh(courses, role) {
             row.innerHTML = `
                 <td>${course.ma_tuyen_sinh}</td>
                 <td>${course.ten_nganh}</td>
-<<<<<<< HEAD
                 ${userRole !== 'Student' ? `<td class="number_td"><font color="blue">${course.so_luong_dang_ky}</font></td>` : ''}
                 <td>${course.to_hop_xet_tuyen}</td>
                 <td>${course.thoi_gian_tuyen_sinh}</td>
-=======
-                <td class="number_td">${course.chi_tieu}</td>
-                ${userRole !== 'Student' ? `<td class="number_td"><font color="blue">${course.so_luong_dang_ky}</font></td>` : ''}
-                <td>${course.to_hop_xet_tuyen}</td>
-                <td>${course.thoi_gian_tuyen_sinh}</td>
-                <td>${course.ghi_chu || ''}</td>
->>>>>>> 2a47d47965ae2a53c5cbe13f6b38375dc275a797
             `;
             tbody.appendChild(row);
         });
@@ -57,11 +45,7 @@ function renderCoursesTuyenSinh(courses, role) {
 }
 
 function renderError(message) {
-<<<<<<< HEAD
     var tbody = document.getElementById('course_table_tuyen_sinh');
-=======
-    var tbody = document.getElementById('course-table-body');
->>>>>>> 2a47d47965ae2a53c5cbe13f6b38375dc275a797
     tbody.innerHTML = '';
 
     var row = document.createElement('tr');
