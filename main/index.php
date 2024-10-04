@@ -2,7 +2,7 @@
 <?php
 
 session_start();
-if (isset($_SESSION['is_logged_in']) && $_SESSION['is_logged_in'] === true) {
+if (isset($_SESSION['user'])) {
     //echo "<script>alert('welcom');</script>";
 } else {
     //echo "<script>alert('pls login');</script>";

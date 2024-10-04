@@ -22,7 +22,7 @@
             <form action="" method="POST">
                 <input type="text" name="username" id="username" placeholder="Tên đăng nhập" required> 
                 <br>
-                <input type="password" name="password" id="password" placeholder="Mật khẩu" minlength="6" maxlength="20">
+                <input type="password" name="password" id="password" placeholder="Mật khẩu" minlength="6" maxlength="20" pattern="[\x21-\x7E]+">
                 <br>
                 <input type="submit" value="Đăng nhập">
             </form>
