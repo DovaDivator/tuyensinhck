@@ -5,7 +5,7 @@
     <!-- Điều hướng thông số -->
     <div class="linediv">
     <p>&emsp;&emsp;Hiển thị thông tin:&ensp;</p>
-        <form>
+        <form method="GET">
             <select id="chart_info_options" name="chart_info_options">
                 <option value="chart1">Thông kê hồ sơ thịt chó</option>
                 <option value="chart2">Thông kê hồ sơ thịt mèo</option>
@@ -13,9 +13,9 @@
                 <option value="chart4">Thông kê hồ sơ thịt Thắng</option>
             </select>
         </form>
-        <button type="submit" class="icon-button">
+        <button type="button" class="icon-button">
         <img src="../assets/icon/filter.png?v=<?php echo filemtime("../assets/icon/filter.png"); ?>" 
-        alt="Tùy chọn" title="Tùy chọn" class="chart_option" onclick="showChartOption('options layout chart_div_options')">
+        alt="Tùy chọn" title="Tùy chọn" class="chart_option option_holder" onclick="showChartOption('options layout chart_div_options')">
         </button>
     </div>
     <div class="chart_div_options options layout" onsubmit="hideDiv()">

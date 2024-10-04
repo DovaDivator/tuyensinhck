@@ -1,35 +1,48 @@
 table {
     width: 100%;
     border-collapse: collapse;
-    margin: 25px 0;
-    border-radius: 5px 5px 0 0;
-    overflow: hidden;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-    border-radius: 20px;
+    margin: 0;
+    table-layout: fixed;
 }
 
-table thead tr {
+.table_body_scroll {
+    overflow-y: auto; 
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    border-radius: 20px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.table_body_scroll::-webkit-scrollbar {
+    display: none; 
+}
+
+table thead {
+    position: sticky;
+    top: 0;
+    z-index: 2; 
     background-color: #3498db;
-    color: #ffffff;
+    color: white;
     text-align: center;
     font-weight: bold;
 }
+
 
 table th, table td {
     padding: 12px 15px;
     border: 1px solid #dddddd;
     white-space: normal;     
-    word-break: normal; 
-    overflow-wrap: break-word;
+    word-break: break-word; 
     box-sizing: border-box;
 }
 
 table.choose_list tbody tr {
     border-bottom: 1px solid #dddddd;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-table.choose_list tbody tr {
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+table.choose_list tbody tr:not(.error_tdtable){
+    cursor: pointer;
 }
 
 table.choose_list tbody tr:hover:not(.error_tdtable) {
@@ -49,33 +62,28 @@ table.choose_list tbody tr:active:not(.error_tdtable) {
     cursor: auto;
 }
 
-.table_hold{
-    min-width: 1000px;
-    max-width: 1100px;
+.table_hold {
+    min-width: 800px;
+    max-width: 900px;
     margin-left: auto;
     margin-right: auto;
 }
 
-table thead tr th#ma_nganh{
+table thead tr th#ma_nganh {
     width: 80px;
-}
-
-table tbody tr {
-    cursor: pointer;
 }
 
 table thead tr th#chi_tieu_du_kien,
 table thead tr th#so_luong_dang_ky,
-table thead tr th#to_hop_xet_tuyen
-{
+table thead tr th#to_hop_xet_tuyen {
     width: 100px;
 }
 
 table thead tr th#thoi_gian,
-table thead tr th#ghi_chu{
+table thead tr th#ghi_chu {
     width: 150px;
 }
 
-td.number_td{
+td.number_td {
     text-align: center;
 }

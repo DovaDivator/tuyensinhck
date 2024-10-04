@@ -23,7 +23,7 @@ function loadTuyenSinh() {
 }
 
 function renderCoursesTuyenSinh(courses, role) {
-    var tbody = document.getElementById('course-table-body');
+    var tbody = document.getElementById('course_table_tuyen_sinh');
     tbody.innerHTML = '';
 
     if (courses.length === 0) {
@@ -35,11 +35,9 @@ function renderCoursesTuyenSinh(courses, role) {
             row.innerHTML = `
                 <td>${course.ma_tuyen_sinh}</td>
                 <td>${course.ten_nganh}</td>
-                <td class="number_td">${course.chi_tieu}</td>
                 ${userRole !== 'Student' ? `<td class="number_td"><font color="blue">${course.so_luong_dang_ky}</font></td>` : ''}
                 <td>${course.to_hop_xet_tuyen}</td>
                 <td>${course.thoi_gian_tuyen_sinh}</td>
-                <td>${course.ghi_chu || ''}</td>
             `;
             tbody.appendChild(row);
         });
@@ -47,7 +45,7 @@ function renderCoursesTuyenSinh(courses, role) {
 }
 
 function renderError(message) {
-    var tbody = document.getElementById('course-table-body');
+    var tbody = document.getElementById('course_table_tuyen_sinh');
     tbody.innerHTML = '';
 
     var row = document.createElement('tr');

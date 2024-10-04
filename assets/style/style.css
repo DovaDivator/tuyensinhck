@@ -42,6 +42,43 @@ button, input[type="button"], input[type="reset"], input[type="submit"]{
     cursor: pointer;
 }
 
+.search-container {
+    display: flex; 
+    border: 1px solid #ddd;
+    background-color: #fff; 
+    border-radius: 25px; 
+    overflow: hidden; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    width:fit-content;
+}
+
+.search-input {
+    border: none; 
+    padding: 10px 15px; 
+    width: 300px; 
+    outline: none; 
+}
+
+.search-button {
+    border: none; 
+    background-color: #fff;
+    cursor: pointer; 
+    padding: 10px; 
+    border-radius: 25px;
+    transition: background-color 0.3s ease;
+    font-size: 1px;
+}
+
+.search-icon {
+    width: 15px;
+    height: 15px;
+    object-fit: cover;
+}
+
+.search-button:hover {
+    background-color: #ddd; 
+}
+
 .body_container {
     display: flex;
     height: 100vh;

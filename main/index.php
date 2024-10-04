@@ -59,6 +59,19 @@ if (isset($_SESSION['user'])) {
                             }
                         ?>
                     </h3>
+                        <form action="search.php"  class='linediv' method="GET" style='margin:0 0 10px 30px;'>
+                            <div class="search-container">
+                            <input type="text" name="query" placeholder="Nhập từ khóa tìm kiếm..." class="search-input">
+                            <button type="submit" class="search-button">
+                                <img src="../assets/icon/search.png?v=<?php echo filemtime('../assets/icon/search.png'); ?>" 
+                                title="Tìm kiếm" class="search-icon">
+                            </button>
+                            </div>
+                            <button type="button" class="icon-button">
+                                <img src="../assets/icon/filter_tag.png?v=<?php echo filemtime("../assets/icon/filter_tag.png"); ?>" 
+                                alt="Tùy chọn" title="Tùy chọn" class="chart_option" onclick="showChartOption('options layout chart_div_options')">
+                            </button>
+                        </form>
                     <div class="table_hold">
                         <?php 
                             include '../php_control/path_side/table_nganh.php'; 

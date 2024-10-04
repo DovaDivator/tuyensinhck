@@ -30,8 +30,8 @@ function showChartOption(className) {
 document.addEventListener('click', function(event) {
     var layouts = document.querySelectorAll('.options.layout');
     layouts.forEach(function(layout) {
-        var isClickInside = layout.contains(event.target) || event.target.classList.contains('chart_option');
-        
+        var isClickInside = layout.contains(event.target) || event.target.classList.contains('option_holder');
+
         if (!isClickInside) {
             layout.classList.remove('show');
         }
