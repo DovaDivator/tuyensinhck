@@ -3,7 +3,8 @@ html, body {
     height: 100%;
     margin: 0;
     font-family: 'Roboto', sans-serif;
-    white-space: nowrap
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 .text-content{
@@ -39,57 +40,6 @@ select{
 
 button, input[type="button"], input[type="reset"], input[type="submit"]{
     cursor: pointer;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 25px 0;
-    border-radius: 5px 5px 0 0;
-    overflow: hidden;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-    border-radius: 20px;
-}
-
-table thead tr {
-    background-color: #3498db;
-    color: #ffffff;
-    text-align: center;
-    font-weight: bold;
-}
-
-table th, table td {
-    padding: 12px 15px;
-    border: 1px solid #dddddd;
-    white-space: normal;     
-    word-break: normal; 
-    overflow-wrap: break-word;
-    box-sizing: border-box;
-}
-
-table.choose_list tbody tr {
-    border-bottom: 1px solid #dddddd;
-}
-
-table.choose_list tbody tr {
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-table.choose_list tbody tr:hover:not(.error_tdtable) {
-    background-color: #e4e4e4;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-table.choose_list tbody tr:active:not(.error_tdtable) {
-    background-color: #d4d4d4;
-    box-shadow: 0;
-}
-
-.error_tdtable{
-    color: red; 
-    text-align: center;
-    font-weight: bold;
-    cursor: auto;
 }
 
 .body_container {

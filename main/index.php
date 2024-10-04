@@ -22,7 +22,6 @@ if (isset($_SESSION['user'])) {
     <title>Web Tuyển sinh - Trang chủ</title>
     <link rel="icon" href="../assets/images/logo.png?v=<?php echo filemtime('../assets/images/logo.png'); ?>" type="image/png">
     <link rel="stylesheet" href="../assets/style/style.css?v=<?php echo filemtime('../assets/style/style.css'); ?>">
-    <link rel="stylesheet" href="../assets/style/trangchu.css?v=<?php echo filemtime("../assets/style/trangchu.css")?>"> 
     <script src="../js_backend/events.js?v=<?php echo filemtime('../js_backend/events.js'); ?>"></script>
     <script src="../js_backend/control.js?v=<?php echo filemtime('../js_backend/control.js'); ?>"></script>
 </head>
@@ -39,24 +38,36 @@ if (isset($_SESSION['user'])) {
             <?php include '../php_control/path_side/toolbar.php'; ?>
             <!-- Nội dung chính kết nối trang -->
             <div class="main-content">
-            <?php
-                switch ($_SESSION['user']['role']) {
-                    case "Admin":
-                        include "../php_control/admin_path/Admin_index.php";
-                        break;
-                    
-                    case "Student":
-                        include "../php_control/Student_path/Student_index.php";
-                        break;
-                    
-                    case "Teacher":
-                        include "../php_control/teacher_path/Teacher_index.php";
-                        break;
-                    default:
-                        echo "Lựa chọn không hợp lệ!";
-                        break;
-                }
-            ?>
+            <div class="body_container">
+                <?php 
+                    if($_SESSION['user']['role'] === 'Student'){
+                        include '../php_control/path_side/DangKyBar.php';
+                    } 
+                ?>
+                <div class="body_path">
+                    <h1>Trang chủ tuyển sinh</h1> 
+                    <h3 style="padding-left: 50px; color:#DC143C;">
+                        <?php 
+                            if($_SESSION['user']['role'] === 'Teacher'){
+                                echo "Danh sách các ngành hiện tại đang mở!";
+                            } else if($_SESSION['user']['role'] === 'Student'){
+                                echo "Danh sách các ngành đảm nhiệm";
+                            } else if($_SESSION['user']['role'] === 'Admin'){
+                                echo "Danh sách chương trình đào tạo";
+                            } else {
+                                echo "<script>console.log('Lỗi xác định SESSION['user']['role']')</script>";
+                            }
+                        ?>
+                    </h3>
+                    <div class="table_hold">
+                        <?php 
+                            include '../php_control/path_side/table_nganh.php'; 
+                            if($_SESSION['user']['role'] === 'Student'){
+                                echo '<a href="#">&gt;&gt; Tra cứu toàn bộ chương trình đào tạo</a>';
+                            }
+                        ?>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

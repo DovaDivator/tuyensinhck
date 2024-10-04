@@ -22,7 +22,7 @@ function loadTuyenSinh() {
     });
 }
 
-function renderCoursesTuyenSinh(courses) {
+function renderCoursesTuyenSinh(courses, role) {
     var tbody = document.getElementById('course-table-body');
     tbody.innerHTML = '';
 
@@ -31,10 +31,12 @@ function renderCoursesTuyenSinh(courses) {
     } else {
         courses.forEach(function(course) {
             var row = document.createElement('tr');
+            row.title = 'Ấn vào để xem thông tin chi tiết';
             row.innerHTML = `
                 <td>${course.ma_tuyen_sinh}</td>
                 <td>${course.ten_nganh}</td>
-                <td>${course.chi_tieu}</td>
+                <td class="number_td">${course.chi_tieu}</td>
+                ${userRole !== 'Student' ? `<td class="number_td"><font color="blue">${course.so_luong_dang_ky}</font></td>` : ''}
                 <td>${course.to_hop_xet_tuyen}</td>
                 <td>${course.thoi_gian_tuyen_sinh}</td>
                 <td>${course.ghi_chu || ''}</td>
@@ -49,9 +51,13 @@ function renderError(message) {
     tbody.innerHTML = '';
 
     var row = document.createElement('tr');
-    row.className = 'error_tdtable'; 
+    row.className = 'error_tdtable';
+
+    var table = document.getElementById('top_tuyen_sinh');
+    var columnCount = table.rows[0].cells.length;
+
     row.innerHTML = `
-        <td colspan="6">${message}</td>
+        <td colspan="${columnCount}">${message}</td>
     `;
     tbody.appendChild(row);
 }
@@ -62,22 +68,6 @@ function loadAndRenderCourses(role) {
     }).catch(function(error) {
         renderError('Không thể tải dữ liệu: '+ error.message);
     }).finally(function() {
-        if (role === 'Admin') {
-            ShowTuyenSinhManagerBtn();
-        }
+
     });
 }
-
-function ShowTuyenSinhManagerBtn() {
-    var tbody = document.getElementById('course-table-body');
-
-    var rowButton = document.createElement('tr');
-    rowButton.innerHTML = `
-        <td colspan="6" style="text-align: center; cursor: pointer; color: blue; text-decoration: underline;" onclick="window.location.href='/admin/dashboard'">
-            <b>&gt;&nbsp;Đi đến trang điều hướng&nbsp;&lt;</b>
-        </td>
-    `;
-
-    tbody.appendChild(rowButton);
-}
-
