@@ -29,7 +29,7 @@ if (isset($_SESSION['is_logged_in']) && $_SESSION['is_logged_in'] === true) {
         <?php include '../php_control/path_side/nav_toggle.php'; ?>
         <?php include '../php_control/path_side/sidebar.php'; ?>
 
-        <div class="notification layout">
+        <div class="notification layout" id="notificationLayout">
             <?php include '../php_control/path_side/notification.php'; ?>
         </div>
         
@@ -44,3 +44,18 @@ if (isset($_SESSION['is_logged_in']) && $_SESSION['is_logged_in'] === true) {
     <?php include '../php_control/backend/Logout.php' ?> 
 </body>
 </html>
+
+
+<!-- Log kiểm tra dữ liệu, không được xóa -->
+<?php
+echo '<script>';
+echo 'var sessionData = ' . json_encode($_SESSION) . ';';
+echo 'console.log("Session Data:", sessionData);';
+
+echo 'var getData = ' . json_encode($_GET) . ';';
+echo 'console.log("GET Data:", getData);';
+
+echo 'var postData = ' . json_encode($_POST) . ';';
+echo 'console.log("POST Data:", postData);';
+echo '</script>';
+?>
