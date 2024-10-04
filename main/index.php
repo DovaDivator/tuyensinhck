@@ -44,3 +44,5 @@ if (isset($_SESSION['is_logged_in']) && $_SESSION['is_logged_in'] === true) {
     <?php include '../php_control/backend/Logout.php' ?> 
 </body>
 </html>
+
+<!-- ewqewqidhwqidhwqiudwqdhdcmthang -->
