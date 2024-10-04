@@ -1,4 +1,3 @@
-<link rel="stylesheet" href="../assets/style/thongke.css?v=<?php echo filemtime("../assets/style/thongke.css")?>">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <div class="body_container">
     <div class="body_path">
