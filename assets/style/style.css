@@ -6,6 +6,10 @@ html, body {
     white-space: nowrap
 }
 
+.text-content{
+    line-height: 1.4;     
+}
+
 input{
     padding-left: 10px !important;
     box-sizing: border-box;
@@ -237,11 +241,20 @@ select{
     margin-right: 10px;
 }
 
+.button-container {
+    background: transparent; 
+    border: none; 
+    padding: 0;
+    cursor: default; 
+    display: block; 
+    width: 100%;  
+}
+
 .listview{
     max-width: 100%;
+    text-align: left;
     overflow: hidden;
     display: flex;
-    justify-content: space-between;
     align-items: center;
     background-color: #e0f7fa;
     padding: 15px 20px; 
