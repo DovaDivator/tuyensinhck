@@ -23,9 +23,10 @@
             <img src="../assets/icon/delete.png?v=<?php echo filemtime("../assets/icon/delete.png"); ?>" 
             alt="Xóa tin nhắn" title="Xóa tin nhắn">            
         </button>
-        </div>
+        </div>  
     </div>
-    <div class='notifi_content'>
+    <?php include "../php_control/backend/get_notificatoin.php"; ?>
+    <div class='notifi_content' id='notifi_content'>
         <?php include "list_noti.php"; ?>
     </div>
 </div>
