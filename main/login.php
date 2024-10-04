@@ -1,15 +1,3 @@
-<<<<<<< HEAD
-<?php
-    session_start();
-    if (isset($_SESSION['user'])){
-        header("location: index.php");
-        exit();
-    }
-?>
-
-=======
-<<<<<<< HEAD
-=======
 <?php
 session_start();
 if (isset($_SESSION['user'])) {
@@ -17,9 +5,6 @@ if (isset($_SESSION['user'])) {
     exit();
 }
 ?>
-
->>>>>>> bfeae6c (add hộp thông báo)
->>>>>>> 51c38ec7c0d840cf9c9b80d30d8092b6a25fb44d
 <!DOCTYPE html>
 <html lang="en">
 
@@ -43,17 +28,8 @@ if (isset($_SESSION['user'])) {
             <img src="../assets/images/logo-01.png?v=<?php echo filemtime("../assets/images/logo-01.png") ?>" class="uniLogo">
             <h1>Đăng nhập</h1>
             <!-- TODO: Tạm thời chuyển sang index.php sau khi đăng nhập hợp lệ -->
-<<<<<<< HEAD
-            <form action="" method="POST" id=loginForm>
-=======
-<<<<<<< HEAD
-            <form action="" method="POST">
->>>>>>> 51c38ec7c0d840cf9c9b80d30d8092b6a25fb44d
-                <input type="text" name="username" id="username" placeholder="Tên đăng nhập" required> 
-=======
             <form action="" method="POST" id=loginForm>
                 <input type="text" name="username" id="username" placeholder="Tên đăng nhập" required>
->>>>>>> bfeae6c (add hộp thông báo)
                 <br>
                 <input type="password" name="password" id="password" placeholder="Mật khẩu" minlength="6" maxlength="20" pattern="[\x21-\x7E]+">
                 <br>
@@ -63,60 +39,34 @@ if (isset($_SESSION['user'])) {
     </div>
 
 </body>
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-</html>
-=======
-
->>>>>>> 51c38ec7c0d840cf9c9b80d30d8092b6a25fb44d
 </html>
 
 <script>
-    document.getElementById('loginForm').addEventListener('submit', function(e) {
-<<<<<<< HEAD
-    e.preventDefault();
+    // Ngăn chặn hành vi mặc định của sự kiện submit form
+    document.querySelector('form').addEventListener('submit', function(event) {
+        event.preventDefault();
 
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
+        // Lấy giá trị từ các trường input
+        const username = document.getElementById('username').value.trim();
+        const password = document.getElementById('password').value.trim();
 
-    const formData = new FormData();
-    formData.append('username', username);
-    formData.append('password', password);
-
-    fetch('../php_control/backend/LoginCheck.php', {
-        method: 'POST',
-        body: formData,
-        headers: {
-            'X-Requested-With': 'XMLHttpRequest'
+        // Kiểm tra xem các trường có được nhập hay chưa
+        if (!username || !password) {
+            Swal.fire({
+                title: "Thiếu thông tin",
+                text: "Vui lòng nhập đầy đủ tài khoản và mật khẩu.",
+                icon: "warning",
+                confirmButtonText: "OK"
+            });
+            return; // Kết thúc nếu thiếu thông tin
         }
-    })
-    .then(response => response.text())
-    .then(text => {
-        console.log(text);
-        return JSON.parse(text);
-    })
-    .then(data => {
-        if (data.success) {
-            window.location.href = 'index.php';
-        } else {
-            alert('Tên đăng nhập hoặc mật khẩu không chính xác.');
-        }
-    })
-    .catch(error => console.error('Error:', error));
-});
 
-</script>
-=======
-        e.preventDefault();
-
-        const username = document.getElementById('username').value;
-        const password = document.getElementById('password').value;
-
+        // Tạo đối tượng FormData để gửi yêu cầu POST
         const formData = new FormData();
         formData.append('username', username);
         formData.append('password', password);
 
+        // Gửi yêu cầu POST qua fetch
         fetch('../php_control/backend/LoginCheck.php', {
                 method: 'POST',
                 body: formData,
@@ -124,15 +74,25 @@ if (isset($_SESSION['user'])) {
                     'X-Requested-With': 'XMLHttpRequest'
                 }
             })
-            .then(response => response.text())
+            .then(response => response.text()) // Chuyển đổi phản hồi thành văn bản
             .then(text => {
-                console.log(text);
-                return JSON.parse(text);
+                try {
+                    const data = JSON.parse(text); // Chuyển đổi thành JSON
+                    return data;
+                } catch (error) {
+                    console.error('JSON parsing error:', error);
+                    Swal.fire({
+                        title: "Lỗi hệ thống",
+                        text: "Đã xảy ra lỗi khi xử lý dữ liệu.",
+                        icon: "error",
+                        confirmButtonText: "OK"
+                    });
+                }
             })
             .then(data => {
-                if (data.success) {
+                if (data && data.success) {
                     Swal.fire({
-                        title: "Đăng nhập thành công.",
+                        title: "Đăng nhập thành công!",
                         width: 600,
                         padding: "3em",
                         color: "#716add",
@@ -140,19 +100,16 @@ if (isset($_SESSION['user'])) {
                         html: `
                         <img src="../assets/animated/nyan-cat.gif" style="width: 100px; display: block; margin: 20px auto 0;" alt="GIF">
                         `,
-                        backdrop: `
-                                    rgba(0,0,123,0.4)
-                                `
+                        backdrop: `rgba(0,0,123,0.4)`
                     }).then((result) => {
                         if (result.isConfirmed) {
                             window.location.href = 'index.php';
                         }
                     });
-                    //window.location.href = 'index.php';
                 } else {
-                    // Thông báo tk mk sai 
                     Swal.fire({
-                        title: "Tên đăng nhập hoặc mật khẩu sai.",
+                        title: "Tên đăng nhập hoặc mật khẩu sai",
+                        text: "Vui lòng kiểm tra lại thông tin đăng nhập.",
                         width: 600,
                         padding: "3em",
                         color: "#716add",
@@ -161,15 +118,19 @@ if (isset($_SESSION['user'])) {
                         <p>Vui lòng kiểm tra lại tài khoản mật khẩu.</p>
                         <img src="../assets/animated/nyan-cat.gif" style="width: 150px; display: block; margin: 20px auto 0;" alt="GIF">
                         `,
-                        backdrop: `
-                                    rgba(0,0,123,0.4)
-                                `
+                        backdrop: `rgba(0,0,123,0.4)`
                     });
-
                 }
             })
-            .catch(error => console.error('Error:', error));
+            .catch(error => {
+                console.error('Error:', error);
+                Swal.fire({
+                    title: "Lỗi kết nối",
+                    text: "Không thể kết nối đến máy chủ. Vui lòng thử lại sau.",
+                    icon: "error",
+                    confirmButtonText: "OK"
+                });
+            });
     });
 </script>
->>>>>>> bfeae6c (add hộp thông báo)
->>>>>>> 51c38ec7c0d840cf9c9b80d30d8092b6a25fb44d
+
