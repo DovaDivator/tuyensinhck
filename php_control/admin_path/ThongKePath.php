@@ -48,9 +48,6 @@
         <p>Trung bình: eweqeq</p>
         <p>Trung bình: eweqeq</p>
     </div> 
-</div>
-    <?php include '../php_control/path_side/footer.php'; ?>  
-</div>
 
 <script>
         const ctx = document.getElementById('chart').getContext('2d');

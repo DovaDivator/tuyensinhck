@@ -27,6 +27,71 @@ select{
     border-radius: 10px;
 }
 
+.blur {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.5);
+    z-index: 1;
+}
+
+button, input[type="button"], input[type="reset"], input[type="submit"]{
+    cursor: pointer;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 25px 0;
+    border-radius: 5px 5px 0 0;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    border-radius: 20px;
+}
+
+table thead tr {
+    background-color: #3498db;
+    color: #ffffff;
+    text-align: center;
+    font-weight: bold;
+}
+
+table th, table td {
+    padding: 12px 15px;
+    border: 1px solid #dddddd;
+    white-space: normal;     
+    word-break: normal; 
+    overflow-wrap: break-word;
+    box-sizing: border-box;
+}
+
+table.choose_list tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+table.choose_list tbody tr {
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+table.choose_list tbody tr:hover:not(.error_tdtable) {
+    background-color: #e4e4e4;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+table.choose_list tbody tr:active:not(.error_tdtable) {
+    background-color: #d4d4d4;
+    box-shadow: 0;
+}
+
+.error_tdtable{
+    color: red; 
+    text-align: center;
+    font-weight: bold;
+    cursor: auto;
+}
+
 .body_container {
     display: flex;
     height: 100vh;
@@ -90,7 +155,6 @@ select{
     background-color: #0D47A1b7;
     padding: 10px 20px;
     border: none;
-    cursor: pointer;
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px;
     font-size: 16px;
@@ -309,7 +373,6 @@ select{
     border: none; 
     outline: none; 
     background-color: transparent; 
-    cursor: pointer; 
     margin: 0 0 0 5px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     box-shadow: 0 0 0 0 transparent;
@@ -333,18 +396,27 @@ select{
 }
 
 .footer {
-    background-color: #ddeaff;
-    color: rgb(0, 0, 0);
-    text-align: center;
-    padding: 15px 0;
-    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
-    width: 100%;
+    background-color: transparent !important; 
+    color: #ddeaff; 
+    text-align: left; 
+    padding: 15px 0; 
+    width: 95%; 
+    box-sizing: border-box; 
+    position: absolute; 
+    bottom: 0;
+    left: 10px;
 }
 
 .footer p {
     margin: 0;
     font-size: 14px;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    display: block;
+    padding: 0 15px;
+    white-space: normal;
 }
+
 
 .body_container {
     display: flex;
@@ -358,7 +430,10 @@ select{
 
 .body_path{
     padding: 30px 40px;
+    flex-grow: 1;
 }
+
+
 
 .linediv {
     display: flex;
@@ -385,6 +460,67 @@ select{
     z-index: 100;
 }
 
+.nop_ho_so{
+    position: relative;
+    width: 100%;
+    height: 200px;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
+    background-image: url("../images/DangKyBar.jpg");
+    background-size: cover; 
+    background-position: center 25%;
+    background-repeat: no-repeat;
+}
+
+.nop_ho_so .content {
+    position: absolute;
+    width: 500px;
+    z-index: 2;
+    text-align: left;
+    bottom: 30px;
+    left: 50px;
+    animation: floatInDangky 1s ease forwards;
+    opacity: 0; 
+}
+
+.nop_ho_so .content h2 {
+    text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3);
+    color: #2c3e50;
+    word-wrap: break-word;
+    white-space: normal;  
+}
+
+.nop_ho_so .content .register-btn {
+    background-color: rgb(255, 246, 230);
+    border: 2px solid #3498db; 
+    padding: 15px 30px;
+    color: #3498db; 
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-radius: 30px;
+    transition: all 0.3s ease;
+    box-shadow: 0px 4px 10px rgba(52, 152, 219, 0.4);
+}
+
+.nop_ho_so .content .register-btn:hover {
+    background-color: #3498db; 
+    color: rgb(255, 246, 230); 
+    box-shadow: 0px 6px 20px rgba(52, 152, 219, 0.6); 
+}
+
+.nop_ho_so .content .register-btn:active {
+    background-color: #2980b9; 
+    border-color: #2980b9; 
+    box-shadow: 0px 4px 8px rgba(41, 128, 185, 0.5); 
+    transform: translateY(2px); 
+}
+
+@media (max-width: 768px) {
+    .nop_ho_so {
+        height: 175px; 
+    }
+}
+
 /* Giao diện trang chủ thay đổi*/
 @media (max-width: 1000px) {
     .nav-toggle {
@@ -401,11 +537,13 @@ select{
 
     .right-side {
         margin-left: 0 !important;
+        
     }
 
     .navbar{
         width: 100% !important;
         margin: 0 !important;
+        z-index: 50;
     }
 }
 
@@ -420,5 +558,16 @@ select{
 
     .sidebar {
         transform: translateX(0%) !important;
+    }
+}
+
+@keyframes floatInDangky {
+    0% {
+        transform: translateX(50%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0); 
+        opacity: 1; 
     }
 }
