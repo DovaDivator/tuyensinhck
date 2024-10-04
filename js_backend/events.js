@@ -88,34 +88,5 @@ function NotificationButtonControll(isInfo){
 //     });
 // });
 
-const loadNotifications = () => {
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', '../php_control/backend/get_notificatoin.php', true);
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+// Chạy các hàm phương thức
 
-    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-
-    xhr.onload = () => {
-        if (xhr.status === 200) {
-            document.getElementById('list_noti').innerHTML = xhr.responseText;
-            
-
-            // Gán sự kiện click cho từng thông báo sau khi tải xong
-            // document.querySelectorAll('.notification').forEach(notification => {
-            //     notification.addEventListener('click', function() {
-            //         const notificationId = this.getAttribute('data-id');
-            //         loadNotificationDetails(notificationId);
-            //     });
-            // });
-            console.log('gắn thành công');
-        }else{
-            console.log('Error:', xhr.status);
-        }
-    };
-
-    xhr.send();
-};
-
-document.addEventListener('DOMContentLoaded', (event) => {
-    loadNotifications(); // Gọi hàm khi tài liệu đã được tải
-});
