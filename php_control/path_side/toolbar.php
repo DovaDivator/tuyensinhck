@@ -18,7 +18,7 @@
         </div>
         <button type="submit" class="icon-button" name="notification">
             <img src="../assets/icon/noti_icon.png?v=<?php echo filemtime("../assets/icon/noti_icon.png"); ?>" 
-            alt="Thông báo" title="Thông báo" onclick="showChartOption('notification layout')">            
+            alt="Thông báo" title="Thông báo" onclick="showChartOption('notification layout'); loadUINotifications(null)">            
         </button>
         <form method="GET">
         <button type="submit" class="icon-button" name="logout">

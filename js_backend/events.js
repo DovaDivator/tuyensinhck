@@ -90,3 +90,15 @@ function NotificationButtonControll(isInfo){
 
 // Chạy các hàm phương thức
 
+function loadNotifications(request) {
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', '../php_control/backend/notification_manager.php', true);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+
+    xhr.send('request=' + encodeURIComponent(request));
+}
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    loadNotifications(null);
+});
