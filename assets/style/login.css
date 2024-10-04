@@ -68,6 +68,10 @@ form {
 
 input {
     width: 100%;
+<<<<<<< HEAD
+=======
+    margin-bottom: 10px;
+>>>>>>> 2a47d47965ae2a53c5cbe13f6b38375dc275a797
     padding-top: 10px;
     padding-bottom: 10px;
     border: 1px solid #ccc;

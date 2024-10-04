@@ -59,6 +59,7 @@ if (isset($_SESSION['user'])) {
                             }
                         ?>
                     </h3>
+<<<<<<< HEAD
                         <form action="search.php"  class='linediv' method="GET" style='margin:0 0 10px 30px;'>
                             <div class="search-container">
                             <input type="text" name="query" placeholder="Nhập từ khóa tìm kiếm..." class="search-input">
@@ -72,6 +73,8 @@ if (isset($_SESSION['user'])) {
                                 alt="Tùy chọn" title="Tùy chọn" class="chart_option" onclick="showChartOption('options layout chart_div_options')">
                             </button>
                         </form>
+=======
+>>>>>>> 2a47d47965ae2a53c5cbe13f6b38375dc275a797
                     <div class="table_hold">
                         <?php 
                             include '../php_control/path_side/table_nganh.php'; 
@@ -84,7 +87,6 @@ if (isset($_SESSION['user'])) {
             </div>
         </div>
     </div>
-    <?php include '../php_control/backend/Logout.php' ?> 
 </body>
 </html>
 

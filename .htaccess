@@ -11,7 +11,11 @@
     RewriteRule ^(.*)$ /tuyensinhck/main/index.php [R=301,L]
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 </IfModule>
 =======
 </IfModule>
 >>>>>>> bc59cc1 (bản vá ajax)
+=======
+</IfModule>
+>>>>>>> 2a47d47965ae2a53c5cbe13f6b38375dc275a797

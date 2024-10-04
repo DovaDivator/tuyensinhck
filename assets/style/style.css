@@ -42,6 +42,7 @@ button, input[type="button"], input[type="reset"], input[type="submit"]{
     cursor: pointer;
 }
 
+<<<<<<< HEAD
 .search-container {
     display: flex; 
     border: 1px solid #ddd;
@@ -79,6 +80,8 @@ button, input[type="button"], input[type="reset"], input[type="submit"]{
     background-color: #ddd; 
 }
 
+=======
+>>>>>>> 2a47d47965ae2a53c5cbe13f6b38375dc275a797
 .body_container {
     display: flex;
     height: 100vh;
