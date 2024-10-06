@@ -502,6 +502,10 @@ button, input[type="button"], input[type="reset"], input[type="submit"]{
     transform: translateY(2px); 
 }
 
+.options{
+    position: absolute !important;
+}
+
 @media (max-width: 768px) {
     .nop_ho_so {
         height: 175px; 

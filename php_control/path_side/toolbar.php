@@ -16,9 +16,9 @@
                 </p>
             </div>
         </div>
-        <button type="submit" class="icon-button" name="notification">
+        <button type="submit" class="icon-button" id="notification">
             <img src="../assets/icon/noti_icon.png?v=<?php echo filemtime("../assets/icon/noti_icon.png"); ?>" 
-            alt="Thông báo" title="Thông báo" onclick="showChartOption('notification layout'); loadUINotifications(null)">            
+            alt="Thông báo" title="Thông báo" onclick="showChartOption('notification layout', 'notification', 'show', event); loadUINotifications(null)">            
         </button>
         <form method="GET">
         <button type="submit" class="icon-button" name="logout">

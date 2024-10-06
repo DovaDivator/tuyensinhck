@@ -15,28 +15,61 @@ function HideNavigation(){
     navToggle.style.display = 'block';
 }
 
-// Hàm hiển thị/ẩn các layout theo tùy chọn
-function showChartOption(className) {
-    var layouts = document.querySelectorAll('.' + className.split(' ').join('.'));
+
+// Hàm tương tác hiển thị
+let isDivOpen = false;
+let id_div_open = "";
+let currentDiv = null; 
+let class_UI = null;
+
+function showChartOption(className, id_name, uiClass, event) {
+    event.stopPropagation();  // Ngăn chặn sự kiện click lan lên document
+    const layouts = document.querySelectorAll('.' + className.split(' ').join('.'));
+
     layouts.forEach(function(layout) {
-        if (layout.classList.contains('show')) {
-            layout.classList.remove('show');
-        } else {
-            layout.classList.add('show');
+        if (id_div_open === id_name && layout.classList.contains('show')) {
+            layout.classList.remove(uiClass);
+            isDivOpen = false;
+            id_div_open = "";
+            currentDiv = null;
+            class_UI = null;
+        } else if (!isDivOpen) {
+            layout.classList.add(uiClass);
+            isDivOpen = true;
+            id_div_open = id_name;
+            currentDiv = layout;
+            class_UI = uiClass;
         }
     });
 }
 
 document.addEventListener('click', function(event) {
-    var layouts = document.querySelectorAll('.options.layout');
-    layouts.forEach(function(layout) {
-        var isClickInside = layout.contains(event.target) || event.target.classList.contains('option_holder');
-
-        if (!isClickInside) {
-            layout.classList.remove('show');
-        }
-    });
+    if (isDivOpen && currentDiv && !currentDiv.contains(event.target)) {
+        currentDiv.classList.remove(class_UI);
+        isDivOpen = false;
+        id_div_open = "";
+        currentDiv = null;
+        class_UI = null;
+    }
 });
+
+
+// Đóng div khi nhấn nút 'Đóng' bên trong div
+// document.querySelectorAll('.close-btn').forEach(function(button) {
+//     button.addEventListener('click', function(event) {
+//         event.stopPropagation();  // Ngăn sự kiện này lan đến document
+//         const parentDiv = button.closest('.chart-option');
+//         if (parentDiv) {
+//             console.log('Close button clicked, closing div');  // Kiểm tra khi nhấn vào nút đóng
+//             parentDiv.classList.remove('show');
+//             isDivOpen = false;
+//             id_div_open = "";
+//             currentDiv = null;
+//         }
+//     });
+// });
+
+
 
 // Hiển thị nút thông báo
 function NotificationButtonControll(isInfo){

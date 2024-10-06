@@ -13,11 +13,12 @@
                 <option value="chart4">Thông kê hồ sơ thịt Thắng</option>
             </select>
         </form>
-        <button type="button" class="icon-button">
+        <button type="button" class="icon-button" id="chart_option">
         <img src="../assets/icon/filter.png?v=<?php echo filemtime("../assets/icon/filter.png"); ?>" 
-        alt="Tùy chọn" title="Tùy chọn" class="chart_option option_holder" onclick="showChartOption('options layout chart_div_options')">
+        alt="Tùy chọn" title="Tùy chọn" onclick="showChartOption('options layout chart_div_options', 'chart_option', 'show', event)">
         </button>
     </div>
+    <div style="position: relative;">
     <div class="chart_div_options options layout" onsubmit="hideDiv()">
         <form method="GET">
             <div class="input_div">
@@ -32,6 +33,7 @@
                 <input type="submit" value="Xác nhận" name="set_change_chart">
             </div>
         </form>
+    </div>
     </div>
     <!-- Biểu đồ -->
     <h3>Thống kê hồ sơ thịt chó</h3>
