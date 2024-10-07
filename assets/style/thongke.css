@@ -42,8 +42,7 @@ canvas {
 .chart_div_options {
     width: 225px;
     margin: 0 auto;
-    position: absolute;
-    left: 400px;
+    left: 360px;
 }
 
 input[type="submit"] {

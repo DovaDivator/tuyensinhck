@@ -18,6 +18,7 @@ Tips: có thể thử AJAX
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 (optional) Chỉnh sửa thông báo đăng nhập thành công hợp lý
 Deadline: 20h 22/9/2024 :v
 
@@ -33,4 +34,10 @@ Deadline: N/A (cho đến khi Thắng PM bắt đầu dí)
 =======
 Deadline: Trong tuần này (hoặc cho đến khi Thắng PM bắt đầu dí)
 >>>>>>> f41f217 (update vá gấp)
+<<<<<<< HEAD
 x
+=======
+=======
+Deadline: Trong tuần này (hoặc cho đến khi Thắng PM bắt đầu dí)
+>>>>>>> 2a47d47965ae2a53c5cbe13f6b38375dc275a797
+>>>>>>> d0061716b92d00aec80c33a07f4e3966dd68244e
