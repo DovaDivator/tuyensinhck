@@ -59,7 +59,6 @@ function closeDiv() {
         id_div_open = "";
         currentDiv = null;
         this.class_UI = null;
-        if()
     }
 }
 

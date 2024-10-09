@@ -13,6 +13,7 @@ html, body {
 
 input{
     padding-left: 10px !important;
+    margin-bottom: 10px;
     box-sizing: border-box;
 }
 
@@ -42,6 +43,12 @@ button, input[type="button"], input[type="reset"], input[type="submit"]{
     cursor: pointer;
 }
 
+label{
+    word-break: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;    
+}
+
 .search-container {
     display: flex; 
     border: 1px solid #ddd;
@@ -57,6 +64,7 @@ button, input[type="button"], input[type="reset"], input[type="submit"]{
     padding: 10px 15px; 
     width: 300px; 
     outline: none; 
+    margin: 0 !important;
 }
 
 .search-button {
