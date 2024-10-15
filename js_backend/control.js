@@ -35,14 +35,21 @@ function renderCoursesTuyenSinh(courses, role) {
             row.innerHTML = `
                 <td>${course.ma_tuyen_sinh}</td>
                 <td>${course.ten_nganh}</td>
-                ${userRole !== 'Student' ? `<td class="number_td"><font color="blue">${course.so_luong_dang_ky}</font></td>` : ''}
+                ${role !== 'Student' ? `<td class="number_td"><font color="blue">${course.so_luong_dang_ky}</font></td>` : ''}
                 <td>${course.to_hop_xet_tuyen}</td>
                 <td>${course.thoi_gian_tuyen_sinh}</td>
             `;
+
+            // Gắn sự kiện click cho mỗi hàng để chuyển đến trang chi tiết
+            row.addEventListener('click', function() {
+                window.location.href = `chi-tiet-tuyen-sinh.php?ma_nganh=${course.ma_tuyen_sinh}`;
+            });
+
             tbody.appendChild(row);
         });
     }
 }
+
 
 function renderError(message) {
     var tbody = document.getElementById('course_table_tuyen_sinh');
