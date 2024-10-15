@@ -22,6 +22,7 @@ if (isset($_SESSION['user'])) {
     <title>Web Tuyển sinh - Trang chủ</title>
     <link rel="icon" href="../assets/images/logo.png?v=<?php echo filemtime('../assets/images/logo.png'); ?>" type="image/png">
     <link rel="stylesheet" href="../assets/style/style.css?v=<?php echo filemtime('../assets/style/style.css'); ?>">
+    <link rel="stylesheet" href="../assets/style/trangchu.css?v=<?php echo filemtime('../assets/style/trangchu.css'); ?>">
     <script src="../js_backend/events.js?v=<?php echo filemtime('../js_backend/events.js'); ?>"></script>
     <script src="../js_backend/control.js?v=<?php echo filemtime('../js_backend/control.js'); ?>"></script>
 </head>
@@ -38,12 +39,12 @@ if (isset($_SESSION['user'])) {
             <?php include '../php_control/path_side/toolbar.php'; ?>
             <!-- Nội dung chính kết nối trang -->
             <div class="main-content">
-            <div class="body_container">
-                <?php 
-                    if($_SESSION['user']['role'] === 'Student'){
+                <div class="body_container">
+                    <?php 
+                        if($_SESSION['user']['role'] === 'Student'){
                         include '../php_control/path_side/DangKyBar.php';
-                    } 
-                ?>
+                        } 
+                    ?>
                 <div class="body_path">
                     <h1>Trang chủ tuyển sinh</h1> 
                     <h3 style="padding-left: 50px; color:#DC143C;">
@@ -60,26 +61,80 @@ if (isset($_SESSION['user'])) {
                         ?>
                     </h3>
                     <div class="table_hold">
-                    <form action="search.php"  class='linediv' method="GET" style='margin-bottom: 10px;'>
+                        <form action="" id="search_form" class='linediv' method="GET" style='margin-bottom: 10px;'>
                             <div class="search-container">
-                            <input type="text" name="query" placeholder="Nhập từ khóa tìm kiếm..." class="search-input">
-                            <button type="submit" class="search-button">
-                                <img src="../assets/icon/search.png?v=<?php echo filemtime('../assets/icon/search.png'); ?>" 
-                                title="Tìm kiếm" class="search-icon">
-                            </button>
+                                <input type="text" name="query" placeholder="Nhập từ khóa tìm kiếm..." class="search-input">
+                                <button type="submit" class="search-button">
+                                    <img src="../assets/icon/search.png?v=<?php echo filemtime('../assets/icon/search.png'); ?>" 
+                                    title="Tìm kiếm" class="search-icon">
+                                </button>
                             </div>
-                            <button type="button" class="icon-button">
+                            <button type="button" class="icon-button" id="filter_option">
                                 <img src="../assets/icon/filter_tag.png?v=<?php echo filemtime("../assets/icon/filter_tag.png"); ?>" 
-                                alt="Tùy chọn" title="Tùy chọn" class="chart_option" onclick="showChartOption('options layout chart_div_options')">
+                                alt="Bộ lọc" title="Bộ lọc" onclick="showChartOption('options layout filter_div_options', 'chart_option', 'show', event); GiveForm('search_form'), handleCheckboxClick('status')">
                             </button>
+                            <div style="position: relative;">
+                                <div class="filter_div_options options layout" id="filter_tag_options">
+                                    <div class="linediv">
+                                        <h3>Bộ lọc tìm kiếm:</h3>
+                                        <div class="button_div">
+                                            <input type="button" value="Bỏ chọn tất cả" onclick='uncheckAllCheckboxes("filter_tag_options")'>
+                                        </div>
+                                    </div>
+
+                                    <!-- Trạng thái tuyển sinh -->
+                                    <div class="filter-group">
+                                    <label>Trạng thái tuyển sinh:</label>
+                                        <div class="checkbox-group">
+                                            <input type="checkbox" id="dangmo" name="status" value="dangmo">
+                                            <label for="dangmo">Đang mở</label>
+
+                                            <input type="checkbox" id="dadong" name="status" value="dadong">
+                                            <label for="dadong">Đã đóng</label>
+
+                                            <input type="checkbox" id="dangan" name="status" value="dangan">
+                                            <label for="dangan">Đang ẩn</label>
+                                        </div>
+                                    </div>
+
+                                    <!-- Tổ hợp xét tuyển -->
+                                    <div class="filter-group">
+                                        <label>Tổ hợp xét tuyển:</label>
+                                        <div class="checkbox-group tohopxettuyen">
+                                            <div class="checkbox-item">
+                                                <input type="checkbox" id="A01" name="tohop[]" value="A01">
+                                                <label for="A01">A01</label>
+                                            </div>
+                                            <div class="checkbox-item">
+                                                <input type="checkbox" id="A00" name="tohop[]" value="A00">
+                                                <label for="A00">A00</label>
+                                            </div>
+                                            <div class="checkbox-item">
+                                                <input type="checkbox" id="D01" name="tohop[]" value="D01">
+                                                <label for="D01">D01</label>
+                                            </div>
+                                            <div class="checkbox-item">
+                                                <input type="checkbox" id="B00" name="tohop[]" value="B00">
+                                                <label for="B00">B00</label>
+                                            </div>
+                                            <div class="checkbox-item">
+                                                <input type="checkbox" id="C00" name="tohop[]" value="C00">
+                                                <label for="C00">C00</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </form>
                         <?php 
                             include '../php_control/path_side/table_nganh.php'; 
                             if($_SESSION['user']['role'] === 'Student'){
-                                echo '<a href="#">&gt;&gt; Tra cứu toàn bộ chương trình đào tạo</a>';
+                                echo '<div style="margin-top: 15px"><a href="#"">&gt;&gt; Tra cứu toàn bộ chương trình đào tạo</a></div>';
                             }
                         ?>
                     </div>
+                </div>
+                        
                 </div>
             </div>
         </div>

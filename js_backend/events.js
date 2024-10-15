@@ -21,10 +21,19 @@ let isDivOpen = false;
 let id_div_open = "";
 let currentDiv = null; 
 let class_UI = null;
+let listen_checkbox_as_radio = null;
 
 function showChartOption(className, id_name, uiClass, event) {
     event.stopPropagation();  // Ngăn chặn sự kiện click lan lên document
     const layouts = document.querySelectorAll('.' + className.split(' ').join('.'));
+
+    if (isDivOpen && id_div_open !== id_name) {
+        currentDiv.classList.remove(class_UI);
+        isDivOpen = false;
+        id_div_open = "";
+        currentDiv = null;
+        class_UI = null;
+    }
 
     layouts.forEach(function(layout) {
         if (id_div_open === id_name && layout.classList.contains('show')) {
@@ -43,13 +52,41 @@ function showChartOption(className, id_name, uiClass, event) {
     });
 }
 
-document.addEventListener('click', function(event) {
-    if (isDivOpen && currentDiv && !currentDiv.contains(event.target)) {
-        currentDiv.classList.remove(class_UI);
+function closeDiv() {
+    if (isDivOpen && currentDiv) {
+        currentDiv.classList.remove(this.class_UI);
         isDivOpen = false;
         id_div_open = "";
         currentDiv = null;
-        class_UI = null;
+        this.class_UI = null;
+    }
+}
+
+document.addEventListener('click', function(event) {
+    if (currentDiv && !currentDiv.contains(event.target)) {
+        closeDiv.call({ class_UI: class_UI });
+    }
+});
+
+let form_temp_show = null;
+function GiveForm(temp){
+    form_temp_show = temp;
+}
+
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Enter' && isDivOpen && currentDiv) {
+        console.log("Class List of currentDiv:", currentDiv.classList);
+        console.log("isDivOpen:", isDivOpen);
+        console.log("currentDiv:", currentDiv);
+        event.preventDefault();
+        event.stopPropagation();
+        
+        if (!currentDiv.classList.contains('notification')) {
+            const form = document.getElementById(form_temp_show);
+            if (form) {
+                form.submit();
+            }
+        }
     }
 });
 
@@ -69,9 +106,26 @@ document.addEventListener('click', function(event) {
 //     });
 // });
 
+// Lắng nghe sự kiện click trên các nút radio
+function handleCheckboxClick(arr) {
+    document.querySelectorAll('input[type="checkbox"][name="'+ arr + '"]').forEach(checkbox => {
+        checkbox.addEventListener('click', function() {
+            // Nếu checkbox đã được chọn
+            if (this.checked) {
+                // Bỏ chọn tất cả các checkbox khác trong nhóm
+                document.querySelectorAll('input[type="checkbox"][name="'+ arr +'"]').forEach(otherCheckbox => {
+                    if (otherCheckbox !== this) {
+                        otherCheckbox.checked = false; // Bỏ chọn checkbox khác
+                    }
+                });
+            }
+            
+            console.log('Checkbox clicked:', this.value);
+        });
+    });
+}
 
-
-// Hiển thị nút thông báo
+// Tương tác nút thông báo
 function NotificationButtonControll(isInfo){
     var list_button = document.querySelector('.list_group');
     var info_button = document.querySelector('.info_group');
@@ -85,44 +139,6 @@ function NotificationButtonControll(isInfo){
     }
 }
 
-// Chặn tải lại trang bằng form
-// function denyLoadForm(formId) {
-//     var form = document.getElementById(formId);
-
-//     form.addEventListener('submit', function(event) {
-//         event.preventDefault();
-//     });
-// }
-
-// Lắng nghe sự kiện DOMContentLoaded để đảm bảo mọi thứ đã tải xong
-// document.addEventListener("DOMContentLoaded", function() {
-//     // Lấy tất cả các form với class 'notificationForm'
-//     const forms = document.querySelectorAll('.notificationForm');
-    
-//     // Duyệt qua từng form để thêm sự kiện submit qua AJAX
-//     forms.forEach(function(form) {
-//         form.addEventListener('submit', function(event) {
-//             event.preventDefault(); // Ngăn form submit và reload trang
-
-//             // Lấy dữ liệu từ form
-//             let formData = new FormData(this);
-
-//             // Gửi dữ liệu qua AJAX
-//             fetch('../php_control/path_side/notification.php', {
-//                 method: 'POST',
-//                 body: formData,
-//             })
-//             .then(response => response.text())
-//             .then(data => {
-//                 document.getElementById('notificationLayout').innerHTML = data;
-//             })
-//             .catch(error => console.error('Error:', error));
-//         });
-//     });
-// });
-
-// Chạy các hàm phương thức
-
 function loadNotifications(request) {
     const xhr = new XMLHttpRequest();
     xhr.open('POST', '../php_control/backend/notification_manager.php', true);
@@ -135,3 +151,11 @@ function loadNotifications(request) {
 document.addEventListener('DOMContentLoaded', (event) => {
     loadNotifications(null);
 });
+
+//Nút bỏ chọn checkbox
+function uncheckAllCheckboxes(divId) {
+    var checkboxes = document.querySelectorAll('#' + divId + ' input[type="checkbox"]');
+    checkboxes.forEach(function(checkbox) {
+        checkbox.checked = false;
+    });
+}

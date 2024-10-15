@@ -30,11 +30,10 @@ if (isset($_SESSION['user'])) {
             <!-- TODO: Tạm thời chuyển sang index.php sau khi đăng nhập hợp lệ -->
             <form action="" method="POST" id=loginForm>
                 <input type="text" name="username" id="username" placeholder="Tên đăng nhập" required>
-                <br>
                 <input type="password" name="password" id="password" placeholder="Mật khẩu" minlength="6" maxlength="20" pattern="[\x21-\x7E]+">
-                <br>
                 <input type="submit" value="Đăng nhập">
             </form>
+            <a href="register.php" style="margin-top: 10px;">Đăng ký tài khoản sinh viên ở đây!</a>
         </div>
     </div>
 
