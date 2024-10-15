@@ -17,6 +17,7 @@ if (isset($_SESSION['user'])) {
     <link rel="stylesheet" href="../assets/style/login.css?v=<?php echo filemtime("../assets/style/login.css") ?>">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="../js_backend/EC.js?v=<?php echo filemtime('../js_backend/EC.js'); ?>"></script>
 </head>
 
 <body id="login">
@@ -38,6 +39,7 @@ if (isset($_SESSION['user'])) {
     </div>
 
 </body>
+
 </html>
 
 <script>
@@ -90,21 +92,9 @@ if (isset($_SESSION['user'])) {
             })
             .then(data => {
                 if (data && data.success) {
-                    Swal.fire({
-                        title: "Đăng nhập thành công!",
-                        width: 600,
-                        padding: "3em",
-                        color: "#716add",
-                        background: "#fff url(https://sweetalert2.github.io/#downloadimages/trees.png)",
-                        html: `
-                        <img src="../assets/animated/nyan-cat.gif" style="width: 100px; display: block; margin: 20px auto 0;" alt="GIF">
-                        `,
-                        backdrop: `rgba(0,0,123,0.4)`
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            window.location.href = 'index.php';
-                        }
-                    });
+
+                    window.location.href = 'index.php';
+
                 } else {
                     Swal.fire({
                         title: "Tên đăng nhập hoặc mật khẩu sai",
@@ -115,7 +105,6 @@ if (isset($_SESSION['user'])) {
                         background: "#fff url(https://sweetalert2.github.io/#downloadimages/trees.png)",
                         html: `
                         <p>Vui lòng kiểm tra lại tài khoản mật khẩu.</p>
-                        <img src="../assets/animated/nyan-cat.gif" style="width: 150px; display: block; margin: 20px auto 0;" alt="GIF">
                         `,
                         backdrop: `rgba(0,0,123,0.4)`
                     });
@@ -132,4 +121,3 @@ if (isset($_SESSION['user'])) {
             });
     });
 </script>
-
