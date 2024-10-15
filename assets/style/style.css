@@ -525,6 +525,12 @@ label{
     position: absolute !important;
 }
 
+.div_path_web{
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
 @media (max-width: 768px) {
     .nop_ho_so {
         height: 175px; 
