@@ -38,7 +38,7 @@ if (isset($_SESSION['user'])) {
                     <input type="checkbox" name="accept" id="accept">
                     <label for="accept">Bằng việc đăng ký, bạn đồng ý với <a href="chinhsachsudung.php">Chính sách sử dụng</a> của chúng tôi!</label>
                 </div>
-                <input type="submit" value="Đăng ký">
+                <input type="submit" value="Đăng ký" name="register">
             </form>
             <a href="login.php" style="margin-top: 10px;">Đã có tài khoản, đăng nhập tại đây!</a>
         </div>
@@ -51,7 +51,10 @@ if (isset($_SESSION['user'])) {
             const formData = new FormData(this);
             fetch('../php_control/backend/registerCheck.php', {
                 method: 'POST',
-                body: formData
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
             })
             .then(response => {
                 if (!response.ok) {
@@ -80,6 +83,7 @@ if (isset($_SESSION['user'])) {
                     title: 'Lỗi!',
                     text: 'Có lỗi xảy ra: ' + error.message,
                 });
+                console.log(error.message);
             });
         });
     </script>

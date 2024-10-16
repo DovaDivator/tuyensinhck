@@ -43,7 +43,8 @@ button, input[type="button"], input[type="reset"], input[type="submit"]{
     cursor: pointer;
 }
 
-label{
+label,
+.swal2-html-container{
     word-break: break-word;
     overflow-wrap: break-word;
     white-space: normal;    

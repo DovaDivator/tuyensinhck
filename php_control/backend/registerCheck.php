@@ -7,7 +7,7 @@ $response = [
     'message' => ''
 ];
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if (isset($_POST['register'])) {
     // Lấy dữ liệu từ form
     $name = trim($_POST["name"]);
     $username = trim($_POST["username"]);
