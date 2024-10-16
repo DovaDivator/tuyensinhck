@@ -7,10 +7,19 @@
     <!-- Danh sách lựa chọn sidebar -->
     <ul class="nav-links">
         <li><a href="#" onclick="HideNavigation()">⇐ Ẩn thanh công cụ</a></li>
-        <li><a href="../php_control/backend/indexRole.php">Trang chủ</a></li>
+        <li><a href="index.php">Trang chủ</a></li>
         <li><a href="../php_control/backend/QLHSRole.php">Quản lí hồ sơ</a></li>
         <li><a href="CTHS.php">Chi tiết hồ sơ</a></li>
         <?php
+            if($_SESSION['user']['role'] !== 'Student'){
+                echo '<li><a href="qlnd.php">';
+                if($_SESSION['user']['role'] === 'Teacher'){
+                    echo 'Quản lý sinh viên';
+                }elseif($_SESSION['user']['role'] === 'Admin'){
+                    echo 'Quản lý người dùng';
+                }
+                echo '</a></li>';
+            }
             if($_SESSION['user']['role'] === 'Admin'){
                 echo '<li><a href="ThongKe.php">Thống kê hồ sơ</a></li>';
             }

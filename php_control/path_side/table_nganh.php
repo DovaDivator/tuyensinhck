@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="../assets/style/table.css?v=<?php echo filemtime("../assets/style/table.css")?>"> 
 <div class="table_body_scroll" style="height:600px;">
-    <table class="choose_list" id="top_tuyen_sinh">
+    <table class="choose_list nganh_hoc" id="top_tuyen_sinh">
         <thead>
             <tr>
                 <th id='ma_nganh'>Mã tuyển sinh</th>

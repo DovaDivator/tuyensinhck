@@ -3,8 +3,16 @@ img.chart_option{
     height: auto;
 }
 
-h3{
-    text-align: center;
+h3.title_heading{
+    margin-left: 5px;
+    color:darkblue;
+}
+
+.UI_qlnd_container{
+    width: 90%;
+    max-width: 1200px;
+    min-width: 900px;
+    margin: 0 auto;
 }
 
 .chart_div{

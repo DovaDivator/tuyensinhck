@@ -68,21 +68,37 @@ table.choose_list tbody tr:active:not(.error_tdtable) {
     margin-right: auto;
 }
 
-table thead tr th#ma_nganh {
+table.nganh_hoc thead tr th#ma_nganh {
     width: 80px;
 }
 
-table thead tr th#chi_tieu_du_kien,
-table thead tr th#so_luong_dang_ky,
-table thead tr th#to_hop_xet_tuyen {
+table.nganh_hoc thead tr th#chi_tieu_du_kien,
+table.nganh_hoc thead tr th#so_luong_dang_ky,
+table.nganh_hoc thead tr th#to_hop_xet_tuyen {
     width: 100px;
 }
 
-table thead tr th#thoi_gian,
-table thead tr th#ghi_chu {
+table.nganh_hoc thead tr th#thoi_gian,
+table.nganh_hoc thead tr th#ghi_chu {
     width: 150px;
 }
 
 td.number_td {
     text-align: center;
+}
+
+table.danh_sach_ng thead tr th:first-child,
+table.danh_sach_ng thead tr th#khoa,
+table.danh_sach_ng thead tr th#dk,
+table.danh_sach_ng thead tr th#khoi_xt,
+table.danh_sach_ng thead tr th#hoso{
+    width: 130px;
+}
+
+table.danh_sach_ng thead tr th#ten_gv {
+    width: 300px;
+}
+
+table.danh_sach_ng thead tr th#date_reg{
+    width: 180px;
 }

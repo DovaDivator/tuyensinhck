@@ -399,6 +399,7 @@ label{
     flex: 1;
     padding: 0;
     position: relative;
+    overflow: auto;
 }
 
 .footer {

@@ -3,7 +3,7 @@
 
 session_start();
 if (isset($_SESSION['user'])) {
-    if (!($_SESSION['user']['role'] === "Admin")) {
+    if ($_SESSION['user']['role'] === "Student") {
         header("Location: index.php");
         exit();
     }
@@ -37,7 +37,9 @@ if (isset($_SESSION['user'])) {
             <?php include '../php_control/path_side/toolbar.php'; ?>
             <!-- Nội dung chính kết nối trang -->
             <div class="main-content">
-                <?php include '../php_control/admin_path/ThongKePath.php'; ?>    
+                <?php
+                include '../php_control/path_side/qlndPath.php';
+                ?>    
             </div>
         </div>
     </div>

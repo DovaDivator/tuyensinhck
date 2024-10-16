@@ -96,9 +96,16 @@ if (isset($_GET['ma_nganh'])) {
                         <div class="date_div">
                             <p><b>Hạn đăng ký: </b></p>
                         </div>
+                        <?php if($_SESSION['user']['role'] !== 'Student'):?>
                         <div class="dangkysl_div">
                             <p><b>Số lượng đăng ký: </b></p>
                         </div>
+                        <?php endif; ?>
+                        <?php if($_SESSION['user']['role'] === 'Admin'):?>
+                        <div class="dangkysl_div">
+                            <p><b>Giáo viên phụ trách: </b></p>
+                        </div>
+                        <?php endif; ?>
                         <div class="note_div">
                             <h4>Ghi chú: </h4>
                             <p style='color: red;'><b><i>- Số lượng đăng ký đủ!</i></b></p>

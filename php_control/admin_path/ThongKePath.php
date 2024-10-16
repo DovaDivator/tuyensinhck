@@ -36,7 +36,7 @@
     </div>
     </div>
     <!-- Biểu đồ -->
-    <h3>Thống kê hồ sơ thịt chó</h3>
+    <h3 style='text-align: center;'>Thống kê hồ sơ thịt chó</h3>
     <div class="chart_div">
         <canvas id="chart"></canvas>
     </div>
