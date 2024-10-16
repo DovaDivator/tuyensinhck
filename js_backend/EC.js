@@ -1,7 +1,10 @@
 // hàm này dùng khi sai thông tin như tk mk các thứ 
-function SaiTKMK(title, message){
+//function ko hoạt  động cái này phế rồi làm thủ công thôi 
+
+
+function SaiTKMK(message){
     Swal.fire({
-        title: title,
+        title: "Đăng nhập thành công!",
         width: 600,
         padding: "3em",
         color: "#716add",

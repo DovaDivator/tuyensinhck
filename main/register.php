@@ -8,6 +8,7 @@ if (isset($_SESSION['user'])) {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,8 +17,10 @@ if (isset($_SESSION['user'])) {
     <link rel="stylesheet" href="../assets/style/style.css?v=<?php echo filemtime("../assets/style/style.css") ?>">
     <link rel="stylesheet" href="../assets/style/login.css?v=<?php echo filemtime("../assets/style/login.css") ?>">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
+
 <body id="login">
     <div class=blur></div>
     <div class="registerDiv">
@@ -33,13 +36,58 @@ if (isset($_SESSION['user'])) {
                 <input type="password" name="password_check" id="password_check" placeholder="Nhập lại mật khẩu" minlength="6" maxlength="20" pattern="[\x21-\x7E]+">
                 <div class="linediv" style="margin-bottom: 10px;">
                     <input type="checkbox" name="accept" id="accept">
-                    <label for="accept">Bằng việc đăng ký, bạn đồng ý với <a href="chinhsachsudung.php">Chính sách sử dụng</a> của chúng tôi!</label>                                                
+                    <label for="accept">Bằng việc đăng ký, bạn đồng ý với <a href="chinhsachsudung.php">Chính sách sử dụng</a> của chúng tôi!</label>
                 </div>
-                <input type="submit" value="Đăng ký">
+                <input type="submit" value="Đăng ký" name="register">
             </form>
             <a href="login.php" style="margin-top: 10px;">Đã có tài khoản, đăng nhập tại đây!</a>
         </div>
     </div>
 
+
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', function(event) {
+            event.preventDefault(); 
+            const formData = new FormData(this);
+            fetch('../php_control/backend/registerCheck.php', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok: ' + response.statusText);
+                }
+                return response.json(); 
+            })
+            .then(data => {
+                if (data.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Thành công!',
+                        text: data.message,
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi!',
+                        text: data.message,
+                    });
+                }
+            })
+            .catch(error => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi!',
+                    text: 'Có lỗi xảy ra: ' + error.message,
+                });
+                console.log(error.message);
+            });
+        });
+    </script>
+
 </body>
+
 </html>
