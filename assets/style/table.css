@@ -7,6 +7,7 @@ table {
 
 .table_body_scroll {
     overflow-y: auto; 
+    overflow-x: hidden;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
     border-radius: 20px;
     scrollbar-width: none;
@@ -74,13 +75,19 @@ table.nganh_hoc thead tr th#ma_nganh {
 
 table.nganh_hoc thead tr th#chi_tieu_du_kien,
 table.nganh_hoc thead tr th#so_luong_dang_ky,
-table.nganh_hoc thead tr th#to_hop_xet_tuyen {
+table.nganh_hoc thead tr th#to_hop_xet_tuyen,
+table.danh_sach_ng thead tr th#diem {
     width: 100px;
 }
 
 table.nganh_hoc thead tr th#thoi_gian,
 table.nganh_hoc thead tr th#ghi_chu {
     width: 150px;
+}
+
+table.danh_sach_ng thead tr th#ngay_sinh,
+table.danh_sach_ng thead tr th#que_quan{
+    width: 160px;
 }
 
 td.number_td {
@@ -101,4 +108,8 @@ table.danh_sach_ng thead tr th#ten_gv {
 
 table.danh_sach_ng thead tr th#date_reg{
     width: 180px;
+}
+
+table.danh_sach_ng#danh_sach_sv_nganh thead tr th#ten_sv{
+    width: 350px;
 }

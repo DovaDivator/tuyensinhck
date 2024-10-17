@@ -3,7 +3,7 @@
 
 session_start();
 if (isset($_SESSION['user'])) {
-    if ($_SESSION['user']['role'] !== "Admin") {
+    if ($_SESSION['user']['role'] !== "Teacher") {
         header("Location: index.php");
         exit();
     }
@@ -21,7 +21,7 @@ if (isset($_SESSION['user'])) {
     <title>Web Tuyển sinh - Thống kê số liệu</title>
     <link rel="icon" href="../assets/images/logo.png?v=<?php echo filemtime('../assets/images/logo.png'); ?>" type="image/png">
     <link rel="stylesheet" href="../assets/style/style.css?v=<?php echo filemtime('../assets/style/style.css'); ?>">
-    <link rel="stylesheet" href="../assets/style/admin_path.css?v=<?php echo filemtime("../assets/style/admin_path.css")?>">
+    <link rel="stylesheet" href="../assets/style/teacher_path.css?v=<?php echo filemtime("../assets/style/teacher_path.css")?>">
     <script src="../js_backend/events.js?v=<?php echo filemtime('../js_backend/events.js'); ?>"></script>
 </head>
 <body>
@@ -38,7 +38,7 @@ if (isset($_SESSION['user'])) {
             <!-- Nội dung chính kết nối trang -->
             <div class="main-content">
                 <?php
-                include '../php_control/admin_path/qlndPath.php';
+                include '../php_control/teacher_path/dssvPath.php';
                 ?>    
             </div>
         </div>

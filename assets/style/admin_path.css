@@ -8,13 +8,6 @@ h3.title_heading{
     color:darkblue;
 }
 
-.UI_qlnd_container{
-    width: 90%;
-    max-width: 1200px;
-    min-width: 900px;
-    margin: 0 auto;
-}
-
 .chart_div{
     display: grid;
     place-items: center; 

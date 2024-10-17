@@ -39,6 +39,13 @@ select{
     z-index: 1;
 }
 
+.UI_qlnd_container{
+    width: 90%;
+    max-width: 1200px;
+    min-width: 900px;
+    margin: 0 auto;
+}
+
 button, input[type="button"], input[type="reset"], input[type="submit"]{
     cursor: pointer;
 }

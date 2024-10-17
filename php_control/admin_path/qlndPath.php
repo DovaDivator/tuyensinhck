@@ -3,8 +3,12 @@
     <div class="body_path">
         <h1>Danh sách người dùng</h1>
         <div class="UI_qlnd_container">
-            <?php if ($_SESSION['user']['role'] === 'Admin'):?>
-            <h3 class='title_heading'>Danh sách giáo viên:</h3>
+            <div class='linediv'>
+                <h3 class='title_heading'>Danh sách: </h3>
+                
+            </div>
+
+            <!-- giaovien -->
             <div class="table_body_scroll" style="height:500px;">
                <table class="choose_list danh_sach_ng" id="danh_sach_giao_vien">
                    <thead>
@@ -23,9 +27,7 @@
                     </tbody>
                 </table>
             </div>
-            <div style="margin: 30px auto; width: 80%; align-items:center; height: 1px; background-color: grey;"></div>
-            <?php endif; ?>
-            <h3 class='title_heading'>Danh sách tuyển sinh:</h3>
+            <!-- tuyển sinh -->
             <div class="table_body_scroll" style="min-height: 500px; max-height:700px;">
                <table class="choose_list danh_sach_ng" id="danh_sach_sinh_vien">
                    <thead>
