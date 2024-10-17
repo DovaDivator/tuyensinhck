@@ -49,7 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $response['message'] ='Invalid contactinfor';
         $response['contact'] = ' email/phone number';
     }
-    elseif (strlen($password) < 6 && !preg_match('/[A-Z]/', $password) && !preg_match('/[0-9]/', $password)) {
+    elseif (strlen($password) < 6 || !preg_match('/[A-Z]/', $password) || !preg_match('/[0-9]/', $password)) {
         $response['message'] = 'Invalid password';
         $response['passwordcheck'] = 'password must > 6 and have atleast 1 uppercase, 1 number';;
     } elseif ($password !== $confirm_password) {
