@@ -1,0 +1,144 @@
+.info_layout{
+    width: 800px;
+    padding: 10px 25px;
+    padding-bottom: 30px !important;
+    box-sizing: border-box;
+    background-color: #fff;
+    border-radius: 20px;
+    box-shadow: 0px 5px 10px #21212150; 
+    margin: 0 auto;
+    margin-bottom: 25px !important;
+}
+
+p{
+    word-break: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;  
+}
+
+.info_layout h1{
+    margin-left: 10px;
+    margin-right: 5px;
+}
+
+.info_layout h2{
+    color: darkblue;
+    font-size: 30px;
+}
+
+.info_layout p,
+.info_layout h2{
+    margin: 10px 0;
+}
+
+#hoso_path p{
+    margin-left: 10px;
+}
+
+#hoso_log{
+    margin-top: 0;
+} 
+
+#diem_list{
+    font-weight: bold;
+    color: red;
+}
+
+.info_layout .avatar_container{
+    width: 200px;
+    height: 200px;
+    background-color: rgb(215, 237, 250);
+    border: 1px solid #8d8d8d;
+    position: relative;
+    overflow: hidden;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.info_layout .avatar_container img{
+    position: absolute;
+}
+
+.avatar_container .edit_avatar_img_layout{
+    position: absolute;
+    width: 300px;
+    height: 150px;
+    bottom: -75px;
+    left: -50px;
+    border-radius: 100%;
+    background-color: #3498db50;
+    opacity: 0; 
+    transform: scale(0.8); 
+    transition: opacity 0.3s ease, transform 0.3s ease; 
+}
+
+.info_layout .edit_avatar_img_layout img{
+    filter: invert(100%);
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 15px;
+}
+
+.avatar_container:hover .edit_avatar_img_layout {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.avatar_container:active .edit_avatar_img_layout{
+    opacity: 1;
+    transform: scale(0.8);
+    background-color: #58bafc70;
+    transition: transform 0.1s ease; 
+}
+
+.avatar_container:hover{
+    box-shadow: 0px 5px 10px rgba(41, 128, 185, 0.5); 
+    transition: box-shadow 0.3s ease;
+}
+
+.avatar_container:active{
+    box-shadow: 0px 10px 20px rgba(41, 127, 185, 0.8); 
+    transition: box-shadow 0.3s ease;
+}
+
+.hide_focus{
+    display: none;
+    cursor: auto;
+}
+
+.info_text_container a{
+    color: #0D47A1;
+    text-decoration: none;
+}
+
+table #ma_nganh,
+table #chi_tieu,
+table #sl_sv{
+    width: 120px;
+}
+
+table #tt_dky_nganh{
+    width: 180px;
+}
+
+.custom-button{
+    width: 800px;
+    height: 40px;
+    font-size: 1.1rem; 
+    font-weight: bold;
+    background-color: #3399ff;
+    color: white; /* Màu chữ */
+    border: none; 
+    border-radius: 5px; 
+    cursor: pointer; 
+    transition: background-color 0.3s ease;
+}
+
+.custom-button{
+    background-color: #2685ff;
+}
+
+.custom-button {
+    background-color: #007bff;
+}

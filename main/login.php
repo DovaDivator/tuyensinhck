@@ -99,14 +99,8 @@ if (isset($_SESSION['user'])) {
                     Swal.fire({
                         title: "Tên đăng nhập hoặc mật khẩu sai",
                         text: "Vui lòng kiểm tra lại thông tin đăng nhập.",
-                        width: 600,
-                        padding: "3em",
-                        color: "#716add",
-                        background: "#fff url(https://sweetalert2.github.io/#downloadimages/trees.png)",
-                        html: `
-                        <p>Vui lòng kiểm tra lại tài khoản mật khẩu.</p>
-                        `,
-                        backdrop: `rgba(0,0,123,0.4)`
+                        icon: "error",
+                        confirmButtonText: "OK"
                     });
                 }
             })

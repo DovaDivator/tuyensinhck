@@ -3,8 +3,8 @@ img.chart_option{
     height: auto;
 }
 
-h3.title_heading{
-    margin-left: 5px;
+h2.title_heading{
+    margin: 0 0 0 5px;
     color:darkblue;
 }
 
@@ -44,4 +44,10 @@ canvas {
     width: 225px;
     margin: 0 auto;
     left: 360px;
+}
+
+.UI_qlnd_container .filter_div_options{
+    min-width: 100px;
+    top: -25px;
+    left: 10px;
 }

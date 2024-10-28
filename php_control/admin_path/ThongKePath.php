@@ -6,34 +6,23 @@
     <div class="linediv">
     <p>&emsp;&emsp;Hiển thị thông tin:&ensp;</p>
         <form method="GET">
-            <select id="chart_info_options" name="chart_info_options">
-                <option value="chart1">Thông kê hồ sơ thịt chó</option>
-                <option value="chart2">Thông kê hồ sơ thịt mèo</option>
-                <option value="chart3">Thông kê hồ sơ thịt chuột</option>
-                <option value="chart4">Thông kê hồ sơ thịt Thắng</option>
+            <select id="chart_info_options" name="chart_info_options"  onchange="this.form.submit()">
+                <option value="chart1"
+                    <?php
+                        if(!isset($_GET['chart_info_options']) || $_GET['chart_info_options'] === 'chart1'){
+                            echo "selected";
+                        }
+                    ?>
+                >Thông kê hồ sơ thịt chó</option>
+                <option value="chart2"
+                    <?php
+                        if(isset($_GET['chart_info_options']) && $_GET['chart_info_options'] === 'chart2'){
+                            echo "selected";
+                        }
+                    ?>
+                >Thông kê hồ sơ thịt mèo</option>
             </select>
         </form>
-        <button type="button" class="icon-button" id="chart_option">
-        <img src="../assets/icon/filter.png?v=<?php echo filemtime("../assets/icon/filter.png"); ?>" 
-        alt="Tùy chọn" title="Tùy chọn" onclick="showChartOption('options layout chart_div_options', 'chart_option', 'show', event)">
-        </button>
-    </div>
-    <div style="position: relative;">
-    <div class="chart_div_options options layout" onsubmit="hideDiv()">
-        <form method="GET">
-            <div class="input_div">
-                <label>Loại biểu đồ: </label>
-                <select id="chart_type_options" name="chart_type_options">
-                    <option value="bar">Biểu đồ cột</option>
-                    <option value="line">Biểu đồ đường</option>
-                    <option value="pie">Biểu đồ tròn</option>
-                </select>
-            </div>
-            <div class="button_div">
-                <input type="submit" value="Xác nhận" name="set_change_chart">
-            </div>
-        </form>
-    </div>
     </div>
     <!-- Biểu đồ -->
     <h3 style='text-align: center;'>Thống kê hồ sơ thịt chó</h3>

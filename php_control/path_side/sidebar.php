@@ -20,7 +20,7 @@
                 echo '<li><a href="ThongKe.php">Thống kê hồ sơ</a></li>';
             }
         ?>
-       <!-- <li><a href="../php_control/backend/QLHSRole.php">TEST</a></li> -->
+       <li><a href="thong-tin-tai-khoan.php">Thông tin tài khoản</a></li>
     </ul>
     <!-- Phần footer -->
     <div class="footer">

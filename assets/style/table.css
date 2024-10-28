@@ -92,13 +92,14 @@ table.danh_sach_ng thead tr th#que_quan{
 
 td.number_td {
     text-align: center;
+    color: blue;
 }
 
 table.danh_sach_ng thead tr th:first-child,
 table.danh_sach_ng thead tr th#khoa,
 table.danh_sach_ng thead tr th#dk,
 table.danh_sach_ng thead tr th#khoi_xt,
-table.danh_sach_ng thead tr th#hoso{
+table.danh_sach_ng thead tr th#trangthai{
     width: 130px;
 }
 

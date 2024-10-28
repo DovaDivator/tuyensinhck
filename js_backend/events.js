@@ -119,8 +119,6 @@ function handleCheckboxClick(arr) {
                     }
                 });
             }
-            
-            console.log('Checkbox clicked:', this.value);
         });
     });
 }
@@ -158,4 +156,28 @@ function uncheckAllCheckboxes(divId) {
     checkboxes.forEach(function(checkbox) {
         checkbox.checked = false;
     });
+}
+
+function toggleRadios(checkboxId, radioName) {
+    const checkbox = document.getElementById(checkboxId);
+    const radios = document.getElementsByName(radioName);
+
+    // Nếu checkbox được chọn thì bỏ disable các radio, nếu bỏ chọn thì disable lại radio
+    radios.forEach(radio => {
+        radio.disabled = !checkbox.checked;
+        if(!checkbox.checked && radio.checked) {
+            radio.checked = false;
+        } 
+    });
+}
+
+function uncheckAllRadio(radioId, needDisable){
+    document.querySelectorAll('#'+ radioId +' input[type="radio"]').forEach(radio => {
+        radio.checked = false;
+        radio.disabled = needDisable;
+    });
+}
+
+function MovePage(string){
+    window.location.assign(string);
 }

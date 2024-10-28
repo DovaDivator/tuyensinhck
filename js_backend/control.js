@@ -35,7 +35,7 @@ function renderCoursesTuyenSinh(courses, role) {
             row.innerHTML = `
                 <td>${course.ma_tuyen_sinh}</td>
                 <td>${course.ten_nganh}</td>
-                ${role !== 'Student' ? `<td class="number_td"><font color="blue">${course.so_luong_dang_ky}</font></td>` : ''}
+                ${role !== 'Student' ? `<td class="number_td">${course.so_luong_dang_ky}</td>` : ''}
                 <td>${course.to_hop_xet_tuyen}</td>
                 <td>${course.thoi_gian_tuyen_sinh}</td>
             `;

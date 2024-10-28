@@ -5,7 +5,7 @@
         <div class='linediv' style="align-items: flex-start;">
             <h2 style='margin-left: 50px; color:#DC143C; margin-top: 0;'>Ngành đào tạo:</h2>
             <form method="get"  style='margin-left: 20px;'>
-                <select name='ma_nganh_sv' style=' min-width: 350px;'>
+                <select name='ma_nganh_sv' style=' min-width: 350px;' onchange="this.form.submit()">
                     <?php
                         $danh_nganh = [
                             (object) ['ma_nganh' => 'CNTT', 'ten_nganh' => 'Công nghệ thông tin'],
@@ -14,10 +14,12 @@
                             (object) ['ma_nganh' => 'LUAT', 'ten_nganh' => 'Luật'],
                             (object) ['ma_nganh' => 'NN', 'ten_nganh' => 'Ngôn ngữ Anh']
                     ];
-                        foreach($danh_nganh as $nganh){
-                            echo "<option value='{$nganh->ma_nganh}'>{$nganh->ma_nganh} - {$nganh->ten_nganh}</option>";
-                        }
                    ?>
+                   <?php foreach($danh_nganh as $nganh): ?>
+                    <option value='<?php echo $nganh->ma_nganh;?>' <?php if(isset($_GET['ma_nganh_sv']) && $_GET['ma_nganh_sv'] === $nganh->ma_nganh) echo "selected";?>>
+                        <?php echo $nganh->ma_nganh;?> - <?php echo $nganh->ten_nganh;?>
+                    </option>
+                   <?php endforeach;?>
                 </select>
             </form>
         </div>
