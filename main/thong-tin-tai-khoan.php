@@ -167,7 +167,7 @@ if (isset($_SESSION['user'])) {
                         </div> 
                         <!-- chỉ hiển thị với chính người dùng -->
                         <div style="margin-top: 10px; display: flex; justify-content: center; align-items: center;">
-                            <button class="custom-button">&#9998; THAY ĐỔI MẬT KHẨU</button>
+                        <button class="custom-button" onclick="location.href='change_password.php'">&#9998; THAY ĐỔI MẬT KHẨU</button>
                         </div>
                     </div>
                         

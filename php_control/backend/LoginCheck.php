@@ -33,6 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['user'] = [
                 'username' => $check_username,
                 'role' => $user['role']
+                
             ];
 
             $response['success'] = true;
