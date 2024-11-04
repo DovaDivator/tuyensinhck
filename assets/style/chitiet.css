@@ -109,15 +109,17 @@
     border: none; 
     border-radius: 5px; 
     cursor: pointer; 
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, scale 0.3s ease;
 }
 
 .custom-button-dktc:hover:not(.da_dang_ky){
     background-color: #2685ff;
+    scale: 1.02;
 }
 
 .custom-button-dktc:active:not(.da_dang_ky) {
     background-color: #007bff;
+    scale: 0.98;
 }
 
 .custom-button-dktc.da_dang_ky{

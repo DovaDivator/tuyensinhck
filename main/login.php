@@ -62,56 +62,40 @@ if (isset($_SESSION['user'])) {
             return; // Kết thúc nếu thiếu thông tin
         }
 
-        // Tạo đối tượng FormData để gửi yêu cầu POST
-        const formData = new FormData();
-        formData.append('username', username);
-        formData.append('password', password);
+        // Tạo đối tượng XMLHttpRequest
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", "../php_control/backend/LoginCheck.php", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
 
-        // Gửi yêu cầu POST qua fetch
-        fetch('../php_control/backend/LoginCheck.php', {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest'
-                }
-            })
-            .then(response => response.text()) // Chuyển đổi phản hồi thành văn bản
-            .then(text => {
-                try {
-                    const data = JSON.parse(text); // Chuyển đổi thành JSON
-                    return data;
-                } catch (error) {
-                    console.error('JSON parsing error:', error);
-                    Swal.fire({
-                        title: "Lỗi hệ thống",
-                        text: "Đã xảy ra lỗi khi xử lý dữ liệu.",
-                        icon: "error",
-                        confirmButtonText: "OK"
-                    });
-                }
-            })
-            .then(data => {
-                if (data && data.success) {
+        // Xử lý phản hồi
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                const response = xhr.responseText; // Lấy dữ liệu phản hồi
 
-                    window.location.href = 'index.php';
-
+                // Nếu bạn không trả về JSON, xử lý phản hồi như một chuỗi
+                if (response.trim() === "success") {
+                    window.location.href = 'index.php'; // Chuyển hướng nếu đăng nhập thành công
                 } else {
+                    const errorMessage = response.replace("error: ", "");
                     Swal.fire({
-                        title: "Tên đăng nhập hoặc mật khẩu sai",
-                        text: "Vui lòng kiểm tra lại thông tin đăng nhập.",
+                        title: "Lỗi đăng nhập",
+                        text: errorMessage,
                         icon: "error",
                         confirmButtonText: "OK"
                     });
                 }
-            })
-            .catch(error => {
-                console.error('Error:', error);
+            } else {
                 Swal.fire({
                     title: "Lỗi kết nối",
                     text: "Không thể kết nối đến máy chủ. Vui lòng thử lại sau.",
                     icon: "error",
                     confirmButtonText: "OK"
                 });
-            });
+            }
+        };
+
+        // Gửi dữ liệu đến server
+        xhr.send(`username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`);
     });
 </script>

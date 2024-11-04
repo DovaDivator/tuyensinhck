@@ -98,10 +98,6 @@ form {
 
 input {
     width: 100%;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
 }
 
 input[type="submit"] {

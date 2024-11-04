@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Test</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <script>
+        // Khởi tạo Supabase
+        const SUPABASE_URL = "https://iwelyvdecathaeppslzw.supabase.co";
+        const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml3ZWx5dmRlY2F0aGFlcHBzbHp3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzAxMTgzMDAsImV4cCI6MjA0NTY5NDMwMH0.QY-EVOhlyYJXIJqzummyUblLmGQR3JPt2U0IWfPXLwY"; // Thay thế bằng khóa API của bạn
+        const { createClient } = supabase;
+        const supabaseClient = createClient(SUPABASE_URL, SUPABASE_KEY);
+    </script>
+</head>
+<body>
+    <h1>Login to Supabase</h1>
+    <form id="login-form">
+        <input type="email" id="email" placeholder="Email" required>
+        <input type="password" id="password" placeholder="Password" required>
+        <button type="submit">Login</button>
+    </form>
+
+    <script>
+        // Hàm xử lý đăng nhập
+        async function login(event) {
+            event.preventDefault(); // Ngăn chặn form khỏi việc gửi lại
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // Gửi yêu cầu đăng nhập
+            const { user, error } = await supabaseClient.auth.signInWithPassword({
+                email: email,
+                password: password,
+            });
+
+            if (error) {
+                console.error('Error logging in:', error.message);
+                alert('Login failed: ' + error.message);
+            } else {
+                console.log('Logged in user:', user);
+                alert('Login successful!');
+                // Bạn có thể chuyển hướng hoặc thực hiện hành động khác ở đây
+            }
+        }
+
+        // Thêm sự kiện gửi form
+        document.getElementById('login-form').addEventListener('submit', login);
+    </script>
+</body>
+</html>

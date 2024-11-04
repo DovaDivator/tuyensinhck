@@ -44,7 +44,7 @@ $passwordrequired = isset($_SESSION['passwordrequired']) ? $_SESSION['passwordre
                 <input type="password" name="password_check" id="password_check" placeholder="Nhập lại mật khẩu" pattern="[\x21-\x7E]+">
                 <div class="linediv" style="margin-bottom: 10px;">
                     <input type="checkbox" name="accept" id="accept">
-                    <label for="accept">Bằng việc đăng ký, bạn đồng ý với <a href="chinhsachsudung.php">Chính sách sử dụng</a> của chúng tôi!</label>
+                    <label for="accept">Bằng việc đăng ký, bạn đồng ý với <a href="chinhsachsudung.php" target="_blank">Chính sách sử dụng</a> của chúng tôi!</label>
                 </div>
                 <input type="submit" value="Đăng ký" name="register">
             </form>

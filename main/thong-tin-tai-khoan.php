@@ -58,9 +58,16 @@ if (isset($_SESSION['user'])) {
                             </div>
                             <div class="linediv" style="gap:30px; align-items:flex-start;">
                                 <div class="avatar_container">
-                                    <img src="../assets/images/guest.png?v=<?php filemtime('../assets/images/logo.png');?>" height="180px" width="180px" style="top: 10px; left: 10px">
+                                   <form id="uploadForm" enctype="multipart/form-data" method="post" style="display: none;">
+                                        <input type="file" name="avatar" id="avatarInput" accept="image/*" />
+                                    </form>
+                                    
+                                    <img src="../assets/images/guest.png?v=<?php echo filemtime('../assets/images/logo.png'); ?>" 
+                                    height="180px" width="180px" style="top: 10px; left: 10px" id="avatarImg">
+                                    
                                     <div class="edit_avatar_img_layout">
-                                        <img src="../assets/icon/upload.png?v=<?php filemtime('../assets/icon/upload.png');?>"  height="50px" width="50px">
+                                        <img src="../assets/icon/upload.png?v=<?php echo filemtime('../assets/icon/upload.png'); ?>" 
+                                        height="50px" width="50px">
                                     </div>
                                 </div>
                                 <div class="info_text_container">
@@ -96,7 +103,7 @@ if (isset($_SESSION['user'])) {
                                 <?php endif; ?>
                             </div>
                             <!-- sau này thêm điều kiện hiển thị -->
-                            <p id='hoso_log'><b><font color="red">Bạn chưa đăng ký hồ sơ! </font><a href="chinhsuahoso.php">Ấn vào đây để đăng ký</a></b></p>
+                            <p id='hoso_log'><b><font color="red">Bạn chưa đăng ký hồ sơ! </font><a href="nop-ho-so.php">Ấn vào đây để đăng ký</a></b></p>
                             <?php if($_SESSION['user']['role'] !== 'Student'): ?>
                             <P id='cccd'>CCCD: 0123456789012 </p>
                             <?php endif;?>

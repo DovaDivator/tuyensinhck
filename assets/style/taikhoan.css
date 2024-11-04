@@ -45,8 +45,6 @@ p{
 }
 
 .info_layout .avatar_container{
-    width: 200px;
-    height: 200px;
     background-color: rgb(215, 237, 250);
     border: 1px solid #8d8d8d;
     position: relative;
@@ -61,15 +59,18 @@ p{
 
 .avatar_container .edit_avatar_img_layout{
     position: absolute;
-    width: 300px;
-    height: 150px;
-    bottom: -75px;
-    left: -50px;
     border-radius: 100%;
     background-color: #3498db50;
     opacity: 0; 
     transform: scale(0.8); 
     transition: opacity 0.3s ease, transform 0.3s ease; 
+}
+
+.edit_avatar_img_layout.avatar{
+    width: 300px;
+    height: 150px;
+    bottom: -75px;
+    left: -40px;
 }
 
 .info_layout .edit_avatar_img_layout img{
@@ -132,13 +133,161 @@ table #tt_dky_nganh{
     border: none; 
     border-radius: 5px; 
     cursor: pointer; 
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, scale 0.3s ease;
 }
 
-.custom-button{
+.custom-button:hover{
     background-color: #2685ff;
+    scale: 1.02;
 }
 
-.custom-button {
+.custom-button:active{
     background-color: #007bff;
+    scale: 0.98;
+}
+
+.form-fields{
+    display: flex;
+    flex-direction: column;
+}
+
+.form-fields label{
+    margin-bottom: 5px;
+}
+
+.form-fields input{
+    width: 300px;
+    margin-bottom: 15px;
+}
+
+.change_layout_div{
+    width: fit-content;
+}
+
+
+#cropperModal {
+    display: none; /* Ẩn modal khi chưa sử dụng */
+    position: fixed; /* Cố định modal ở một vị trí trên màn hình */
+    top: 50%; /* Căn giữa theo chiều dọc */
+    left: 50%; /* Căn giữa theo chiều ngang */
+    transform: translate(-50%, -50%); /* Dịch chuyển để căn giữa chính xác */
+    background-color: white; /* Màu nền cho modal */
+    padding: 20px; /* Khoảng cách nội dung so với viền */
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3); /* Đổ bóng */
+    z-index: 1000; /* Đảm bảo modal hiển thị trên các phần tử khác */
+    border-radius: 8px; /* Bo góc cho modal */
+}
+
+#cropperModal .custom-button{
+    width: fit-content;
+    padding: 5px 10px;
+    margin-top: 10px;
+}
+
+/* Căn chỉnh hình ảnh bên trong modal */
+#imagePreview {
+    display: block;
+    margin: 0 auto;
+    max-width: 600px;
+    max-height: 600px;
+    height: auto;
+}
+
+input[type="checkbox"], input[type="radio"]{
+    width: fit-content;
+    margin: auto 10px auto 5px;
+}
+
+.checkbox_div{
+    margin-bottom: 10px;
+}
+
+.checkbox_div label{
+    margin: 0;
+}
+
+img.CCCD{
+    max-width: 200px;
+    max-height: 300px;
+    width: auto;
+    height: auto;
+}
+
+.edit_avatar_img_layout.cccd{
+    width: 400px;
+    height: 200px;
+    bottom: -100px;
+}
+
+p.qweq{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translateY(-50%) translateX(-50%);
+    margin: 0;
+    color: gray;
+}
+
+.note{
+    color: gray !important;
+    font-size: 12px;
+    margin-left: 0 !important;
+    margin-bottom: 15px !important;
+}
+
+.form-fields .note{
+    text-align: left !important;
+}
+
+.radio_gender label:not(label:last-child){
+    margin-right: 30px;
+}
+
+.radio_gender label{
+    margin-bottom: 0;
+}
+
+.diem_mon{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 20px; 
+    align-items: center;
+    margin: 0 auto;
+}
+
+.diem_mon input{
+    width: 70px;
+    height: 30px;
+}
+
+.diem_mon input[type=number]{
+    text-align: center;
+    padding: 5px 10px;
+}
+
+/* Ẩn mũi tên tăng/giảm trên Chrome, Safari, Edge */
+.diem_mon input[type=number]::-webkit-inner-spin-button, 
+.diem_mon input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none; 
+    margin: 0; 
+}
+
+/* Ẩn mũi tên tăng/giảm trên Firefox */
+.diem_mon  input[type=number] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+input[type=file] {
+    margin-bottom: 0;
+}
+
+.proof-entry{
+    display: flex;
+    flex-direction: column;
+}
+
+.proof-entry *:not(button) {
+    width: 300px;
+    margin-bottom: 10px;
 }

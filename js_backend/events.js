@@ -181,3 +181,32 @@ function uncheckAllRadio(radioId, needDisable){
 function MovePage(string){
     window.location.assign(string);
 }
+
+function removeProofEntry(button) {
+    // Xóa mục bằng chứng khi nhấn nút (-)
+    button.parentElement.remove();
+}
+
+function DeleteExistFile(file_type, formData) {
+    const urlWithParams = '../php_control/backend/delete_image.php?file_type=' + file_type;
+    return fetch(urlWithParams, {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    }).then(response => response.json());
+}
+
+function UploadTempFile(file_type, formData) {
+    const urlWithParams = '../php_control/backend/upload_image.php?file_type=' + file_type;
+    return fetch(urlWithParams, {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    }).then(response => response.json());
+}
+
+//67272fdf94f45_1730621407.png
