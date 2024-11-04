@@ -47,9 +47,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Đăng nhập thành công
             $_SESSION['is_logged_in'] = true;
             $_SESSION['user'] = [
+<<<<<<< HEAD
                 'username' => $username,
                 'role' => $table_name,
                 'email' => $email,
+=======
+                'username' => $check_username,
+                'role' => $user['role']
+                
+>>>>>>> c7fb3121a1fb2c8fb936a7b5aac091272d473712
             ];
 
             echo "success"; // Trả về chuỗi thành công
