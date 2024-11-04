@@ -65,7 +65,6 @@ if (isset($_SESSION['user'])) {
             <div class="main-content">
                 <div class="body_container">
                     <div class="body_path">
-<<<<<<< HEAD
                         <div class="info_layout change_layout_div" id="change_pass_path">
                             <h1>Thay đổi mật khẩu</h1>
                             <form action="post">
@@ -81,48 +80,6 @@ if (isset($_SESSION['user'])) {
                                         <label for="showPassword">Hiện mật khẩu</label>
                                     </div>
                                     <input type="submit" value="Xác nhận" name="change-pass-sumbit" class="custom-button">
-=======
-                        <div class="info_layout" id="nguoidung_path">
-                            <div class="linediv">
-                                <h1>Chỉnh sửa thông tin</h1>
-                            </div>
-
-                            <div class="container">
-                                <div class="text">
-                                    Thông tin cá nhân
-                                </div>
-                                <form action="#">
-                                    <div class="form-row">
-                                        <div class="input-data">
-                                            <input type="password" id= "password" value="" required>
-                                            <div class="underline"></div>
-                                            <label for="">Mật khẩu hiện tại</label>
-                                        </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="input-data">
-                                            <input type="password" id="newpassword" value="" required>
-                                            <div class="underline"></div>
-                                            <label for="">Mật khẩu mới</label>
-                                        </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="input-data">
-                                            <input type="password" id="newpassword1" value="" required>
-                                            <div class="underline"></div>
-                                            <label for="">Nhập lại mật khẩu mới</label>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-row submit-btn">
-                                        <div class="input-data">
-                                            <div class="inner"></div>
-                                            <input type="submit" value="submit">
-                                        </div>
-                                        <input type="checkbox" id="showPassword" onclick="togglePassword()">
-                                        <label for="showPassword">Hiện mật khẩu</label>
-                                    </div>
->>>>>>> c7fb3121a1fb2c8fb936a7b5aac091272d473712
                                 </form>
                             </div>
 
