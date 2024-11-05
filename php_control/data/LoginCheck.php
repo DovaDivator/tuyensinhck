@@ -10,6 +10,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $password = $_POST["password"]; // Lấy mật khẩu từ form
     unset($_POST['password']);
     unset($_POST['username']);
+    $username = ucwords(strtolower($username));
+
 
     // Thực hiện truy vấn SQL
     $query = "SELECT * FROM get_email_user(:id_or_phone)";

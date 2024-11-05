@@ -185,7 +185,7 @@ $passwordrequired = isset($_SESSION['passwordrequired']) ? $_SESSION['passwordre
                 // Nếu bạn không trả về JSON, xử lý phản hồi như một chuỗi
                 if (response.trim() === "success") {
                     HideLoading();
-                    window.location.href = 'login.php?register=true';
+                    SuccessDialog("Thông báo!", "Đăng ký thành công, vui lòng truy cập email để xác thực người dùng.");
                 } else {
                     const errorMessage = response.replace("error: ", "");
                     HideLoading();

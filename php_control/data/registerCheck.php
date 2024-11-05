@@ -4,7 +4,7 @@ session_start();
 include "db_connect.php";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $username = $_POST["username"];
+    $username = ucwords($_POST["username"]);
     $email = $_POST['email'];
     $password = $_POST["password"];
     unset($_POST["password"]);
@@ -24,8 +24,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Tạo người dùng mới
         $httpAuth = CreateUser($email, $password);   
         if ($httpAuth === 200) {
-            echo "success";
-        }else{
+            // Gọi hàm để thêm thông tin vào bảng sinh_vien
+            if (addStudent($username, $email)) {
+                echo "success";
+            } else {
+                echo "error: Có sự cố xảy ra khi thêm thông tin của bạn";
+            }
+        } else {
             echo "error: Xảy ra lỗi khi tạo người dùng mới. ($httpAuth)";
         }
     }
@@ -34,11 +39,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     echo "error: Lỗi PHP request";
 }
 
+// Hàm tạo người dùng mới trên Supabase
 function CreateUser($email, $password) {
     // Thông tin kết nối đến Supabase
     $apiUrl = "https://iwelyvdecathaeppslzw.supabase.co/auth/v1/signup";
     $apiKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml3ZWx5dmRlY2F0aGFlcHBzbHp3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzAxMTgzMDAsImV4cCI6MjA0NTY5NDMwMH0.QY-EVOhlyYJXIJqzummyUblLmGQR3JPt2U0IWfPXLwY"; // Thay thế bằng API Key của bạn
-
 
     // Tạo dữ liệu để gửi yêu cầu
     $data = [
@@ -64,5 +69,30 @@ function CreateUser($email, $password) {
     // Kiểm tra mã phản hồi
     return $httpCode;
 }
-?>
 
+// Hàm thêm thông tin sinh viên vào bảng sinh_vien
+function addStudent($username, $email) {
+    global $pdo; // Sử dụng biến $pdo đã được định nghĩa bên ngoài
+
+    try {
+        // Câu lệnh SQL để gọi hàm them_sinhvien
+        $query = "SELECT them_sinhvien(:ten, :email)";
+        $stmt = $pdo->prepare($query);
+
+        // Ràng buộc các tham số
+        $stmt->bindParam(':ten', $username);
+        $stmt->bindParam(':email', $email);
+
+        // Thực hiện câu lệnh và kiểm tra kết quả
+        if ($stmt->execute()) {
+            return true; // Thành công
+        } else {
+            return false; // Thất bại
+        }
+    } catch (PDOException $e) {
+        // Xử lý lỗi
+        error_log("Error in addStudent: " . $e->getMessage());
+        return false;
+    }
+}
+?>

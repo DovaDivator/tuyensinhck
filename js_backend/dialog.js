@@ -15,3 +15,12 @@ function ErrorDialog(title, des){
         confirmButtonText: "OK"
     });
 }
+
+function SuccessDialog(title, des){
+    Swal.fire({
+        title: title,
+        text: des,
+        icon: "success",
+        confirmButtonText: "OK"
+    });
+}
