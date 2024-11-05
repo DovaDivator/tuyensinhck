@@ -1,31 +1,15 @@
 <?php
 session_start();
 
-// Thông tin kết nối đến Supabase
-$username = "postgres.iwelyvdecathaeppslzw";
-$password = "123456a@tuyensinh"; // Thay thế bằng mật khẩu thực tế của bạn
-$host = "aws-0-ap-southeast-1.pooler.supabase.com"; // Host của Supabase
-$port = "6543"; // Port mà Supabase sử dụng
-$dbname = "postgres"; // Tên cơ sở dữ liệu
-
-// Tạo chuỗi kết nối DSN (Data Source Name)
-$dsn = "pgsql:host=$host;port=$port;dbname=$dbname";
-
-try {
-    // Kết nối đến PostgreSQL bằng PDO
-    $pdo = new PDO($dsn, $username, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    // Ghi lỗi vào log file hoặc xử lý theo cách phù hợp
-    error_log('Lỗi kết nối: ' . $e->getMessage());
-    die('Không thể kết nối đến cơ sở dữ liệu.'); // Kết thúc script
-}
+include "db_connect.php";
 
 // Xử lý yêu cầu đăng nhập
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Kiểm tra xem các khóa có tồn tại không
     $username = $_POST["username"]; // Lấy tên đăng nhập từ form
     $password = $_POST["password"]; // Lấy mật khẩu từ form
+    unset($_POST['password']);
+    unset($_POST['username']);
 
     // Thực hiện truy vấn SQL
     $query = "SELECT * FROM get_email_user(:id_or_phone)";
@@ -43,7 +27,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $_SESSION['temp_role'] = $table_name;
 
         // Kiểm tra mật khẩu
-        if (check_password($email, $password)) {
+        $httpAuth = check_password($email, $password);
+        if ($httpAuth == 200) {
             // Đăng nhập thành công
             $_SESSION['is_logged_in'] = true;
             $_SESSION['user'] = [
@@ -51,10 +36,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 'role' => $table_name,
                 'email' => $email,
             ];
-
             echo "success"; // Trả về chuỗi thành công
-        } else {
+        } elseif($httpAuth == 400){
             echo "error: Mật khẩu không chính xác."; // Trả về chuỗi lỗi mật khẩu
+        }else{
+            echo "error: Có lỗi xảy ra khi kết nối dữ liệu người dùng!";
         }
     } else {
         echo "error: Không tìm thấy người dùng.";
@@ -91,11 +77,6 @@ function check_password($email, $password) {
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
 
-    // Kiểm tra mã phản hồi
-    if ($httpCode == 200) {
-        return true; // Mật khẩu đúng
-    } else {
-        return false; // Mật khẩu sai
-    }
+    return $httpCode;
 }
 ?>

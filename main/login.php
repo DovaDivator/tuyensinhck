@@ -18,6 +18,8 @@ if (isset($_SESSION['user'])) {
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../js_backend/EC.js?v=<?php echo filemtime('../js_backend/EC.js'); ?>"></script>
+    <script src="../js_backend/dialog.js?v=<?php echo filemtime('../js_backend/dialog.js'); ?>"></script>
+    <script src="../js_backend/events.js?v=<?php echo filemtime('../js_backend/events.js'); ?>"></script>
 </head>
 
 <body id="login">
@@ -30,14 +32,16 @@ if (isset($_SESSION['user'])) {
             <h1>Đăng nhập</h1>
             <!-- TODO: Tạm thời chuyển sang index.php sau khi đăng nhập hợp lệ -->
             <form action="" method="POST" id=loginForm>
-                <input type="text" name="username" id="username" placeholder="Tên đăng nhập" required>
+                <input type="text" name="username" id="username" placeholder="Email/ SĐT/ ID người dùng">
                 <input type="password" name="password" id="password" placeholder="Mật khẩu" minlength="6" maxlength="20" pattern="[\x21-\x7E]+">
                 <input type="submit" value="Đăng nhập">
             </form>
             <a href="register.php" style="margin-top: 10px;">Đăng ký tài khoản sinh viên ở đây!</a>
+            <a href="#" style="margin-top: 10px;">Quên mật khẩu?</a>
         </div>
     </div>
 
+    <?php include '../php_control/path_side/LoadBar.php'; ?>
 </body>
 
 </html>
@@ -46,6 +50,7 @@ if (isset($_SESSION['user'])) {
     // Ngăn chặn hành vi mặc định của sự kiện submit form
     document.querySelector('form').addEventListener('submit', function(event) {
         event.preventDefault();
+        ShowLoading();
 
         // Lấy giá trị từ các trường input
         const username = document.getElementById('username').value.trim();
@@ -53,18 +58,14 @@ if (isset($_SESSION['user'])) {
 
         // Kiểm tra xem các trường có được nhập hay chưa
         if (!username || !password) {
-            Swal.fire({
-                title: "Thiếu thông tin",
-                text: "Vui lòng nhập đầy đủ tài khoản và mật khẩu.",
-                icon: "warning",
-                confirmButtonText: "OK"
-            });
+            HideLoading();
+            WarmingDialog("Thiếu thông tin","Vui lòng điền đầy đủ thông tin đăng nhập!");
             return; // Kết thúc nếu thiếu thông tin
         }
 
         // Tạo đối tượng XMLHttpRequest
         const xhr = new XMLHttpRequest();
-        xhr.open("POST", "../php_control/backend/LoginCheck.php", true);
+        xhr.open("POST", "../php_control/data/LoginCheck.php", true);
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
 
@@ -75,23 +76,16 @@ if (isset($_SESSION['user'])) {
 
                 // Nếu bạn không trả về JSON, xử lý phản hồi như một chuỗi
                 if (response.trim() === "success") {
+                    HideLoading();
                     window.location.href = 'index.php'; // Chuyển hướng nếu đăng nhập thành công
                 } else {
                     const errorMessage = response.replace("error: ", "");
-                    Swal.fire({
-                        title: "Lỗi đăng nhập",
-                        text: errorMessage,
-                        icon: "error",
-                        confirmButtonText: "OK"
-                    });
+                    HideLoading();
+                    ErrorDialog("Lỗi đăng nhập", errorMessage);
                 }
             } else {
-                Swal.fire({
-                    title: "Lỗi kết nối",
-                    text: "Không thể kết nối đến máy chủ. Vui lòng thử lại sau.",
-                    icon: "error",
-                    confirmButtonText: "OK"
-                });
+                HideLoading();
+                ErrorDialog("Lỗi kết nối", "Không thể kết nối đến máy chủ. Vui lòng thử lại sau.");
             }
         };
 

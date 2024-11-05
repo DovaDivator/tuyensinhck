@@ -209,4 +209,12 @@ function UploadTempFile(file_type, formData) {
     }).then(response => response.json());
 }
 
-//67272fdf94f45_1730621407.png
+function ShowLoading(){
+    var overlay = document.getElementById('loading-bar');
+    overlay.style.display = 'block';
+}
+
+function HideLoading(){
+    var overlay = document.getElementById('loading-bar');
+    overlay.style.display = 'none';
+}
