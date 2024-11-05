@@ -34,10 +34,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo "error: Xảy ra lỗi khi tạo người dùng mới. ($httpAuth)";
         }
     }
-    exit();
 } else {
     echo "error: Lỗi PHP request";
 }
+exit();
 
 // Hàm tạo người dùng mới trên Supabase
 function CreateUser($email, $password) {

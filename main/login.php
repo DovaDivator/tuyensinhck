@@ -78,7 +78,34 @@ if (isset($_SESSION['user'])) {
                 if (response.trim() === "success") {
                     HideLoading();
                     window.location.href = 'index.php'; // Chuyển hướng nếu đăng nhập thành công
-                } else {
+                }else if(response.trim().startsWith("confirm: ")){
+                    const errorMessage = response.replace("confirm: ", "");
+                    HideLoading();
+                    ConfirmDialog("Thông báo", errorMessage + " Bạn có muốn gửi lại thư xác nhận không?", "Gửi lại", "Bỏ qua").then((isConfirm) => {
+                        if (isConfirm) {
+                            const xhr2 = new XMLHttpRequest();
+                            xhr2.open("POST", "../php_control/data/SendVerifyEmail.php", true);
+                            xhr2.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                            xhr2.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+
+                            xhr2.onload = function(){
+                                const response2 = xhr2.responseText;
+                                if (xhr2.status === 200) {
+                                    if(response2.trim() == 200){
+                                        SuccessDialog("Thông báo!", "Đã gửi thư xác minh, vui lòng truy cập email để xác thực người dùng.");
+                                    }else{
+                                        ErrorDialog("Thông báo lỗi", "Đã có sự cố xảy ra, vui lòng thử lại sau! (" + response2 + ")");
+                                    }
+                                }else{
+                                    ErrorDialog("Lỗi kết nối", "Không thể kết nối đến máy chủ. Vui lòng thử lại sau.");
+                                }
+                            }
+                            xhr2.send();
+                        }else{
+                            <?php unset($_SESSION['email_confirm']); ?>
+                        }
+                    });
+                }else {
                     const errorMessage = response.replace("error: ", "");
                     HideLoading();
                     ErrorDialog("Lỗi đăng nhập", errorMessage);

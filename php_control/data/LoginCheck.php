@@ -10,8 +10,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $password = $_POST["password"]; // Lấy mật khẩu từ form
     unset($_POST['password']);
     unset($_POST['username']);
-    $username = ucwords(strtolower($username));
-
 
     // Thực hiện truy vấn SQL
     $query = "SELECT * FROM get_email_user(:id_or_phone)";
@@ -40,25 +38,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             ];
             echo "success"; // Trả về chuỗi thành công
         } elseif($httpAuth == 400){
-            echo "error: Mật khẩu không chính xác."; // Trả về chuỗi lỗi mật khẩu
+            // không làm gì cả 
         }else{
             echo "error: Có lỗi xảy ra khi kết nối dữ liệu người dùng!";
         }
     } else {
         echo "error: Không tìm thấy người dùng.";
     }
-    exit();
 } else {
     echo "error: Lỗi PHP request";
 }
+exit();
 
 // Hàm kiểm tra mật khẩu
 function check_password($email, $password) {
     // Thông tin kết nối đến Supabase
-    $apiUrl = "https://iwelyvdecathaeppslzw.supabase.co/auth/v1/token?grant_type=password"; // URL của Supabase Auth
-    $apiKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml3ZWx5dmRlY2F0aGFlcHBzbHp3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzAxMTgzMDAsImV4cCI6MjA0NTY5NDMwMH0.QY-EVOhlyYJXIJqzummyUblLmGQR3JPt2U0IWfPXLwY"; // Thay thế bằng API Key của bạn
+    $apiUrl = "https://iwelyvdecathaeppslzw.supabase.co/auth/v1/token?grant_type=password";
+    $apiKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml3ZWx5dmRlY2F0aGFlcHBzbHp3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzAxMTgzMDAsImV4cCI6MjA0NTY5NDMwMH0.QY-EVOhlyYJXIJqzummyUblLmGQR3JPt2U0IWfPXLwY";
 
-    // Tạo dữ liệu để gửi yêu cầu đăng nhập
+    // Dữ liệu đăng nhập
     $data = [
         "email" => $email,
         "password" => $password,
@@ -79,6 +77,20 @@ function check_password($email, $password) {
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
 
-    return $httpCode;
+    // Giải mã phản hồi JSON của Supabase để phân tích thông báo lỗi
+    $responseData = json_decode($response, true);
+
+    // Kiểm tra mã HTTP và nội dung phản hồi để phân biệt lỗi
+    if ($httpCode == 400) {
+        if (isset($responseData['error_code']) && $responseData['error_code'] === 'email_not_confirmed') {
+            $_SESSION['email_confirm'] = $email;
+            echo "confirm: Tài khoản chưa được xác thực!";
+        } else {
+            return "error: Mật khẩu không chính xác!";
+        }
+    }
+
+    return $httpCode; // Trả về mã HTTP nếu không có lỗi 400
 }
+
 ?>
