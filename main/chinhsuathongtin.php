@@ -89,10 +89,10 @@ if (isset($_SESSION['user'])) {
                                         >
 
                                         <label for="email"><font color="red">*</font>&nbsp;Email:</label>
-                                        <input type="email" id="email" name="email" placeholder="Bắt buộc" required>
+                                        <input type="email" id="email" name="email" placeholder="Bắt buộc" value="<?php echo $_SESSION['user']['email']; ?>" required>
 
                                         <label for="phone">&nbsp;&nbsp;Số điện thoại:</label>
-                                        <input type="tel" id="phone" placeholder="Nhập SĐT 10 chữ số! (không bắt buộc)" name="phone">
+                                        <input type="tel" id="phone" placeholder="Nhập SĐT 10 chữ số! (không bắt buộc)" value="<?php echo $_SESSION['user']['phone']; ?>" name="phone">
                                     </div>
                                 </div>
 

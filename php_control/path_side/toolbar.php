@@ -3,15 +3,15 @@
     <div class="navbar-content">
         <!-- thông tin người dùng -->
         <div class="user-info info" >
-            <img class="avatar" src="">
+            <img class="avatar" src="../../assets/images/guest.png">
             <div class="user-details details">
-                <p class="username"> Ngô Đình Minh Trang
+                <p class="username"> <?php echo $_SESSION['user']['username']; ?>
                     <!-- TODO: (all) Truy vấn tìm tên người dùng -->
                 </p>
-                <p class="user-id">ID: 2313131321
+                <p class="user-id">ID: <?php echo $_SESSION['user']['id']; ?>
                     <!-- TODO: (all) Truy vấn tìm ID-->
                 </p>
-                <p class="user-role">Vai trò: Duck Hunter
+                <p class="user-role">Vai trò: <?php echo $_SESSION['user']['role']; ?>
                     <!-- TODO: (all) Truy vấn hiện vai trò -->
                 </p>
             </div>

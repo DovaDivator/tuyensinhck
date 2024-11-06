@@ -45,6 +45,10 @@ $passwordrequired = isset($_SESSION['passwordrequired']) ? $_SESSION['passwordre
                     <input type="checkbox" name="accept" id="accept">
                     <label for="accept">Bằng việc đăng ký, bạn đồng ý với <a href="chinhsachsudung.php" target="_blank">Chính sách sử dụng</a> của chúng tôi!</label>
                 </div>
+                <div>
+                    <input type="checkbox" id="showPassword" onclick="togglePassword()">
+                    <label for="showPassword">Hiện mật khẩu</label>
+                </div>
                 <input type="submit" value="Đăng ký">
             </form>
             <a href="login.php" style="margin-top: 10px;">Đã có tài khoản, đăng nhập tại đây!</a>
@@ -200,4 +204,21 @@ $passwordrequired = isset($_SESSION['passwordrequired']) ? $_SESSION['passwordre
         // Gửi dữ liệu đến server
         xhr.send(`username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}&email=${encodeURIComponent(email)}`);
     });
+
+
+        // Hiện mk và nhập lại mk
+        function togglePassword() {
+        var passwordInput = document.getElementById("password");
+        var passwordInput1 = document.getElementById("password_check");
+        var checkbox = document.getElementById("showPassword");
+
+
+        if (checkbox.checked) {
+            passwordInput.type = "text";
+            passwordInput1.type = "text";
+        } else {
+            passwordInput.type = "password";
+            passwordInput1.type = "password";
+        }
+    }
     </script>

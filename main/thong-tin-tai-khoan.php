@@ -71,9 +71,9 @@ if (isset($_SESSION['user'])) {
                                     </div>
                                 </div>
                                 <div class="info_text_container">
-                                    <h2 style='margin-top: 0;'>Ngô Đình Minh Trang</h2>
-                                    <p id="id_user">ID: 23131313131</p>
-                                    <p id="role">Vai trò: 
+                                    <h2 style='margin-top: 0;'><?php echo $_SESSION['user']['username']; ?></h2>
+                                    <p id="id_user">ID: <?php echo $_SESSION['user']['id']; ?></p>
+                                    <p id="role">Vai trò: <?php echo $_SESSION['user']['role']; ?>
                                         <?php 
                                         if ($_SESSION['user']['role'] === 'Admin') {
                                             echo 'Quản trị viên';
@@ -85,8 +85,8 @@ if (isset($_SESSION['user'])) {
                                         }
                                         ?>
                                     </p>
-                                    <p id="email">Email: <a href="#" title="Liên hệ email">ewewqwdqdq@email.com</a></p>
-                                    <p id="sdt">SĐT: <a href="#" title="Liên hệ số điện thoại">0942640743</a></p>
+                                    <p id="email">Email: <a href="#" title="Liên hệ email"><?php echo $_SESSION['user']['email']; ?></a></p>
+                                    <p id="sdt">SĐT: <a href="#" title="Liên hệ số điện thoại"><?php echo $_SESSION['user']['phone']; ?></a></p>
                                     <p td="trang_thai">Trạng thái: <font color="red">Chưa đăng ký hồ sơ</font></p>
                                     <P td='date_created'>Ngày đăng ký: 12/09/2024 </p>
                                 </div>

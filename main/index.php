@@ -13,6 +13,7 @@ if (isset($_SESSION['user'])) {
 //     echo "<script>alert('" . $_SESSION['message'] . "');</script>"; 
 //     unset($_SESSION['message']); 
 // }
+echo '<script>console.log("' . $_SESSION['user']['role'] . '");</script>';
 ?>
 <!DOCTYPE html>
 <html lang="en">

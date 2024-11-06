@@ -34,7 +34,12 @@ if (isset($_SESSION['user'])) {
             <form action="" method="POST" id=loginForm>
                 <input type="text" name="username" id="username" placeholder="Email/ SĐT/ ID người dùng">
                 <input type="password" name="password" id="password" placeholder="Mật khẩu" minlength="6" maxlength="20" pattern="[\x21-\x7E]+">
+                <div>
+                    <input type="checkbox" id="showPassword" onclick="togglePassword()">
+                    <label for="showPassword">Hiện mật khẩu</label>
+                </div>
                 <input type="submit" value="Đăng nhập">
+                
             </form>
             <a href="register.php" style="margin-top: 10px;">Đăng ký tài khoản sinh viên ở đây!</a>
             <a href="#" id="forgot-password" style="margin-top: 10px;">Quên mật khẩu?</a>
@@ -146,14 +151,14 @@ if (isset($_SESSION['user'])) {
                     xhrs.onload = function() {
                         if (xhrs.status === 200) {
                             const result = JSON.parse(xhrs.responseText);
-                            message  = result.message;
+                            message = result.message;
                             if (result.status === 'success') {
                                 resolve(result.message);
                             } else {
                                 reject(result.message);
                             }
                         } else {
-                            reject('There was an error with the request'); 
+                            reject('There was an error with the request');
                         }
                     };
 
@@ -166,21 +171,36 @@ if (isset($_SESSION['user'])) {
             },
             allowOutsideClick: () => false, // Ngừng đóng popup khi bấm ra ngoài
         }).then((result) => {
-  
+
             if (result) {
                 Swal.fire({
                     title: 'Success!',
-                    text: message, 
+                    text: message,
                     icon: 'success'
                 });
             }
         }).catch((error) => {
             Swal.fire({
                 title: 'Error!',
-                text: message, 
+                text: message,
                 icon: 'error'
             });
         });
 
     });
+
+
+    // Hiện MK
+
+    function togglePassword() {
+        var passwordInput = document.getElementById("password");
+        var checkbox = document.getElementById("showPassword");
+
+
+        if (checkbox.checked) {
+            passwordInput.type = "text";
+        } else {
+            passwordInput.type = "password";
+        }
+    }
 </script>
