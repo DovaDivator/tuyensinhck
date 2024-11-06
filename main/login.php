@@ -37,7 +37,7 @@ if (isset($_SESSION['user'])) {
                 <input type="submit" value="Đăng nhập">
             </form>
             <a href="register.php" style="margin-top: 10px;">Đăng ký tài khoản sinh viên ở đây!</a>
-            <a href="#" style="margin-top: 10px;">Quên mật khẩu?</a>
+            <a href="#" id="forgot-password" style="margin-top: 10px;">Quên mật khẩu?</a>
         </div>
     </div>
 
@@ -59,7 +59,7 @@ if (isset($_SESSION['user'])) {
         // Kiểm tra xem các trường có được nhập hay chưa
         if (!username || !password) {
             HideLoading();
-            WarmingDialog("Thiếu thông tin","Vui lòng điền đầy đủ thông tin đăng nhập!");
+            WarmingDialog("Thiếu thông tin", "Vui lòng điền đầy đủ thông tin đăng nhập!");
             return; // Kết thúc nếu thiếu thông tin
         }
 
@@ -78,7 +78,7 @@ if (isset($_SESSION['user'])) {
                 if (response.trim() === "success") {
                     HideLoading();
                     window.location.href = 'index.php'; // Chuyển hướng nếu đăng nhập thành công
-                }else if(response.trim().startsWith("confirm: ")){
+                } else if (response.trim().startsWith("confirm: ")) {
                     const errorMessage = response.replace("confirm: ", "");
                     HideLoading();
                     ConfirmDialog("Thông báo", errorMessage + " Bạn có muốn gửi lại thư xác nhận không?", "Gửi lại", "Bỏ qua").then((isConfirm) => {
@@ -88,24 +88,24 @@ if (isset($_SESSION['user'])) {
                             xhr2.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
                             xhr2.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
 
-                            xhr2.onload = function(){
+                            xhr2.onload = function() {
                                 const response2 = xhr2.responseText;
                                 if (xhr2.status === 200) {
-                                    if(response2.trim() == 200){
+                                    if (response2.trim() == 200) {
                                         SuccessDialog("Thông báo!", "Đã gửi thư xác minh, vui lòng truy cập email để xác thực người dùng.");
-                                    }else{
+                                    } else {
                                         ErrorDialog("Thông báo lỗi", "Đã có sự cố xảy ra, vui lòng thử lại sau! (" + response2 + ")");
                                     }
-                                }else{
+                                } else {
                                     ErrorDialog("Lỗi kết nối", "Không thể kết nối đến máy chủ. Vui lòng thử lại sau.");
                                 }
                             }
                             xhr2.send();
-                        }else{
+                        } else {
                             <?php unset($_SESSION['email_confirm']); ?>
                         }
                     });
-                }else {
+                } else {
                     const errorMessage = response.replace("error: ", "");
                     HideLoading();
                     ErrorDialog("Lỗi đăng nhập", errorMessage);
@@ -118,5 +118,69 @@ if (isset($_SESSION['user'])) {
 
         // Gửi dữ liệu đến server
         xhr.send(`username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`);
+    });
+
+
+    // quen mk 
+    document.getElementById("forgot-password").addEventListener("click", function(event) {
+        Swal.fire({
+            title: 'Enter your email',
+            input: 'email',
+            inputPlaceholder: 'Enter your email for password recovery',
+            showCancelButton: true,
+            confirmButtonText: 'Send email',
+            cancelButtonText: 'Cancel',
+            preConfirm: (email) => {
+                return new Promise((resolve, reject) => {
+                    // Kiểm tra nếu email trống, hủy hành động và không gửi
+                    if (!email) {
+                        reject('Email is required');
+                        return;
+                    }
+
+                    const xhrs = new XMLHttpRequest();
+                    xhrs.open("POST", "../php_control/backend/forgotpassword.php", true);
+                    xhrs.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                    xhrs.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+
+                    xhrs.onload = function() {
+                        if (xhrs.status === 200) {
+                            const result = JSON.parse(xhrs.responseText);
+                            message  = result.message;
+                            if (result.status === 'success') {
+                                resolve(result.message);
+                            } else {
+                                reject(result.message);
+                            }
+                        } else {
+                            reject('There was an error with the request'); 
+                        }
+                    };
+
+                    xhrs.onerror = function() {
+                        reject('Request failed');
+                    };
+
+                    xhrs.send(`email=${encodeURIComponent(email)}`);
+                });
+            },
+            allowOutsideClick: () => false, // Ngừng đóng popup khi bấm ra ngoài
+        }).then((result) => {
+  
+            if (result) {
+                Swal.fire({
+                    title: 'Success!',
+                    text: message, 
+                    icon: 'success'
+                });
+            }
+        }).catch((error) => {
+            Swal.fire({
+                title: 'Error!',
+                text: message, 
+                icon: 'error'
+            });
+        });
+
     });
 </script>

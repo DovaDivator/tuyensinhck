@@ -15,7 +15,7 @@ try {
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
     // Ghi lỗi vào log file hoặc xử lý theo cách phù hợp
-    error_log('Lỗi kết nối: ' . $e->getMessage());
+    $errorMessage = 'Lỗi kết nối: ' . $e->getMessage();
+    // error_log($errorMessage, 3, 'logfile.log');
     die('Không thể kết nối đến cơ sở dữ liệu.'); // Kết thúc script
 }
-?>
