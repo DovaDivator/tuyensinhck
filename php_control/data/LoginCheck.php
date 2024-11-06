@@ -22,6 +22,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Lấy email và tên bảng từ kết quả trả về
         $email = $responseData['email'];
         $table_name = $responseData['table_name'];
+        $id = $responseData['id'];
+        $phone = $responseData['phone'];
+        $avatar_name = $responseData['avatar_name'];
+        $hoten = $responseData['ten'];
 
         // Lưu tên bảng vào session
         $_SESSION['temp_role'] = $table_name;
@@ -32,9 +36,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Đăng nhập thành công
             $_SESSION['is_logged_in'] = true;
             $_SESSION['user'] = [
-                'username' => $username,
+                'username' => $hoten,
                 'role' => $table_name,
                 'email' => $email,
+                'id' => $id,
+                'phone' => $phone,
+                'avatar_name' => $avatar_name,
             ];
             echo "success"; // Trả về chuỗi thành công
         } elseif($httpAuth == 400){

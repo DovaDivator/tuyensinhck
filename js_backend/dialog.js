@@ -39,3 +39,4 @@ function ConfirmDialog(title, des, confirmText, cancelText) {
         return result.isConfirmed; // Trả về true nếu người dùng nhấn "Xác nhận", ngược lại trả về false
     });
 }
+

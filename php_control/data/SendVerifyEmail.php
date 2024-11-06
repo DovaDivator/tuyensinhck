@@ -31,7 +31,7 @@ curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
 $response = curl_exec($ch);
 $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
-file_put_contents("log.txt", $response);
+// file_put_contents("log.txt", $response);
 
 curl_close($ch);
 
