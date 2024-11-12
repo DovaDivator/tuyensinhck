@@ -1,13 +1,26 @@
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
+    # Chấp nhận các file tĩnh
     RewriteCond %{REQUEST_URI} \.(css|js|png|jpg|jpeg|gif|ico|svg)$ [NC]
     RewriteRule ^ - [L]
 
+    # Chấp nhận các yêu cầu AJAX
     RewriteCond %{HTTP:X-Requested-With} XMLHttpRequest [NC]
     RewriteRule ^ - [L]
 
-    RewriteCond %{REQUEST_URI} !^/tuyensinhck/main/
-    RewriteRule ^(.*)$ /tuyensinhck/main/index.php [R=301,L]
-</IfModule>
+    # Chấp nhận các đường dẫn trong /tuyensinhck/email/
+    RewriteCond %{REQUEST_URI} ^/tuyensinhck/email/ [NC]
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
 
+    # Chấp nhận các file tồn tại trong /tuyensinhck/main/
+    RewriteCond %{REQUEST_URI} ^/tuyensinhck/main/ [NC]
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
+
+    # Chuyển hướng tất cả các yêu cầu khác về /tuyensinhck/main/index.php
+    RewriteRule ^ /tuyensinhck/main/index.php [R=301,L]
+</IfModule>

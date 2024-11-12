@@ -19,3 +19,4 @@ try {
     // error_log($errorMessage, 3, 'logfile.log');
     die('Không thể kết nối đến cơ sở dữ liệu.'); // Kết thúc script
 }
+?>

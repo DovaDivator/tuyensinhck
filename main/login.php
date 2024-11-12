@@ -1,4 +1,4 @@
-<?php
+x   <?php
 session_start();
 if (isset($_SESSION['user'])) {
     header("location: index.php");
@@ -129,22 +129,17 @@ if (isset($_SESSION['user'])) {
     // quen mk 
     document.getElementById("forgot-password").addEventListener("click", function(event) {
         Swal.fire({
-            title: 'Enter your email',
+            title: 'Khôi khục mật khẩu',
             input: 'email',
-            inputPlaceholder: 'Enter your email for password recovery',
+            inputPlaceholder: 'Nhập email cần khôi phục',
             showCancelButton: true,
-            confirmButtonText: 'Send email',
-            cancelButtonText: 'Cancel',
+            confirmButtonText: 'Gửi',
+            cancelButtonText: 'Hủy',
             preConfirm: (email) => {
+                ShowLoading();
                 return new Promise((resolve, reject) => {
-                    // Kiểm tra nếu email trống, hủy hành động và không gửi
-                    if (!email) {
-                        reject('Email is required');
-                        return;
-                    }
-
                     const xhrs = new XMLHttpRequest();
-                    xhrs.open("POST", "../php_control/backend/forgotpassword.php", true);
+                    xhrs.open("POST", "../php_control/data/forgotpassword.php", true);
                     xhrs.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
                     xhrs.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
 
@@ -171,20 +166,13 @@ if (isset($_SESSION['user'])) {
             },
             allowOutsideClick: () => false, // Ngừng đóng popup khi bấm ra ngoài
         }).then((result) => {
-
             if (result) {
-                Swal.fire({
-                    title: 'Success!',
-                    text: message,
-                    icon: 'success'
-                });
+                HideLoading();
+                SuccessDialog("Thông báo", message);
             }
         }).catch((error) => {
-            Swal.fire({
-                title: 'Error!',
-                text: message,
-                icon: 'error'
-            });
+            HideLoading();
+            ErrorDialog("Thông báo lỗi", message);
         });
 
     });

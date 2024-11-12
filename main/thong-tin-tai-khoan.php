@@ -58,22 +58,14 @@ if (isset($_SESSION['user'])) {
                             </div>
                             <div class="linediv" style="gap:30px; align-items:flex-start;">
                                 <div class="avatar_container">
-                                   <form id="uploadForm" enctype="multipart/form-data" method="post" style="display: none;">
-                                        <input type="file" name="avatar" id="avatarInput" accept="image/*" />
-                                    </form>
+                                    <?php if($_SESSION['user']['avatar_name'] == null): ?>
                                     
-                                    <img src="../assets/images/guest.png?v=<?php echo filemtime('../assets/images/logo.png'); ?>" 
-                                    height="180px" width="180px" style="top: 10px; left: 10px" id="avatarImg">
-                                    
-                                    <div class="edit_avatar_img_layout">
-                                        <img src="../assets/icon/upload.png?v=<?php echo filemtime('../assets/icon/upload.png'); ?>" 
-                                        height="50px" width="50px">
-                                    </div>
+                                    <?php endif; ?>
                                 </div>
                                 <div class="info_text_container">
                                     <h2 style='margin-top: 0;'><?php echo $_SESSION['user']['username']; ?></h2>
                                     <p id="id_user">ID: <?php echo $_SESSION['user']['id']; ?></p>
-                                    <p id="role">Vai trò: <?php echo $_SESSION['user']['role']; ?>
+                                    <p id="role">Vai trò:
                                         <?php 
                                         if ($_SESSION['user']['role'] === 'Admin') {
                                             echo 'Quản trị viên';

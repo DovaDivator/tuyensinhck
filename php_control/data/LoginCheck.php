@@ -26,6 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $phone = $responseData['phone'];
         $avatar_name = $responseData['avatar_name'];
         $hoten = $responseData['ten'];
+        $trang_thai = $responseData['trang_thai'];
 
         // Lưu tên bảng vào session
         $_SESSION['temp_role'] = $table_name;
@@ -42,15 +43,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 'id' => $id,
                 'phone' => $phone,
                 'avatar_name' => $avatar_name,
+                'trang_thai' => $trang_thai,
             ];
             echo "success"; // Trả về chuỗi thành công
-        } elseif($httpAuth == 400){
-            // không làm gì cả 
+        }else if($httpAuth == 401){
+            echo "error: Tên đăng nhập hoặc mật khẩu sai.";
         }else{
-            echo "error: Có lỗi xảy ra khi kết nối dữ liệu người dùng!";
+            echo "error: Có lỗi xảy ra khi kết nối dữ liệu người dùng! $httpAuth";
         }
     } else {
-        echo "error: Không tìm thấy người dùng.";
+        echo "error: Tên đăng nhập hoặc mật khẩu sai.";
     }
 } else {
     echo "error: Lỗi PHP request";

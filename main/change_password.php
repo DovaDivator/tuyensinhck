@@ -27,8 +27,10 @@ if (isset($_SESSION['user'])) {
     <link rel="stylesheet" href="../assets/style/table.css?v=<?php echo filemtime('../assets/style/table.css'); ?>">
     <link rel="stylesheet" href="../assets/style/CSTT.css?v=<?php echo filemtime('../assets/style/CSTT.css'); ?>">
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../js_backend/events.js?v=<?php echo filemtime('../js_backend/events.js'); ?>"></script>
     <script src="../js_backend/control.js?v=<?php echo filemtime('../js_backend/control.js'); ?>"></script>
+    <script src="../js_backend/dialog.js?v=<?php echo filemtime('../js_backend/dialog.js'); ?>"></script>
     <script>
         function togglePassword() {
             var passwordInput = document.getElementById("password");
@@ -67,21 +69,22 @@ if (isset($_SESSION['user'])) {
                     <div class="body_path">
                         <div class="info_layout change_layout_div" id="change_pass_path">
                             <h1>Thay đổi mật khẩu</h1>
-                            <form action="post">
+                            <form method="POST" id=changePasswordForm>
                                 <div class="form-fields">
                                     <label for="password">Mật khẩu hiện tại</label>
-                                    <input type="password" id="password" name="password" placeholder="Nhập mật khẩu hiện tại" pattern="[\x21-\x7E]+" required>
+                                    <input type="password" id="password" name="password" placeholder="Nhập mật khẩu hiện tại" pattern="[\x21-\x7E]+">
                                     <label for="newpassword">Mật khẩu mới</label>
-                                    <input type="password" id="newpassword" name="newpassword" placeholder="Mật khẩu tối thiểu 6 chữ cái!" pattern="[\x21-\x7E]+" required>
+                                    <input type="password" id="newpassword" name="newpassword" placeholder="Mật khẩu tối thiểu 6 chữ cái!" pattern="[\x21-\x7E]+" >
                                     <label for="newpassword1">Nhập lại mật khẩu</label>
-                                    <input type="password" id="newpassword1" name="newpassword1" placeholder="Điền lại mật khẩu mới" pattern="[\x21-\x7E]+" required>
+                                    <input type="password" id="newpassword1" name="newpassword1" placeholder="Điền lại mật khẩu mới" pattern="[\x21-\x7E]+">
                                     <div class="linediv checkbox_div">
                                         <input type="checkbox" id="showPassword" onclick="togglePassword()">
                                         <label for="showPassword">Hiện mật khẩu</label>
                                     </div>
-                                    <input type="submit" value="Xác nhận" name="change-pass-sumbit" class="custom-button">
-                                </form>
-                            </div>
+                                    <input type="submit" value="Xác nhận" class="custom-button">
+                                
+                                </div>
+                            </form>
 
                         </div>
 
@@ -93,7 +96,68 @@ if (isset($_SESSION['user'])) {
 
         </div>
     </div>
-    </div>
+    <?php include '../php_control/path_side/LoadBar.php'; ?>
 </body>
 
 </html>
+
+<script>
+        // Ngăn chặn hành vi mặc định của sự kiện submit form
+        document.getElementById('changePasswordForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        ShowLoading();
+
+        // Lấy giá trị từ các trường input
+        const password = document.getElementById('password').value.trim();
+        const newPassword = document.getElementById('newpassword').value.trim();
+        const newPassword1 = document.getElementById('newpassword1').value.trim();
+
+        // Kiểm tra xem các trường có được nhập hay chưa
+        if (!password || !newPassword || !newPassword1) {
+            HideLoading();
+            WarmingDialog("Thiếu thông tin", "Vui lòng điền đầy đủ thông tin đăng nhập!");
+            return; // Kết thúc nếu thiếu thông tin
+        }
+
+        if(newPassword != newPassword1){
+            HideLoading();
+            ErrorDialog("Lỗi thông tin","Mật khẩu không khớp!");
+            return;
+        }
+
+        if(password == newPassword){
+            HideLoading();
+            ErrorDialog("Thông báo","Mật khẩu cũ và mật khẩu mới giống nhau");
+            return;
+        }
+
+        // Tạo đối tượng XMLHttpRequest
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", "../php_control/data/UpdatePassword.php", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+
+        // Xử lý phản hồi
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                const response = xhr.responseText; // Lấy dữ liệu phản hồi
+
+                // Nếu bạn không trả về JSON, xử lý phản hồi như một chuỗi
+                if (response.trim() === "success") {
+                    HideLoading();
+                    SuccessDialog("Thông báo", "Thay đổi mật khẩu thành công!");
+                } else {
+                    const errorMessage = response.replace("error: ", "");
+                    HideLoading();
+                    ErrorDialog("Thông báo lỗi", errorMessage);
+                }
+            } else {
+                HideLoading();
+                ErrorDialog("Lỗi kết nối", "Không thể kết nối đến máy chủ. Vui lòng thử lại sau.");
+            }
+        };
+
+        // Gửi dữ liệu đến server
+        xhr.send(`current_password=${encodeURIComponent(password)}&new_password=${encodeURIComponent(newPassword)}`);
+    });
+</script>
