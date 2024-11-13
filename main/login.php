@@ -1,10 +1,10 @@
-x   <?php
-session_start();
-if (isset($_SESSION['user'])) {
-    header("location: index.php");
-    exit();
-}
-?>
+x <?php
+    session_start();
+    if (isset($_SESSION['user'])) {
+        header("location: index.php");
+        exit();
+    }
+    ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -39,7 +39,7 @@ if (isset($_SESSION['user'])) {
                     <label for="showPassword">Hiện mật khẩu</label>
                 </div>
                 <input type="submit" value="Đăng nhập">
-                
+
             </form>
             <a href="register.php" style="margin-top: 10px;">Đăng ký tài khoản sinh viên ở đây!</a>
             <a href="#" id="forgot-password" style="margin-top: 10px;">Quên mật khẩu?</a>
@@ -128,14 +128,24 @@ if (isset($_SESSION['user'])) {
 
     // quen mk 
     document.getElementById("forgot-password").addEventListener("click", function(event) {
+        let enteredEmail = ""; // Biến lưu email người dùng nhập vào
+
         Swal.fire({
-            title: 'Khôi khục mật khẩu',
+            title: 'Khôi phục mật khẩu',
             input: 'email',
             inputPlaceholder: 'Nhập email cần khôi phục',
             showCancelButton: true,
             confirmButtonText: 'Gửi',
             cancelButtonText: 'Hủy',
             preConfirm: (email) => {
+                // Lưu email nhập vào vào biến
+                enteredEmail = email;
+
+                if (!email) {
+                    Swal.showValidationMessage('Email không được để trống');
+                    return false; // Dừng lại nếu email không hợp lệ
+                }
+
                 ShowLoading();
                 return new Promise((resolve, reject) => {
                     const xhrs = new XMLHttpRequest();
@@ -153,14 +163,15 @@ if (isset($_SESSION['user'])) {
                                 reject(result.message);
                             }
                         } else {
-                            reject('There was an error with the request');
+                            reject('Có lỗi xảy ra với yêu cầu');
                         }
                     };
 
                     xhrs.onerror = function() {
-                        reject('Request failed');
+                        reject('Yêu cầu thất bại');
                     };
 
+                    // Truyền email vào trong body của yêu cầu
                     xhrs.send(`email=${encodeURIComponent(email)}`);
                 });
             },
@@ -168,15 +179,81 @@ if (isset($_SESSION['user'])) {
         }).then((result) => {
             if (result) {
                 HideLoading();
-                SuccessDialog("Thông báo", message);
+                // Bây giờ truyền email đã nhập ở bước trước vào trong bước xác nhận OTP
+                Swal.fire({
+                    title: message,
+                    input: "text",
+                    inputPlaceholder: "Nhập mã OTP",
+                    inputAttributes: {
+                        autocapitalize: "off"
+                    },
+                    showCancelButton: true,
+                    confirmButtonText: "Xác nhận",
+                    showLoaderOnConfirm: true,
+                    preConfirm: async (otp) => {
+                        // Kiểm tra nếu otp không hợp lệ
+                        if (!otp) {
+                            Swal.showValidationMessage('OTP không được để trống');
+                            return false; // Dừng quá trình nếu OTP không hợp lệ
+                        }
+
+                        ShowLoading();
+                        return new Promise((resolve, reject) => {
+                            const xhrotp = new XMLHttpRequest();
+                            xhrotp.open("POST", "../php_control/data/otpcheck.php", true);
+                            xhrotp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                            xhrotp.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+
+                            xhrotp.onload = function() {
+                                HideLoading();
+                                if (xhrotp.status === 200) {
+                                    try {
+                                        const resultotp = JSON.parse(xhrotp.responseText);
+                                        if (resultotp.statusotp === 'success') {
+                                            resolve(resultotp.messageotp);
+                                        } else {
+                                            Swal.showValidationMessage(resultotp.messageotp);
+                                            reject(resultotp.messageotp);
+                                        }
+                                    } catch (e) {
+                                        Swal.showValidationMessage('Có lỗi xảy ra khi phân tích phản hồi');
+                                        reject('Error processing response');
+                                    }
+                                } else {
+                                    Swal.showValidationMessage('Có lỗi xảy ra khi gửi yêu cầu');
+                                    reject();
+                                }
+                            };
+
+                            xhrotp.onerror = function() {
+                                HideLoading();
+                                Swal.showValidationMessage('Yêu cầu thất bại');
+                                reject();
+                            };
+
+                            // Gửi OTP và email trong body của yêu cầu
+                            xhrotp.send(`otp=${encodeURIComponent(otp)}&email=${encodeURIComponent(enteredEmail)}`);
+                        });
+                    },
+                    allowOutsideClick: () => !Swal.isLoading()
+                }).then((resultotp) => {
+                    if (resultotp.value) { // Sử dụng `resultotp.value` để hiển thị thông báo thành công.
+                        Swal.fire({
+                            title: "Xác nhận thành công",
+                            text: resultotp.value, // Hiển thị tin nhắn thành công
+                            icon: "success"
+                        });
+                    }
+                }).catch((error) => {
+                    HideLoading();
+                    ErrorDialog("Thông báo lỗi", error);
+                });
             }
         }).catch((error) => {
             HideLoading();
             ErrorDialog("Thông báo lỗi", message);
         });
-
     });
-
 
     // Hiện MK
 

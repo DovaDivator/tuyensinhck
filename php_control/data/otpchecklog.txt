@@ -1,0 +1,24 @@
+Error occurred while sending OTP request
+API Response: {"message":"No API key found in request","hint":"No `apikey` request header or url param was found."}
+Decoded result: stdClass Object
+(
+    [message] => No API key found in request
+    [hint] => No `apikey` request header or url param was found.
+)
+
+API Response: {"code":429,"error_code":"over_email_send_rate_limit","msg":"For security purposes, you can only request this after 42 seconds."}
+Decoded result: stdClass Object
+(
+    [code] => 429
+    [error_code] => over_email_send_rate_limit
+    [msg] => For security purposes, you can only request this after 42 seconds.
+)
+
+API Response: {"code":429,"error_code":"over_email_send_rate_limit","msg":"For security purposes, you can only request this after 42 seconds."}
+Decoded result: stdClass Object
+(
+    [code] => 429
+    [error_code] => over_email_send_rate_limit
+    [msg] => For security purposes, you can only request this after 42 seconds.
+)
+

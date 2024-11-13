@@ -16,6 +16,7 @@ if (isset($_POST['email'])) {
     exit();
 }
 
+
 // Khởi tạo cURL để kiểm tra sự tồn tại của email trong hệ thống
 $query = "SELECT * FROM get_email_user(:id_or_phone)";
 $stmt = $pdo->prepare($query);
