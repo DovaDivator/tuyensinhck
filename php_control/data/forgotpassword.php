@@ -27,37 +27,37 @@ $responseData = $stmt->fetch(PDO::FETCH_ASSOC);
 // Kiểm tra nếu không tìm thấy email trong hệ thống
 if ($responseData) {
     // Nếu email tồn tại, gửi yêu cầu khôi phục mật khẩu
-$data = ["email" => $email];
-$chRecover = curl_init($apiUrlRecover);
-curl_setopt($chRecover, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($chRecover, CURLOPT_HTTPHEADER, [
-    'Content-Type: application/json',
-    'apikey: ' . $apiKey,
-    'Authorization: Bearer ' . $apiKey
-]);
-curl_setopt($chRecover, CURLOPT_POST, true);
-curl_setopt($chRecover, CURLOPT_POSTFIELDS, json_encode($data));
-
-// Gửi yêu cầu khôi phục mật khẩu và nhận phản hồi
-$responseRecover = curl_exec($chRecover);
-$httpCodeRecover = curl_getinfo($chRecover, CURLINFO_HTTP_CODE);
-curl_close($chRecover);
-
-// Ghi log vào file log.txt
-// file_put_contents("log.txt", "HTTP Code: $httpCodeRecover\nResponse: $responseRecover\n", FILE_APPEND);
-
-// Kiểm tra mã trạng thái HTTP và phản hồi cho người dùng
-if ($httpCodeRecover == 200) {
-    echo json_encode([
-        "status" => "success",
-        "message" => "Đã gửi email khôi phục mật khẩu. Vui lòng kiểm tra hộp thư để tiếp tục."
+    $data = ["email" => $email];
+    $chRecover = curl_init($apiUrlRecover);
+    curl_setopt($chRecover, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($chRecover, CURLOPT_HTTPHEADER, [
+        'Content-Type: application/json',
+        'apikey: ' . $apiKey,
+        'Authorization: Bearer ' . $apiKey
     ]);
-} else {
-    echo json_encode([
-        "status" => "error",
-        "message" => "Không thể gửi email khôi phục mật khẩu. Vui lòng thử lại sau. ($httpCodeRecover)"
-    ]);
-}
+    curl_setopt($chRecover, CURLOPT_POST, true);
+    curl_setopt($chRecover, CURLOPT_POSTFIELDS, json_encode($data));
+
+    // Gửi yêu cầu khôi phục mật khẩu và nhận phản hồi
+    $responseRecover = curl_exec($chRecover);
+    $httpCodeRecover = curl_getinfo($chRecover, CURLINFO_HTTP_CODE);
+    curl_close($chRecover);
+
+    // Ghi log vào file log.txt
+    // file_put_contents("log.txt", "HTTP Code: $httpCodeRecover\nResponse: $responseRecover\n", FILE_APPEND);
+
+    // Kiểm tra mã trạng thái HTTP và phản hồi cho người dùng
+    if ($httpCodeRecover == 200) {
+        echo json_encode([
+            "status" => "success",
+            "message" => "Đã gửi email khôi phục mật khẩu. Vui lòng kiểm tra hộp thư để tiếp tục."
+        ]);
+    } else {
+        echo json_encode([
+            "status" => "error",
+            "message" => "Không thể gửi email khôi phục mật khẩu. Vui lòng thử lại sau. ($httpCodeRecover)"
+        ]);
+    }
     exit();
 }else{
     echo json_encode([
