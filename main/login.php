@@ -182,21 +182,22 @@ x <?php
                 // Bây giờ truyền email đã nhập ở bước trước vào trong bước xác nhận OTP
                 Swal.fire({
                     title: message,
-                    input: "text",
-                    inputPlaceholder: "Nhập mã OTP",
-                    inputAttributes: {
-                        autocapitalize: "off"
-                    },
+                    html: `
+        <input id="otp" class="swal2-input" placeholder="Nhập mã OTP" type="text" autocapitalize="off">
+        <input id="passwordnew" class="swal2-input" placeholder="Nhập mật khẩu mới" type="password">
+    `,
                     showCancelButton: true,
                     confirmButtonText: "Xác nhận",
                     showLoaderOnConfirm: true,
-                    preConfirm: async (otp) => {
-                        // Kiểm tra nếu otp không hợp lệ
-                        if (!otp) {
-                            Swal.showValidationMessage('OTP không được để trống');
-                            return false; // Dừng quá trình nếu OTP không hợp lệ
-                        }
+                    preConfirm: async () => {
+                        const otp = document.getElementById('otp').value;
+                        const passwordnew = document.getElementById('passwordnew').value;
 
+                        // Kiểm tra nếu OTP và password không hợp lệ
+                        if (!otp || !passwordnew) {
+                            Swal.showValidationMessage('OTP và mật khẩu không được để trống');
+                            return false; // Dừng quá trình nếu không hợp lệ
+                        }
                         ShowLoading();
                         return new Promise((resolve, reject) => {
                             const xhrotp = new XMLHttpRequest();
@@ -231,8 +232,9 @@ x <?php
                                 reject();
                             };
 
-                            // Gửi OTP và email trong body của yêu cầu
-                            xhrotp.send(`otp=${encodeURIComponent(otp)}&email=${encodeURIComponent(enteredEmail)}`);
+                            // Gửi OTP, email và mật khẩu trong body của yêu cầu
+                            xhrotp.send(`otp=${encodeURIComponent(otp)}&passwordnew=${encodeURIComponent(passwordnew)}&email=${encodeURIComponent(enteredEmail)}`);
+
                         });
                     },
                     allowOutsideClick: () => !Swal.isLoading()
