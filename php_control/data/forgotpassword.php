@@ -8,6 +8,8 @@ $apiKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6
 // Kiểm tra xem email có được truyền vào từ form không
 if (isset($_POST['email'])) {
     $email = $_POST['email'];
+    unset($_POST);
+    $_POST = array();
 } else {
     echo json_encode([
         "status" => "error",

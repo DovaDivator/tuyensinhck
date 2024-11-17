@@ -8,7 +8,7 @@ if (isset($_POST['notification_id'])) {
 
     // Hiển thị tạm thời
     echo '<div class="info_notifi_container text-content">';
-    echo '<h2>Thắng duut deet vit ban tum lum ứ ứ ứ</h2>';
+    echo '<h2>Thắng</h2>';
     echo '<p class="type">Không xác định</p>';
     echo '<p class="date">Ngày: 12/10/2024</p>';
     echo '<p>Đây là một đoạn văn mẫu để kiểm tra việc xuống dòng. Nếu có từ dài, nó sẽ tự động xuống dòng.';

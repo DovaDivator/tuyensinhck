@@ -192,12 +192,11 @@ x <?php
                     preConfirm: async () => {
                         const otp = document.getElementById('otp').value;
                         const passwordnew = document.getElementById('passwordnew').value;
-
                         // Kiểm tra nếu OTP và password không hợp lệ
                         if (!otp || !passwordnew) {
                             Swal.showValidationMessage('OTP và mật khẩu không được để trống');
                             return false; // Dừng quá trình nếu không hợp lệ
-                        }
+                        }  
                         ShowLoading();
                         return new Promise((resolve, reject) => {
                             const xhrotp = new XMLHttpRequest();
@@ -206,7 +205,6 @@ x <?php
                             xhrotp.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
 
                             xhrotp.onload = function() {
-                                HideLoading();
                                 if (xhrotp.status === 200) {
                                     try {
                                         const resultotp = JSON.parse(xhrotp.responseText);
@@ -227,7 +225,6 @@ x <?php
                             };
 
                             xhrotp.onerror = function() {
-                                HideLoading();
                                 Swal.showValidationMessage('Yêu cầu thất bại');
                                 reject();
                             };
@@ -239,6 +236,7 @@ x <?php
                     },
                     allowOutsideClick: () => !Swal.isLoading()
                 }).then((resultotp) => {
+                    HideLoading();
                     if (resultotp.value) { // Sử dụng `resultotp.value` để hiển thị thông báo thành công.
                         Swal.fire({
                             title: "Xác nhận thành công",

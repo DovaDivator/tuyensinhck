@@ -8,7 +8,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["otp"]) && isset($_POST
     $email = $_POST["email"];
     $newPassword = $_POST["passwordnew"];
     // file_put_contents('otpchecklogpass.txt', 'password: ' . $newPassword . PHP_EOL, FILE_APPEND);
-
+    unset($_POST);
+    $_POST = array();
 
 
     // Supabase API URL và Key (thay bằng URL và API Key của bạn)

@@ -8,8 +8,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Kiểm tra xem các khóa có tồn tại không
     $username = $_POST["username"]; // Lấy tên đăng nhập từ form
     $password = $_POST["password"]; // Lấy mật khẩu từ form
-    unset($_POST['password']);
-    unset($_POST['username']);
+    unset($_POST);
+    $_POST = array();
 
     // Thực hiện truy vấn SQL
     $query = "SELECT * FROM get_email_user(:id_or_phone)";

@@ -3,6 +3,8 @@ include '../php_control/data/db_connect.php';
 
 if(isset($_GET['email'])){
     $email = $_GET['email'];
+    unset($_POST);
+    $_POST = array();
 }else{
     include "../php_control/path_side/fatal.php";
     exit();
