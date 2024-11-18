@@ -8,8 +8,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Kiểm tra xem các khóa có tồn tại không
     $username = $_POST["username"]; // Lấy tên đăng nhập từ form
     $password = $_POST["password"]; // Lấy mật khẩu từ form
-    unset($_POST['password']);
-    unset($_POST['username']);
+    unset($_POST);
+    $_POST = array();
 
     // Thực hiện truy vấn SQL
     $query = "SELECT * FROM get_email_user(:id_or_phone)";
@@ -28,14 +28,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $hoten = $responseData['ten'];
         $trang_thai = $responseData['trang_thai'];
 
-        // Lưu tên bảng vào session
-        $_SESSION['temp_role'] = $table_name;
-
-        // Kiểm tra mật khẩu
-        $httpAuth = check_password($email, $password);
-        if ($httpAuth == 200) {
+        // Kiểm tra mật khẩu và lấy token
+        $authResponse = check_password($email, $password);
+        if (is_array($authResponse) && isset($authResponse['access_token'])) {
             // Đăng nhập thành công
             $_SESSION['is_logged_in'] = true;
+            $_SESSION['access_token'] = $authResponse['access_token']; // Lưu Access Token
+            $_SESSION['refresh_token'] = $authResponse['refresh_token']; // Lưu Refresh Token
+
             $_SESSION['user'] = [
                 'username' => $hoten,
                 'role' => $table_name,
@@ -46,10 +46,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 'trang_thai' => $trang_thai,
             ];
             echo "success"; // Trả về chuỗi thành công
-        }else if($httpAuth == 401){
+        } else if ($authResponse === 401) {
             echo "error: Tên đăng nhập hoặc mật khẩu sai.";
-        }else{
-            echo "error: Có lỗi xảy ra khi kết nối dữ liệu người dùng! $httpAuth";
+        } else {
+            echo "error: Có lỗi xảy ra khi kết nối dữ liệu người dùng! $authResponse";
         }
     } else {
         echo "error: Tên đăng nhập hoặc mật khẩu sai.";
@@ -59,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 exit();
 
-// Hàm kiểm tra mật khẩu
+// Hàm kiểm tra mật khẩu và lấy token
 function check_password($email, $password) {
     // Thông tin kết nối đến Supabase
     $apiUrl = "https://iwelyvdecathaeppslzw.supabase.co/auth/v1/token?grant_type=password";
@@ -86,11 +86,12 @@ function check_password($email, $password) {
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
 
-    // Giải mã phản hồi JSON của Supabase để phân tích thông báo lỗi
+    // Giải mã phản hồi JSON của Supabase
     $responseData = json_decode($response, true);
 
-    // Kiểm tra mã HTTP và nội dung phản hồi để phân biệt lỗi
-    if ($httpCode == 400) {
+    if ($httpCode === 200) {
+        return $responseData; // Trả về Access Token và Refresh Token nếu thành công
+    } elseif ($httpCode === 400) {
         if (isset($responseData['error_code']) && $responseData['error_code'] === 'email_not_confirmed') {
             $_SESSION['email_confirm'] = $email;
             echo "confirm: Tài khoản chưa được xác thực!";
@@ -101,5 +102,4 @@ function check_password($email, $password) {
 
     return $httpCode; // Trả về mã HTTP nếu không có lỗi 400
 }
-
 ?>

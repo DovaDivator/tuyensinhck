@@ -3,6 +3,8 @@ session_start();
 
 if (isset($_POST['notification_id'])) {
     $notification_id = $_POST['notification_id'];
+    unset($_POST);
+    $_POST = array();
 
     //Sau này sẽ thực hiện truy vấn sql lấy tin nhắn chi tiết
 

@@ -57,7 +57,7 @@ if (isset($_SESSION['user'])) {
                                 <?php endif; ?>
                             </div>
                             <div class="linediv" style="gap:30px; align-items:flex-start;">
-                                <div class="avatar_container">
+                                <div class="avatar_container disable" style="width: 200px; height: 200px;" onclick="MovePage('chinhsuathongtin.php')">
                                     <?php if($_SESSION['user']['avatar_name'] == null): ?>
                                     
                                     <?php endif; ?>
@@ -78,7 +78,13 @@ if (isset($_SESSION['user'])) {
                                         ?>
                                     </p>
                                     <p id="email">Email: <a href="#" title="Liên hệ email"><?php echo $_SESSION['user']['email']; ?></a></p>
-                                    <p id="sdt">SĐT: <a href="#" title="Liên hệ số điện thoại"><?php echo $_SESSION['user']['phone']; ?></a></p>
+                                    <p id="sdt">SĐT: <a 
+                                    <?php if($_SESSION['user']['phone'] !== null){
+                                        echo 'href="#" title="Liên hệ số điện thoại">'.$_SESSION['user']['phone'];
+                                    }else{
+                                        echo 'href="#" title="Người dùng chưa cập nhật số điện thoại"> Không có';
+                                    }
+                                    ?></a></p>
                                     <p td="trang_thai">Trạng thái: <font color="red">Chưa đăng ký hồ sơ</font></p>
                                     <P td='date_created'>Ngày đăng ký: 12/09/2024 </p>
                                 </div>

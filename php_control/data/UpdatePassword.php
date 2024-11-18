@@ -9,8 +9,8 @@ if (isset($_POST['current_password'], $_POST['new_password'])) {
     $email = $_SESSION['user']['email'];
     $currentPassword = $_POST['current_password'];
     $newPassword = $_POST['new_password'];
-    unset($_POST['current_password']);
-    unset($_POST['new_password']);
+    unset($_POST);
+    $_POST = array();
 
     // Xác thực mật khẩu hiện tại bằng cách đăng nhập
     $dataSignIn = [

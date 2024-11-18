@@ -28,8 +28,10 @@ if (isset($_SESSION['user'])) {
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" rel="stylesheet">
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../js_backend/events.js?v=<?php echo filemtime('../js_backend/events.js'); ?>"></script>
     <script src="../js_backend/control.js?v=<?php echo filemtime('../js_backend/control.js'); ?>"></script>
+    <script src="../js_backend/dialog.js?v=<?php echo filemtime('../js_backend/dialog.js'); ?>"></script>
 </head>
 
 <body>
@@ -73,7 +75,7 @@ if (isset($_SESSION['user'])) {
                                     <!-- Personal Information Fields -->
                                     <div class="form-fields">
                                         <label for="fullname"><font color="red">*</font>&nbsp;Họ và tên:</label>
-                                        <input type="text" id="fullname" name="fullname" placeholder="Bắt buộc"
+                                        <input type="text" id="fullname" name="fullname" placeholder="Bắt buộc" maxlength="255"
                                         <?php
                                             echo "value='".$_SESSION['user']['username']."'"; 
                                             if($_SESSION['user']['role'] !== 'Admin'){ 
@@ -83,16 +85,16 @@ if (isset($_SESSION['user'])) {
                                                 echo "title='Họ và tên của bạn là cố định, vui lòng gửi yêu cầu đến Quản trị viên để nhận hỗ trợ'"; 
                                             } 
                                             if($_SESSION['user']['role'] === 'Student'){ 
-                                                echo "title='Vui lòng nộp hồ sơ để cập nhật họ và tên chính xác!'"; 
+                                                echo "title='Họ và tên của bạn cập nhật dựa trên hồ sơ bạn đã đăng ký!'"; 
                                             }
                                         ?>
                                         >
 
                                         <label for="email"><font color="red">*</font>&nbsp;Email:</label>
-                                        <input type="email" id="email" name="email" placeholder="Bắt buộc" value="<?php echo $_SESSION['user']['email']; ?>" required>
+                                        <input type="email" id="email" name="email" placeholder="Bắt buộc" maxlength="255" value="<?php echo $_SESSION['user']['email']; ?>">
 
                                         <label for="phone">&nbsp;&nbsp;Số điện thoại:</label>
-                                        <input type="tel" id="phone" placeholder="Nhập SĐT 10 chữ số! (không bắt buộc)" value="<?php echo $_SESSION['user']['phone']; ?>" name="phone">
+                                        <input type="text" id="phone" placeholder="Nhập SĐT 10 chữ số! (không bắt buộc)" maxlength="10" value="<?php echo $_SESSION['user']['phone']; ?>" name="phone">
                                     </div>
                                 </div>
 
@@ -120,10 +122,23 @@ if (isset($_SESSION['user'])) {
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
 <script>
+    window.onbeforeunload = function(){
+        const formData = new FormData();// Thay đổi blob thành dữ liệu phù hợp
+
+        DeleteExistFile('avatar_temp', formData)
+            .then(data => {
+                console.log('Temp file deleted:', data.message);
+            })
+            .catch(error => {
+                console.error('Error deleting temp file:', error);
+            });
+    };
+
     let cropper;
 
     // Xử lý khi người dùng chọn tệp ảnh
     document.getElementById('avatarInput').addEventListener('change', function(event) {
+        isFormSubmitting = true;
         const file = event.target.files[0];
         event.target.value = '';
 
@@ -158,14 +173,14 @@ if (isset($_SESSION['user'])) {
         }).toBlob((blob) => {
             // Upload blob (ảnh đã cắt) lên server
             const formData = new FormData();
-            formData.append('avatar', blob);
+            
 
-            DeleteExistFile('avatar', formData)
+            DeleteExistFile('avatar_temp', formData)
                 .then(data => {
                     if (data.success) {
                         console.log(data.message);
                     } else {
-                        alert('Có lỗi xảy ra khi tải ảnh lên: ' + data.message);
+                        console.log('Có lỗi xảy ra khi tải ảnh lên: ' + data.message);
                     }
                 })
                 .catch(error => {
@@ -173,7 +188,8 @@ if (isset($_SESSION['user'])) {
                     alert('Có lỗi xảy ra khi tải ảnh lên.');
                 });
 
-            UploadTempFile('avatar', formData)
+            formData.append('avatar_temp', blob);
+            UploadTempFile('avatar_temp', formData)
                 .then(data => {
                     if (data.success) {
                         // Cập nhật ảnh hiển thị sau khi tải lên
@@ -207,6 +223,73 @@ if (isset($_SESSION['user'])) {
         }
     }
 </script>
+<?php include '../php_control/path_side/LoadBar.php'; ?>
 </body>
 
 </html>
+
+<script>
+    function UpdateThongTin(){
+        event.preventDefault();
+        ShowLoading();
+
+        const name = document.getElementById('fullname').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const phone = document.getElementById('phone').value.trim();
+
+        if(!name || !email){
+            HideLoading();
+            WarmingDialog("Thiếu thông tin", "Vui lòng điền đầy đủ thông tin!");
+            return;
+        }
+        if(!/^\d{10}$/.test(phone) && phone){
+            HideLoading();
+            ErrorDialog("Lỗi thông tin", "Số điện thoại không hợp lệ");
+            return;
+        }
+
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", "../php_control/data/UpdateUserData.php", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                const response = xhr.responseText; // Lấy dữ liệu phản hồi
+
+                // Nếu bạn không trả về JSON, xử lý phản hồi như một chuỗi
+                if (response.trim().startsWith("success: ")){
+                    HideLoading();
+                    SuccessDialog("Thông báo", response.replace("success: ", ""));
+                }else if(response.trim().startsWith("warming: ")){
+                    HideLoading();
+                    WarmingDialog("Thông báo", response.replace("warming: ", ""));
+                }else if(response.trim().startsWith("errorAuth: ")){
+                    HideLoading();
+                    ErrorDialog("Lỗi phiên người dùng", response.replace("errorAuth: ", ""));
+                }else{
+                    HideLoading();
+                    ErrorDialog("Thông báo lỗi", response.replace("error: ", ""));
+                }
+            } else {
+                HideLoading();
+                ErrorDialog("Lỗi kết nối", "Không thể kết nối đến máy chủ. Vui lòng thử lại sau.");
+            }
+        };
+
+        xhr.send(`name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&phone=${encodeURIComponent(phone)}`);
+    }
+</script>
+
+<?php
+echo '<script>';
+echo 'var sessionData = ' . json_encode($_SESSION) . ';';
+echo 'console.log("Session Data:", sessionData);';
+
+echo 'var getData = ' . json_encode($_GET) . ';';
+echo 'console.log("GET Data:", getData);';
+
+echo 'var postData = ' . json_encode($_POST) . ';';
+echo 'console.log("POST Data:", postData);';
+echo '</script>';
+?>

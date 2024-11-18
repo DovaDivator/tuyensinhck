@@ -7,9 +7,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = ucwords($_POST["username"]);
     $email = $_POST['email'];
     $password = $_POST["password"];
-    unset($_POST["password"]);
-    unset($_POST["username"]);
-    unset($_POST["email"]);
+    unset($_POST);
+    $_POST = array();
     
     // Thực hiện truy vấn SQL
     $query = "SELECT * FROM get_email_user(:id_or_phone)";
