@@ -1,70 +1,41 @@
 <?php
 session_start();
 
-include "db_connect.php";
+// Kết nối đến cơ sở dữ liệu (db_connect.php)
+include "db_connect.php"; 
 
-// Xử lý yêu cầu đăng nhập
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Kiểm tra xem các khóa có tồn tại không
-    $username = $_POST["username"]; // Lấy tên đăng nhập từ form
-    $password = $_POST["password"]; // Lấy mật khẩu từ form
-    unset($_POST);
-    $_POST = array();
+// Hàm lấy thông tin người dùng từ cơ sở dữ liệu hoặc Supabase
+function get_email($username) {
+    global $pdo; // Sử dụng kết nối PDO từ db_connect.php
 
-    // Thực hiện truy vấn SQL
+    // Thực hiện truy vấn để lấy thông tin người dùng từ hàm get_email_user
     $query = "SELECT * FROM get_email_user(:id_or_phone)";
     $stmt = $pdo->prepare($query);
     $stmt->bindParam(':id_or_phone', $username);
     $stmt->execute();
-    $responseData = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    if ($responseData) {
-        // Lấy email và tên bảng từ kết quả trả về
-        $email = $responseData['email'];
-        $table_name = $responseData['table_name'];
-        $id = $responseData['id'];
-        $phone = $responseData['phone'];
-        $avatar_name = $responseData['avatar_name'];
-        $hoten = $responseData['ten'];
-        $trang_thai = $responseData['trang_thai'];
-
-        // Kiểm tra mật khẩu và lấy token
-        $authResponse = check_password($email, $password);
-        if (is_array($authResponse) && isset($authResponse['access_token'])) {
-            // Đăng nhập thành công
-            $_SESSION['is_logged_in'] = true;
-            $_SESSION['access_token'] = $authResponse['access_token']; // Lưu Access Token
-            $_SESSION['refresh_token'] = $authResponse['refresh_token']; // Lưu Refresh Token
-
-            $_SESSION['user'] = [
-                'username' => $hoten,
-                'role' => $table_name,
-                'email' => $email,
-                'id' => $id,
-                'phone' => $phone,
-                'avatar_name' => $avatar_name,
-                'trang_thai' => $trang_thai,
-            ];
-            echo "success"; // Trả về chuỗi thành công
-        } else if ($authResponse === 401) {
-            echo "error: Tên đăng nhập hoặc mật khẩu sai.";
-        } else {
-            echo "error: Có lỗi xảy ra khi kết nối dữ liệu người dùng! $authResponse";
-        }
-    } else {
-        echo "error: Tên đăng nhập hoặc mật khẩu sai.";
-    }
-} else {
-    echo "error: Lỗi PHP request";
+    
+    return $stmt->fetch(PDO::FETCH_ASSOC); // Trả về thông tin người dùng
 }
-exit();
 
-// Hàm kiểm tra mật khẩu và lấy token
+function get_user_info($username) {
+    global $pdo; // Sử dụng kết nối PDO từ db_connect.php
+
+    // Thực hiện truy vấn để lấy thông tin người dùng từ hàm get_email_user
+    $query = "SELECT * FROM get_user_info(:info)";
+    $stmt = $pdo->prepare($query);
+    $stmt->bindParam(':info', $username);
+    $stmt->execute();
+    
+    return $stmt->fetch(PDO::FETCH_ASSOC); // Trả về thông tin người dùng
+}
+
+
+// Hàm kiểm tra mật khẩu và lấy token từ Supabase
 function check_password($email, $password) {
     // Thông tin kết nối đến Supabase
     $apiUrl = "https://iwelyvdecathaeppslzw.supabase.co/auth/v1/token?grant_type=password";
     $apiKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml3ZWx5dmRlY2F0aGFlcHBzbHp3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzAxMTgzMDAsImV4cCI6MjA0NTY5NDMwMH0.QY-EVOhlyYJXIJqzummyUblLmGQR3JPt2U0IWfPXLwY";
-
+    
     // Dữ liệu đăng nhập
     $data = [
         "email" => $email,
@@ -94,7 +65,7 @@ function check_password($email, $password) {
     } elseif ($httpCode === 400) {
         if (isset($responseData['error_code']) && $responseData['error_code'] === 'email_not_confirmed') {
             $_SESSION['email_confirm'] = $email;
-            echo "confirm: Tài khoản chưa được xác thực!";
+            return "confirm: Tài khoản chưa được xác thực!";
         } else {
             return "error: Mật khẩu không chính xác!";
         }
@@ -102,4 +73,56 @@ function check_password($email, $password) {
 
     return $httpCode; // Trả về mã HTTP nếu không có lỗi 400
 }
+
+// Xử lý yêu cầu đăng nhập
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // Lấy thông tin từ form đăng nhập
+    $username = $_POST["username"];
+    $password = $_POST["password"];
+    unset($_POST); // Xoá dữ liệu POST
+    $_POST = array();
+
+    // Lấy thông tin người dùng từ cơ sở dữ liệu
+    $emailInfo = get_email($username);
+
+    if ($emailInfo) {
+        // Lấy thông tin người dùng từ kết quả trả về
+        $email = $emailInfo['email'];
+        file_put_contents("log.txt", "email: $email\n", FILE_APPEND);
+
+        // Kiểm tra mật khẩu và lấy token
+        $authResponse = check_password($email, $password);
+        
+        if (is_array($authResponse) && isset($authResponse['access_token'])) {
+            // Đăng nhập thành công
+
+            $userInfo = get_user_info($email);
+            if ($userInfo){
+            
+                $_SESSION['access_token'] = $authResponse['access_token']; // Lưu Access Token
+                $_SESSION['refresh_token'] = $authResponse['refresh_token']; // Lưu Refresh Token
+
+                $_SESSION['user'] = [
+                    'username' => $userInfo['ten'],
+                    'role' => $userInfo['table_name'],
+                    'email' => $userInfo['email'],
+                    'id' => $userInfo['id'],
+                    'phone' => $userInfo['phone'],
+                    'avatar_name' => $userInfo['avatar_name'],
+                    'trang_thai' => $userInfo['trang_thai'],
+                ];
+                echo "success"; // Trả về chuỗi thành công
+            }else{
+                echo "error: Có sự cố khi tìm kiếm người dùng.";
+            }
+        } else {
+            echo $authResponse; // Lỗi từ check_password
+        }
+    } else {
+        echo "error: Tên đăng nhập hoặc mật khẩu sai.";
+    }
+} else {
+    echo "error: Lỗi PHP request";
+}
+exit();
 ?>

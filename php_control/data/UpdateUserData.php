@@ -14,9 +14,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $_POST = array();
 
     // Thực hiện truy vấn SQL
-    $query = "SELECT * FROM get_email_user(:id_or_phone)";
+    $query = "SELECT * FROM get_user_info(:info)";
     $stmt = $pdo->prepare($query);
-    $stmt->bindParam(':id_or_phone', $email);
+    $stmt->bindParam(':info', $email);
     $stmt->execute();
     $responseData = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -65,9 +65,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
         } else if($push_ava_http['httpCode'] != 200){
             echo "error: Lỗi kết nối HTTP Code: ".$push_ava_http['response']['statusCode'];
-            exit();
-        }else{
-            echo "error: Lỗi kết nối HTTP Code: ".$push_ava_http['httpCode'];
             exit();
         }
     }
