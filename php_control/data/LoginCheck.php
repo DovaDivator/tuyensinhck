@@ -4,19 +4,9 @@ session_start();
 // Kết nối đến cơ sở dữ liệu (db_connect.php)
 include "db_connect.php"; 
 
-<<<<<<< HEAD
-// Xử lý yêu cầu đăng nhập
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Kiểm tra xem các khóa có tồn tại không
-    $username = $_POST["username"]; // Lấy tên đăng nhập từ form
-    $password = $_POST["password"]; // Lấy mật khẩu từ form
-    unset($_POST);
-    $_POST = array();
-=======
 // Hàm lấy thông tin người dùng từ cơ sở dữ liệu hoặc Supabase
 function get_email($username) {
     global $pdo; // Sử dụng kết nối PDO từ db_connect.php
->>>>>>> 81b21575afb45b8f9e2a42abe1be2a81b2b5bc85
 
     // Thực hiện truy vấn để lấy thông tin người dùng từ hàm get_email_user
     $query = "SELECT * FROM get_email_user(:id_or_phone)";
