@@ -55,7 +55,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 }else{
                     $push_ava_http = push_avatar();
                     if ($push_ava_http['httpCode'] != 200) {
-                        echo "error: Lỗi tải tệp lên. HTTP Code: ".$push_ava_http['response']['statusCode'];
+                        if($push_ava_http['response']['statusCode'] == 403){
+                            echo "errorAuth: Phiên hoạt động của bạn đã hết hạn, vui lòng đăng nhập lại để sử dụng các chức năng";
+                        }else{
+                            echo "error: Lỗi tải tệp lên. HTTP Code: ".$push_ava_http['response']['statusCode'];
+                        }
                         exit();
                     }
                 }
