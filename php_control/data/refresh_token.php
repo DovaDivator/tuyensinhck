@@ -1,7 +1,7 @@
     <?php
 
     function get_token() {
-        file_put_contents("log.txt", "Hàm refresh_token được gọi\n");
+        file_put_contents("log.txt", "Hàm refresh_token được gọi\n" , FILE_APPEND);
         $apiUrl = "https://iwelyvdecathaeppslzw.supabase.co/auth/v1/token?grant_type=refresh_token";
         $apiKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml3ZWx5dmRlY2F0aGFlcHBzbHp3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzAxMTgzMDAsImV4cCI6MjA0NTY5NDMwMH0.QY-EVOhlyYJXIJqzummyUblLmGQR3JPt2U0IWfPXLwY";
 

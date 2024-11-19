@@ -233,9 +233,10 @@ if (isset($_SESSION['user'])) {
         event.preventDefault();
         ShowLoading();
 
-        const name = document.getElementById('fullname').value.trim();
-        const email = document.getElementById('email').value.trim();
-        const phone = document.getElementById('phone').value.trim();
+        let name = document.getElementById('fullname').value.trim();
+        name = name.charAt(0).toUpperCase() + name.slice(1);
+        let email = document.getElementById('email').value.trim();
+        let phone = document.getElementById('phone').value.trim();
 
         if(!name || !email){
             HideLoading();
@@ -246,6 +247,20 @@ if (isset($_SESSION['user'])) {
             HideLoading();
             ErrorDialog("Lỗi thông tin", "Số điện thoại không hợp lệ");
             return;
+        }else{
+            phone = "null";
+        }
+
+        if(name === "<?php echo $_SESSION['user']['username'];?>"){
+            name = '';
+        }
+
+        if(email === "<?php echo $_SESSION['user']['email'] ; ?>"){
+            email = '';
+        }
+
+        if(phone === "<?php echo $_SESSION['user']['phone'];?>"){
+            phone = '';
         }
 
         const xhr = new XMLHttpRequest();
@@ -258,7 +273,7 @@ if (isset($_SESSION['user'])) {
                 const response = xhr.responseText; // Lấy dữ liệu phản hồi
 
                 // Nếu bạn không trả về JSON, xử lý phản hồi như một chuỗi
-                if (response.trim().startsWith("success: ")){
+                if (response.trim().startsWith("success")){
                     HideLoading();
                     SuccessDialog("Thông báo", response.replace("success: ", ""));
                 }else if(response.trim().startsWith("warming: ")){

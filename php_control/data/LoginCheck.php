@@ -3,6 +3,7 @@ session_start();
 
 // Kết nối đến cơ sở dữ liệu (db_connect.php)
 include "db_connect.php"; 
+include 'get_infomation.php';
 
 // Hàm lấy thông tin người dùng từ cơ sở dữ liệu hoặc Supabase
 function get_email($username) {
@@ -12,18 +13,6 @@ function get_email($username) {
     $query = "SELECT * FROM get_email_user(:id_or_phone)";
     $stmt = $pdo->prepare($query);
     $stmt->bindParam(':id_or_phone', $username);
-    $stmt->execute();
-    
-    return $stmt->fetch(PDO::FETCH_ASSOC); // Trả về thông tin người dùng
-}
-
-function get_user_info($username) {
-    global $pdo; // Sử dụng kết nối PDO từ db_connect.php
-
-    // Thực hiện truy vấn để lấy thông tin người dùng từ hàm get_email_user
-    $query = "SELECT * FROM get_user_info(:info)";
-    $stmt = $pdo->prepare($query);
-    $stmt->bindParam(':info', $username);
     $stmt->execute();
     
     return $stmt->fetch(PDO::FETCH_ASSOC); // Trả về thông tin người dùng

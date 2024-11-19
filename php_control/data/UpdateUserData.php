@@ -10,40 +10,46 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $name = $_POST["name"]; 
     $email = $_POST["email"]; 
     $phone = $_POST["phone"];
+    $avatarTemp = isset($_SESSION['file_path']['avatar_temp']) ? $_SESSION['file_path']['avatar_temp'] : '';
+    $avatarTemp = str_replace('../../assets/temp_uploads/', '', $avatarTemp);
     unset($_POST);
     $_POST = array();
 
     // Thực hiện truy vấn SQL
-    $query = "SELECT * FROM get_user_info(:info)";
-    $stmt = $pdo->prepare($query);
-    $stmt->bindParam(':info', $email);
-    $stmt->execute();
-    $responseData = $stmt->fetch(PDO::FETCH_ASSOC);
+    if($email !== ''){
+        $query = "SELECT * FROM get_email_user(:id_or_phone)";
+        $stmt = $pdo->prepare($query);
+        $stmt->bindParam(':info', $email);
+        $stmt->execute();
+        $responseData = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if ($responseData) {
-        $id_query = $responseData['id'];
-        if($id_query !== $_SESSION['user']['id'] ){
-            echo "warming: Email này đã được sử dụng, vui lòng thay bằng email khác.";
-            exit();
+        if ($responseData) {
+            $id_query = $responseData['email'];
+            if($id_query !== $_SESSION['user']['email'] ){
+                echo "warming: Email này đã được sử dụng, vui lòng thay bằng email khác.";
+                exit();
+            }
         }
     }
 
-    $query = "SELECT * FROM get_email_user(:id_or_phone)";
-    $stmt = $pdo->prepare($query);
-    $stmt->bindParam(':id_or_phone', $phone);
-    $stmt->execute();
-    $responseData = $stmt->fetch(PDO::FETCH_ASSOC);
+    if($phone !== ''){
+        $query = "SELECT * FROM get_email_user(:id_or_phone)";
+        $stmt = $pdo->prepare($query);
+        $stmt->bindParam(':id_or_phone', $phone);
+        $stmt->execute();
+        $responseData = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if ($responseData) {
-        $id_query = $responseData['id'];
-        if($id_query !== $_SESSION['user']['id'] ){
-            echo "warming: Số điện thoại này đã được sử dụng, vui lòng thay bằng số khác.";
-            exit();
+        if ($responseData) {
+            $id_query = $responseData['email'];
+            if($id_query !== $_SESSION['user']['email'] ){
+                echo "warming: Số điện thoại này đã được sử dụng, vui lòng thay bằng số khác.";
+                exit();
+            }
         }
     }
 
-    if (isset($_SESSION['file_path']['avatar_temp']) && $_SESSION['file_path']['avatar_temp'] !== '') {  
-        $push_ava_http = push_avatar();
+    if ($avatarTemp !== '') {  
+        $push_ava_http = push_avatar($avatarTemp);
 
         // Kiểm tra kết quả trả về từ cURL
         if($push_ava_http['httpCode'] == 400){
@@ -53,10 +59,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     echo "errorAuth: Phiên hoạt động của bạn đã hết hạn, vui lòng đăng nhập lại để sử dụng các chức năng";
                     exit();
                 }else{
-                    $push_ava_http = push_avatar();
+                    $push_ava_http = push_avatar($avatarTemp);
                     if ($push_ava_http['httpCode'] != 200) {
                         if($push_ava_http['response']['statusCode'] == 403){
-                            echo "errorAuth: Phiên hoạt động của bạn đã hết hạn, vui lòng đăng nhập lại để sử dụng các chức năng";
+                            if(strpos($push_ava_http['response']['message'] , 'row-level security policy')){
+                                echo "error: Lỗi liên quan đến RLS, hãy liên hệ với chúng tôi để xử lý";
+                            }else{
+                                echo "errorAuth: Phiên hoạt động của bạn đã hết hạn, vui lòng đăng nhập lại để sử dụng các chức năng";
+                            }
+                        }else if($push_ava_http['response']['statusCode'] == 409){
+                            $avatarTemp = '';
                         }else{
                             echo "error: Lỗi tải tệp lên. HTTP Code: ".$push_ava_http['response']['statusCode'];
                         }
@@ -73,41 +85,39 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 
-    $_SESSION['user']['avatar_name'] = $_SESSION['file_path']['avatar_temp'];
-    $_SESSION['file_path']['avatar_temp'] = '';
-    
-//     $push_ava_http = push_avatar();
+    try {
+        $query = "SELECT update_user_info(:filename, :id, :role, :name, :email, :phone)";
+        $stmt = $pdo->prepare($query);
 
-//     // Kiểm tra kết quả trả về từ cURL
-//     if($push_ava_http['statusCode'] === 403){
-//         refresh_token();
-//         if($push_ava_http['statusCode'] === ''){
-//             echo "errorAuth: Phiên hoạt động của bạn đã hết hạn, vui lòng đăng nhập lại để sử dụng các chức năng";
-//             exit();
-//         }else{
-//             $push_ava_http = push_avatar();
-//             if ($push_ava_http['statusCode'] !== 200 && $push_ava_http['statusCode'] !== 201) {
-//                 echo "error: Lỗi tải tệp lên. HTTP Code: ".$push_ava_http['statusCode'];
-//                 exit();
-//             }
-//         }
-//     } else if($push_ava_http['statusCode'] !== 200 && $push_ava_http['statusCode'] !== 201){
-//         echo "error: Lỗi tải tệp lên. HTTP Code: ".$push_ava_http['statusCode'];
-//         exit();
-//     }
-    echo 'success: Cập nhật thành công!';
+        // Ràng buộc các tham số
+        $stmt->bindParam(':filename', $avatarTemp);
+        $stmt->bindParam(':id', $_SESSION['user']['id']);
+        $stmt->bindParam(':role', $_SESSION['user']['role']);
+        $stmt->bindParam(':name', $name);
+        $stmt->bindParam(':email', $email);
+        $stmt->bindParam(':phone', $phone);
+
+        // Thực hiện câu lệnh và kiểm tra kết quả
+        if ($stmt->execute()) {
+            echo "success";
+        } else {
+            echo "error: Cập nhật thông tin thất bại";
+        }
+    } catch (PDOException $e) {
+        // Xử lý lỗi
+        echo "error: có sự cố khi cập nhật $e";
+    }
 } else {
     echo "error: Lỗi PHP request";
 }
 exit();
 
-function push_avatar(){
+function push_avatar($fileName ){
     $supabase_url = 'https://iwelyvdecathaeppslzw.supabase.co';    
     $bucket_name = 'avatar';
 
     // Lấy đường dẫn file tạm từ session
-    $filePath = $_SESSION['file_path']['avatar_temp'];
-    $fileName = str_replace('../../assets/temp_uploads/', '', $filePath);
+    $filePath = '../../assets/temp_uploads/'.$fileName;
 
     // Tạo endpoint cho việc tải lên file
     $endpoint = $supabase_url . "/storage/v1/object/" . $bucket_name . "/" . $fileName;
@@ -134,44 +144,7 @@ function push_avatar(){
     curl_close($ch);
 
     // Ghi log vào file log.txt
-    file_put_contents("log.txt", "filename: $fileName\nResponse: $response\n", FILE_APPEND);
-    return [
-        'httpCode' => $httpCode,
-        'response' => json_decode($response, true)
-    ];
-}
-
-function updateEmail($newEmail) {
-    // URL của Supabase Auth API để cập nhật thông tin người dùng
-    $apiUrl = "https://iwelyvdecathaeppslzw.supabase.co/auth/v1/user";  // Endpoint để cập nhật thông tin người dùng
-
-    // Dữ liệu gửi đi bao gồm email mới
-    $data = [
-        "email" => $newEmail
-    ];
-
-    // Khởi tạo cURL
-    $ch = curl_init($apiUrl);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    
-    // Đặt header yêu cầu, bao gồm Authorization header với Access Token
-    curl_setopt($ch, CURLOPT_HTTPHEADER, [
-        'Authorization: Bearer ' . $_SESSION['access_token'],
-        'Content-Type: application/json',
-    ]);
-
-    // Đặt phương thức PUT và dữ liệu gửi đi
-    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
-    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
-
-    // Gửi yêu cầu và nhận phản hồi
-    $response = curl_exec($ch);
-    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    curl_close($ch);
-
-    // Ghi log vào file log.txt
-    file_put_contents("log.txt", "filename: Response: $response\n", FILE_APPEND);
-
+    file_put_contents("log.txt", "filename: $fileName\n access: ".$_SESSION['access_token']." \nResponse: $response\n", FILE_APPEND);
     return [
         'httpCode' => $httpCode,
         'response' => json_decode($response, true)

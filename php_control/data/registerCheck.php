@@ -90,7 +90,7 @@ function addStudent($username, $email) {
         }
     } catch (PDOException $e) {
         // Xử lý lỗi
-        error_log("Error in addStudent: " . $e->getMessage());
+        error_log("Có sự cố khi thêm thành viên: " . $e->getMessage());
         return false;
     }
 }
