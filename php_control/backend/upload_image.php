@@ -7,7 +7,7 @@ if (isset($_GET['file_type'])) {
 
     // Kiểm tra sự tồn tại của file trong $_FILES và không có lỗi
     if (isset($_FILES[$filetype]) && $_FILES[$filetype]['error'] === UPLOAD_ERR_OK) {
-        $uploadDir = '../temp_uploads/';
+        $uploadDir = '../../assets/temp_uploads/';
 
         // Đảm bảo thư mục tải lên tồn tại, nếu không thì tạo mới
         if (!is_dir($uploadDir)) {
@@ -26,7 +26,7 @@ if (isset($_GET['file_type'])) {
             // Phản hồi thành công với đường dẫn ảnh
             echo json_encode([
                 'success' => true,
-                'imagePath' => '../php_control/temp_uploads/' . $filename
+                'imagePath' => '../assets/temp_uploads/' . $filename
             ]);
         } else {
             // Thông báo lỗi khi tải lên không thành công

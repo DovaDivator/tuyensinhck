@@ -12,7 +12,8 @@
             default:
                 break;
         }
-        unset($_POST['request']);
+        unset($_POST);
+        $_POST = array();
     }
 
     // Dữ liệu tạm thời

@@ -35,7 +35,8 @@ if (isset($_POST['current_password'], $_POST['new_password'])) {
 
     // Nếu đăng nhập thành công
     if ($httpCodeSignIn == 200 && isset($signInData['access_token'])) {
-        $accessToken = $signInData['access_token'];
+        $_SESSION['access_token'] = $signInData['access_token']; 
+        $_SESSION['refresh_token'] = $signInData['refresh_token']; 
 
         // Gửi yêu cầu cập nhật mật khẩu mới
         $dataUpdatePassword = [
@@ -47,7 +48,7 @@ if (isset($_POST['current_password'], $_POST['new_password'])) {
         curl_setopt($chUpdatePassword, CURLOPT_HTTPHEADER, [
             'Content-Type: application/json',
             'apikey: ' . $apiKey,
-            'Authorization: Bearer ' . $accessToken
+            'Authorization: Bearer ' . $_SESSION['access_token']
         ]);
         curl_setopt($chUpdatePassword, CURLOPT_CUSTOMREQUEST, "PUT");
         curl_setopt($chUpdatePassword, CURLOPT_POSTFIELDS, json_encode($dataUpdatePassword));
