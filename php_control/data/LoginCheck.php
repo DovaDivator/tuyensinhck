@@ -2,11 +2,12 @@
 session_start();
 
 // Kết nối đến cơ sở dữ liệu (db_connect.php)
-include "db_connect.php"; 
+include "db_connect.php";
 include 'get_infomation.php';
 
 // Hàm lấy thông tin người dùng từ cơ sở dữ liệu hoặc Supabase
-function get_email($username) {
+function get_email($username)
+{
     global $pdo; // Sử dụng kết nối PDO từ db_connect.php
 
     // Thực hiện truy vấn để lấy thông tin người dùng từ hàm get_email_user
@@ -14,17 +15,18 @@ function get_email($username) {
     $stmt = $pdo->prepare($query);
     $stmt->bindParam(':id_or_phone', $username);
     $stmt->execute();
-    
+
     return $stmt->fetch(PDO::FETCH_ASSOC); // Trả về thông tin người dùng
 }
 
 
 // Hàm kiểm tra mật khẩu và lấy token từ Supabase
-function check_password($email, $password) {
+function check_password($email, $password)
+{
     // Thông tin kết nối đến Supabase
     $apiUrl = "https://iwelyvdecathaeppslzw.supabase.co/auth/v1/token?grant_type=password";
     $apiKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml3ZWx5dmRlY2F0aGFlcHBzbHp3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzAxMTgzMDAsImV4cCI6MjA0NTY5NDMwMH0.QY-EVOhlyYJXIJqzummyUblLmGQR3JPt2U0IWfPXLwY";
-    
+
     // Dữ liệu đăng nhập
     $data = [
         "email" => $email,
@@ -81,13 +83,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         // Kiểm tra mật khẩu và lấy token
         $authResponse = check_password($email, $password);
-        
+
         if (is_array($authResponse) && isset($authResponse['access_token'])) {
             // Đăng nhập thành công
 
             $userInfo = get_user_info($email);
-            if ($userInfo){
-            
+            if ($userInfo) {
+
                 $_SESSION['access_token'] = $authResponse['access_token']; // Lưu Access Token
                 $_SESSION['refresh_token'] = $authResponse['refresh_token']; // Lưu Refresh Token
 
@@ -98,10 +100,37 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     'id' => $userInfo['id'],
                     'phone' => $userInfo['phone'],
                     'avatar_name' => $userInfo['avatar_name'],
-                    'trang_thai' => $userInfo['trang_thai'],
+                    'trang_thai' => $userInfo['trang_thai']
                 ];
+
+                $supabaseUrl = 'https://iwelyvdecathaeppslzw.supabase.co';  // URL của Supabase
+                $supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml3ZWx5dmRlY2F0aGFlcHBzbHp3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzAxMTgzMDAsImV4cCI6MjA0NTY5NDMwMH0.QY-EVOhlyYJXIJqzummyUblLmGQR3JPt2U0IWfPXLwY';  // API Key của Supabase
+
+                $fileName = '673da48ca6054_1732093068.png';  // Tên file ảnh trong Supabase
+                $bucketName = "avatar";  // Bucket chứa ảnh trong Supabase
+                $tempDir = '../../assets/images/temp_downloads/';  // Thư mục tải ảnh tạm
+                $tempFilePath = $tempDir . $fileName;
+
+                // Kiểm tra và tạo thư mục nếu chưa có
+                if (!is_dir($tempDir)) {
+                    mkdir($tempDir, 0777, true);
+                }
+
+                // Khởi tạo cURL để tải ảnh từ Supabase Storage
+                $ch = curl_init();
+                curl_setopt($ch, CURLOPT_URL, $supabaseUrl . '/storage/v1/object/public/' . $bucketName . '/' . $fileName);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                    'apikey: ' . $supabaseKey,
+                ]);
+
+                // Thực hiện yêu cầu và nhận phản hồi
+                $response = curl_exec($ch);
+                $responseCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+                curl_close($ch);
+                $_SESSION['temp_avatar'] = $fileName;
                 echo "success"; // Trả về chuỗi thành công
-            }else{
+            } else {
                 echo "error: Có sự cố khi tìm kiếm người dùng.";
             }
         } else {
@@ -114,4 +143,3 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     echo "error: Lỗi PHP request";
 }
 exit();
-?>
