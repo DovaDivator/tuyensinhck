@@ -1,4 +1,5 @@
-<link rel="stylesheet" href="../assets/style/table.css?v=<?php echo filemtime("../assets/style/table.css")?>">
+<link rel="stylesheet" href="../assets/style/table.css?v=<?php echo filemtime("../assets/style/table.css")?>">  
+<?php include 'db_connect.php'; ?>
 <div class="body_container">
     <div class="body_path">
         <h1>Danh sách người dùng</h1>
@@ -94,7 +95,7 @@
             <?php if(isset($_GET['ma_nganh_sv']) && $_GET['ma_nganh_sv'] === 'giaovien'): ?>
             <div class="table_body_scroll" style="height:600px;">
                <table class="choose_list danh_sach_ng" id="danh_sach_giao_vien">
-                   <thead>
+                    <thead>
                        <tr>
                            <th id='ma_gv'>Mã giáo viên</th>
                            <th id='ten_gv'>Tên giáo viên</th>
@@ -102,10 +103,10 @@
                            <th id='nganh_quan_ly'>Ngành phụ trách</th>
                        </tr>
                    </thead>
-                      <tbody id="course_table_tuyen_sinh" >
+                      <tbody id="body_danh_sach_giao_vien" >
                        <script>
                            var userRole = <?php echo json_encode($_SESSION['user']['role']); ?>;
-                           loadAndRenderCourses(userRole);
+                           loadAndRenderCoursesGV(userRole);
                         </script>
                     </tbody>
                 </table>
@@ -124,10 +125,10 @@
                            
                        </tr>
                    </thead>
-                      <tbody id="course_table_tuyen_sinh" >
+                      <tbody id="course_table_dssv" >
                        <script>
                            var userRole = <?php echo json_encode($_SESSION['user']['role']); ?>;
-                           loadAndRenderCourses(userRole);
+                           loadAndRenderCoursesSV(userRole);
                         </script>
                     </tbody>
                 </table>

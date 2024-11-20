@@ -116,6 +116,7 @@ if (isset($_SESSION['user'])) {
                             <p id='diem_list'>(Toán: 9, Văn: 8.5, Anh: 4.5)</p>
                         </div>  
                         <!-- chỉ hiển thị với sinh viên -->
+                        <?php if($_SESSION['user']['role'] === 'Student'): ?>
                         <div class="info_layout" id="nganh_dky">
                             <div class="linediv">
                                 <h1>Ngành xét tuyển</h1>
@@ -139,7 +140,9 @@ if (isset($_SESSION['user'])) {
                                 </table>
                             </div>
                         </div>
+                        <?php endif;?>
                          <!-- Chỉ hiển thị với giáo viên -->
+                         <?php if($_SESSION['user']['role'] === 'Teacher'||$_SESSION['user']['role'] === 'Admin'): ?>
                         <div class="info_layout" id="nganh_pt">
                             <div class="linediv">
                                 <h1>Ngành phụ trách</h1>
@@ -170,6 +173,7 @@ if (isset($_SESSION['user'])) {
                                 </table>
                             </div>  
                         </div> 
+                        <?php endif; ?>
                         <!-- chỉ hiển thị với chính người dùng -->
                         <div style="margin-top: 10px; display: flex; justify-content: center; align-items: center;">
                         <button class="custom-button" onclick="location.href='change_password.php'">&#9998; THAY ĐỔI MẬT KHẨU</button>
