@@ -5,14 +5,14 @@
             <tr>
                 <th id='ma_nganh'>Mã tuyển sinh</th>
                 <th id='ten_nganh'>Tên ngành</th>
+                <?php if ($_SESSION['user']['role'] == 'Admin') { 
+                    echo "<th id='trangthai'>Trạng thái</th>";
+                }?>
                 <?php if ($_SESSION['user']['role'] != 'Student') { 
                     echo "<th id='so_luong_dang_ky'>Số lượng đăng ký</th>";
                 }?>
                 <th id='to_hop_xet_tuyen'>Tổ hợp xét tuyển</th>
                 <th id='thoi_gian'>Thời gian tuyển sinh</th>
-                <?php if ($_SESSION['user']['role'] == 'Admin') { 
-                    echo "<th id='trangthai'>Trạng thái</th>";
-                }?>
             </tr>
         </thead>
         <tbody id="course_table_tuyen_sinh" >

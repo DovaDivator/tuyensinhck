@@ -1,7 +1,7 @@
 function loadTuyenSinh() {
     return new Promise(function(resolve, reject) {
         var xhr = new XMLHttpRequest();
-        xhr.open('POST', '../php_control/data/tuyen_sinh.php', true);
+        xhr.open('POST', '../php_control/data/ds_tuyen_sinh.php', true);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
 
@@ -9,6 +9,9 @@ function loadTuyenSinh() {
             if (xhr.status === 200) {
                 var courses = JSON.parse(xhr.responseText);
                 resolve(courses);
+            }else if (xhr.status === 400){
+                var error = JSON.parse(xhr.responseText);
+                reject(new Error(error.error));
             } else {
                 reject(new Error('Không thể tải dữ liệu tuyển sinh'));
             }
@@ -18,7 +21,7 @@ function loadTuyenSinh() {
             reject(new Error('Lỗi mạng khi tải dữ liệu'));
         };
 
-        xhr.send();
+        xhr.send(`action=${encodeURIComponent('index')}`);
     });
 }
 
@@ -29,25 +32,22 @@ function renderCoursesTuyenSinh(courses, role) {
     if (courses.length === 0) {
         renderError('Hiện tại chưa có đăng ký mới nào, vui lòng quay lại sau!');
     } else {
+        console.log(courses);
         courses.forEach(function(course) {
             var row = document.createElement('tr');
             row.title = 'Ấn vào để xem thông tin chi tiết';
             row.innerHTML = `
-                <td>${course.nganh_id}</td>
-                <td>${course.ten_nganh}</td>
-                ${role !== 'Student' ? `<td class="number_td">${course.sl_dang_ky}</td>` : ''}
-                <td>${course.id_tohop}</td>
+                <td>${course.id}</td>
+                <td>${course.ten}</td>
+                ${role === 'Admin' ? `<td class="status_td" style="color: ${course.isenable ? 'green' : 'red'}; text-align: center;">${course.isenable ? 'Hiện' : 'Ẩn'}</td>` : ''}
+                ${role !== 'Student' ? `<td class="number_td">${course.slsv}</td>` : ''}
+                <td>${course.tohop}</td>
                 <td>${course.date_end}</td>
             `;
 
             // Gắn sự kiện click cho mỗi hàng để chuyển đến trang chi tiết
             row.addEventListener('click', function() {
-                window.location.href = `chi-tiet-tuyen-sinh.php?ma_nganh=${course.nganh_id}
-                                        &ten_nganh=${course.ten_nganh}&chi_tieu=${course.chi_tieu}&
-                                        tohop=${course.id_tohop}&ctdt=${course.chuong_trinh}
-                                        &deadline=${course.date_end}&sldk=${course.sl_dang_ky}
-                                        &diemchuan=${course.diem_chuan}&tengv=${course.ten_giao_vien}
-                                        `;
+                window.location.href = `chi-tiet-tuyen-sinh.php?ma_nganh=${course.nganh_id}`;
             });
 
             tbody.appendChild(row);
@@ -58,7 +58,9 @@ function renderCoursesTuyenSinh(courses, role) {
 
 function renderError(message) {
     var tbody = document.getElementById('course_table_tuyen_sinh');
+    var table = document.getElementsByClassName('table_body_scroll');
     tbody.innerHTML = '';
+    table[0].style.height = 'fit-content';
 
     var row = document.createElement('tr');
     row.className = 'error_tdtable';
