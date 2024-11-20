@@ -12,20 +12,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $phone = $_POST["phone"];
     $avatarTemp = isset($_SESSION['file_path']['avatar_temp']) ? $_SESSION['file_path']['avatar_temp'] : '';
     $avatarTemp = str_replace('../../assets/temp_uploads/', '', $avatarTemp);
-    unset($_POST);
-    $_POST = array();
+    file_put_contents("log.txt", "phone: $phone\n", FILE_APPEND);
+    // unset($_POST);
+    // $_POST = array();
 
     // Thực hiện truy vấn SQL
     if($email !== ''){
-        $query = "SELECT * FROM get_email_user(:id_or_phone)";
+        $query = "SELECT * FROM get_id_user(:id_or_phone)";
         $stmt = $pdo->prepare($query);
-        $stmt->bindParam(':info', $email);
+        $stmt->bindParam(':id_or_phone', $email);
         $stmt->execute();
         $responseData = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($responseData) {
-            $id_query = $responseData['email'];
-            if($id_query !== $_SESSION['user']['email'] ){
+            $id_query = $responseData['id'];
+            if($id_query !== $_SESSION['user']['id'] ){
                 echo "warming: Email này đã được sử dụng, vui lòng thay bằng email khác.";
                 exit();
             }
@@ -33,15 +34,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     if($phone !== ''){
-        $query = "SELECT * FROM get_email_user(:id_or_phone)";
+        $query = "SELECT * FROM get_id_user(:id_or_phone)";
         $stmt = $pdo->prepare($query);
         $stmt->bindParam(':id_or_phone', $phone);
         $stmt->execute();
         $responseData = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($responseData) {
-            $id_query = $responseData['email'];
-            if($id_query !== $_SESSION['user']['email'] ){
+            $id_query = $responseData['id'];
+            if($id_query !== $_SESSION['user']['id'] ){
                 echo "warming: Số điện thoại này đã được sử dụng, vui lòng thay bằng số khác.";
                 exit();
             }
@@ -144,7 +145,7 @@ function push_avatar($fileName ){
     curl_close($ch);
 
     // Ghi log vào file log.txt
-    file_put_contents("log.txt", "filename: $fileName\n access: ".$_SESSION['access_token']." \nResponse: $response\n", FILE_APPEND);
+    // file_put_contents("log.txt", "filename: $fileName\n access: ".$_SESSION['access_token']." \nResponse: $response\n", FILE_APPEND);
     return [
         'httpCode' => $httpCode,
         'response' => json_decode($response, true)

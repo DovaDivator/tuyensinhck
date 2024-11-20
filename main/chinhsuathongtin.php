@@ -247,7 +247,7 @@ if (isset($_SESSION['user'])) {
             HideLoading();
             ErrorDialog("Lỗi thông tin", "Số điện thoại không hợp lệ");
             return;
-        }else{
+        }else if(!phone){
             phone = "null";
         }
 

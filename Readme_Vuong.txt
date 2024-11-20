@@ -8,5 +8,4 @@ Công việc
     - Lập trình để đồng bộ dữ liệu thời gian thực khi truy cập vào chỉnh sửa thông tin
     (hay bất kỳ trang nào khác cảm thấy cần thiết, thông tin trong get_infomation.php)
     - Xử lý ảnh avatar tạm thời được lưu trong 'assets/temp_uploads/' (mặc định là thoát hay load trang sẽ tự xóa ảnh)
-
 Deadlines: trước 21h - 20/10/2024

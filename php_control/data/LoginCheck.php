@@ -77,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($emailInfo) {
         // Lấy thông tin người dùng từ kết quả trả về
         $email = $emailInfo['email'];
-        file_put_contents("log.txt", "email: $email\n", FILE_APPEND);
+        //file_put_contents("log.txt", "email: $email\n", FILE_APPEND);
 
         // Kiểm tra mật khẩu và lấy token
         $authResponse = check_password($email, $password);
