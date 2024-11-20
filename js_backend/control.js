@@ -1,7 +1,7 @@
 function loadTuyenSinh() {
     return new Promise(function(resolve, reject) {
         var xhr = new XMLHttpRequest();
-        xhr.open('POST', '../php_control/backend/tuyen_sinh.php', true);
+        xhr.open('POST', '../php_control/data/tuyen_sinh.php', true);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
 
@@ -33,16 +33,21 @@ function renderCoursesTuyenSinh(courses, role) {
             var row = document.createElement('tr');
             row.title = 'Ấn vào để xem thông tin chi tiết';
             row.innerHTML = `
-                <td>${course.ma_tuyen_sinh}</td>
+                <td>${course.nganh_id}</td>
                 <td>${course.ten_nganh}</td>
-                ${role !== 'Student' ? `<td class="number_td">${course.so_luong_dang_ky}</td>` : ''}
-                <td>${course.to_hop_xet_tuyen}</td>
-                <td>${course.thoi_gian_tuyen_sinh}</td>
+                ${role !== 'Student' ? `<td class="number_td">${course.sl_dang_ky}</td>` : ''}
+                <td>${course.id_tohop}</td>
+                <td>${course.date_end}</td>
             `;
 
             // Gắn sự kiện click cho mỗi hàng để chuyển đến trang chi tiết
             row.addEventListener('click', function() {
-                window.location.href = `chi-tiet-tuyen-sinh.php?ma_nganh=${course.ma_tuyen_sinh}`;
+                window.location.href = `chi-tiet-tuyen-sinh.php?ma_nganh=${course.nganh_id}
+                                        &ten_nganh=${course.ten_nganh}&chi_tieu=${course.chi_tieu}&
+                                        tohop=${course.id_tohop}&ctdt=${course.chuong_trinh}
+                                        &deadline=${course.date_end}&sldk=${course.sl_dang_ky}
+                                        &diemchuan=${course.diem_chuan}&tengv=${course.ten_giao_vien}
+                                        `;
             });
 
             tbody.appendChild(row);

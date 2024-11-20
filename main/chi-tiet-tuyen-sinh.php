@@ -57,7 +57,7 @@ if (isset($_GET['ma_nganh'])) {
                     <h1>Thông tin chi tiết ngành</h1> 
                     <h2 style="padding-left: 50px; color:#DC143C;">
                         <?php 
-                            echo $_GET['ma_nganh'].": Ngành công nghệ";
+                            echo $_GET['ma_nganh'].': '.$_GET['ten_nganh'];
                         ?>
                     </h2>
 
@@ -69,7 +69,7 @@ if (isset($_GET['ma_nganh'])) {
                                 </div>
                                 <div class="path_info_text">
                                     <h4>Chỉ tiêu xét tuyển:</h4>
-                                    <p>700 sinh viên</p>
+                                    <p><?php echo $_GET['chi_tieu']; ?> sinh viên</p>
                                 </div>
                                 <div class="divine-line"></div>
                             </div>
@@ -79,7 +79,7 @@ if (isset($_GET['ma_nganh'])) {
                                 </div>
                                 <div class="path_info_text">
                                     <h4>Tổ hợp xét tuyển:</h4>
-                                    <p>A00, A01</p>
+                                    <p><?php echo $_GET['tohop'] ?></p>
                                 </div>
                                 <div class="divine-line"></div>
                             </div>
@@ -89,27 +89,27 @@ if (isset($_GET['ma_nganh'])) {
                                 </div>
                                 <div class="path_info_text">
                                     <h4>Chương trình đào tạo:</h4>
-                                    <p>4 năm</p>
+                                    <p><?php  echo $_GET['ctdt'] ?> năm</p>
                                 </div>
                             </div>
                         </div>
                         <div class="date_div">
-                            <p><b>Hạn đăng ký: </b></p>
+                            <p><b>Hạn đăng ký: <?php echo $_GET['deadline'];?></b></p>
                         </div>
                         <?php if($_SESSION['user']['role'] !== 'Student'):?>
                         <div class="dangkysl_div">
-                            <p><b>Số lượng đăng ký: </b></p>
+                            <p><b>Số lượng đăng ký: <?php echo $_GET['sldk'];?></b></p>
                         </div>
                         <?php endif; ?>
                         <?php if($_SESSION['user']['role'] === 'Admin'):?>
                         <div class="dangkysl_div">
-                            <p><b>Giáo viên phụ trách: </b></p>
+                            <p><b>Giáo viên phụ trách: <?php echo $_GET['tengv']; ?> </b></p>
                         </div>
                         <?php endif; ?>
                         <div class="note_div">
                             <h4>Ghi chú: </h4>
                             <p style='color: red;'><b><i>- Số lượng đăng ký đủ!</i></b></p>
-                            <p><b>- Điểm xét tuyển:</b></p>
+                            <p><b>- Điểm xét tuyển: <?php echo $_GET['diemchuan'];?></b></p>
                         </div>
                         <?php if($_SESSION['user']['role'] === 'Student'): ?>
                         <div style='margin-top: 10px; margin-left: 10px;'>
