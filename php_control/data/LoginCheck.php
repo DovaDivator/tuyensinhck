@@ -99,42 +99,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     'email' => $userInfo['email'],
                     'id' => $userInfo['id'],
                     'phone' => $userInfo['phone'],
-                    'avatar_name' => $userInfo['avatar_name'],
+                    'avatar_name' => 'https://iwelyvdecathaeppslzw.supabase.co/storage/v1/object/public/avatar/'.$userInfo['avatar_name'],
                     'trang_thai' => $userInfo['trang_thai']
                 ];
 
-                $supabaseUrl = 'https://iwelyvdecathaeppslzw.supabase.co';  // URL của Supabase
-                $supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml3ZWx5dmRlY2F0aGFlcHBzbHp3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzAxMTgzMDAsImV4cCI6MjA0NTY5NDMwMH0.QY-EVOhlyYJXIJqzummyUblLmGQR3JPt2U0IWfPXLwY';  // API Key của Supabase
-
-                $fileName = '673da48ca6054_1732093068.png';  // Tên file ảnh trong Supabase
-                $bucketName = "avatar";  // Bucket chứa ảnh trong Supabase
-                $tempDir = '../../assets/images/temp_downloads/';  // Thư mục tải ảnh tạm
-                $tempFilePath = $tempDir . $fileName;
-
-                // Kiểm tra và tạo thư mục nếu chưa có
-                if (!is_dir($tempDir)) {
-                    mkdir($tempDir, 0777, true);
-                }
-
-                // Khởi tạo cURL để tải ảnh từ Supabase Storage
-                $ch = curl_init();
-                curl_setopt($ch, CURLOPT_URL, $supabaseUrl . '/storage/v1/object/public/' . $bucketName . '/' . $fileName);
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                curl_setopt($ch, CURLOPT_HTTPHEADER, [
-                    'apikey: ' . $supabaseKey,
-                ]);
-
-                // Thực hiện yêu cầu và nhận phản hồi
-                $response = curl_exec($ch);
-                $responseCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-                curl_close($ch);
-                $_SESSION['temp_avatar'] = $fileName;
-                echo "success"; // Trả về chuỗi thành công
-            } else {
-                echo "error: Có sự cố khi tìm kiếm người dùng.";
+                echo "success";
+            }else{
+                echo "error: Có sự cố khi truy cập dữ liệu người dùng.";
             }
         } else {
-            echo $authResponse; // Lỗi từ check_password
+            echo "error: Tên đăng nhập hoặc mật khẩu sai.";
         }
     } else {
         echo "error: Tên đăng nhập hoặc mật khẩu sai.";
@@ -143,3 +117,4 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     echo "error: Lỗi PHP request";
 }
 exit();
+?>

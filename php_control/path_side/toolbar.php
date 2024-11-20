@@ -5,13 +5,13 @@
         <div class="user-info info">
 
             <?php
-            $tempFilePath = '../assets/images/temp_downloads/'. $_SESSION['temp_avatar'];
-            $defaultFilePath = '../assets/images/Guest_user.png';
-            $imagePath = file_exists($tempFilePath) ? $tempFilePath : $defaultFilePath;
-            $imageWithTimestamp = $imagePath . '?v=' . filemtime($imagePath);
+            // $tempFilePath = '../assets/images/temp_downloads/'. $_SESSION['temp_avatar'];
+            // $defaultFilePath = '../assets/images/Guest_user.png';
+            // $imagePath = file_exists($tempFilePath) ? $tempFilePath : $defaultFilePath;
+            // $imageWithTimestamp = $imagePath . '?v=' . filemtime($imagePath);
             ?>
 
-            <img class="avatar" src="<?php echo $imageWithTimestamp; ?>">
+            <img class="avatar" src="<?php echo $_SESSION['user']['avatar_name'] ?>">
             <!-- <img class="avatar" src="../assets/images/Guest_user.png?v=<?php echo filemtime('../assets/images/Guest_user.png'); ?>"> -->
             <div class="user-details details">
                 <p class="username"> <?php echo $_SESSION['user']['username']; ?>
