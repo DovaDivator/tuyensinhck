@@ -99,7 +99,7 @@ table.danh_sach_ng thead tr th:first-child,
 table.danh_sach_ng thead tr th#khoa,
 table.danh_sach_ng thead tr th#dk,
 table.danh_sach_ng thead tr th#khoi_xt,
-table.danh_sach_ng thead tr th#trangthai{
+table th#trangthai{
     width: 130px;
 }
 

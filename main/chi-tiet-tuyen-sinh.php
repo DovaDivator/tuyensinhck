@@ -25,7 +25,7 @@ if (isset($_GET['ma_nganh'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Web Tuyển sinh -&nbsp;
         <?php
-            echo "Ngành công nghệ";
+            echo $_GET['ten_nganh'];
         ?>
     </title>
     <link rel="icon" href="../assets/images/logo.png?v=<?php echo filemtime('../assets/images/logo.png'); ?>" type="image/png">
@@ -94,7 +94,7 @@ if (isset($_GET['ma_nganh'])) {
                             </div>
                         </div>
                         <div class="date_div">
-                            <p><b>Hạn đăng ký: <?php echo $_GET['deadline'];?></b></p>
+                            <p><b>Hạn đăng ký: <?php echo (new DateTime(substr($_GET['deadline'], 0, 19)))->format('H\hi d/m/Y');?></b></p>
                         </div>
                         <?php if($_SESSION['user']['role'] !== 'Student'):?>
                         <div class="dangkysl_div">
