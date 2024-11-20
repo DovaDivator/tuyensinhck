@@ -101,6 +101,24 @@ if (isset($_SESSION['user'])) {
                                 <?php endif; ?>
                             </div>
                             <!-- sau này thêm điều kiện hiển thị -->
+                             <?php
+                                include '../php_control/admin_path/db_connect.php';
+                                function fetchGVforNgang($pdo) {
+                                    $x = $_SESSION['user']['id'];
+                                   // echo $x;
+                                    $query = "Select
+                                                *
+                                                From
+                                                sinh_vien 
+                                               WHERE stu_id = :stu_id";
+                                    $stmt = $pdo->prepare($query);
+                                    $stmt->bindParam(':stu_id', $x, PDO::PARAM_INT);
+                                    $stmt->execute();
+                                    return $stmt->fetchAll(PDO::FETCH_ASSOC); 
+                                }
+                                $test = fetchGVforNgang($pdo);
+                                // vì  bảng ko có thông tin về cccd giới tính địa chỉ nên em chưa thay vào được đâu  
+                             ?>
                             <p id='hoso_log'><b><font color="red">Bạn chưa đăng ký hồ sơ! </font><a href="nop-ho-so.php">Ấn vào đây để đăng ký</a></b></p>
                             <?php if($_SESSION['user']['role'] !== 'Student'): ?>
                             <P id='cccd'>CCCD: 0123456789012 </p>

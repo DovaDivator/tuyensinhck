@@ -14,6 +14,7 @@ if (isset($_SESSION['user'])) {
 //     unset($_SESSION['message']); 
 // }
 echo '<script>console.log("' . $_SESSION['user']['role'] . '");</script>';
+echo "<script>alert('".$_SESSION['temp_avatar']."');</script>";
 ?>
 <!DOCTYPE html>
 <html lang="en">
