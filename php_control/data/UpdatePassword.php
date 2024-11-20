@@ -58,7 +58,7 @@ if (isset($_POST['current_password'], $_POST['new_password'])) {
         $httpCodeUpdatePassword = curl_getinfo($chUpdatePassword, CURLINFO_HTTP_CODE);
         curl_close($chUpdatePassword);
 
-        file_get_contents('log.txt', $responseUpdatePassword);
+        //file_get_contents('log.txt', $responseUpdatePassword);
 
         // Kiểm tra phản hồi
         if ($httpCodeUpdatePassword == 200) {
