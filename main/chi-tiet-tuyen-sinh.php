@@ -1,6 +1,5 @@
 <!-- Hàm kiểm tra trang đã đăng nhập chưa -->
 <?php
-
 session_start();
 if (isset($_SESSION['user'])) {
     //echo "<script>alert('welcom');</script>";
@@ -11,12 +10,14 @@ if (isset($_SESSION['user'])) {
 }
 
 if (isset($_GET['ma_nganh'])) {
-    //echo "<script>alert('welcom');</script>";
+    include '../php_control/data/get_info_nganh.php';
+    $info = getInfoNganh($_GET['ma_nganh']);
 } else {
-    //echo "<script>alert('pls login');</script>";
-    header("Location: index.php");
-    exit();
+    $info = [];
+
 }
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -33,7 +34,10 @@ if (isset($_GET['ma_nganh'])) {
     <link rel="stylesheet" href="../assets/style/chitiet.css?v=<?php echo filemtime('../assets/style/chitiet.css'); ?>">
     <script src="../js_backend/events.js?v=<?php echo filemtime('../js_backend/events.js'); ?>"></script>
     <script src="../js_backend/control.js?v=<?php echo filemtime('../js_backend/control.js'); ?>"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="../js_backend/dialog.js?v=<?php echo filemtime('../js_backend/dialog.js'); ?>"></script>
 </head>
+
 <body>
     <div class="body_container">
         <?php include '../php_control/path_side/nav_toggle.php'; ?>
@@ -57,7 +61,7 @@ if (isset($_GET['ma_nganh'])) {
                     <h1>Thông tin chi tiết ngành</h1> 
                     <h2 style="padding-left: 50px; color:#DC143C;">
                         <?php 
-                            echo $_GET['ma_nganh'].': '.$_GET['ten_nganh'];
+                            echo $_GET['ma_nganh'].': '.$info['ten'];
                         ?>
                     </h2>
 
@@ -147,6 +151,14 @@ if (isset($_GET['ma_nganh'])) {
 </body>
 </html>
 
+<?php if(empty($info)): ?>
+    <script>
+        ErrorDialog("Thông báo lỗi", "Ngành <?php echo isset($_GET['ma_nganh']) ? $_GET['ma_nganh'] : ""; ?> không tồn tại!");
+        setTimeout(function() {
+            window.location.href = 'index.php';
+        }, 3500);
+    </script>
+<?php endif; ?>
 
 <!-- Log kiểm tra dữ liệu, không được xóa -->
 <?php

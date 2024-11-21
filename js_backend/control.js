@@ -95,7 +95,7 @@ function renderCoursesTuyenSinh(courses, role) {
 
             // Gắn sự kiện click cho mỗi hàng để chuyển đến trang chi tiết
             row.addEventListener('click', function() {
-                window.location.href = `chi-tiet-tuyen-sinh.php?ma_nganh=${course.nganh_id}`;
+                window.location.href = `chi-tiet-tuyen-sinh.php?ma_nganh=${course.id}`;
             });
 
             tbody.appendChild(row);
