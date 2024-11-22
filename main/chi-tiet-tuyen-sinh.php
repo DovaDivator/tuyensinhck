@@ -12,6 +12,8 @@ if (isset($_SESSION['user'])) {
 if (isset($_GET['ma_nganh'])) {
     include '../php_control/data/get_info_nganh.php';
     $info = getInfoNganh($_GET['ma_nganh']);
+    echo "<script>console.log(" . json_encode($info) . ");</script>";
+
 } else {
     $info = [];
 
@@ -61,7 +63,7 @@ if (isset($_GET['ma_nganh'])) {
                     <h1>Thông tin chi tiết ngành</h1> 
                     <h2 style="padding-left: 50px; color:#DC143C;">
                         <?php 
-                            echo $_GET['ma_nganh'].': '.$info['ten'];
+                            echo $info[0]['id']. ' : '. $info[0]['ten'] ;
                         ?>
                     </h2>
 
@@ -73,7 +75,7 @@ if (isset($_GET['ma_nganh'])) {
                                 </div>
                                 <div class="path_info_text">
                                     <h4>Chỉ tiêu xét tuyển:</h4>
-                                    <p><?php echo $_GET['chi_tieu']; ?> sinh viên</p>
+                                    <p><?php echo $info[0]['chi_tieu']; ?> sinh viên</p>
                                 </div>
                                 <div class="divine-line"></div>
                             </div>
@@ -83,7 +85,7 @@ if (isset($_GET['ma_nganh'])) {
                                 </div>
                                 <div class="path_info_text">
                                     <h4>Tổ hợp xét tuyển:</h4>
-                                    <p><?php echo $_GET['tohop'] ?></p>
+                                    <p><?php echo $info[0]['to_hop']; ?></p>
                                 </div>
                                 <div class="divine-line"></div>
                             </div>
@@ -93,27 +95,46 @@ if (isset($_GET['ma_nganh'])) {
                                 </div>
                                 <div class="path_info_text">
                                     <h4>Chương trình đào tạo:</h4>
-                                    <p><?php  echo $_GET['ctdt'] ?> năm</p>
+                                    <p><?php  echo $info[0]['chuong_trinh'] ?> năm</p>
                                 </div>
                             </div>
                         </div>
                         <div class="date_div">
-                            <p><b>Hạn đăng ký: <?php echo (new DateTime(substr($_GET['deadline'], 0, 19)))->format('H\hi d/m/Y');?></b></p>
+                            <p><b>Hạn đăng ký: <?php echo (new DateTime(substr($info[0]['date_end'], 0, 19)))->format('H\hi d/m/Y');?></b></p>
                         </div>
                         <?php if($_SESSION['user']['role'] !== 'Student'):?>
                         <div class="dangkysl_div">
-                            <p><b>Số lượng đăng ký: <?php echo $_GET['sldk'];?></b></p>
+                            <p><b>Số lượng đăng ký: <?php echo $info[0]['sl_dky'];?></b></p>
                         </div>
                         <?php endif; ?>
                         <?php if($_SESSION['user']['role'] === 'Admin'):?>
                         <div class="dangkysl_div">
-                            <p><b>Giáo viên phụ trách: <?php echo $_GET['tengv']; ?> </b></p>
+                            <p><b>Giáo viên phụ trách: <?php echo $info[0]['gv_id']; ?> </b></p>
                         </div>
                         <?php endif; ?>
                         <div class="note_div">
                             <h4>Ghi chú: </h4>
                             <p style='color: red;'><b><i>- Số lượng đăng ký đủ!</i></b></p>
-                            <p><b>- Điểm xét tuyển: <?php echo $_GET['diemchuan'];?></b></p>
+                            <p><b>- Điểm xét tuyển: <?php echo $info[0]['diem_chuan']."<br>";
+                                                            $diem = json_decode($info[0]['ghi_chu'], true);
+
+                                                            // Kiểm tra kết quả
+                                                            if (is_array($diem)) {
+                                                                if($diem['Anh']){
+                                                                    echo "Điểm Anh >= " . $diem['Anh'] . "<br>";
+                                                                }
+                                                                if( $diem['Toán']){
+                                                                    echo "Điểm Toán >= " . $diem['Toán'] . "<br>";
+                                                                }
+                                                                if( $diem['Văn']){
+                                                                    echo "Điểm Văn >= " . $diem['Văn'] . "<br>";
+                                                                }
+
+                                                                
+                                                            } else {
+                                                                echo "Dữ liệu ghi chú không hợp lệ.";
+                                                            }
+                                                        ?></b></p>
                         </div>
                         <?php if($_SESSION['user']['role'] === 'Student'): ?>
                         <div style='margin-top: 10px; margin-left: 10px;'>
