@@ -155,9 +155,12 @@ table #tt_dky_nganh{
     margin-bottom: 5px;
 }
 
+.form-fields label:not(:first-child){
+    margin-top: 15px;
+}
+
 .form-fields input{
     width: 300px;
-    margin-bottom: 15px;
 }
 
 .change_layout_div{
@@ -266,8 +269,8 @@ p.qweq{
 }
 
 /* Ẩn mũi tên tăng/giảm trên Chrome, Safari, Edge */
-.diem_mon input[type=number]::-webkit-inner-spin-button, 
-.diem_mon input[type=number]::-webkit-outer-spin-button { 
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
     -webkit-appearance: none; 
     margin: 0; 
 }
@@ -290,4 +293,11 @@ input[type=file] {
 .proof-entry *:not(button) {
     width: 300px;
     margin-bottom: 10px;
+}
+
+p.note_input{
+    color: gray;
+    font-size: 10px;
+    margin: 5px 0;
+    font-style: italic;
 }

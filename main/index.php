@@ -75,7 +75,11 @@ echo '<script>console.log("' . $_SESSION['user']['role'] . '");</script>';
                                 <img src="../assets/icon/filter_tag.png?v=<?php echo filemtime("../assets/icon/filter_tag.png"); ?>" 
                                 alt="Bộ lọc" title="Bộ lọc" onclick="showChartOption('options layout filter_div_options', 'chart_option', 'show', event); GiveForm('search_form'), handleCheckboxClick('status')">
                             </button>
-                            <div style="position: relative;">
+                            <button type="button" class="icon-button" id="filter_option">
+                                <img src="../assets/icon/plus.png?v=<?php echo filemtime("../assets/icon/plus.png"); ?>" 
+                                alt="Thêm chuyên ngành" title="Thêm chuyên ngành" onclick="window.location.href='chinhsuanganh.php'">
+                            </button>
+                            <div style="position: relative;">   
                                 <div class="filter_div_options options layout" id="filter_tag_options">
                                     <div class="linediv">
                                         <h3>Bộ lọc tìm kiếm:</h3>

@@ -11,7 +11,8 @@ html, body {
     line-height: 1.4;     
 }
 
-input{
+input, textarea{
+    font-size: 14px !important;
     padding-left: 10px !important;
     margin-bottom: 10px;
     padding-top: 10px;
@@ -19,6 +20,15 @@ input{
     border: 1px solid #ccc;
     border-radius: 10px;
     box-sizing: border-box;
+}
+
+textarea{
+    line-height: 1.5;
+    overflow-y: auto;
+    resize: none;
+    vertical-align: top;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
 }
 
 input::placeholder{
@@ -595,6 +605,59 @@ label,
     top: 50%;
     left: 50%;  
     transform: translateX(-50%) translateY(-50%);
+}
+
+p.none_info{
+    margin: 10px 0;
+    font-style: italic;
+    text-align: center;
+    color: gray;
+}
+
+.dropdown_container{
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown {
+    position: absolute;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    height: 200px;
+    overflow-y: hidden;
+    display: none;
+    z-index: 10;
+    box-sizing: border-box;
+}
+.dropdown-search {
+    width: 100% !important; 
+    margin: 0 !important;
+    padding: 8px;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+.dropdown-list {
+    max-height: 165px;
+    overflow-y: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.dropdown-list::-webkit-scrollbar {
+    display: none; 
+}
+
+
+.dropdown-list div {
+    padding: 8px;
+    cursor: pointer;
+}
+
+.dropdown-list div:hover {
+    background: #f0f0f0;
 }
 
 @media (max-width: 768px) {

@@ -34,6 +34,9 @@ if (isset($_SESSION['user'])) {
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
 
     <script src="../js_backend/events.js?v=<?php echo filemtime('../js_backend/events.js'); ?>"></script>
     <script src="../js_backend/control.js?v=<?php echo filemtime('../js_backend/control.js'); ?>"></script>
@@ -99,22 +102,19 @@ if (isset($_SESSION['user'])) {
                                     <label for="hoTen"><font color="red">*&nbsp;</font>Họ và tên:</label>
                                     <input type="text" id="hoTen" name="hoTen" placeholder="Nhập theo CCCD!" required>
                                     <label for="date_birth"><font color="red">*&nbsp;</font>Ngày sinh: </label>
-                                    <input type="text" id="date_birth" name="date_birth" placeholder="Nhập ngày sinh (dd/mm/yyyy)" required>
-
-                                    <script>
-                                       $(function() {
+                                   <input type="text" id="date_birth" name="date_birth" placeholder="Nhập ngày sinh (dd/mm/yyyy)" required>
+                                
+                                   <script>
+                                       $(function () {
                                            $("#date_birth").datepicker({
-                                               dateFormat: "dd/mm/yy",  // Định dạng ngày là dd/mm/yyyy
-                                               changeMonth: true,
-                                               changeYear: true,
-                                               yearRange: "-100:+0",  // Giới hạn năm từ 100 năm trước đến hiện tại
-                                                maxDate: 0,            // Giới hạn ngày tối đa là ngày hôm nay
-                                                onSelect: function(dateText) {
-                                                    $(this).val(dateText);  // Khi chọn ngày, ngày sẽ được ghi đè lên giá trị cũ
-                                                }
+                                               dateFormat: "dd/mm/yy",      
+                                               changeMonth: true,           
+                                               changeYear: true,          
+                                               yearRange: "-100:+0",        
+                                               maxDate: 0             
                                             });
                                         });
-                                    </script>
+                                   </script>
                                     <div class="linediv radio_gender" style="margin-bottom: 10px">
                                         <label><font color="red">*&nbsp;</font>Giới tính:</label>
                                         <input type="radio" name="gender" value="nam"/>
@@ -164,7 +164,43 @@ if (isset($_SESSION['user'])) {
                                     <label for="imgs_bonus[]">Giấy chứng nhận đi kèm:</label>
                                     <button type="button" onclick="addProofEntry()" style="margin-left: 10px; margin-bottom: 10px">+</button>
                                     </div>
-                                    <?php include "../php_control/path_side/giaychungnhan_manager.php"; ?>
+                                    <div id="proof-container">
+                                    </div>
+                                    <script>
+                                    function addProofEntry() {
+                                       // Lấy container
+                                       var container = document.getElementById('proof-container');
+                                    
+                                       // Tạo một div mới cho mục bằng chứng
+                                       var newEntry = document.createElement('div');
+                                       newEntry.classList.add('proof-entry');
+                                    
+                                       // Nội dung HTML cho div mới
+                                       newEntry.innerHTML = `
+                                    
+                                           <select name="proof_type[]" required>
+                                               <option value="" disabled selected>Chọn loại bằng chứng</option>
+                                               <option value="english_certificate">Chứng chỉ tiếng Anh</option>
+                                                <option value="international_award">Giải quốc tế</option>
+                                                <option value="hsg_exam">Thi HSG</option>
+                                                <option value="priority_subject">Đối tượng ưu tiên</option>
+                                            </select>
+                                    
+                                            <select name="proof_detail[]" required>
+                                                <option value="1" selected>1</option>
+                                               <option value="2">2</option>
+                                                <option value="3">3</option>
+                                            </select>
+                                    
+                                            <input type="file" name="imgs_bonus[]" accept="image/*" required>
+                                                <button type="button" onclick="removeProofEntry(this)" style="margin-bottom: 10px; width:fit-content">Xóa chỉ mục</button>
+                                            <div style="height: 1px; background-color: grey;"></div>
+                                        `;
+                                    
+                                        // Thêm mục mới vào container
+                                        container.appendChild(newEntry);
+                                    }
+                                    </script>
 
 
                                     <p class="note">Nộp đúng yêu cầu, thông tin chi tiết <a href="https://www.google.com/" target="_blank">TẠI ĐÂY</a>!</p>

@@ -99,10 +99,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     'email' => $userInfo['email'],
                     'id' => $userInfo['id'],
                     'phone' => $userInfo['phone'],
-                    'avatar_name' => 'https://iwelyvdecathaeppslzw.supabase.co/storage/v1/object/public/avatar/'.$userInfo['avatar_name'],
+                    'avatar_name' => isValidLink('https://iwelyvdecathaeppslzw.supabase.co/storage/v1/object/public/avatar/'.$userInfo['avatar_name']),
                     'trang_thai' => $userInfo['trang_thai']
                 ];
-
+                
                 echo "success";
             }else{
                 echo "error: Có sự cố khi truy cập dữ liệu người dùng.";
@@ -117,4 +117,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     echo "error: Lỗi PHP request";
 }
 exit();
+
+function isValidLink($url) {
+    // Sử dụng cURL để kiểm tra mã HTTP
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_NOBODY, true); // Chỉ lấy mã trạng thái, không tải nội dung
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 5); // Giới hạn thời gian chờ
+    curl_exec($ch);
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+
+    if ($httpCode === 200){
+        return $url;
+    }else{
+        return '';
+    }
+}
 ?>

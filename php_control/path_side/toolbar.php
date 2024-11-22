@@ -11,8 +11,13 @@
             // $imageWithTimestamp = $imagePath . '?v=' . filemtime($imagePath);
             ?>
 
-            <img class="avatar" src="<?php echo $_SESSION['user']['avatar_name'] ?>">
-            <!-- <img class="avatar" src="../assets/images/Guest_user.png?v=<?php echo filemtime('../assets/images/Guest_user.png'); ?>"> -->
+            <img class="avatar" src="<?php 
+                if($_SESSION['user']['avatar_name'] != ''){
+                    echo $_SESSION['user']['avatar_name'];
+                }else{
+                    echo "../assets/images/Guest_user.png?v=<?php echo filemtime('../assets/images/Guest_user.png');";
+                }             
+            ?>">
             <div class="user-details details">
                 <p class="username"> <?php echo $_SESSION['user']['username']; ?>
                     <!-- TODO: (all) Truy vấn tìm tên người dùng -->

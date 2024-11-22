@@ -133,6 +133,7 @@ if (isset($_GET['ma_nganh'])) {
                     </div>
                     <div class="div_path_web linedown">
                         <h3 style='margin: 10px 0;'>Mô tả về chuyên ngành:</h3>
+                        <?php if(isset($info['mo_ta']) && isset($info['iframe']) && isset($info['img_link'])): ?>
                         <p>Hiện nay, ngành công nghệ thông tin là một trong những ngành học được chú trọng trong hệ thống đào tạo của trường Đại học Công nghệ thông tin cũng như các trường Đại học khác có đào tạo ngành học này. Nó được xem là ngành đào tạo mũi nhọn hướng đến sự phát triển của công nghệ và khoa học kỹ thuật trong thời đại số hóa ngày nay.</p>
 
                         <p>Công nghệ thông tin là một ngành học được đào tạo để sử dụng máy tính và các phần mềm máy tính để phân phối và xử lý các dữ liệu thông tin, đồng thời dùng để trao đổi, lưu trữ và chuyển đổi các dữ liệu thông tin dưới nhiều hình thức khác nhau.</p>
@@ -141,6 +142,9 @@ if (isset($_GET['ma_nganh'])) {
                             <iframe src="https://www.youtube.com/embed/Fv9wuC_bSTU?si=xcVlHC-WGBoLqRis" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin"></iframe>
                             <p>Video giới thiệu khoa Công nghệ thông tin</p>
                         </div>
+                        <?php else:?>
+                            <p class='none_info'>Chưa có mô tả về ngành này!</p>
+                        <?php endif;?>
                     </div>
                 </div>
                         
