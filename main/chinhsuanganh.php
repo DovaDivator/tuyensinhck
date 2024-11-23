@@ -146,7 +146,38 @@ if (isset($_SESSION['user'])) {
                                         <label for="imgs_bonus[]">Ghi chú:</label>
                                         <button type="button" onclick="addNote()" style="margin-left: 10px; margin-bottom: 10px">+</button>
                                     </div>
-                                    <p class="note_input">Nhập môn và điểm tối thiểu cần đạt</p>
+                                    <div id="ghi_chu_ele">
+                                    </div>
+                                    <script>
+                                    function addNote() {
+                                       // Lấy container
+                                       var container = document.getElementById('ghi_chu_ele');
+                                    
+                                       // Tạo một div mới cho mục bằng chứng
+                                       var newEntry = document.createElement('div');
+                                       newEntry.classList.add('proof-entry');
+                                    
+                                       // Nội dung HTML cho div mới
+                                       newEntry.innerHTML = `
+                                    
+                                        <div class="linediv" style="align-items: center;">
+                                            <select name="diem[]" required style="margin-right: 10px; margin-bottom: 0px;">
+                                                <option disabled selected>Chọn môn</option>
+                                                <option value="1">Toán THPHQG</option>
+                                                <option value="2">Văn THPHQG</option>
+                                                <option value="3">Anh THPHGQ</option>
+                                            </select>
+                                            <input type="number" name="diem_loc[]" min="0" step="1"  style="margin-bottom: 0; margin-right: 10px; width: 120px;">
+                                            <button type="button" onclick="removeProofEntry(this)" style="margin-bottom: 0px; width:fit-content">-</button>
+                                        </div>
+                                        `;
+                                    
+                                        // Thêm mục mới vào container
+                                        container.appendChild(newEntry);
+                                    }
+                                    </script>
+
+                                    <p class="note_input">Chọn môn và nhập điểm tối thiểu cần đạt</p>
 
                                     <label for="mo_ta">Mô tả:</label>    
                                     <textarea 
@@ -158,9 +189,28 @@ if (isset($_SESSION['user'])) {
                                     
                                     <label for="phuong_tien">Phương tiện:</label>   
                                     <div style='display:grid; grid-template-columns: repeat(2, 1fr); margin-right: 25px;'>
-                                        <label style="margin:0;"><input type="radio" name="phuong_tien" value="media"> Video URL</label>
-                                        <label style="margin:0;"><input type="radio" name="Phuong_tien" value="image"> Tải ảnh</label>
+                                        <label style="margin:0;"><input type="radio" name="phuong_tien" value="media" onclick="handleRadioClick(this, 'url')"> Video URL</label>
+                                        <label style="margin:0;"><input type="radio" name="Phuong_tien" value="image" onclick="handleRadioClick(this, 'file')"> Tải ảnh</label>
                                     </div>
+                                    <div style='height: 15px'></div>
+                                    <input tyle="text" id="url" name="url" style="width: 100%; display: none;" placeholder="Điền link nhúng vào">
+                                    <input type="file" id="file_temp" style="width: 100%; display: none;" name="file_temp">
+
+                                    <div class="chu_thich_hold" style="display:none; margin-top: 10px;">
+                                    <label for="chu_thich">
+                                        <font color="red">*</font>&nbsp;Chú thích:
+                                    </label>
+                                    <input type="text" id="chu_thich" name="chu_thich" style="width: 100%;" placeholder="Thêm chú thích">
+                                    </div>
+
+                                    <div class="linediv" style="margin-bottom: 10px;">
+                                        <input type="checkbox" name="enable" id="enable">
+                                        <label for="enable">Hiển thị chuyên ngành đăng ký?</label>
+                                    </div>
+
+                                    <button type="submit" class="custom-button" style="width: 100%; margin-top: 20px;" onclick="UpdateNganh(
+                                        <?php echo isset($_GET['ma_nganh']) ? $_GET['ma_nganh'] : null; ?>
+                                    )">Cập nhật thông tin</button>
                                 </div>
                             </form>
 
@@ -233,6 +283,37 @@ if (isset($_SESSION['user'])) {
                 controlType: 'select' 
             });
         });
+
+        let lastCheckedRadio = null; // Biến lưu radio đang được chọn
+
+        function handleRadioClick(radio, type) {
+            const urlInput = document.getElementById("url");
+            const fileInput = document.getElementById("file_temp");
+            const note = document.getElementById("chu_thich");
+            const note_div = document.getElementsByClassName("chu_thich_hold");
+        
+            // Nếu radio được nhấn lại (bỏ tick)
+            if (lastCheckedRadio === radio) {
+               radio.checked = false; // Bỏ tick
+                lastCheckedRadio = null; // Reset trạng thái
+                urlInput.style.display = "none";
+                fileInput.style.display = "none";
+                note.value = "";
+                note_div[0].style.display = "none";
+            } else {
+               // Cập nhật radio mới được chọn
+                lastCheckedRadio = radio;
+            
+                if (type === "url") {
+                    urlInput.style.display = "block";
+                    fileInput.style.display = "none";
+                } else if (type === "file") {
+                    urlInput.style.display = "none";
+                    fileInput.style.display = "block";
+                }
+                note_div[0].style.display = "block";
+            }
+        }
     </script>
 
 

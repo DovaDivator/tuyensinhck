@@ -12,13 +12,21 @@ if (isset($_SESSION['user'])) {
 if (isset($_GET['ma_nganh'])) {
     include '../php_control/data/get_info_nganh.php';
     $info = getInfoNganh($_GET['ma_nganh']);
-    echo "<script>console.log(" . json_encode($info) . ");</script>";
-
+    include '../php_control/data/db_connect.php';
 } else {
     $info = [];
-
 }
 
+
+function getNameGV($id){
+    global $pdo;
+    $sql = "SELECT ten FROM giao_vien WHERE gv_id = :gv_id";
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':gv_id', $id, PDO::PARAM_STR);
+    $stmt->execute();
+    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    return !empty($result) ? $result[0]['ten'] : "";
+}
 
 ?>
 <!DOCTYPE html>
@@ -28,7 +36,9 @@ if (isset($_GET['ma_nganh'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Web Tuyển sinh -&nbsp;
         <?php
-            echo $_GET['ten_nganh'];
+            if(isset($info['ten'])){
+                echo $info['ten'];
+            }
         ?>
     </title>
     <link rel="icon" href="../assets/images/logo.png?v=<?php echo filemtime('../assets/images/logo.png'); ?>" type="image/png">
@@ -63,7 +73,9 @@ if (isset($_GET['ma_nganh'])) {
                     <h1>Thông tin chi tiết ngành</h1> 
                     <h2 style="padding-left: 50px; color:#DC143C;">
                         <?php 
-                            echo $info[0]['id']. ' : '. $info[0]['ten'] ;
+                            if(isset($info['ten'])){
+                                echo $_GET['ma_nganh']. " - ". $info['ten'];
+                            }
                         ?>
                     </h2>
 
@@ -75,7 +87,7 @@ if (isset($_GET['ma_nganh'])) {
                                 </div>
                                 <div class="path_info_text">
                                     <h4>Chỉ tiêu xét tuyển:</h4>
-                                    <p><?php echo $info[0]['chi_tieu']; ?> sinh viên</p>
+                                    <p><?php echo isset($info['chi_tieu']) ?  $info['chi_tieu'] : ""; ?> sinh viên</p>
                                 </div>
                                 <div class="divine-line"></div>
                             </div>
@@ -85,7 +97,7 @@ if (isset($_GET['ma_nganh'])) {
                                 </div>
                                 <div class="path_info_text">
                                     <h4>Tổ hợp xét tuyển:</h4>
-                                    <p><?php echo $info[0]['to_hop']; ?></p>
+                                    <p><?php echo isset($info['to_hop']) ?  $info['to_hop'] : ""; ?></p>
                                 </div>
                                 <div class="divine-line"></div>
                             </div>
@@ -95,46 +107,44 @@ if (isset($_GET['ma_nganh'])) {
                                 </div>
                                 <div class="path_info_text">
                                     <h4>Chương trình đào tạo:</h4>
-                                    <p><?php  echo $info[0]['chuong_trinh'] ?> năm</p>
+                                    <p><?php  echo isset($info['chuong_trinh']) ?  $info['chuong_trinh'] : "" ?> năm</p>
                                 </div>
                             </div>
                         </div>
+
                         <div class="date_div">
-                            <p><b>Hạn đăng ký: <?php echo (new DateTime(substr($info[0]['date_end'], 0, 19)))->format('H\hi d/m/Y');?></b></p>
+                            <p><b>Hạn đăng ký: từ&nbsp;
+                                <font color="red"><?php echo isset($info['date_open']) ?  (new DateTime(substr($info['date_open'], 0, 19)))->format('H\hi d/m/Y'): "";?></font>
+                                &nbsp;đến&nbsp;
+                                <font color="red"><?php echo isset($info['date_end']) ?  (new DateTime(substr($info['date_end'], 0, 19)))->format('H\hi d/m/Y'): "";?></font>
+                            </b></p>
                         </div>
                         <?php if($_SESSION['user']['role'] !== 'Student'):?>
                         <div class="dangkysl_div">
-                            <p><b>Số lượng đăng ký: <?php echo $info[0]['sl_dky'];?></b></p>
+                            <p><b>Số lượng đăng ký: <?php echo isset($info['sl_dky']) ?  $info['sl_dky'] : "" ;?></b></p>
                         </div>
                         <?php endif; ?>
-                        <?php if($_SESSION['user']['role'] === 'Admin'):?>
                         <div class="dangkysl_div">
-                            <p><b>Giáo viên phụ trách: <?php echo $info[0]['gv_id']; ?> </b></p>
+                            <p><b>Giáo viên phụ trách: <?php echo isset($info['gv_id']) ?  getNameGV($info['gv_id']) : ""; ?> </b></p>
                         </div>
-                        <?php endif; ?>
                         <div class="note_div">
                             <h4>Ghi chú: </h4>
-                            <p style='color: red;'><b><i>- Số lượng đăng ký đủ!</i></b></p>
-                            <p><b>- Điểm xét tuyển: <?php echo $info[0]['diem_chuan']."<br>";
-                                                            $diem = json_decode($info[0]['ghi_chu'], true);
-
-                                                            // Kiểm tra kết quả
-                                                            if (is_array($diem)) {
-                                                                if($diem['Anh']){
-                                                                    echo "Điểm Anh >= " . $diem['Anh'] . "<br>";
-                                                                }
-                                                                if( $diem['Toán']){
-                                                                    echo "Điểm Toán >= " . $diem['Toán'] . "<br>";
-                                                                }
-                                                                if( $diem['Văn']){
-                                                                    echo "Điểm Văn >= " . $diem['Văn'] . "<br>";
-                                                                }
-
-                                                                
-                                                            } else {
-                                                                echo "Dữ liệu ghi chú không hợp lệ.";
-                                                            }
-                                                        ?></b></p>
+                            <?php if($_SESSION['user']['role'] === "Student" && isset($info['is_full']) && $info['is_full']): ?>
+                                <p style='color: red;'><b><i>- Số lượng đăng ký đủ!</i></b></p>
+                            <?php endif; ?>
+                            <p><b>- Điểm xét tuyển: <font color="red"><?php echo isset($info['diem_chuan']) ?  $info['diem_chuan'] : "" ;?></font></b></p>
+                            <?php
+                                if(isset($info['ghi_chu'])){
+                                    $diem = json_decode($info['ghi_chu'], true);
+                                    if (is_array($diem)) {
+                                        echo "<p><b>- Yêu cầu:</p></b>";
+                                        foreach ($diem as $key => $value) {
+                                            // In ra dưới dạng "Điểm $key >= $value"
+                                            echo "<p style='margin-left: 60px !important;'>Điểm $key >= <font color='red'>$value</font></p>";
+                                        }
+                                    }
+                                }
+                            ?>
                         </div>
                         <?php if($_SESSION['user']['role'] === 'Student'): ?>
                         <div style='margin-top: 10px; margin-left: 10px;'>
@@ -148,20 +158,31 @@ if (isset($_GET['ma_nganh'])) {
                         <?php endif; ?>
                         <?php if($_SESSION['user']['role'] === 'Admin'):?>
                         <div style='margin-top: 10px; margin-left: 10px;'>
-                            <button class="custom-button-dktc">&#128203; CHỈNH SỬA HỒ SƠ TUYỂN SINH</button>
+                            <button class="custom-button-dktc" onclick="window.location.href = 'chinhsuanganh.php?ma_nganh=<?php echo $_GET['ma_nganh']; ?>'">&#128203; CHỈNH SỬA HỒ SƠ TUYỂN SINH</button>
                         </div>
                         <?php endif; ?>
                     </div>
                     <div class="div_path_web linedown">
                         <h3 style='margin: 10px 0;'>Mô tả về chuyên ngành:</h3>
-                        <?php if(isset($info['mo_ta']) && isset($info['iframe']) && isset($info['img_link'])): ?>
-                        <p>Hiện nay, ngành công nghệ thông tin là một trong những ngành học được chú trọng trong hệ thống đào tạo của trường Đại học Công nghệ thông tin cũng như các trường Đại học khác có đào tạo ngành học này. Nó được xem là ngành đào tạo mũi nhọn hướng đến sự phát triển của công nghệ và khoa học kỹ thuật trong thời đại số hóa ngày nay.</p>
-
-                        <p>Công nghệ thông tin là một ngành học được đào tạo để sử dụng máy tính và các phần mềm máy tính để phân phối và xử lý các dữ liệu thông tin, đồng thời dùng để trao đổi, lưu trữ và chuyển đổi các dữ liệu thông tin dưới nhiều hình thức khác nhau.</p>
-
+                        <?php if(isset($info['mo_ta']) || isset($info['iframe']) || isset($info['img_link'])): ?>
+                            <?php 
+                            if(isset($info['mo_ta'])){
+                                $paragraphs = explode("\n", $info['mo_ta']); 
+                                foreach ($paragraphs as $paragraph) {
+                                    $paragraph = trim($paragraph); 
+                                    if (!empty($paragraph)) { 
+                                        echo "<p>$paragraph</p>"; 
+                                    }
+                                }
+                            }
+                            ?>
                         <div class="media">
-                            <iframe src="https://www.youtube.com/embed/Fv9wuC_bSTU?si=xcVlHC-WGBoLqRis" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin"></iframe>
-                            <p>Video giới thiệu khoa Công nghệ thông tin</p>
+                            <?php if(isset($info['iframe']) && $info['iframe'] != null): ?>
+                                <iframe src="<?php echo $info['iframe']; ?>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+                            <?php elseif(isset($info['img_link']) && $info['img_link'] != null): ?>
+                                <img src="<?php echo "https://iwelyvdecathaeppslzw.supabase.co/storage/v1/object/public/nganh_image/".$info['img_link'] ?>">
+                            <?php endif;?>
+                            <p><?php echo isset($info['chu_thich']) ?  $info['chu_thich'] : ""  ?></p>
                         </div>
                         <?php else:?>
                             <p class='none_info'>Chưa có mô tả về ngành này!</p>
