@@ -1,6 +1,5 @@
 <!-- Hàm kiểm tra trang đã đăng nhập chưa -->
 <?php
-
 session_start();
 if (isset($_SESSION['user'])) {
     if ($_SESSION['user']['role'] !== "Admin") {
@@ -12,6 +11,30 @@ if (isset($_SESSION['user'])) {
     exit();
 }
 
+include("../php_control/data/db_connect.php");
+function GetToHop(){
+    global $pdo;
+
+    $sql = "SELECT * FROM get_to_hop()";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
+    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    return $result;
+}
+
+
+
+function GetMonThi(){
+    $mon_thi_option = '';
+    
+
+    // foreach ($result as $row) {
+    //     $id = htmlspecialchars($row['id'], ENT_QUOTES, 'UTF-8');
+    //     $ky_thi = htmlspecialchars($row['ky_thi'], ENT_QUOTES, 'UTF-8');
+    //     $mon_thi_option .= "<option value='{$id}'>{$id} ({$ky_thi})</option>";
+    // }
+    return $mon_thi_option;
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -104,14 +127,11 @@ if (isset($_SESSION['user'])) {
                                     <div class="dropdown" id="dropdown_to_hop" style='top: -10px;'>
                                         <input type="text" id="searchInput" placeholder="Tìm kiếm..." class="dropdown-search">
                                         <div class="dropdown-list">
-                                            <div>Option 1</div>
-                                            <div>Option 2</div>
-                                            <div>Option 3</div>
-                                            <div>Option 4</div>
-                                            <div>Option 5</div>
-                                            <div>Option 6</div>
-                                            <div>Option 7</div>
-                                            <div>Option 8</div>
+                                        <?php foreach (GetToHop() as $row): ?>
+                                            <div data-id="<?php echo $row['id']; ?>">
+                                                <?php echo $row['id']; ?>
+                                            </div>
+                                        <?php endforeach; ?>
                                         </div>
                                     </div>
                                     </div>
@@ -143,37 +163,79 @@ if (isset($_SESSION['user'])) {
                                     </div>
 
                                     <div class="linediv" style="margin-top: 15px;">
-                                        <label for="imgs_bonus[]">Ghi chú:</label>
+                                        <label>Ghi chú:</label>
                                         <button type="button" onclick="addNote()" style="margin-left: 10px; margin-bottom: 10px">+</button>
                                     </div>
                                     <div id="ghi_chu_ele">
                                     </div>
                                     <script>
+                                    // Hàm cập nhật danh sách môn học mới nhất
+                                    function updateListMon(newListMon) {
+                                        list_mon = newListMon;
+
+                                        // Lấy tất cả các dropdown đang hiển thị
+                                        const dropdowns = document.querySelectorAll('#ghi_chu_ele select[name="diem[]"]');
+
+                                        dropdowns.forEach(dropdown => {
+                                            const selectedValue = dropdown.value; // Lưu lựa chọn hiện tại nếu có
+                                            dropdown.innerHTML = ''; // Xóa toàn bộ các tùy chọn cũ
+
+                                            // Thêm lại danh sách các tùy chọn mới
+                                            dropdown.innerHTML = `<option disabled selected>Chọn môn</option>`;
+                                            list_mon.forEach(mon => {
+                                                const option = document.createElement('option');
+                                                option.value = mon;
+                                                option.textContent = mon;
+                                                dropdown.appendChild(option);
+                                            });
+
+                                            // Giữ nguyên lựa chọn nếu vẫn còn hợp lệ
+                                            if (list_mon.includes(selectedValue)) {
+                                                dropdown.value = selectedValue;
+                                            } else {
+                                                // Nếu không hợp lệ, chuyển về trạng thái mặc định
+                                                dropdown.value = '';
+                                            }
+                                        });
+                                    }
+
+                                    // Hàm thêm ghi chú
                                     function addNote() {
-                                       // Lấy container
-                                       var container = document.getElementById('ghi_chu_ele');
-                                    
-                                       // Tạo một div mới cho mục bằng chứng
-                                       var newEntry = document.createElement('div');
-                                       newEntry.classList.add('proof-entry');
-                                    
-                                       // Nội dung HTML cho div mới
-                                       newEntry.innerHTML = `
-                                    
-                                        <div class="linediv" style="align-items: center;">
-                                            <select name="diem[]" required style="margin-right: 10px; margin-bottom: 0px;">
-                                                <option disabled selected>Chọn môn</option>
-                                                <option value="1">Toán THPHQG</option>
-                                                <option value="2">Văn THPHQG</option>
-                                                <option value="3">Anh THPHGQ</option>
-                                            </select>
-                                            <input type="number" name="diem_loc[]" min="0" step="1"  style="margin-bottom: 0; margin-right: 10px; width: 120px;">
-                                            <button type="button" onclick="removeProofEntry(this)" style="margin-bottom: 0px; width:fit-content">-</button>
-                                        </div>
+                                        const toHop = document.getElementById('to_hop').value;
+                                        if (!toHop) {
+                                            alert("Vui lòng chọn tổ hợp trước.");
+                                            return;
+                                        }
+
+                                        // Lấy container
+                                        const container = document.getElementById('ghi_chu_ele');
+
+                                        // Tạo một div mới cho mục ghi chú
+                                        const newEntry = document.createElement('div');
+                                        newEntry.classList.add('proof-entry');
+
+                                        // Nội dung HTML cho div mới
+                                        newEntry.innerHTML = `
+                                            <div class="linediv" style="align-items: center;">
+                                                <select name="diem[]" required style="margin-right: 10px; margin-bottom: 0px;">
+                                                    <option disabled selected>Chọn môn</option>
+                                                    ${list_mon.map(mon => `<option value="${mon}">${mon}</option>`).join('')}
+                                                </select>
+                                                <input type="number" name="diem_loc[]" min="0" step="1" style="margin-bottom: 0; margin-right: 10px; width: 120px;">
+                                                <button type="button" onclick="removeProofEntry(this)" style="margin-bottom: 0px; width:fit-content">-</button>
+                                            </div>
                                         `;
-                                    
+
                                         // Thêm mục mới vào container
                                         container.appendChild(newEntry);
+                                    }
+
+                                    // Hàm xóa một mục ghi chú
+                                    function removeProofEntry(button) {
+                                        const entry = button.closest('.proof-entry');
+                                        if (entry) {
+                                            entry.remove();
+                                        }
                                     }
                                     </script>
 
@@ -228,6 +290,7 @@ if (isset($_SESSION['user'])) {
 <script>
         const textInput = document.getElementById('to_hop');
         const dropdown = document.getElementById('dropdown_to_hop');
+        let list_mon;
 
         // Hiển thị danh sách khi click vào input
         textInput.addEventListener('click', () => {
@@ -237,11 +300,54 @@ if (isset($_SESSION['user'])) {
         // Thêm lựa chọn khi click vào dropdown
         dropdown.addEventListener('click', (e) => {
             if (e.target.tagName === 'DIV') {
-                const selectedOption = e.target.textContent;
-                if (!textInput.value.includes(selectedOption)) {
-                    textInput.value += textInput.value ? `, ${selectedOption}` : selectedOption;
+                const selectedOptionId = e.target.getAttribute('data-id'); // Lấy giá trị id từ thuộc tính data-id
+                const selectedOptionText = e.target.textContent; // Lấy text hiển thị (nếu cần)
+            
+                    // Gán giá trị id vào textInput (tránh trùng lặp)
+                if (!textInput.value.includes(selectedOptionId)) {
+                    textInput.value += textInput.value ? `, ${selectedOptionId}` : selectedOptionId;
+
+                    const xhr2 = new XMLHttpRequest();
+                    xhr2.open("POST", "../php_control/data/get_list_mon.php", true);
+                    xhr2.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                    xhr2.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+
+                    xhr2.onload = function () {
+                        if (xhr2.status === 200) {
+                            const response = JSON.parse(xhr2.responseText);
+                            list_mon = response.map(row => row.mon);
+                            const dropdowns = document.querySelectorAll('#ghi_chu_ele select[name="diem[]"]');
+
+                            // Duyệt qua các dropdown và cập nhật lại các option
+                            dropdowns.forEach(dropdown => {
+                                const selectedValue = dropdown.value;
+
+                                // Xóa hết các option cũ và thêm option mới từ list_mon
+                                dropdown.innerHTML = `<option disabled selected>Chọn môn</option>`; // Thêm option "Chọn môn"
+
+                                list_mon.forEach(mon => {
+                                    const option = document.createElement('option');
+                                    option.value = mon;
+                                    option.textContent = mon;
+
+                                    // Nếu môn trong list_mon đã được chọn trước đó, giữ lại lựa chọn
+                                    if (selectedValue === mon) {
+                                        option.selected = true;
+                                    }
+
+                                    dropdown.appendChild(option);
+                                });
+                            });
+                        } else {
+                            // Xử lý lỗi nếu có
+                            console.error('Error:', xhr2.status);
+                        }
+                    };
+
+                    xhr2.send( `list=${encodeURIComponent(textInput.value)}` );
                 }
-                dropdown.style.display = 'none';
+            
+                dropdown.style.display = 'none'; // Ẩn dropdown sau khi chọn
             }
         });
 
