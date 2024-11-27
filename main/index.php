@@ -134,9 +134,6 @@ echo '<script>console.log("' . $_SESSION['user']['role'] . '");</script>';
                         </form>
                         <?php 
                             include '../php_control/path_side/table_nganh.php'; 
-                            if($_SESSION['user']['role'] === 'Student'){
-                                echo '<div style="margin-top: 15px"><a href="#"">&gt;&gt; Tra cứu toàn bộ chương trình đào tạo</a></div>';
-                            }
                         ?>
                     </div>
                 </div>
