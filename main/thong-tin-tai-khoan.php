@@ -102,7 +102,7 @@ if (isset($_SESSION['user'])) {
                             </div>
                             <!-- sau này thêm điều kiện hiển thị -->
                              <?php
-                                include '../php_control/admin_path/db_connect.php';
+                                include '../php_control/data/db_connect.php';
                                 function fetchGVforNgang($pdo) {
                                     $x = $_SESSION['user']['id'];
                                    // echo $x;
