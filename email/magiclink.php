@@ -1,5 +1,6 @@
 <?php
 include '../php_control/data/db_connect.php';
+file_put_contents("log.txt", "file chạy\n", FILE_APPEND);
 
 if(isset($_GET['email'])){
     $email = $_GET['email'];
@@ -11,6 +12,8 @@ if(isset($_GET['email'])){
 }
 
 // Thực thi truy vấn gọi hàm check_recovery_time
+file_put_contents("log.txt", "check email\n", FILE_APPEND);
+
 $sql = "SELECT check_recovery_time(:email) AS is_valid"; // Truy vấn SQL gọi hàm check_recovery_time
 $stmt = $pdo->prepare($sql);
 
