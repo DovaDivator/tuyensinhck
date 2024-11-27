@@ -48,12 +48,15 @@ function check_password($email, $password)
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
 
+    // Ghi log vào file log.txt
+    // file_put_contents("log.txt", "Response: $response\n", FILE_APPEND);
+
     // Giải mã phản hồi JSON của Supabase
     $responseData = json_decode($response, true);
 
     if ($httpCode === 200) {
         return $responseData; // Trả về Access Token và Refresh Token nếu thành công
-    } elseif ($httpCode === 400) {
+    } else {
         if (isset($responseData['error_code']) && $responseData['error_code'] === 'email_not_confirmed') {
             $_SESSION['email_confirm'] = $email;
             return "confirm: Tài khoản chưa được xác thực!";
@@ -108,7 +111,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 echo "error: Có sự cố khi truy cập dữ liệu người dùng.";
             }
         } else {
-            echo "error: Tên đăng nhập hoặc mật khẩu sai.";
+            echo $authResponse;
         }
     } else {
         echo "error: Tên đăng nhập hoặc mật khẩu sai.";
