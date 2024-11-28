@@ -1,11 +1,12 @@
 <!-- Hàm kiểm tra trang đã đăng nhập chưa -->
 <?php
-
 session_start();
 if (isset($_SESSION['user'])) {
-    //echo "<script>alert('welcom');</script>";
+    if ($_SESSION['user']['role'] == "Admin") {
+        header("Location: index.php");
+        exit();
+    }
 } else {
-    //echo "<script>alert('pls login');</script>";
     header("Location: login.php");
     exit();
 }

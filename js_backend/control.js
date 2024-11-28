@@ -73,35 +73,57 @@ function loadsinhvien() {
     });
 }
 
-function renderCoursesTuyenSinh(courses, role) {
+function renderCoursesTuyenSinh(jsonData, role) {
+    console.log("Dữ liệu ban đầu:", jsonData);
+
+    // Parse dữ liệu nếu là chuỗi JSON
+    if (typeof jsonData === "string") {
+        try {
+            jsonData = JSON.parse(jsonData);
+        } catch (e) {
+            console.error("Dữ liệu JSON không hợp lệ:", e);
+            renderError("Dữ liệu không hợp lệ, vui lòng thử lại sau!", "course_table_tuyen_sinh", "top_tuyen_sinh");
+            return;
+        }
+    }
+
+    // Đưa dữ liệu về dạng mảng nếu là object
+    let courses = Array.isArray(jsonData) ? jsonData : [jsonData];
+
+    // Kiểm tra nếu không có dữ liệu
+    if (!courses || courses.length === 0) {
+        renderError("Hiện tại chưa có đăng ký mới nào, vui lòng quay lại sau!", "course_table_tuyen_sinh", "top_tuyen_sinh");
+        return;
+    }
+
     var tbody = document.getElementById('course_table_tuyen_sinh');
     tbody.innerHTML = '';
 
-    if (courses.length === 0) {
-        renderError('Hiện tại chưa có đăng ký mới nào, vui lòng quay lại sau!');
-    } else {
-        console.log(courses);
-        courses.forEach(function(course) {
-            var row = document.createElement('tr');
-            row.title = 'Ấn vào để xem thông tin chi tiết';
-            row.innerHTML = `
-                <td>${course.id}</td>
-                <td>${course.ten}</td>
-                ${role === 'Admin' ? `<td class="status_td" style="color: ${course.isenable ? 'green' : 'red'}; text-align: center;">${course.isenable ? 'Hiện' : 'Ẩn'}</td>` : ''}
-                ${role !== 'Student' ? `<td class="number_td">${course.slsv}</td>` : ''}
-                <td>${course.tohop}</td>
-                <td>${course.date_end}</td>
-            `;
+    // Duyệt qua danh sách courses
+    courses.forEach(function(course) {
+        var row = document.createElement('tr');
+        row.title = 'Ấn vào để xem thông tin chi tiết';
 
-            // Gắn sự kiện click cho mỗi hàng để chuyển đến trang chi tiết
-            row.addEventListener('click', function() {
-                window.location.href = `chi-tiet-tuyen-sinh.php?ma_nganh=${course.id}`;
-            });
+        // Cấu trúc HTML của từng dòng
+        row.innerHTML = `
+            <td>${course.id}</td>
+            <td>${course.ten}</td>
+            ${role === 'Admin' ? `<td class="status_td" style="color: ${course.isenable ? 'green' : 'red'}; text-align: center;">${course.isenable ? 'Hiện' : 'Ẩn'}</td>` : ''}
+            ${role !== 'Student' ? `<td class="number_td">${course.slsv}</td>` : ''}
+            <td>${course.tohop}</td>
+            <td>${course.date_end}</td>
+        `;
 
-            tbody.appendChild(row);
+        // Gắn sự kiện click cho mỗi hàng để chuyển đến trang chi tiết
+        row.addEventListener('click', function() {
+            window.location.href = `chi-tiet-tuyen-sinh.php?ma_nganh=${course.id}`;
         });
-    }
+
+        tbody.appendChild(row);
+    });
 }
+
+
 
 function renderCoursesGV(courses, role) {
     var tbody = document.getElementById('body_danh_sach_giao_vien');
@@ -161,11 +183,11 @@ function renderCoursesSV(courses, role) {
 }
 
 
-function renderError(message) {
-    var tbody = document.getElementById('course_table_tuyen_sinh');
-    var table = document.getElementsByClassName('table_body_scroll');
+function renderError(message, tbody_id, table_id) {
+    var tbody = document.getElementById(tbody_id);
+    var table = document.getElementById(table_id);
     tbody.innerHTML = '';
-    table[0].style.height = 'fit-content';
+    table.style.height = 'fit-content';
 
     var row = document.createElement('tr');
     row.className = 'error_tdtable';
