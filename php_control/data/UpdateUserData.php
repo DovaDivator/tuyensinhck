@@ -17,6 +17,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // $_POST = array();
 
     // Thực hiện truy vấn SQL
+
+
+    if($name !== ''){
+        $_SESSION['user']['username'] = $name;
+    }
+
     if($email !== ''){
         $query = "SELECT * FROM get_id_user(:id_or_phone)";
         $stmt = $pdo->prepare($query);
@@ -30,6 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 echo "warming: Email này đã được sử dụng, vui lòng thay bằng email khác.";
                 exit();
             }
+            $_SESSION['user']['email'] = $email;
         }
     }
 
@@ -47,6 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 exit();
             }
         }
+        $_SESSION['user']['phone'] = $phone;
     }
 
     if ($avatarTemp !== '') {  

@@ -108,7 +108,7 @@ if (isset($_SESSION['user'])) {
                                         </label>
                                         <input type="email" id="email" name="email" placeholder="Bắt buộc" maxlength="255" value="<?php echo $_SESSION['user']['email']; ?>">
 
-                                        <label for="phone">&nbsp;&nbsp;Số điện thoại:</label>
+                                        <label for="phone"value="<?php echo $_SESSION['user']['phone']; ?>">&nbsp;&nbsp;Số điện thoại:</label>
                                         <input type="text" id="phone" placeholder="Nhập SĐT 10 chữ số! (không bắt buộc)" maxlength="10" value="<?php echo $_SESSION['user']['phone']; ?>" name="phone">
                                     </div>
                                 </div>
@@ -291,7 +291,18 @@ if (isset($_SESSION['user'])) {
                 // Nếu bạn không trả về JSON, xử lý phản hồi như một chuỗi
                 if (response.trim().startsWith("success")) {
                     HideLoading();
-                    SuccessDialog("Thông báo", response.replace("success: ", ""));
+                    // SuccessDialog("Thông báo", response.replace("success: ", ));
+                    Swal.fire({
+                    title: "Thông báo",
+                    text: response.replace("success: ", ""),
+                    icon: "success",
+                    confirmButtonText: "OK"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Reload trang khi người dùng bấm "OK"
+                        location.reload();
+                    }
+                });
                 } else if (response.trim().startsWith("warming: ")) {
                     HideLoading();
                     WarmingDialog("Thông báo", response.replace("warming: ", ""));
