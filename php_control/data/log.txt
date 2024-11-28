@@ -6,3 +6,4 @@ Response: {"code":400,"error_code":"email_not_confirmed","msg":"Email not confir
 Response: Array
 Response: {"code":400,"error_code":"email_not_confirmed","msg":"Email not confirmed"}
 Response: confirm: Tài khoản chưa được xác thực!
+phone: null

@@ -70,7 +70,11 @@ if (isset($_SESSION['user'])) {
                                         <!-- <img class="avatar" "> -->
 
                                         <!-- Avatar Image -->
-                                        <img src=<?php echo $imageWithTimestamp; ?>
+                                        <img src=<?php if ($_SESSION['user']['avatar_name'] != '') {
+                                                        echo $_SESSION['user']['avatar_name'];
+                                                    } else {
+                                                        echo "../assets/images/Guest_user.png?v=<?php echo filemtime('../assets/images/Guest_user.png');";
+                                                    }      ?>
                                             alt="User Avatar" style="top: 10px; left: 10px; width: 200px; height: 200px" id="avatarImg">
 
                                         <!-- Edit Icon Overlay -->
