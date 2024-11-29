@@ -20,7 +20,7 @@
     $notifications = [
         [
             'id' => 1,
-            'title' => 'Thắng duut deet vit ban tum lum ứ ứ ứ',
+            'title' => 'Test Notification',
             'type' => 'Không xác định',
             'date' => '12/10/2024',
             'isRead' => false

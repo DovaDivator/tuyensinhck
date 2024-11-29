@@ -11,30 +11,7 @@ if (isset($_SESSION['user'])) {
     exit();
 }
 
-include("../php_control/data/db_connect.php");
-function GetToHop(){
-    global $pdo;
-
-    $sql = "SELECT * FROM get_to_hop()";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute();
-    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    return $result;
-}
-
-
-
-function GetMonThi(){
-    $mon_thi_option = '';
-    
-
-    // foreach ($result as $row) {
-    //     $id = htmlspecialchars($row['id'], ENT_QUOTES, 'UTF-8');
-    //     $ky_thi = htmlspecialchars($row['ky_thi'], ENT_QUOTES, 'UTF-8');
-    //     $mon_thi_option .= "<option value='{$id}'>{$id} ({$ky_thi})</option>";
-    // }
-    return $mon_thi_option;
-}
+include("../php_control/data/get-to-hop.php");
 ?>
 <!DOCTYPE html>
 <html lang="en">

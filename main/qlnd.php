@@ -107,7 +107,6 @@ $ds_gv =getDSGV();
                                         <div style='display:grid; grid-template-columns: repeat(2, 1fr); margin-right: 25px;'>
                                             <label><input type="radio" name="hoso" value="da_xac_thuc" disabled> Đã xác thực</label>
                                             <label><input type="radio" name="hoso" value="cho_xet_duyet" disabled> Chờ xét duyệt</label>
-                                            <label><input type="radio" name="hoso" value="khong_duyet" disabled> Không duyệt</label>
                                             <label><input type="radio" name="hoso" value="chua_nop" disabled> Chưa nộp</label>
                                         </div>
 

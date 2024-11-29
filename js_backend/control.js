@@ -111,10 +111,19 @@ function renderCoursesTuyenSinh(jsonData, role) {
         row.title = 'Ấn vào để xem thông tin chi tiết';
 
         // Cấu trúc HTML của từng dòng
+        const statusMap = {
+            0: { text: 'Đang ẩn', color: 'gray' },
+            1: { text: 'Sắp mở', color: 'blue' },
+            2: { text: 'Đang mở', color: 'green' },
+            3: { text: 'Đã đóng', color: 'red' }
+        };
+        const { text: statusText, color: statusColor } = statusMap[course.isenable] || { text: 'Không xác định', color: 'black' };
+        
+        // Tạo HTML cho hàng
         row.innerHTML = `
             <td>${course.id}</td>
             <td>${course.ten}</td>
-            ${role === 'Admin' ? `<td class="status_td" style="color: ${course.isenable ? 'green' : 'red'}; text-align: center;">${course.isenable ? 'Hiện' : 'Ẩn'}</td>` : ''}
+            ${role === 'Admin' ? `<td class="status_td" style="color: ${statusColor}; text-align: center;">${statusText}</td>` : ''}
             ${role !== 'Student' ? `<td class="number_td">${course.slsv}</td>` : ''}
             <td>${course.tohop}</td>
             <td>${course.date_end}</td>

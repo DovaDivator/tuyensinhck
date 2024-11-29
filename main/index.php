@@ -10,8 +10,13 @@ if (isset($_SESSION['user'])) {
     exit();
 }
 
+$query = isset($_GET['query']) ? $_GET['query'] : "";
+$status = isset($_GET['status']) ? $_GET['status'] : "";
+$selectedToHop = isset($_GET['tohop']) ? (array)$_GET['tohop'] : [];
+
 include '../php_control/data/ds_tuyen_sinh.php';
-$ds_tuyen_sinh = getDSTuyenSinh();
+include '../php_control/data/get-to-hop.php';
+$ds_tuyen_sinh = getDSTuyenSinh($query, $status, $selectedToHop);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -64,7 +69,7 @@ $ds_tuyen_sinh = getDSTuyenSinh();
                     <div class="table_hold">
                         <form action="" id="search_form" class='linediv' method="GET" style='margin-bottom: 10px;'>
                             <div class="search-container">
-                                <input type="text" name="query" placeholder="Nhập từ khóa tìm kiếm..." class="search-input">
+                                <input type="text" name="query" placeholder="Nhập từ khóa tìm kiếm..." class="search-input" value="<?php echo isset($_GET['query']) ? $_GET['query'] : '' ?>">
                                 <button type="submit" class="search-button">
                                     <img src="../assets/icon/search.png?v=<?php echo filemtime('../assets/icon/search.png'); ?>" 
                                     title="Tìm kiếm" class="search-icon">
@@ -88,44 +93,37 @@ $ds_tuyen_sinh = getDSTuyenSinh();
                                     </div>
 
                                     <!-- Trạng thái tuyển sinh -->
+                                    <?php if($_SESSION['user']['role'] == 'Admin'): ?>
                                     <div class="filter-group">
                                     <label>Trạng thái tuyển sinh:</label>
                                         <div class="checkbox-group">
-                                            <input type="checkbox" id="dangmo" name="status" value="dangmo">
+                                            <input type="checkbox" id="sapmo" name="status" value="sapmo" <?php echo $status === 'sapmo' ? 'checked' : ''; ?>>
+                                            <label for="sapmo">Sắp mở</label>
+
+                                            <input type="checkbox" id="dangmo" name="status" value="dangmo" <?php echo $status === 'dangmo' ? 'checked' : ''; ?>>
                                             <label for="dangmo">Đang mở</label>
 
-                                            <input type="checkbox" id="dadong" name="status" value="dadong">
+                                            <input type="checkbox" id="dadong" name="status" value="dadong" <?php echo $status === 'dadong' ? 'checked' : ''; ?>>
                                             <label for="dadong">Đã đóng</label>
 
-                                            <input type="checkbox" id="dangan" name="status" value="dangan">
+                                            <input type="checkbox" id="dangan" name="status" value="dangan" <?php echo $status === 'dangan' ? 'checked' : ''; ?>>
                                             <label for="dangan">Đang ẩn</label>
                                         </div>
                                     </div>
+                                    <?php endif; ?>
 
                                     <!-- Tổ hợp xét tuyển -->
                                     <div class="filter-group">
                                         <label>Tổ hợp xét tuyển:</label>
                                         <div class="checkbox-group tohopxettuyen">
-                                            <div class="checkbox-item">
-                                                <input type="checkbox" id="A01" name="tohop[]" value="A01">
-                                                <label for="A01">A01</label>
-                                            </div>
-                                            <div class="checkbox-item">
-                                                <input type="checkbox" id="A00" name="tohop[]" value="A00">
-                                                <label for="A00">A00</label>
-                                            </div>
-                                            <div class="checkbox-item">
-                                                <input type="checkbox" id="D01" name="tohop[]" value="D01">
-                                                <label for="D01">D01</label>
-                                            </div>
-                                            <div class="checkbox-item">
-                                                <input type="checkbox" id="B00" name="tohop[]" value="B00">
-                                                <label for="B00">B00</label>
-                                            </div>
-                                            <div class="checkbox-item">
-                                                <input type="checkbox" id="C00" name="tohop[]" value="C00">
-                                                <label for="C00">C00</label>
-                                            </div>
+                                            <?php foreach (GetToHop() as $row): 
+                                                $isChecked = in_array($row['id'], $selectedToHop) ? 'checked' : '';
+                                            ?>
+                                                <div class="checkbox-item">
+                                                    <input type="checkbox" name="tohop[]" value="<?php echo $row['id']; ?>" <?php echo $isChecked; ?>>
+                                                    <label for="<?php echo $row['id']; ?>"><?php echo $row['id']; ?></label>
+                                                </div>
+                                            <?php endforeach; ?>
                                         </div>
                                     </div>
                                 </div>

@@ -3,7 +3,7 @@
 
 session_start();
 if (isset($_SESSION['user'])) {
-    if ($_SESSION['user']['role'] !== "Teacher") {
+    if ($_SESSION['user']['role'] !== "Teacher" && $_SESSION['user']['role'] !== "Admin") {
         header("Location: index.php");
         exit();
     }
