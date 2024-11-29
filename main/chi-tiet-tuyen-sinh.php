@@ -13,19 +13,9 @@ if (isset($_GET['ma_nganh'])) {
     include '../php_control/data/get_info_nganh.php';
     $info = getInfoNganh($_GET['ma_nganh']);
     include '../php_control/data/db_connect.php';
+    include '../php_control/data/get_infomation.php';
 } else {
     $info = [];
-}
-
-
-function getNameGV($id){
-    global $pdo;
-    $sql = "SELECT ten FROM giao_vien WHERE gv_id = :gv_id";
-    $stmt = $pdo->prepare($sql);
-    $stmt->bindParam(':gv_id', $id, PDO::PARAM_STR);
-    $stmt->execute();
-    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    return !empty($result) ? $result[0]['ten'] : "";
 }
 
 ?>

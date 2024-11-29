@@ -61,10 +61,12 @@ if (isset($_SESSION['user'])) {
                                         <input type="file" name="avatar_upload" id="avatarInput" accept="image/*" style="display: none;">
 
                                         <?php
-                                        $tempFilePath = '../assets/images/temp_downloads/' . $_SESSION['temp_avatar'];
-                                        $defaultFilePath = '../assets/images/logo.png';
-                                        $imagePath = file_exists($tempFilePath) ? $tempFilePath : $defaultFilePath;
-                                        $imageWithTimestamp = $imagePath . '?v=' . filemtime($imagePath);
+                                        if(isset($_SESSION['user']['temp_avatar']) && $_SESSION['user']['temp_avatar'] != '' ){
+                                            $tempFilePath = '../assets/images/temp_downloads/' . $_SESSION['temp_avatar'];
+                                            $defaultFilePath = '../assets/images/logo.png';
+                                            $imagePath = file_exists($tempFilePath) ? $tempFilePath : $defaultFilePath;
+                                            $imageWithTimestamp = $imagePath . '?v=' . filemtime($imagePath);
+                                        }
                                         ?>
 
                                         <!-- <img class="avatar" "> -->
@@ -75,7 +77,7 @@ if (isset($_SESSION['user'])) {
                                                     } else {
                                                         echo "../assets/images/Guest_user.png?v=<?php echo filemtime('../assets/images/Guest_user.png');";
                                                     }      ?>
-                                            alt="User Avatar" style="top: 10px; left: 10px; width: 200px; height: 200px" id="avatarImg">
+                                            alt="User Avatar" style="width: 220px; height: 220px" id="avatarImg">
 
                                         <!-- Edit Icon Overlay -->
                                         <div class="edit_avatar_img_layout avatar">

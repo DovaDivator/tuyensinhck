@@ -13,6 +13,7 @@ if (isset($_SESSION['user'])) {
 //     echo "<script>alert('" . $_SESSION['message'] . "');</script>"; 
 //     unset($_SESSION['message']); 
 // }
+include "../php_control/data/get_infomation.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -53,7 +54,7 @@ if (isset($_SESSION['user'])) {
                                 </button>
                                 <?php if ($_SESSION['user']['role'] === 'Admin'): ?>
                                     <button type="submit" class="icon-button" id="blockAcc">
-                                        <img src="../assets/icon/info_icon.png?v=<?php echo filemtime("../assets/icon/info_icon.png"); ?>"
+                                        <img src="../assets/icon/banning.png?v=<?php echo filemtime("../assets/icon/banning.png"); ?>"
                                             alt="Đình chỉ tài khoản" title="Đình chỉ tài khoản" onclick="">
                                     </button>
                                 <?php endif; ?>
@@ -63,11 +64,8 @@ if (isset($_SESSION['user'])) {
                                 background-image: url('<?php if ($_SESSION['user']['avatar_name'] != '') {
                                                             echo $_SESSION['user']['avatar_name'];
                                                         } else {
-                                                            echo "../assets/images/Guest_user.png?v=<?php echo filemtime('../assets/images/Guest_user.png');";
+                                                            echo "../assets/images/Guest_user.png?v=" . filemtime('../assets/images/Guest_user.png');
                                                         }   ?>'); background-size: cover; background-position: center;" onclick="MovePage('chinhsuathongtin.php')">
-                                    <?php if ($_SESSION['user']['avatar_name'] == null): ?>
-
-                                    <?php endif; ?>
                                 </div>
                                 <div class="info_text_container">
                                     <h2 style='margin-top: 0;'><?php echo $_SESSION['user']['username']; ?></h2>
@@ -91,13 +89,47 @@ if (isset($_SESSION['user'])) {
                                                 echo 'href="#" title="Người dùng chưa cập nhật số điện thoại"> Không có';
                                             }
                                             ?></a></p>
-                                    <p td="trang_thai">Trạng thái: <font color="red">Chưa đăng ký hồ sơ</font>
-                                    </p>
-                                    <P td='date_created'>Ngày đăng ký: 12/09/2024 </p>
+                                        <?php if ($_SESSION['user']['role'] === 'Student'){
+                                            echo '<p td="trang_thai">Trạng thái: ';
+                                            switch ($_SESSION['user']['trang_thai']){
+                                                case 1:
+                                                    echo "<font color='red'>Chưa đăng ký hồ sơ</font>";
+                                                    break;
+                                                case 2:
+                                                    echo "<font color='orange'>Đang chờ xét duyệt hồ sơ</font>";
+                                                    break;
+                                                case 3:
+                                                    echo "<font color='yellow'>Đã xác thực hồ sơ, chưa chọn ngành</font>";
+                                                    break;
+                                                case 4:
+                                                    echo "<font color='yellow'>Đang chờ xác nhận đăng ký ngành</font>";
+                                                    break;
+                                                case 5:
+                                                    echo "<font color='green'>Đã đăng ký thành công</font>";
+                                                    break;
+                                                default:
+                                                    echo "<font color='red'>Không xác định</font>";
+                                                    break;
+                                            }
+                                            echo "</p>";
+                                        }
+                                        ?>
+                                    <?php if ($_SESSION['user']['role'] === 'Teacher'): ?>
+                                        <p id='khoa'>Khoa: <b><?php echo GetKhoaDaoTao($_SESSION['user']['id'])?> </b></p>
+                                    <?php endif; ?>
+                                    <p id='date_created'>Ngày đăng ký: 
+                                    <?php 
+                                        $created_acc = GetDateAccCreated($_SESSION['user']['id']);
+                                        if($created_acc != ''){
+                                            echo (new DateTime(substr($created_acc, 0, 19)))->format('(H\hi) d/m/Y');
+                                        }else{
+                                            echo $created_acc;
+                                        }
+                                    ?>
                                 </div>
                             </div>
                         </div>
-                        <?php if (isset($_SESSION['user']['role']) == 'Student'): ?>
+                        <?php if ($_SESSION['user']['role'] == 'Student'): ?>
                             <div class="info_layout" id="hoso_path">
                                 <div class="linediv">
                                     <h1>Hồ sơ sinh viên</h1>
