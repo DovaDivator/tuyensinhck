@@ -28,7 +28,7 @@ function loadTuyenSinh() {
 function loadgiaovien() {
     return new Promise(function(resolve, reject) {
         var xhr = new XMLHttpRequest();
-        xhr.open('POST', '../php_control/data/giaovieninfo.php', true);
+        xhr.open('POST', '../php_control/data/ds_tuyen_sinh.php', true);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
 
@@ -36,6 +36,9 @@ function loadgiaovien() {
             if (xhr.status === 200) {
                 var courses = JSON.parse(xhr.responseText);
                 resolve(courses);
+            }else if (xhr.status === 400){
+                var error = JSON.parse(xhr.responseText);
+                reject(new Error(error.error));
             } else {
                 reject(new Error('Không thể tải dữ liệu tuyển sinh'));
             }
@@ -45,14 +48,14 @@ function loadgiaovien() {
             reject(new Error('Lỗi mạng khi tải dữ liệu'));
         };
 
-        xhr.send();
+        xhr.send(`action=${encodeURIComponent('qlnd')}`);
     });
 }
 
 function loadsinhvien() {
     return new Promise(function(resolve, reject) {
         var xhr = new XMLHttpRequest();
-        xhr.open('POST', '../php_control/data/SVinfo.php', true);
+        xhr.open('POST', '../php_control/data/ds_tuyen_sinh.php', true);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
 
@@ -60,6 +63,9 @@ function loadsinhvien() {
             if (xhr.status === 200) {
                 var courses = JSON.parse(xhr.responseText);
                 resolve(courses);
+            }else if (xhr.status === 400){
+                var error = JSON.parse(xhr.responseText);
+                reject(new Error(error.error));
             } else {
                 reject(new Error('Không thể tải dữ liệu tuyển sinh'));
             }
@@ -69,7 +75,7 @@ function loadsinhvien() {
             reject(new Error('Lỗi mạng khi tải dữ liệu'));
         };
 
-        xhr.send();
+        xhr.send(`action=${encodeURIComponent('qlnd')}`);
     });
 }
 
@@ -125,61 +131,100 @@ function renderCoursesTuyenSinh(jsonData, role) {
 
 
 
-function renderCoursesGV(courses, role) {
+function renderCoursesGV(jsonData) {
+    console.log("Dữ liệu ban đầu:", jsonData);
+
+    // Parse dữ liệu nếu là chuỗi JSON
+    if (typeof jsonData === "string") {
+        try {
+            jsonData = JSON.parse(jsonData);
+        } catch (e) {
+            console.error("Dữ liệu JSON không hợp lệ:", e);
+            renderErrorGV("Dữ liệu không hợp lệ, vui lòng thử lại sau!", "body_danh_sach_giao_vien", "danh_sach_giao_vien");
+            return;
+        }
+    }
+
+    // Đưa dữ liệu về dạng mảng nếu là object
+    let courses = Array.isArray(jsonData) ? jsonData : [jsonData];
+
+    // Kiểm tra nếu không có dữ liệu
+    if (!courses || courses.length === 0) {
+        renderErrorGV("Không có giáo viên", "body_danh_sach_giao_vien", "danh_sach_giao_vien");
+        return;
+    }
+
     var tbody = document.getElementById('body_danh_sach_giao_vien');
     tbody.innerHTML = '';
 
-    if (courses.length === 0) {
-        renderError('Hiện tại chưa có đăng ký mới nào, vui lòng quay lại sau!');
-    } else {
-        courses.forEach(function(course) {
-            var row = document.createElement('tr');
-            row.title = 'Ấn vào để xem thông tin chi tiết';
-            row.innerHTML = `
-                <td>${course.gv_id}</td>
-                <td>${course.ten}</td>
-                <td>${course.ghi_chu}</td>
-                <td>${course.nganh_giao_vien}</td>
-            `;
-
-            // Gắn sự kiện click cho mỗi hàng để chuyển đến trang chi tiết
-            // row.addEventListener('click', function() {
-            //     window.location.href = `
-            //                             `;
-            // });
-
-            tbody.appendChild(row);
+    // Duyệt qua danh sách courses
+    courses.forEach(function(course) {
+        var row = document.createElement('tr');
+        row.title = 'Ấn vào để xem thông tin chi tiết';
+        row.innerHTML = `
+            <td>${course.id}</td>
+            <td>${course.ten}</td>
+            <td>${course.khoa}</td>
+             <td>${course.list_nganh}</td>
+        `;    
+        //            
+        // Gắn sự kiện click cho mỗi hàng để chuyển đến trang chi tiết
+        row.addEventListener('click', function() {
+        //    window.location.href = `chi-tiet-tuyen-sinh.php?ma_nganh=${course.id}`;
         });
-    }
+
+        tbody.appendChild(row);
+    });    
+        
+   
 }
 
-function renderCoursesSV(courses, role) {
+function renderCoursesSV(jsonData) {
+    console.log("Dữ liệu ban đầu:", jsonData);
+
+    // Parse dữ liệu nếu là chuỗi JSON
+    if (typeof jsonData === "string") {
+        try {
+            jsonData = JSON.parse(jsonData);
+        } catch (e) {
+            console.error("Dữ liệu JSON không hợp lệ:", e);
+            renderErrorGV("Dữ liệu không hợp lệ, vui lòng thử lại sau!", "course_table_dssv", "danh_sach_sinh_vien");
+            return;
+        }
+    }
+
+    // Đưa dữ liệu về dạng mảng nếu là object
+    let courses = Array.isArray(jsonData) ? jsonData : [jsonData];
+
+    // Kiểm tra nếu không có dữ liệu
+    if (!courses || courses.length === 0) {
+        renderErrorSV("Không có sinh viên", "course_table_dssv", "danh_sach_sinh_vien");
+        return;
+    }
+
     var tbody = document.getElementById('course_table_dssv');
     tbody.innerHTML = '';
 
-    if (courses.length === 0) {
-        renderError('Hiện tại chưa có đăng ký mới nào, vui lòng quay lại sau!');
-    } else {
-        courses.forEach(function(course) {
-            var row = document.createElement('tr');
-            row.title = 'Ấn vào để xem thông tin chi tiết';
-            // 4 cột còn lại ko có thông tin trong db 
-            row.innerHTML = `
-                <td>${course.ma_tuyen_sinh}</td>
-                <td>${course.ten}</td>
-                
-                
-            `;
-
-            // Gắn sự kiện click cho mỗi hàng để chuyển đến trang chi tiết
-            // row.addEventListener('click', function() {
-            //     window.location.href = `
-            //                             `;
-            // });
-
-            tbody.appendChild(row);
+    // Duyệt qua danh sách courses
+    courses.forEach(function(course) {
+        var row = document.createElement('tr');
+        row.title = 'Ấn vào để xem thông tin chi tiết';
+        row.innerHTML = `
+            <td>${course.id}</td>
+            <td>${course.ten}</td>
+            <td>${course.create_date}</td>
+            <td>${course.htts_id}</td>
+            <td>${course.nganh_id}</td>
+            <td>${course.trang_thai}</td>
+        `;    
+        //            
+        // Gắn sự kiện click cho mỗi hàng để chuyển đến trang chi tiết
+        row.addEventListener('click', function() {
+        //    window.location.href = `chi-tiet-tuyen-sinh.php?ma_nganh=${course.id}`;
         });
-    }
+
+        tbody.appendChild(row);
+    });  
 }
 
 
@@ -201,9 +246,11 @@ function renderError(message, tbody_id, table_id) {
     tbody.appendChild(row);
 }
 
-function renderErrorGV(message) {
-    var tbody = document.getElementById('body_danh_sach_giao_vien');
+function renderErrorGV(message, tbody_id, table_id) {
+    var tbody = document.getElementById(tbody_id);
+    var table = document.getElementById(table_id);
     tbody.innerHTML = '';
+    table.style.height = 'fit-content';
 
     var row = document.createElement('tr');
     row.className = 'error_tdtable';
@@ -218,8 +265,10 @@ function renderErrorGV(message) {
 }
 
 function renderErrorSV(message) {
-    var tbody = document.getElementById('course_table_dssv');
+    var tbody = document.getElementById(tbody_id);
+    var table = document.getElementById(table_id);
     tbody.innerHTML = '';
+    table.style.height = 'fit-content';
 
     var row = document.createElement('tr');
     row.className = 'error_tdtable';

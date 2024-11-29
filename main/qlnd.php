@@ -11,7 +11,9 @@ if (isset($_SESSION['user'])) {
     header("Location: login.php");
     exit();
 }
-
+include '../php_control/data/ds_tuyen_sinh.php';
+$ds_sv =getDSSV();
+$ds_gv =getDSGV();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -144,10 +146,11 @@ if (isset($_SESSION['user'])) {
                                 </tr>
                             </thead>
                                 <tbody id="body_danh_sach_giao_vien" >
-                                <script>
-                                    var userRole = <?php echo json_encode($_SESSION['user']['role']); ?>;
-                                    loadAndRenderCoursesGV(userRole);
-                                    </script>
+                                <?php if(!is_array($ds_gv)): ?>
+                                        <script>renderErrorGV("<?php echo $ds_gv; ?>", "body_danh_sach_giao_vien", "danh_sach_giao_vien")</script>
+                                    <?php else: ?>
+                                        <script>renderCoursesGV(<?php echo json_encode($ds_gv); ?>, "<?php echo $_SESSION['user']['role'];?>")</script>
+                                    <?php endif; ?>
                                 </tbody>
                             </table>
                         </div>
@@ -166,10 +169,11 @@ if (isset($_SESSION['user'])) {
                                 </tr>
                             </thead>
                                 <tbody id="course_table_dssv" >
-                                <script>
-                                    var userRole = <?php echo json_encode($_SESSION['user']['role']); ?>;
-                                    loadAndRenderCoursesSV(userRole);
-                                    </script>
+                                <?php if(!is_array($ds_sv)): ?>
+                                        <script>renderErrorSV("<?php echo $ds_sv; ?>", "course_table_dssv", "danh_sach_sinh_vien")</script>
+                                    <?php else: ?>
+                                        <script>renderCoursesSV(<?php echo json_encode($ds_sv); ?>)</script>
+                                    <?php endif; ?>
                                 </tbody>
                             </table>
                         </div>

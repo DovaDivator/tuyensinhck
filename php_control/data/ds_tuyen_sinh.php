@@ -25,6 +25,25 @@ function getDSTuyenSinh(){
     return $courses;
 }
 
+function getDSGV(){
+    $courses = fetchListGV();
+    foreach ($courses as &$course) {
+        if (isset($course['date_end'])) {
+            $course['date_end'] = convert_date($course['date_end']);
+        }
+    }
+    return $courses;
+}
+
+function getDSSV(){
+    $courses = fetchListSV();
+    foreach ($courses as &$course) {
+        if (isset($course['date_end'])) {
+            $course['date_end'] = convert_date($course['date_end']);
+        }
+    }
+    return $courses;
+}
 
 function fetchNganhSV(){
     global $pdo;
@@ -47,6 +66,22 @@ function fetchNganhGV(){
 function fetchNganhAD(){
     global $pdo;
     $query = "SELECT * FROM get_list_nganh_ad()";
+    $stmt = $pdo->prepare($query);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC); 
+}
+
+function fetchListGV(){
+    global $pdo;
+    $query = "SELECT * FROM get_list_gv_admin()";
+    $stmt = $pdo->prepare($query);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC); 
+}
+
+function fetchListSV(){
+    global $pdo;
+    $query = "SELECT * FROM get_list_sv_admin()";
     $stmt = $pdo->prepare($query);
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC); 
