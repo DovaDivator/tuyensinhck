@@ -27,7 +27,11 @@ function getDSTuyenSinh($query, $status, $selectedTH){
 }
 
 function getDSGV(){
-    $courses = fetchListGV();
+    global $pdo;
+    $query = "SELECT * FROM get_list_gv_admin()";
+    $stmt = $pdo->prepare($query);
+    $stmt->execute();
+    $courses = $stmt->fetchAll(PDO::FETCH_ASSOC); 
     foreach ($courses as &$course) {
         if (isset($course['date_end'])) {
             $course['date_end'] = (new DateTime(substr($course['date_end'], 0, 19)))->format('d/m/Y');
@@ -37,7 +41,11 @@ function getDSGV(){
 }
 
 function getDSSV(){
-    $courses = fetchListSV();
+    global $pdo;
+    $query = "SELECT * FROM get_list_sv_admin()";
+    $stmt = $pdo->prepare($query);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);    
     foreach ($courses as &$course) {
         if (isset($course['date_end'])) {
             $course['date_end'] = (new DateTime(substr($course['date_end'], 0, 19)))->format('d/m/Y');
@@ -67,22 +75,6 @@ function fetchNganhGV($condition){
 function fetchNganhAD($condition){
     global $pdo;
     $query = "SELECT * FROM get_list_nganh_ad() ".$condition;
-    $stmt = $pdo->prepare($query);
-    $stmt->execute();
-    return $stmt->fetchAll(PDO::FETCH_ASSOC); 
-}
-
-function fetchListGV(){
-    global $pdo;
-    $query = "SELECT * FROM get_list_gv_admin()";
-    $stmt = $pdo->prepare($query);
-    $stmt->execute();
-    return $stmt->fetchAll(PDO::FETCH_ASSOC); 
-}
-
-function fetchListSV(){
-    global $pdo;
-    $query = "SELECT * FROM get_list_sv_admin()";
     $stmt = $pdo->prepare($query);
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC); 
