@@ -33,8 +33,8 @@ function getDSGV(){
     $stmt->execute();
     $courses = $stmt->fetchAll(PDO::FETCH_ASSOC); 
     foreach ($courses as &$course) {
-        if (isset($course['date_end'])) {
-            $course['date_end'] = (new DateTime(substr($course['date_end'], 0, 19)))->format('d/m/Y');
+        if (isset($course['create_date'])) {
+            $course['create_date'] = (new DateTime(substr($course['create_date'], 0, 19)))->format('(H\hi) d/m/Y');
         }
     }
     return $courses;
@@ -45,10 +45,10 @@ function getDSSV(){
     $query = "SELECT * FROM get_list_sv_admin()";
     $stmt = $pdo->prepare($query);
     $stmt->execute();
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);    
+    $courses = $stmt->fetchAll(PDO::FETCH_ASSOC);    
     foreach ($courses as &$course) {
-        if (isset($course['date_end'])) {
-            $course['date_end'] = (new DateTime(substr($course['date_end'], 0, 19)))->format('d/m/Y');
+        if (isset($course['create_date'])) {
+            $course['create_date'] = (new DateTime(substr($course['create_date'], 0, 19)))->format('(H\hi) d/m/Y');
         }
     }
     return $courses;
