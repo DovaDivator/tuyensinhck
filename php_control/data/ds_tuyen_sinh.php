@@ -54,6 +54,20 @@ function getDSSV(){
     return $courses;
 }
 
+function fetachListNganhUser(){
+    global $pdo;
+    $query = "SELECT * FROM get_list_nganh_user()";
+    $stmt = $pdo->prepare($query);
+    $stmt->execute();
+    $courses = $stmt->fetchAll(PDO::FETCH_ASSOC);    
+    foreach ($courses as &$course) {
+        if (isset($course['create_date'])) {
+            $course['create_date'] = (new DateTime(substr($course['create_date'], 0, 19)))->format('(H\hi) d/m/Y');
+        }
+    }
+    return $courses;
+}
+
 function fetchNganhSV($condition){
     global $pdo;
     $query = "SELECT * FROM get_list_nganh_sv() ".$condition;

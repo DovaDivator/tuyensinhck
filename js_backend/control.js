@@ -25,6 +25,33 @@ function loadTuyenSinh() {
     });
 }
 
+function loadListNganh() {
+    return new Promise(function(resolve, reject) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '../php_control/data/ds_tuyen_sinh.php', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                var courses = JSON.parse(xhr.responseText);
+                resolve(courses);
+            }else if (xhr.status === 400){
+                var error = JSON.parse(xhr.responseText);
+                reject(new Error(error.error));
+            } else {
+                reject(new Error('Không thể tải dữ liệu tuyển sinh'));
+            }
+        };
+
+        xhr.onerror = function() {
+            reject(new Error('Lỗi mạng khi tải dữ liệu'));
+        };
+
+        xhr.send(`action=${encodeURIComponent('index')}`);
+    });
+}
+
 function loadgiaovien() {
     return new Promise(function(resolve, reject) {
         var xhr = new XMLHttpRequest();
@@ -138,7 +165,53 @@ function renderCoursesTuyenSinh(jsonData, role) {
     });
 }
 
+function renderCoursesLN(jsonData) {
+    console.log("Dữ liệu ban đầu:", jsonData);
 
+    // Parse dữ liệu nếu là chuỗi JSON
+    if (typeof jsonData === "string") {
+        try {
+            jsonData = JSON.parse(jsonData);
+        } catch (e) {
+            console.error("Dữ liệu JSON không hợp lệ:", e);
+            renderErrorGV("Dữ liệu không hợp lệ, vui lòng thử lại sau!", "course_table_list_nganh", "top_list_nganh");
+            return;
+        }
+    }
+
+    // Đưa dữ liệu về dạng mảng nếu là object
+    let courses = Array.isArray(jsonData) ? jsonData : [jsonData];
+
+    // Kiểm tra nếu không có dữ liệu
+    if (!courses || courses.length === 0) {
+        renderErrorLN("Không có danh sách ngành", "course_table_list_nganh", "top_list_nganh");
+        return;
+    }
+
+    var tbody = document.getElementById('course_table_list_nganh');
+    tbody.innerHTML = '';
+
+    // Duyệt qua danh sách courses
+    courses.forEach(function(course) {
+        var row = document.createElement('tr');
+        row.title = 'Ấn vào để xem thông tin chi tiết';
+        row.innerHTML = `
+            <td>${course.id}</td>
+            <td>${course.ten}</td>
+            <td>${course.to_hop}</td>
+             <td>${course.trang_thai}</td>
+        `;    
+        //            
+        // Gắn sự kiện click cho mỗi hàng để chuyển đến trang chi tiết
+        row.addEventListener('click', function() {
+        //    window.location.href = `chi-tiet-tuyen-sinh.php?ma_nganh=${course.id}`;
+        });
+
+        tbody.appendChild(row);
+    });    
+        
+   
+}
 
 function renderCoursesGV(jsonData) {
     console.log("Dữ liệu ban đầu:", jsonData);
@@ -247,6 +320,24 @@ function renderError(message, tbody_id, table_id) {
     row.className = 'error_tdtable';
 
     var table = document.getElementById('top_tuyen_sinh');
+    var columnCount = table.rows[0].cells.length;
+
+    row.innerHTML = `
+        <td colspan="${columnCount}">${message}</td>
+    `;
+    tbody.appendChild(row);
+}
+
+function renderErrorLN(message, tbody_id, table_id) {
+    var tbody = document.getElementById(tbody_id);
+    var table = document.getElementById(table_id);
+    tbody.innerHTML = '';
+    table.style.height = 'fit-content';
+
+    var row = document.createElement('tr');
+    row.className = 'error_tdtable';
+
+    var table = document.getElementById('top_list_nganh');
     var columnCount = table.rows[0].cells.length;
 
     row.innerHTML = `
