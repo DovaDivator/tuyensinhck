@@ -248,11 +248,11 @@ function renderCoursesGV(jsonData) {
             <td>${course.ten}</td>
             <td>${course.khoa}</td>
              <td>${course.list_nganh}</td>
-        `;    
+        `;  
         //            
         // Gắn sự kiện click cho mỗi hàng để chuyển đến trang chi tiết
         row.addEventListener('click', function() {
-        //    window.location.href = `chi-tiet-tuyen-sinh.php?ma_nganh=${course.id}`;
+            window.location.href = `CTHS.php?ma_gv=${encodeURIComponent(course.id)}&rolecheck=${encodeURIComponent('gv')}`;
         });
 
         tbody.appendChild(row);
@@ -302,7 +302,7 @@ function renderCoursesSV(jsonData) {
         //            
         // Gắn sự kiện click cho mỗi hàng để chuyển đến trang chi tiết
         row.addEventListener('click', function() {
-        //    window.location.href = `chi-tiet-tuyen-sinh.php?ma_nganh=${course.id}`;
+            window.location.href = `CTHS.php?masv=${(course.id)}&rolecheck=${encodeURIComponent('sv')}`;
         });
 
         tbody.appendChild(row);
