@@ -114,3 +114,10 @@ table.danh_sach_ng thead tr th#date_reg{
 table.danh_sach_ng#danh_sach_sv_nganh thead tr th#ten_sv{
     width: 350px;
 }
+
+#danh_sach_sinh_vien td:nth-child(1), 
+#danh_sach_sinh_vien td:nth-child(4),
+#danh_sach_sinh_vien td:nth-child(5) {
+    text-align: center;
+    vertical-align: middle;
+}

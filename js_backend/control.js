@@ -219,13 +219,17 @@ function renderCoursesSV(jsonData) {
         var row = document.createElement('tr');
         row.title = 'Ấn vào để xem thông tin chi tiết';
         row.innerHTML = `
-            <td>${course.id}</td>
-            <td>${course.ten}</td>
-            <td>${course.create_date}</td>
-            <td>${course.htts_id}</td>
-            <td>${course.nganh_id}</td>
-            <td>${course.trang_thai}</td>
-        `;    
+        <td>${course.id}</td>
+        <td>${course.ten}</td>
+        <td>${course.create_date}</td>
+        <td style="color: ${course.htts_id ? 'inherit' : 'red'};">
+            ${course.htts_id ?? 'Không có'}
+        </td>
+        <td style="color: ${course.nganh_id ? 'inherit' : 'red'};">
+            ${course.nganh_id ?? 'Không có'}
+        </td>
+        <td>${getTrangThai(course.trang_thai)}</td>
+    `;
         //            
         // Gắn sự kiện click cho mỗi hàng để chuyển đến trang chi tiết
         row.addEventListener('click', function() {
@@ -234,6 +238,25 @@ function renderCoursesSV(jsonData) {
 
         tbody.appendChild(row);
     });  
+}
+
+function getTrangThai(trangThai) {
+    switch (trangThai) {
+        case 1:
+            return "<font color='red'>Chưa đăng ký hồ sơ</font>";
+        case 2:
+            return "<font color='orange'>Đang chờ xét duyệt hồ sơ</font>";
+        case 3:
+            return "<font color='red'>Yêu cầu chỉnh sửa lại hồ sơ</font>";
+        case 4:
+            return "<font color='yellow'>Đã xác thực hồ sơ, chưa chọn ngành</font>";
+        case 5:
+            return "<font color='yellow'>Đang chờ xác nhận đăng ký ngành</font>";
+        case 6:
+            return "<font color='green'>Đã đăng ký thành công</font>";
+        default:
+            return "<font color='red'>Không xác định</font>";
+    }
 }
 
 
@@ -289,37 +312,6 @@ function renderErrorSV(message) {
         <td colspan="${columnCount}">${message}</td>
     `;
     tbody.appendChild(row);
-}
-
-
-function loadAndRenderCourses(role) {
-    loadTuyenSinh().then(function(courses) {
-    renderCoursesTuyenSinh(courses, role);
-    }).catch(function(error) {
-        renderError('Không thể tải dữ liệu: '+ error.message);
-    }).finally(function() {
-
-    });
-}
-
-function loadAndRenderCoursesGV(role) {
-    loadgiaovien().then(function(courses) {
-    renderCoursesGV(courses, role);
-    }).catch(function(error) {
-        renderErrorGV('Không thể tải dữ liệu: '+ error.message);
-    }).finally(function() {
-
-    });
-}
-
-function loadAndRenderCoursesSV(role) {
-    loadsinhvien().then(function(courses) {
-    renderCoursesSV(courses, role);
-    }).catch(function(error) {
-        renderErrorSV('Không thể tải dữ liệu: '+ error.message);
-    }).finally(function() {
-
-    });
 }
 
 function IsEmail(email) {

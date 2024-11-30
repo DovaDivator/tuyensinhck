@@ -99,12 +99,15 @@ include "../php_control/data/get_infomation.php";
                                                     echo "<font color='orange'>Đang chờ xét duyệt hồ sơ</font>";
                                                     break;
                                                 case 3:
-                                                    echo "<font color='yellow'>Đã xác thực hồ sơ, chưa chọn ngành</font>";
+                                                    echo "<font color='red'>Yêu cầu chỉnh sửa lại hồ sơ</font>";
                                                     break;
                                                 case 4:
-                                                    echo "<font color='yellow'>Đang chờ xác nhận đăng ký ngành</font>";
+                                                    echo "<font color='yellow'>Đã xác thực hồ sơ, chưa chọn ngành</font>";
                                                     break;
                                                 case 5:
+                                                    echo "<font color='yellow'>Đang chờ xác nhận đăng ký ngành</font>";
+                                                    break;
+                                                case 6:
                                                     echo "<font color='green'>Đã đăng ký thành công</font>";
                                                     break;
                                                 default:

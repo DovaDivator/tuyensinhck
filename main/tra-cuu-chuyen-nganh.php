@@ -12,7 +12,7 @@ if (isset($_SESSION['user'])) {
 }
 
 include '../php_control/data/ds_tuyen_sinh.php';
-$ds_tuyen_sinh = getDSTuyenSinh();
+//$ds_tuyen_sinh = getDSTuyenSinh();
 ?>
 <!DOCTYPE html>
 <html lang="en">
