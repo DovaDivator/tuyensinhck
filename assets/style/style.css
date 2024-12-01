@@ -70,7 +70,8 @@ button, input[type="button"], input[type="reset"], input[type="submit"]{
 
 label,
 .swal2-html-container,
-.swal2-title{
+.swal2-title,
+.dropdown-list div{
     word-break: break-word;
     overflow-wrap: break-word;
     white-space: normal;    
@@ -630,6 +631,7 @@ p.none_info{
     z-index: 10;
     box-sizing: border-box;
 }
+
 .dropdown-search {
     width: 100% !important; 
     margin: 0 !important;
@@ -652,12 +654,20 @@ p.none_info{
 
 
 .dropdown-list div {
-    padding: 8px;
+    padding: 8px 15px;
     cursor: pointer;
 }
 
 .dropdown-list div:hover {
     background: #f0f0f0;
+}
+
+.dropdown-item.default {
+    font-style: italic; /* Chữ nghiêng */
+    opacity: 0.7; /* Độ mờ 70% */
+    color: #6c757d; /* Màu xám nhạt */
+    cursor: pointer; /* Con trỏ dạng tay khi hover */
+    transition: opacity 0.3s ease, color 0.3s ease; /* Hiệu ứng chuyển đổi mượt */
 }
 
 @media (max-width: 768px) {

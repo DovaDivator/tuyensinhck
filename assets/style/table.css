@@ -96,15 +96,18 @@ td.number_td {
 }
 
 table.danh_sach_ng thead tr th:first-child,
-table.danh_sach_ng thead tr th#khoa,
 table.danh_sach_ng thead tr th#dk,
 table.danh_sach_ng thead tr th#khoi_xt,
 table th#trangthai{
     width: 130px;
 }
 
-table.danh_sach_ng thead tr th#ten_gv {
+table.danh_sach_ng thead tr th#ten_gv{
     width: 300px;
+}
+
+table.danh_sach_ng thead tr th#khoa{
+    width: 250px;
 }
 
 table.danh_sach_ng thead tr th#date_reg{
@@ -117,7 +120,8 @@ table.danh_sach_ng#danh_sach_sv_nganh thead tr th#ten_sv{
 
 #danh_sach_sinh_vien td:nth-child(1), 
 #danh_sach_sinh_vien td:nth-child(4),
-#danh_sach_sinh_vien td:nth-child(5) {
+#danh_sach_sinh_vien td:nth-child(5),
+#danh_sach_giao_vien td:nth-child(1){
     text-align: center;
     vertical-align: middle;
 }

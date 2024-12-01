@@ -24,6 +24,7 @@ include("../php_control/data/get-to-hop.php");
     <link rel="stylesheet" href="../assets/style/admin_path.css?v=<?php echo filemtime("../assets/style/admin_path.css")?>">
     <link rel="stylesheet" href="../assets/style/taikhoan.css?v=<?php echo filemtime('../assets/style/taikhoan.css'); ?>">
     <script src="../js_backend/events.js?v=<?php echo filemtime('../js_backend/events.js'); ?>"></script>
+    <script src="../js_backend/control.js?v=<?php echo filemtime('../js_backend/control.js'); ?>"></script>
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
@@ -397,6 +398,15 @@ include("../php_control/data/get-to-hop.php");
                 note_div[0].style.display = "block";
             }
         }
+
+        document.addEventListener('DOMContentLoaded', function () {
+        const searchInput = document.getElementById('searchInput');
+        const dropdownList = document.querySelector('.dropdown-list');
+        const items = Array.from(dropdownList.children); // Lấy tất cả các mục trong danh sách
+
+        // Gọi hàm với các tham số cần thiết
+        handleSearch(searchInput, items);
+    });
     </script>
 
 

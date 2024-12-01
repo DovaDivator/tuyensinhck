@@ -12,7 +12,9 @@ if (isset($_SESSION['user'])) {
 }
 
 include '../php_control/data/ds_tuyen_sinh.php';
-//$ds_tuyen_sinh = getDSTuyenSinh();
+
+
+$ds_tuyen_sinh = fetachListNganhUser();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -133,7 +135,7 @@ include '../php_control/data/ds_tuyen_sinh.php';
                             </div>
                         </form>
                         <div class="table_body_scroll" style="height:600px;">
-                            <table class="choose_list nganh_hoc" id="top_tuyen_sinh">
+                            <table class="choose_list nganh_hoc" id="top_list_nganh">
                                 <thead>
                                     <tr>
                                         <th id='ma_nganh'>Mã tuyển sinh</th>
@@ -148,11 +150,11 @@ include '../php_control/data/ds_tuyen_sinh.php';
                                         <th id='thoi_gian'>Thời gian tuyển sinh</th>
                                     </tr>
                                 </thead>
-                                <tbody id="course_table_tuyen_sinh" >
+                                <tbody id="course_table_list_nganh" >
                                     <?php if(!is_array($ds_tuyen_sinh)): ?>
-                                        <script>renderError("<?php echo $ds_tuyen_sinh; ?>", "course_table_tuyen_sinh", "top_tuyen_sinh")</script>
+                                        <script>renderError("<?php echo $ds_tuyen_sinh; ?>", "course_table_list_nganh", "top_list_nganh")</script>
                                     <?php else: ?>
-                                        <script>renderCoursesTuyenSinh(<?php echo json_encode($ds_tuyen_sinh); ?>, "<?php echo $_SESSION['user']['role'];?>")</script>
+                                        <script>renderCoursesLN(<?php echo json_encode($ds_tuyen_sinh); ?>)</script>
                                     <?php endif; ?>
                                 </tbody>
                             </table>

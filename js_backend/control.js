@@ -247,9 +247,10 @@ function renderCoursesGV(jsonData) {
             <td>${course.id}</td>
             <td>${course.ten}</td>
             <td>${course.khoa}</td>
-             <td>${course.list_nganh}</td>
-        `;  
-        //            
+            <td style="color: ${course.list_nganh ? 'black' : 'red'};">
+                ${course.list_nganh ? course.list_nganh : "Chưa phụ trách"}
+            </td>
+        `;      
         // Gắn sự kiện click cho mỗi hàng để chuyển đến trang chi tiết
         row.addEventListener('click', function() {
             window.location.href = `CTHS.php?ma_gv=${encodeURIComponent(course.id)}&rolecheck=${encodeURIComponent('gv')}`;
@@ -280,7 +281,7 @@ function renderCoursesSV(jsonData) {
 
     // Kiểm tra nếu không có dữ liệu
     if (!courses || courses.length === 0) {
-        renderErrorSV("Không có sinh viên", "course_table_dssv", "danh_sach_sinh_vien");
+        renderErrorSV("Không có sinh viên!", "course_table_dssv", "danh_sach_sinh_vien");
         return;
     }
 
@@ -387,7 +388,7 @@ function renderErrorGV(message, tbody_id, table_id) {
     tbody.appendChild(row);
 }
 
-function renderErrorSV(message) {
+function renderErrorSV(message, tbody_id, table_id) {
     var tbody = document.getElementById(tbody_id);
     var table = document.getElementById(table_id);
     tbody.innerHTML = '';
@@ -414,3 +415,32 @@ function IsEmail(email) {
         return false;
     }
 }
+
+// Hàm xử lý tìm kiếm
+function handleSearch(inputElement, items) {
+    // Lắng nghe sự kiện 'input' trên ô tìm kiếm
+    inputElement.addEventListener('input', function () {
+        const query = inputElement.value.toLowerCase(); // Chuyển giá trị nhập thành chữ thường
+
+        items.forEach(item => {
+            const text = item.textContent.toLowerCase(); // Chuyển nội dung mục thành chữ thường
+            if (text.includes(query)) {
+                item.style.display = ''; // Hiển thị nếu phù hợp
+            } else {
+                item.style.display = 'none'; // Ẩn nếu không phù hợp
+            }
+        });
+    });
+}
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+        // Kiểm tra nếu phần tử đang được focus là một input hoặc textarea trong form
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+            const form = e.target.closest('form');
+            if (form) {
+                e.preventDefault(); // Ngừng hành động gửi form
+            }
+        }
+    }
+});
