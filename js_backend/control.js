@@ -307,7 +307,7 @@ function renderCoursesSV(jsonData) {
         //            
         // Gắn sự kiện click cho mỗi hàng để chuyển đến trang chi tiết
         row.addEventListener('click', function() {
-            window.location.href = `CTHS.php?masv=${(course.id)}&rolecheck=${encodeURIComponent('sv')}`;
+            window.location.href = `CTHS.php?masv=${encodeURIComponent(course.id)}&rolecheck=${encodeURIComponent('sv')}`;
         });
 
         tbody.appendChild(row);

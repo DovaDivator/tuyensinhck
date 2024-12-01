@@ -48,4 +48,14 @@ function getNameGV($id){
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
     return !empty($result) ? $result[0]['ten'] : "";
 }
+
+function getSV($id){
+    global $pdo;
+    $sql = "SELECT * FROM sinh_vien WHERE sinh_vien.stu_id = :sv_id";
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':sv_id', $id, PDO::PARAM_STR);
+    $stmt->execute();
+    return $stmt->fetch(PDO::FETCH_ASSOC); 
+}
+?>
 ?>
