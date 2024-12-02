@@ -12,6 +12,7 @@ if (isset($_SESSION['user'])) {
 }
 
 include("../php_control/data/get-to-hop.php");
+include("../php_control/data/ds_tuyen_sinh.php");
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -103,7 +104,7 @@ include("../php_control/data/get-to-hop.php");
                                     <input type="text" id="to_hop" name="to_hop" readonly placeholder="Chọn tổ hợp bạn muốn thêm">
                                     <div class="dropdown_container">
                                     <div class="dropdown" id="dropdown_to_hop" style='top: -10px;'>
-                                        <input type="text" id="searchInput" placeholder="Tìm kiếm..." class="dropdown-search">
+                                        <input type="text" id="searchInputToHop" placeholder="Tìm kiếm..." class="dropdown-search">
                                         <div class="dropdown-list">
                                         <?php foreach (GetToHop() as $row): ?>
                                             <div data-id="<?php echo $row['id']; ?>">
@@ -219,6 +220,22 @@ include("../php_control/data/get-to-hop.php");
 
                                     <p class="note_input">Chọn môn và nhập điểm tối thiểu cần đạt</p>
 
+                                    <label for="gv_id">Giáo viên phụ trách:</label>
+                                    <input type="text" id="gv_id" name="gv_id" readonly placeholder="Chọn giáo viên phụ trách..." style="width: 350px;">
+                                    <div class="dropdown_container">
+                                        <div class="dropdown" id="dropdown_gv_id" style='top: -10px; width: 325px;'>
+                                            <input type="text" id="searchInput_gv_id" placeholder="Tìm kiếm..." class="dropdown-search">
+                                            <div class="dropdown-list">
+                                                <div class="dropdown-item default" data-id="default">Trống...</div>
+                                                <?php foreach (getDSGV("","","") as $row): ?>
+                                                    <div data-id="<?php echo $row['id']; ?>">
+                                                        <?php echo $row['id']." - ".$row['ten']; ?>
+                                                    </div>
+                                                <?php endforeach; ?>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <label for="mo_ta">Mô tả:</label>    
                                     <textarea 
                                         id="mo_ta" 
@@ -266,24 +283,24 @@ include("../php_control/data/get-to-hop.php");
 </html>
 
 <script>
-        const textInput = document.getElementById('to_hop');
-        const dropdown = document.getElementById('dropdown_to_hop');
+        const textInputToHop = document.getElementById('to_hop');
+        const dropdownToHop = document.getElementById('dropdown_to_hop');
         let list_mon;
 
         // Hiển thị danh sách khi click vào input
-        textInput.addEventListener('click', () => {
-            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+        textInputToHop.addEventListener('click', () => {
+            dropdownToHop.style.display = dropdownToHop.style.display === 'block' ? 'none' : 'block';
         });
 
         // Thêm lựa chọn khi click vào dropdown
-        dropdown.addEventListener('click', (e) => {
+        dropdownToHop.addEventListener('click', (e) => {
             if (e.target.tagName === 'DIV') {
                 const selectedOptionId = e.target.getAttribute('data-id'); // Lấy giá trị id từ thuộc tính data-id
                 const selectedOptionText = e.target.textContent; // Lấy text hiển thị (nếu cần)
             
                     // Gán giá trị id vào textInput (tránh trùng lặp)
-                if (!textInput.value.includes(selectedOptionId)) {
-                    textInput.value += textInput.value ? `, ${selectedOptionId}` : selectedOptionId;
+                if (!textInputToHop.value.includes(selectedOptionId)) {
+                    textInputToHop.value += textInputToHop.value ? `, ${selectedOptionId}` : selectedOptionId;
 
                     const xhr2 = new XMLHttpRequest();
                     xhr2.open("POST", "../php_control/data/get_list_mon.php", true);
@@ -322,27 +339,27 @@ include("../php_control/data/get-to-hop.php");
                         }
                     };
 
-                    xhr2.send( `list=${encodeURIComponent(textInput.value)}` );
+                    xhr2.send( `list=${encodeURIComponent(textInputToHop.value)}` );
                 }
             
-                dropdown.style.display = 'none'; // Ẩn dropdown sau khi chọn
+                dropdownToHop.style.display = 'none'; // Ẩn dropdown sau khi chọn
             }
         });
 
         // Xóa lựa chọn bằng phím Backspace hoặc Delete
-        textInput.addEventListener('keydown', (e) => {
+        textInputToHop.addEventListener('keydown', (e) => {
             if (e.key === 'Backspace' || e.key === 'Delete') {
-                const values = textInput.value.split(', ');
+                const values = textInputToHop.value.split(', ');
                 values.pop(); // Xóa lựa chọn cuối cùng
-                textInput.value = values.join(', ');
+                textInputToHop.value = values.join(', ');
                 e.preventDefault(); // Ngăn người dùng xóa bằng cách thông thường
             }
         });
 
         // Ẩn dropdown khi click bên ngoài
         document.addEventListener('click', (e) => {
-            if (!dropdown.contains(e.target) && e.target !== textInput) {
-                dropdown.style.display = 'none';
+            if (!dropdownToHop.contains(e.target) && e.target !== textInputToHop) {
+                dropdownToHop.style.display = 'none';
             }
         });
 
@@ -400,12 +417,42 @@ include("../php_control/data/get-to-hop.php");
         }
 
         document.addEventListener('DOMContentLoaded', function () {
-        const searchInput = document.getElementById('searchInput');
-        const dropdownList = document.querySelector('.dropdown-list');
-        const items = Array.from(dropdownList.children); // Lấy tất cả các mục trong danh sách
+        const searchInputToHop = document.getElementById('searchInputToHop');
+        const dropdownListToHop = document.querySelector('.dropdown-list');
+        const itemsToHop = Array.from(dropdownListToHop.children); // Lấy tất cả các mục trong danh sách
 
         // Gọi hàm với các tham số cần thiết
-        handleSearch(searchInput, items);
+        handleSearch(searchInputToHop, itemsToHop); 
+    });
+
+    const GVInput = document.getElementById('gv_id');
+    const dropdownGV = document.getElementById('dropdown_gv_id');
+    const dropdownListGV = dropdownGV.querySelector('.dropdown-list');
+
+    const searchInputGV = document.getElementById('searchInput_gv_id');
+    const itemsGV = Array.from(dropdownListGV.children);
+    handleSearch(searchInputGV, itemsGV);
+    
+    GVInput.addEventListener('click', () => {
+        dropdownGV.style.display = dropdownGV.style.display === 'block' ? 'none' : 'block';
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!dropdownGV.contains(e.target) && e.target !== GVInput) {
+            dropdownGV.style.display = 'none';
+        }
+    });
+
+    dropdownGV.addEventListener('click', (e) => {
+    if (e.target.tagName === 'DIV') {
+        if (e.target.classList.contains('default')) {
+            GVInput.value = ''; 
+        } else {
+            GVInput.value = e.target.textContent.trim(); // Lấy nội dung của mục được chọn
+        }
+    
+        dropdownGV.style.display = 'none';
+        }
     });
     </script>
 
