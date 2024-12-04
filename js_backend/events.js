@@ -198,6 +198,28 @@ function DeleteExistFile(file_type, formData) {
     }).then(response => response.json());
 }
 
+function ClearExistFile(fileType) {
+    const urlWithParams = `../php_control/backend/clear_stuck_files.php?action=${fileType}`;
+    
+    return fetch(urlWithParams, {
+        method: 'GET', // Sử dụng phương thức GET vì chúng ta chỉ truyền tham số trong URL
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data.message);
+        if (data.errors) {
+            console.error('Errors:', data.errors);
+        }
+        return data; // Trả về dữ liệu để sử dụng ở nơi khác nếu cần
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+
 function UploadTempFile(file_type, formData) {
     const urlWithParams = '../php_control/backend/upload_image.php?file_type=' + file_type;
     return fetch(urlWithParams, {

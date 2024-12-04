@@ -1,4 +1,7 @@
 <?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 include 'db_connect.php';
 function get_user_info($username) {
     global $pdo;

@@ -1,4 +1,7 @@
     <?php
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
 
     function get_token() {
         file_put_contents("log.txt", "Hàm refresh_token được gọi\n" , FILE_APPEND);

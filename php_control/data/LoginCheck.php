@@ -1,5 +1,7 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 // Kết nối đến cơ sở dữ liệu (db_connect.php)
 include "db_connect.php";

@@ -4,7 +4,16 @@
 session_start();
 if (isset($_SESSION['user'])) {
     //echo "<script>alert('welcom');</script>";
-    if($_SESSION['user']['role'] !== "Student") {
+    if($_SESSION['user']['role'] === "Student") {
+        $id = $_SESSION['user']['id'];
+    }elseif($_SESSION['user']['role'] === "Admin" || $_SESSION['user']['role'] === "Teacher") {
+        if(isset($_GET['stu_id'])){
+            $id = $_GET['stu_id'];
+        }else{
+            header("Location: index.php");
+            exit();
+        }
+    }else{
         header("Location: index.php");
         exit();
     }
@@ -17,6 +26,10 @@ if (isset($_SESSION['user'])) {
 //     echo "<script>alert('" . $_SESSION['message'] . "');</script>"; 
 //     unset($_SESSION['message']); 
 // }
+
+include "../php_control/data/get-to-hop.php";
+include "../php_control/data/get_ho_so.php";
+$list_htts = GetListHinhThucXetTuyen();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -38,8 +51,13 @@ if (isset($_SESSION['user'])) {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
 
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../js_backend/events.js?v=<?php echo filemtime('../js_backend/events.js'); ?>"></script>
     <script src="../js_backend/control.js?v=<?php echo filemtime('../js_backend/control.js'); ?>"></script>
+    <script src="../js_backend/dialog.js?v=<?php echo filemtime('../js_backend/dialog.js'); ?>"></script>
+
 </head>
 
 <body>
@@ -59,16 +77,16 @@ if (isset($_SESSION['user'])) {
                     <div class="body_path">
                         <div class="info_layout change_layout_div" id="change_pass_path">
                             <h1>Nộp hồ sơ tuyển sinh</h1>
-                            <form action="post" enctype="multipart/form-data">
+                            <form method="post" enctype="multipart/form-data" >
                                 <div class="form-fields">
                                     <p><font color="red">*&nbsp;</font>Tải ảnh CCCD:</p>
                                         <div class="linediv">
                                             <div class="avatar_container" style="width: 300px; height: 200px; display:flex; justify-content:center; align-items:center; background-color:white;" onclick="document.getElementById('frontof_CCCD').click()">
                                                 <input type="file" name="frontof_CCCD" id="frontof_CCCD" accept="image/*" style="display: none;" onchange="uploadNewImage('frontof_CCCD', 'frontof_CCCD_img')">
 
-                                                <!-- Avatar Image -->
-                                                <img src="" id="frontof_CCCD_img" class="CCCD">
                                                 <p class="qweq">Mặt trước CCCD</p>
+                                                <!-- Avatar Image -->
+                                                <img src="<?php echo getSignedUrl('protect_files', $id.'/'.'674ffaa1d33fd_1733294753.png') ?>" id="frontof_CCCD_img" class="CCCD">
 
                                                 <!-- Edit Icon Overlay -->
                                                 <div class="edit_avatar_img_layout cccd">
@@ -98,11 +116,11 @@ if (isset($_SESSION['user'])) {
                                     <div class="form-fields" style="margin: 0 auto; ">
                                     <label for="so_cccd"><font color="red">*&nbsp;</font>Số CCCD</label>
                                     <input type="text" id="so_cccd" name="so_cccd" placeholder="Nhập 12 chữ số!" maxlength="12" pattern="\d{12}" 
-                                    inputmode="numeric" title="Vui lòng nhập đúng 12 chữ số" required oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+                                    inputmode="numeric" title="Vui lòng nhập đúng 12 chữ số"  oninput="this.value = this.value.replace(/[^0-9]/g, '');">
                                     <label for="hoTen"><font color="red">*&nbsp;</font>Họ và tên:</label>
-                                    <input type="text" id="hoTen" name="hoTen" placeholder="Nhập theo CCCD!" required>
+                                    <input type="text" id="hoTen" name="hoTen" placeholder="Nhập theo CCCD!" >
                                     <label for="date_birth"><font color="red">*&nbsp;</font>Ngày sinh: </label>
-                                   <input type="text" id="date_birth" name="date_birth" placeholder="Nhập ngày sinh (dd/mm/yyyy)" required>
+                                   <input type="text" id="date_birth" name="date_birth" placeholder="Nhập ngày sinh (dd/mm/yyyy)" >
                                 
                                    <script>
                                        $(function () {
@@ -124,41 +142,33 @@ if (isset($_SESSION['user'])) {
                                     </div>
 
                                     <label for="que_quan"><font color="red">*&nbsp;</font>Quê quán:</label>
-                                    <input type="text" id="que_quan" name="que_quan" placeholder="Nhập theo CCCD!" required>
+                                    <input type="text" id="que_quan" name="que_quan" placeholder="Nhập theo CCCD!" >
 
                                     <div class="linediv" style="margin-bottom: 10px">
                                     <label for="selection" style="margin:0;"><font color="red">*&nbsp;</font>Hình thức xét tuyển:</label>
                                     <div style="width:10px"></div>
-                                    <select id="selection" name="selection" required>
+                                    <select id="selection" name="selection"  onchange="handleSelectionChange()">
                                         <option value="" disabled selected>Chọn hình thức</option>
-                                        <option value="thptqg_khtn">THPTQG - KHTN</option>
-                                        <option value="thptqg_khxh">THPTQG - KHXH</option>
-                                        <option value="hoc_ba">Học bạ</option>
+                                        <?php foreach ($list_htts as $row): ?>
+                                            <option value="<?php echo $row['ma_htts']; ?>" data-list-mon="<?php echo $row['list_mon']; ?>"><?php echo $row['ten_htts']; ?></option>
+                                        <?php endforeach; ?>
                                     </select>
                                     </div>    
 
-                                    <label for="mts"><font color="red">*&nbsp;</font>Mã tuyển sinh:</label>
-                                    <input type="text" id="mts" name="mts" placeholder="Nhập mã tuyển sinh theo hình thức đã đăng ký" required>
+                                    <div id="form-section" style="display: none; flex-direction: column;">
+                                        <label for="mts"><font color="red">*&nbsp;</font>Mã tuyển sinh:</label>
+                                        <input type="text" id="mts" name="mts" placeholder="Nhập mã tuyển sinh theo hình thức đã đăng ký" >
 
-                                    <p style="margin:0; margin-bottom: 10px !important"><font color="red">*&nbsp;</font>Điểm từng môn:</p> 
-                                    <div class="diem_mon">
-                                        <div class="linediv">
-                                            <label for="mon1">Toán:&nbsp;</label>
-                                            <input type="number" id="mon1" name="mon1" required>
-                                        </div>
-                                        <div class="linediv">
-                                            <label for="mon2">Văn:&nbsp;</label>
-                                            <input type="number" id="mon2" name="mon2" required>
-                                        </div>
-                                        <div class="linediv">
-                                            <label for="mon3">Anh:&nbsp;</label>
-                                            <input type="number" id="mon3" name="mon3" required>
-                                        </div>
-                                    </div>   
-                                    
-                                    <label for="img_ts"><font color="red">*&nbsp;</font>Ảnh chụp xác minh:</label>
-                                    <input type="file" id="img_ts" name="img_ts" accept="image/*" required>
-                                    <p class="note">Tải ảnh minh chứng rõ ràng, đầy đủ theo hướng dẫn <a href="https://www.google.com/" target="_blank">TẠI ĐÂY</a>!</p>
+                                        <p style="margin:0; margin-bottom: 10px !important"><font color="red">*&nbsp;</font>Điểm từng môn:</p> 
+                                        
+                                        <div class="diem_mon">
+                                            
+                                        </div>   
+                                        
+                                        <label for="img_ts"><font color="red">*&nbsp;</font>Ảnh chụp xác minh:</label>
+                                        <input type="file" id="img_ts" name="img_ts" accept="image/*" >
+                                        <p class="note">Tải ảnh minh chứng rõ ràng, đầy đủ theo hướng dẫn <a href="https://www.google.com/" target="_blank">TẠI ĐÂY</a>!</p>
+                                    </div> 
 
                                     <div class="linediv">
                                     <label for="imgs_bonus[]">Giấy chứng nhận đi kèm:</label>
@@ -178,7 +188,7 @@ if (isset($_SESSION['user'])) {
                                        // Nội dung HTML cho div mới
                                        newEntry.innerHTML = `
                                     
-                                           <select name="proof_type[]" required>
+                                           <select name="proof_type[]" >
                                                <option value="" disabled selected>Chọn loại bằng chứng</option>
                                                <option value="english_certificate">Chứng chỉ tiếng Anh</option>
                                                 <option value="international_award">Giải quốc tế</option>
@@ -186,13 +196,13 @@ if (isset($_SESSION['user'])) {
                                                 <option value="priority_subject">Đối tượng ưu tiên</option>
                                             </select>
                                     
-                                            <select name="proof_detail[]" required>
+                                            <select name="proof_detail[]" >
                                                 <option value="1" selected>1</option>
                                                <option value="2">2</option>
                                                 <option value="3">3</option>
                                             </select>
                                     
-                                            <input type="file" name="imgs_bonus[]" accept="image/*" required>
+                                            <input type="file" name="imgs_bonus[]" accept="image/*" >
                                                 <button type="button" onclick="removeProofEntry(this)" style="margin-bottom: 10px; width:fit-content">Xóa chỉ mục</button>
                                             <div style="height: 1px; background-color: grey;"></div>
                                         `;
@@ -205,7 +215,7 @@ if (isset($_SESSION['user'])) {
 
                                     <p class="note">Nộp đúng yêu cầu, thông tin chi tiết <a href="https://www.google.com/" target="_blank">TẠI ĐÂY</a>!</p>
 
-                                    <input type="submit" value="Nộp hồ sơ" name="sumbit_hoso" class="custom-button">
+                                    <input type="submit" value="Nộp hồ sơ" name="sumbit_hoso" class="custom-button" onclick="NopHoSo()">
                                     </div>
                                 </form>
                             </div>
@@ -221,11 +231,27 @@ if (isset($_SESSION['user'])) {
         </div>
     </div>
     </div>
+    <?php include '../php_control/path_side/LoadBar.php'; ?>
 </body>
 
 </html>
 
 <script>
+    window.onbeforeunload = function() {
+            // Gọi hàm ClearExistFile để xóa tất cả tệp tạm
+        ClearExistFile('delete_all')
+            .then(data => {
+                if (data.success) {
+                    console.log('All temporary files deleted successfully:', data.message);
+                } else {
+                    console.warn('Failed to delete temporary files:', data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error deleting temporary files:', error);
+            });
+        };
+
 async function uploadNewImage(inputId, imgId) {
     const inputFile = document.getElementById(inputId); // Lấy input file
     const file = inputFile.files[0]; // Lấy file đầu tiên được chọn
@@ -262,6 +288,69 @@ async function uploadNewImage(inputId, imgId) {
         alert('Vui lòng chọn một tệp tin.');
     }
 }
+function handleSelectionChange() {
+    const selection = document.getElementById("selection");
+    const diemMonDiv = document.querySelector(".diem_mon");
 
+    // Lấy option được chọn
+    const selectedOption = selection.options[selection.selectedIndex];
+    const listMon = selectedOption.getAttribute("data-list-mon");
 
+    const formSection = document.getElementById('form-section');
+        if (selection.value) {
+            formSection.style.display = 'flex';
+        } else {
+            formSection.style.display = 'none';
+        }
+
+    // Xóa nội dung cũ
+    diemMonDiv.innerHTML = "";
+
+    if (listMon) {
+        // Tách các môn từ chuỗi và tạo nội dung động
+        listMon.split(", ").forEach((mon, index) => {
+            diemMonDiv.innerHTML += `
+                <div class="linediv">
+                    <label for="mon_${index + 1}">${mon.charAt(0).toUpperCase() + mon.slice(1)}:&nbsp;</label>
+                    <input type="number" id="mon_${index + 1}" name="mon_${index + 1}" >
+                </div>`;
+        });
+    }
+}
+
+function NopHoSo() {
+        event.preventDefault();
+        ShowLoading();
+
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", "../php_control/data/PushHoSoData.php", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                const response = xhr.responseText; // Lấy dữ liệu phản hồi
+
+                // Nếu bạn không trả về JSON, xử lý phản hồi như một chuỗi
+                if (response.trim().startsWith("success")) {
+                    HideLoading();
+                    SuccessDialog("Thông báo", response.replace("success: ", "Gửi hồ sơ thành công"));
+                } else if (response.trim().startsWith("warming: ")) {
+                    HideLoading();
+                    WarmingDialog("Thông báo", response.replace("warming: ", ""));
+                } else if (response.trim().startsWith("errorAuth: ")) {
+                    HideLoading();
+                    ErrorDialog("Lỗi phiên người dùng", response.replace("errorAuth: ", ""));
+                } else {
+                    HideLoading();
+                    ErrorDialog("Thông báo lỗi", response.replace("error: ", ""));
+                }
+            } else {
+                HideLoading();
+                ErrorDialog("Lỗi kết nối", "Không thể kết nối đến máy chủ. Vui lòng thử lại sau.");
+            }
+        };
+
+        xhr.send();
+    }
 </script>

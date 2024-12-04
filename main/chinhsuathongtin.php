@@ -140,15 +140,18 @@ if (isset($_SESSION['user'])) {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
     <script>
         window.onbeforeunload = function() {
-            const formData = new FormData(); // Thay đổi blob thành dữ liệu phù hợp
-
-            DeleteExistFile('avatar_temp', formData)
-                .then(data => {
-                    console.log('Temp file deleted:', data.message);
-                })
-                .catch(error => {
-                    console.error('Error deleting temp file:', error);
-                });
+            // Gọi hàm ClearExistFile để xóa tất cả tệp tạm
+        ClearExistFile('delete_all')
+            .then(data => {
+                if (data.success) {
+                    console.log('All temporary files deleted successfully:', data.message);
+                } else {
+                    console.warn('Failed to delete temporary files:', data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error deleting temporary files:', error);
+            });
         };
 
         let cropper;
