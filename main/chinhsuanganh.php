@@ -14,6 +14,7 @@ if (isset($_SESSION['user'])) {
 include("../php_control/data/get_info_nganh.php");
 include("../php_control/data/get-to-hop.php");
 include("../php_control/data/ds_tuyen_sinh.php");
+include("../php_control/data/download_cloud_file.php");
 
 if (isset($_GET['ma_nganh'])) {
     $ma_nganh  = $_GET['ma_nganh'];
@@ -347,18 +348,24 @@ if (isset($_GET['ma_nganh'])) {
 
                                     <label for="phuong_tien">Phương tiện:</label>
                                     <div style='display:grid; grid-template-columns: repeat(2, 1fr); margin-right: 25px;'>
-                                        <label style="margin:0;"><input type="radio" name="phuong_tien" value="media" onclick="handleRadioClick(this, 'url')"> Video URL</label>
-                                        <label style="margin:0;"><input type="radio" name="phuong_tien" value="image" onclick="handleRadioClick(this, 'file')"> Tải ảnh</label>
+                                        <label style="margin:0;"><input type="radio" name="phuong_tien" value="media" onclick="handleRadioClick(this, 'url')" 
+                                        <?php if(isset($_GET['ma_nganh']) && !empty($test['iframe'])){ echo "checked";} ?>> Video URL</label>
+                                        <label style="margin:0;"><input type="radio" name="phuong_tien" value="image" onclick="handleRadioClick(this, 'file')"
+                                        <?php if(isset($_GET['ma_nganh']) && !empty($test['img_link'])){ echo "checked";} ?>> Tải ảnh</label>
                                     </div>
                                     <div style='height: 15px'></div>
-                                    <input tyle="text" id="url" name="url" style="width: 100%; display: none;" placeholder="Điền link nhúng vào">
+                                    <input tyle="text" id="url" name="url" style="width: 100%; display: none;" placeholder="Điền link nhúng vào" value="<?php echo isset($_GET['ma_nganh'])? $test['iframe'] : '';?>">
                                     <input type="file" id="file_temp" style="width: 100%; display: none;" name="file_temp">
-
+                                    <div id="file_path_hold" style="display: none;">
+                                    <?php if(isset($_GET['ma_nganh']) && !empty($test['img_link'])): ?>
+                                        <p class="file_path_text">File ảnh hiện tại: <a href="<?php echo GetPublicLink('nganh_image', $test['img_link']) ?>" download="<?php echo $test['img_link'];?>"><?php echo $test['img_link'];?></a></p>
+                                    <?php endif; ?>
+                                    </div>
                                     <div class="chu_thich_hold" style="display:none; margin-top: 10px;">
                                         <label for="chu_thich">
                                             <font color="red">*</font>&nbsp;Chú thích:
                                         </label>
-                                        <input type="text" id="chu_thich" name="chu_thich" style="width: 100%;" placeholder="Thêm chú thích">
+                                        <input type="text" id="chu_thich" name="chu_thich" style="width: 100%;" placeholder="Thêm chú thích" value="<?php echo isset($_GET['ma_nganh'])? $test['chu_thich'] : '';?>">
                                     </div>
 
                                     <div class="linediv" style="margin-bottom: 10px;">
@@ -494,6 +501,7 @@ if (isset($_GET['ma_nganh'])) {
     function handleRadioClick(radio, type) {
         const urlInput = document.getElementById("url");
         const fileInput = document.getElementById("file_temp");
+        const filePathHold = document.getElementById("file_path_hold");
         const note = document.getElementById("chu_thich");
         const note_div = document.getElementsByClassName("chu_thich_hold");
 
@@ -503,6 +511,7 @@ if (isset($_GET['ma_nganh'])) {
             lastCheckedRadio = null; // Reset trạng thái
             urlInput.style.display = "none";
             fileInput.style.display = "none";
+            filePathHold.style.display = "none";
             note.value = "";
             note_div[0].style.display = "none";
         } else {
@@ -512,9 +521,11 @@ if (isset($_GET['ma_nganh'])) {
             if (type === "url") {
                 urlInput.style.display = "block";
                 fileInput.style.display = "none";
+                filePathHold.style.display = "none";
             } else if (type === "file") {
                 urlInput.style.display = "none";
                 fileInput.style.display = "block";
+                filePathHold.style.display = "block";
             }
             note_div[0].style.display = "block";
         }
@@ -608,6 +619,13 @@ if (isset($_GET['ma_nganh'])) {
     </script>
 <?php endif; ?>
 
+<?php if(isset($_GET['ma_nganh'])): ?>
+    <?php if(!empty($test['iframe'])): ?>
+        <script>handleRadioClick('media', 'url');</script>
+    <?php elseif(!empty($test['img_link'])): ?>
+        <script>handleRadioClick('image', 'file');</script>
+    <?php endif;?>
+<?php endif; ?>
 
 <!-- Log kiểm tra dữ liệu, không được xóa -->
 <?php
