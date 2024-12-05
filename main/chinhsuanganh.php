@@ -10,16 +10,16 @@ if (isset($_SESSION['user'])) {
     header("Location: login.php");
     exit();
 }
-if (isset($_GET['ma_nganh'])) {
-    $ma_nganh  = $_GET['ma_nganh'];
-}
 
 include("../php_control/data/get_info_nganh.php");
 include("../php_control/data/get-to-hop.php");
 include("../php_control/data/ds_tuyen_sinh.php");
 
-$test = getInfoNganh($ma_nganh);
-$ct = (int)$test["chi_tieu"];
+if (isset($_GET['ma_nganh'])) {
+    $ma_nganh  = $_GET['ma_nganh'];
+    $test = getInfoNganh($ma_nganh);
+    $ct = (int)$test["chi_tieu"];
+}
 
 // echo "<script>alert('".$test["ten"]."');</script>";
 ?>
@@ -80,10 +80,10 @@ $ct = (int)$test["chi_tieu"];
                                         <label for="fullname" style="margin-bottom: 0; margin-right: 10px">
                                             <font color="red">*</font>&nbsp;Mã ngành:
                                         </label>
-                                        <input type="text" id="id_nganh" name="id_nganh" value=<?php
+                                        <input type="text" id="id_nganh" name="id_nganh" value="<?php
                                                                                                 if (isset($_GET['ma_nganh'])) {
                                                                                                     echo $test["id"];
-                                                                                                }; ?>
+                                                                                                }; ?>"
                                             maxlength="10" style="margin-bottom: 0; width: 120px;"
                                             <?php
                                             if (isset($_GET['ma_nganh'])) {
@@ -154,12 +154,14 @@ $ct = (int)$test["chi_tieu"];
                                         <input type="text" id="date_open_day" name="date_open_day" placeholder="dd/mm/yyyy" style="width: 150px; margin-right: 10px"
                                             value="<?php
                                                     if (isset($_GET['ma_nganh'])) {
+                                                        echo (new DateTime(substr($test["date_open"], 0, 19)))->format('d/m/Y');
                                                     }
                                                     ?>"
                                             readonly>
                                         <input type="text" id="date_open_time" name="date_open_time" placeholder="hh:mm" style="width: 100px;"
                                             value="<?php
                                                     if (isset($_GET['ma_nganh'])) {
+                                                        echo (new DateTime(substr($test["date_open"], 0, 19)))->format('H:i');
                                                     }
                                                     ?>"
                                             readonly>
@@ -173,16 +175,14 @@ $ct = (int)$test["chi_tieu"];
                                         <input type="text" id="date_end_day" name="date_end_day" placeholder="dd/mm/yyyy" style="width: 150px; margin-right: 10px"
                                             value="<?php
                                                     if (isset($_GET['ma_nganh'])) {
-                                                        $datetime = $test["date_end"];
-                                                        list($date, $time) = explode(" ", $datetime);
-                                                        echo $date;
+                                                        echo (new DateTime(substr($test["date_end"], 0, 19)))->format('d/m/Y');
                                                     }
                                                     ?>" aria-placeholder="Ngày đóng tín chỉ"
                                             readonly data-required>
                                         <input type="text" id="date_end_time" name="date_end_time" placeholder="hh:mm" style="width: 100px;"
                                             value="<?php
                                                     if (isset($_GET['ma_nganh'])) {
-                                                        echo $time;
+                                                        echo (new DateTime(substr($test["date_end"], 0, 19)))->format('H:i');
                                                     }
                                                     ?>" aria-placeholder="Giờ đóng tín chỉ"
                                             readonly data-required>
@@ -203,14 +203,40 @@ $ct = (int)$test["chi_tieu"];
 
                                     <div class="linediv" style="margin-top: 15px;">
                                         <label>Ghi chú:</label>
-                                        <?php
-                                        if (isset($_GET['ma_nganh'])) {
-                                            echo $test["ghi_chu"];
-                                        }
-                                        ?>
                                         <button type="button" onclick="addNote()" style="margin-left: 10px; margin-bottom: 10px">+</button>
                                     </div>
                                     <div id="ghi_chu_ele">
+                                    <?php
+                                        if (!empty($test["ghi_chu"])) {
+                                            // Giải mã JSON thành mảng
+                                            $list_mon = json_decode($test["ghi_chu"], true);
+
+                                            // Kiểm tra xem dữ liệu đã được giải mã có phải là mảng hay không
+                                            if (is_array($list_mon)) {
+                                                foreach ($list_mon as $key => $value) {
+                                                    echo '<div class="linediv" style="align-items: center;">';
+                                                    
+                                                    // Tạo select box với key là option
+                                                    echo '<select name="diem[]" required style="margin-right: 10px; margin-bottom: 0px;">';
+                                                    echo '<option disabled>Chọn môn</option>';
+                                                    echo '<option value="' . htmlspecialchars($key) . '" selected>' . htmlspecialchars($key) . '</option>';
+                                                    echo '</select>';
+                                                    
+                                                    // Tạo input với value được đặt sẵn
+                                                    echo '<input type="number" name="diem_loc[]" min="0" step="1" value="' . htmlspecialchars($value) . '" style="margin-bottom: 0; margin-right: 10px; width: 120px;">';
+                                                    
+                                                    // Nút xóa
+                                                    echo '<button type="button" onclick="removeProofEntry(this)" style="margin-bottom: 0px; width:fit-content">-</button>';
+                                                    
+                                                    echo '</div>';
+                                                }
+                                            } else {
+                                                echo 'Dữ liệu trong ghi_chu không hợp lệ.';
+                                            }
+                                        } else {
+                                            echo 'Không có dữ liệu trong ghi_chu.';
+                                        }
+                                        ?>
                                     </div>
                                     <script>
                                         // Hàm cập nhật danh sách môn học mới nhất
@@ -289,7 +315,8 @@ $ct = (int)$test["chi_tieu"];
                                     <input type="text" id="gv_id" name="gv_id" readonly placeholder="Chọn giáo viên phụ trách..." style="width: 350px;"
                                         value="<?php
                                                 if (isset($_GET['ma_nganh'])) {
-                                                    echo $test["gv_id"] . "hàm ko có cái nay";
+                                                    $gv_input =  getDSGV($test['gv_id'],"","")[0];
+                                                    echo $gv_input['id'] . " - " . $gv_input['ten'];
                                                 }
                                                 ?>">
                                     <div class="dropdown_container">
@@ -321,7 +348,7 @@ $ct = (int)$test["chi_tieu"];
                                     <label for="phuong_tien">Phương tiện:</label>
                                     <div style='display:grid; grid-template-columns: repeat(2, 1fr); margin-right: 25px;'>
                                         <label style="margin:0;"><input type="radio" name="phuong_tien" value="media" onclick="handleRadioClick(this, 'url')"> Video URL</label>
-                                        <label style="margin:0;"><input type="radio" name="Phuong_tien" value="image" onclick="handleRadioClick(this, 'file')"> Tải ảnh</label>
+                                        <label style="margin:0;"><input type="radio" name="phuong_tien" value="image" onclick="handleRadioClick(this, 'file')"> Tải ảnh</label>
                                     </div>
                                     <div style='height: 15px'></div>
                                     <input tyle="text" id="url" name="url" style="width: 100%; display: none;" placeholder="Điền link nhúng vào">
@@ -335,7 +362,7 @@ $ct = (int)$test["chi_tieu"];
                                     </div>
 
                                     <div class="linediv" style="margin-bottom: 10px;">
-                                        <input type="checkbox" name="enable" id="enable">
+                                        <input type="checkbox" name="enable" id="enable" <?php if(isset($test['isenable']) && $test['isenable']){ echo "checked";}?>>
                                         <label for="enable">Hiển thị chuyên ngành đăng ký?</label>
                                     </div>
 
@@ -370,11 +397,18 @@ $ct = (int)$test["chi_tieu"];
     dropdownToHop.addEventListener('click', (e) => {
         if (e.target.tagName === 'DIV') {
             const selectedOptionId = e.target.getAttribute('data-id'); // Lấy giá trị id từ thuộc tính data-id
-            const selectedOptionText = e.target.textContent; // Lấy text hiển thị (nếu cần)
-
-            // Gán giá trị id vào textInput (tránh trùng lặp)
             if (!textInputToHop.value.includes(selectedOptionId)) {
                 textInputToHop.value += textInputToHop.value ? `, ${selectedOptionId}` : selectedOptionId;
+
+                GetMonList(selectedOptionId);
+            }
+
+            dropdownToHop.style.display = 'none'; // Ẩn dropdown sau khi chọn
+        }
+    });
+
+    function GetMonList(selectedOptionId){
+        // Gán giá trị id vào textInput (tránh trùng lặp)
 
                 const xhr2 = new XMLHttpRequest();
                 xhr2.open("POST", "../php_control/data/get_list_mon.php", true);
@@ -414,11 +448,7 @@ $ct = (int)$test["chi_tieu"];
                 };
 
                 xhr2.send(`list=${encodeURIComponent(textInputToHop.value)}`);
-            }
-
-            dropdownToHop.style.display = 'none'; // Ẩn dropdown sau khi chọn
-        }
-    });
+    }
 
     // Xóa lựa chọn bằng phím Backspace hoặc Delete
     textInputToHop.addEventListener('keydown', (e) => {
@@ -532,6 +562,7 @@ $ct = (int)$test["chi_tieu"];
 
     // Lắng nghe sự kiện submit của form
     document.getElementById("userForm").addEventListener("submit", function(event) {
+        event.preventDefault();
         let inputs = document.querySelectorAll("#userForm input[data-required]"); // Lấy tất cả input có data-required
         let isValid = true;
         let invalidFields = [];
@@ -560,6 +591,22 @@ $ct = (int)$test["chi_tieu"];
         $(this).unbind('submit').submit()
     });
 </script>
+
+<?php if(isset($_GET['ma_nganh'])): ?>
+    <script>
+        const toHopInputStart = document.getElementById('to_hop');
+        if (toHopInputStart && toHopInputStart.value) {
+        const toHopArray = toHopInputStart.value.split(',').map(item => item.trim());
+
+        toHopArray.forEach(mon => {
+            if (mon) {
+                GetMonList(mon); 
+            }
+        });
+    }
+    console.log(list_mon);
+    </script>
+<?php endif; ?>
 
 
 <!-- Log kiểm tra dữ liệu, không được xóa -->
