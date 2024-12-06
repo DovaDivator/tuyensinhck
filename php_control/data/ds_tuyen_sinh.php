@@ -84,7 +84,18 @@ function fetchNganhSV($condition){
 // Hàm lấy dữ liệu từ bảng nganh
 function fetchNganhGV($condition){
     global $pdo;
-    $query = "SELECT * FROM get_list_nganh_gv(:id) ". $condition;
+    $query = "
+    SELECT 
+        ng.nganh_id AS id,
+        ng.ten_nganh AS ten,
+        CAST(ng.id_tohop AS CHAR) AS tohop,
+        CAST(ng.date_end AS DATETIME) AS date_end,
+        COUNT(sv.nganh_id) AS slsv
+    FROM nganh ng
+    LEFT JOIN sinh_vien sv ON ng.nganh_id = sv.nganh_id  
+    WHERE ng.isEnable AND CAST(ng.gv_id AS CHAR) = :id $condition
+    GROUP BY ng.nganh_id, ng.ten_nganh, ng.id_tohop, ng.date_end;
+";
     $stmt = $pdo->prepare($query);
     $stmt->bindParam(':id', $_SESSION['user']['id']);
     $stmt->execute();
@@ -144,97 +155,27 @@ function getConditionNganh($query, $status, $selectedTH) {
         $condition .= ")";
     }
 
-    return $condition == '' ? '' : "WHERE " . $condition;
+    return $condition == '' ? '' : "AND " . $condition;
 }
 
-function getConditionDSGV($query, $khoa, $ma_nganh) {
+function getConditionDSGV($query) {
     $condition = '';
     
     if ($query!= '') {
         $condition.= " (id ilike '%$query%' or ten ilike '%$query%')";
     }
 
-    if (!empty($khoa)) {
-        if ($condition != '') {
-            $temp = " and ";
-        }else{
-            $temp = "";
-        }
-        $condition .= $temp ."khoa = '$khoa'";
-    }
-
-    if (!empty($ma_nganh)) {
-        if ($condition != '') {
-            $temp = " and ";
-        }else{
-            $temp = "";
-        }
-        if($ma_nganh == 'Chưa phụ trách'){
-            $condition .= $temp."list_nganh is NULL";
-        }else{
-            $condition .= $temp."list_nganh ilike '%$ma_nganh%'";
-        }
-
-    }
-
-    return $condition == '' ? '' : "WHERE " . $condition;
+    return $condition == '' ? '' : "AND " . $condition;
 }
 
-function getConditionDSSV($query, $trang_thai, $date_created, $hinh_thuc){
+function getConditionDSSV($query){
     $condition = '';
     
     if ($query!= '') {
         $condition.= " (id ilike '%$query%' or ten ilike '%$query%')";
     }
 
-    if (!empty($trang_thai)) {
-        if((int)$trang_thai >= 1 && (int)$trang_thai <= 6 ) {
-            if ($condition != '') {
-                $condition .= " and ";
-            }
-            $condition .= "trang_thai = ".$trang_thai;
-        }
-    }
-
-    if ($date_created != '') {
-        if ($condition != '') {
-            $temp = " and ";
-        }else{
-            $temp = "";
-        }
-        switch ($date_created) {
-            case 1:
-                $condition .= $temp." create_date BETWEEN NOW() - INTERVAL '1 day' AND NOW();";
-                break;
-            case 2:
-                $condition .= $temp." create_date BETWEEN NOW() - INTERVAL '7 days' AND NOW();";
-                break;
-            case 3:
-                $condition .= $temp." create_date BETWEEN NOW() - INTERVAL '1 month' AND NOW();";
-                break;
-            case 4:
-                $condition .= $temp." create_date BETWEEN NOW() - INTERVAL '3 months' AND NOW();";
-                break;
-            default:
-            break;
-        }
-    }
-
-    if (!empty($hinh_thuc) || $hinh_thuc != '0') {
-        if ($condition!= '') {
-            $temp = " and ";
-        } else{
-            $temp = "";
-        }
-        if($hinh_thuc == '1'){
-            $condition .= $temp."htts_id is NULL";
-        }else{
-            $condition .= $temp." htts_id = '$hinh_thuc'";
-        }
-    }
-
-
-    return $condition == '' ? '' : "WHERE " . $condition;
+    return $condition == '' ? '' : "AND " . $condition;
 }
 
 function GetKhoaDaoTao() {

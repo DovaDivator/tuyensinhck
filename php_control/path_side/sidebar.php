@@ -15,7 +15,6 @@
             }elseif($_SESSION['user']['role'] === 'Admin'){
                 echo '<li><a href="dssv.php">Danh sách sinh viên</a></li>';
                 echo '<li><a href="qlnd.php">Quản lý người dùng</a></li>';
-                echo '<li><a href="ThongKe.php">Thống kê hồ sơ</a></li>';
             }elseif($_SESSION['user']['role'] === 'Student'){
                 echo '<li><a href="tra-cuu-chuyen-nganh.php">Tra cứu chuyên ngành</a></li>';
             }

@@ -75,59 +75,12 @@ $ds_tuyen_sinh = getDSTuyenSinh($query, $status, $selectedToHop);
                                     title="Tìm kiếm" class="search-icon">
                                 </button>
                             </div>
-                            <button type="button" class="icon-button" id="filter_option">
-                                <img src="../assets/icon/filter_tag.png?v=<?php echo filemtime("../assets/icon/filter_tag.png"); ?>" 
-                                alt="Bộ lọc" title="Bộ lọc" onclick="showChartOption('options layout filter_div_options', 'chart_option', 'show', event); GiveForm('search_form'), handleCheckboxClick('status')">
-                            </button>
+                            <?php if ($_SESSION['user']['role'] == 'Admin'): ?>
                             <button type="button" class="icon-button" id="filter_option">
                                 <img src="../assets/icon/plus.png?v=<?php echo filemtime("../assets/icon/plus.png"); ?>" 
                                 alt="Thêm chuyên ngành" title="Thêm chuyên ngành" onclick="window.location.href='chinhsuanganh.php'">
                             </button>
-                            <div style="position: relative;">   
-                                <div class="filter_div_options options layout" id="filter_tag_options">
-                                    <div class="linediv">
-                                        <h3>Bộ lọc tìm kiếm:</h3>
-                                        <div class="button_div">
-                                            <input type="button" value="Bỏ chọn tất cả" onclick='uncheckAllCheckboxes("filter_tag_options")'>
-                                        </div>
-                                    </div>
-
-                                    <!-- Trạng thái tuyển sinh -->
-                                    <?php if($_SESSION['user']['role'] == 'Admin'): ?>
-                                    <div class="filter-group">
-                                    <label>Trạng thái tuyển sinh:</label>
-                                        <div class="checkbox-group">
-                                            <input type="checkbox" id="sapmo" name="status" value="sapmo" <?php echo $status === 'sapmo' ? 'checked' : ''; ?>>
-                                            <label for="sapmo">Sắp mở</label>
-
-                                            <input type="checkbox" id="dangmo" name="status" value="dangmo" <?php echo $status === 'dangmo' ? 'checked' : ''; ?>>
-                                            <label for="dangmo">Đang mở</label>
-
-                                            <input type="checkbox" id="dadong" name="status" value="dadong" <?php echo $status === 'dadong' ? 'checked' : ''; ?>>
-                                            <label for="dadong">Đã đóng</label>
-
-                                            <input type="checkbox" id="dangan" name="status" value="dangan" <?php echo $status === 'dangan' ? 'checked' : ''; ?>>
-                                            <label for="dangan">Đang ẩn</label>
-                                        </div>
-                                    </div>
-                                    <?php endif; ?>
-
-                                    <!-- Tổ hợp xét tuyển -->
-                                    <div class="filter-group">
-                                        <label>Tổ hợp xét tuyển:</label>
-                                        <div class="checkbox-group tohopxettuyen">
-                                            <?php foreach (GetToHop() as $row): 
-                                                $isChecked = in_array($row['id'], $selectedToHop) ? 'checked' : '';
-                                            ?>
-                                                <div class="checkbox-item">
-                                                    <input type="checkbox" name="tohop[]" value="<?php echo $row['id']; ?>" <?php echo $isChecked; ?>>
-                                                    <label for="<?php echo $row['id']; ?>"><?php echo $row['id']; ?></label>
-                                                </div>
-                                            <?php endforeach; ?>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <?php endif; ?>
                         </form>
                         <div class="table_body_scroll" style="height:600px;">
                             <table class="choose_list nganh_hoc" id="top_tuyen_sinh">

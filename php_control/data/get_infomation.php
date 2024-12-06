@@ -6,14 +6,46 @@ include 'db_connect.php';
 function get_user_info($username) {
     global $pdo;
 
-    // Thực hiện truy vấn để lấy thông tin người dùng từ hàm get_email_user
-    $query = "SELECT * FROM get_user_info(:info)";
+    $query = "SELECT id_user, email, phone, avatar_name, role, trang_thai FROM user WHERE id_user = :user OR email = :user OR phone = :user";
     $stmt = $pdo->prepare($query);
-    $stmt->bindParam(':info', $username);
+    $stmt->bindParam(':user', $username);
     $stmt->execute();
     
-    return $stmt->fetch(PDO::FETCH_ASSOC); 
-    // Trả về: table_name, email, id, phone, avatar_name, trang_thai
+    $result = $stmt->fetch(PDO::FETCH_ASSOC); 
+    if ($result) {
+        switch($result['role']) {
+            case 1:
+                $table_role = 'sinh_vien';
+                $id_name = 'stu_id';
+                $result['role'] = 'Student';
+                break;
+            case 2:
+                $table_role = 'giao_vien';
+                $id_name = 'gv_id';
+                $result['role'] = 'Teacher';
+                break;
+            case 1510:
+                $table_role = 'admin';
+                $id_name = 'ad_id';
+                $result['role'] = 'Admin';
+                break;
+            default:
+                return [];
+        }
+        $query_added = "select ten from $table_role where $id_name = :id";
+        $stmt_added = $pdo->prepare($query_added);
+        $stmt_added->bindParam(':id', $result['id_user']);
+        $stmt_added->execute();
+        $added_info = $stmt_added->fetch(PDO::FETCH_ASSOC);
+
+        if ($added_info) {
+            $result = array_merge($result, $added_info);
+        } else {
+            $result = [];
+        }
+
+        return $result;
+    }
 }
 
 function GetKhoaDaoTao($id) {
