@@ -1,6 +1,16 @@
 <?php
+header('Content-Type: application/json; charset=utf-8');
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+include "db_connect.php";
+include "refresh_token.php";
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Nhận dữ liệu từ form
+
+    $id_nganh = $_POST['id_nganh'];
     $ten = $_POST['ten'] ?? '';
     $chi_tieu = $_POST['chi_tieu'] ?? '';
     $chuong_trinh = $_POST['chuong_trinh'] ?? '';
@@ -9,17 +19,63 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $date_end_time = $_POST['date_end_time'] ?? '';
     $diem_chuan = $_POST['diem_chuan'] ?? '';
 
-    // Hiển thị dữ liệu đã nhận
-    echo "<h1>Dữ Liệu Nhận Được</h1>";
-    echo "<p><strong>Tên:</strong> $ten</p>";
-    echo "<p><strong>Chỉ Tiêu:</strong> $chi_tieu</p>";
-    echo "<p><strong>Chương Trình:</strong> $chuong_trinh</p>";
-    echo "<p><strong>Tổ Hợp:</strong> $to_hop</p>";
-    echo "<p><strong>Ngày Kết Thúc:</strong> $date_end_day</p>";
-    echo "<p><strong>Giờ Kết Thúc:</strong> $date_end_time</p>";
-    echo "<p><strong>Điểm Chuẩn:</strong> $diem_chuan</p>";
+    // Ghi nội dung vào file getajax.txt
+    $file = 'getajax.txt';
+    if (file_put_contents($file, print_r($_POST, true)) !== false) {
+        echo json_encode([
+            'status' => 'success',
+            'message' => 'Dữ liệu đã được ghi vào file thành công!',
+        ]);
+    } else {
+        echo json_encode([
+            'status' => 'error',
+            'message' => 'Lỗi khi ghi dữ liệu vào file.',
+        ]);
+    }
 } else {
     // Nếu không phải POST, hiển thị form
-    echo "<p>Không có dữ liệu từ form gửi đến.</p>";
+    echo json_encode([
+        'status' => 'error',
+        'message' => 'Yêu cầu không hợp lệ.',
+    ]);
+}
+
+function push_image_nganh($fileName){
+    $supabase_url = 'https://iwelyvdecathaeppslzw.supabase.co';    
+    $bucket_name = 'nganh_image';
+
+    // Lấy đường dẫn file tạm từ session
+    $filePath = '../../assets/temp_uploads/'.$fileName;
+
+    // Tạo endpoint cho việc tải lên file
+    $endpoint = $supabase_url . "/storage/v1/object/" . $bucket_name . "/" . $fileName;
+
+    // Đọc nội dung của file
+    $fileContent = file_get_contents($filePath);
+
+    // Thiết lập headers cho cURL
+    $headers = [
+        "Authorization: Bearer " . $_SESSION['access_token'],
+        "Content-Type: image/*"
+    ];
+
+    // Khởi tạo cURL và thiết lập các tùy chọn
+    $ch = curl_init($endpoint);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");  // POST request
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $fileContent); // Đính kèm nội dung file
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers); // Thêm headers vào yêu cầu
+
+    // Gửi yêu cầu và nhận phản hồi
+    $response = curl_exec($ch);
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+
+    // Ghi log vào file log.txt
+    // file_put_contents("log.txt", "filename: $fileName\n access: ".$_SESSION['access_token']." \nResponse: $response\n", FILE_APPEND);
+    return [
+        'httpCode' => $httpCode,
+        'response' => json_decode($response, true)
+    ];
 }
 ?>

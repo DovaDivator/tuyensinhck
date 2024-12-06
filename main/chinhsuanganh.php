@@ -613,11 +613,10 @@ if (isset($_GET['ma_nganh'])) {
                 confirmButtonText: 'OK'
             });
         } else {
-            // xử lý hộ em cái XHR nha 
-
             // Gửi form bằng XHR
-            let xhr = new XMLHttpRequest();
-            xhr.open("POST",  "../php_control/data/chinhsuanganhdata.php", true); // Gửi tới file PHP xử lý form
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST",  "../php_control/data/chinhsuanganhdata.php<?php echo isset($_GET['ma_nganh']) ? '?update=true' : '';?>", true); // Gửi tới file PHP xử lý form
+            xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
             xhr.onload = function() {
                 if (xhr.status === 200) {
                     // Xử lý khi gửi thành công, bạn có thể redirect hay hiển thị kết quả tại đây
@@ -626,9 +625,10 @@ if (isset($_GET['ma_nganh'])) {
                         title: 'Thành công',
                         text: 'Dữ liệu đã được gửi thành công!',
                         confirmButtonText: 'OK'
-                    }).then(() => {
-                        window.location.href = "../php_control/data/chinhsuanganhdata.php"; // Chuyển hướng sang success_page.php
                     });
+                    // .then(() => {
+                    //     window.location.href = "chi-tiet-tuyen-sinh.php?ma_nganh="+ document.getElementById('id_nganh').value; // Chuyển hướng sang success_page.php
+                    // });
                 } else {
                     Swal.fire({
                         icon: 'error',
@@ -638,6 +638,15 @@ if (isset($_GET['ma_nganh'])) {
                     });
                 }
             };
+
+        xhr.onerror = function() {
+            Swal.fire({
+                icon: 'error',
+                title: 'Lỗi kết nối',
+                text: 'Không thể kết nối đến máy chủ. Vui lòng kiểm tra mạng hoặc thử lại!',
+                confirmButtonText: 'OK'
+            });
+        };
             xhr.send(formData); // Gửi FormData qua XHR
         }
     });
