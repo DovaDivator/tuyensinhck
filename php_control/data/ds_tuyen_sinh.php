@@ -93,7 +93,14 @@ function fetchNganhGV($condition){
         COUNT(sv.nganh_id) AS slsv
     FROM nganh ng
     LEFT JOIN sinh_vien sv ON ng.nganh_id = sv.nganh_id  
-    WHERE ng.isEnable AND CAST(ng.gv_id AS CHAR) = :id $condition
+    WHERE ng.isEnable 
+      AND CAST(ng.gv_id AS CHAR) = :id ";
+
+if ($condition !== '') {
+    $query .= " AND " . $condition;
+}
+
+$query .= "
     GROUP BY ng.nganh_id, ng.ten_nganh, ng.id_tohop, ng.date_end;
 ";
     $stmt = $pdo->prepare($query);
@@ -104,7 +111,23 @@ function fetchNganhGV($condition){
 
 function fetchNganhAD($condition){
     global $pdo;
-    $query = "SELECT * FROM get_list_nganh_ad() ".$condition;
+    $query = "
+    SELECT 
+        CAST(ng.nganh_id AS CHAR) AS id,
+        ng.ten_nganh AS ten,
+        CASE 
+            WHEN ng.isenable = FALSE THEN 0
+            WHEN NOW() < ng.date_open THEN 1
+            WHEN NOW() BETWEEN ng.date_open AND ng.date_end THEN 2
+            WHEN NOW() > ng.date_end THEN 3
+        END AS isenable,
+        ng.id_tohop AS tohop,
+        CAST(ng.date_end AS DATETIME) AS date_end, 
+        COUNT(sv.nganh_id) AS slsv
+    FROM nganh ng ".$condition == ''? "Where $condition" : ""."
+    LEFT JOIN sinh_vien sv ON ng.nganh_id = sv.nganh_id  
+    GROUP BY ng.nganh_id, ng.ten_nganh, ng.isenable, ng.id_tohop, ng.date_open, ng.date_end;
+";
     $stmt = $pdo->prepare($query);
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC); 
@@ -117,45 +140,7 @@ function getConditionNganh($query, $status, $selectedTH) {
         $condition .= " (id ilike '%$query%' or ten ilike '%$query%')";
     }
 
-    if ($status != '') {
-        if ($condition != '') {
-            $temp = " and ";
-        }else{
-            $temp = "";
-        }
-        switch ($status) {
-            case 'sapmo':
-                $condition .= $temp. ' isenable = 1';
-                break;
-            case 'dangmo':
-                $condition .= $temp. ' isenable = 2';
-                break;
-            case 'dadong':
-                $condition .= $temp.' isenable = 3';
-                break;
-            case 'dangan':
-                $condition .= $temp. ' isenable = 0';
-                break;
-            default:
-            break;
-        }
-    }
-
-    if (!empty($selectedTH)) {
-        if ($condition != '') {
-            $temp = " and ";
-        }else{
-            $temp = "";
-        }
-        $condition .= $temp. "(";
-        foreach ($selectedTH as $ele) {
-            $condition .= "tohop ilike '%$ele%' or ";
-        }
-        $condition = rtrim($condition, " or ");
-        $condition .= ")";
-    }
-
-    return $condition == '' ? '' : "AND " . $condition;
+    return $condition;
 }
 
 function getConditionDSGV($query) {
