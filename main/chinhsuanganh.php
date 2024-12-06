@@ -131,7 +131,7 @@ if (isset($_GET['ma_nganh'])) {
                                     <label for="to_hop">
                                         <font color="red">*</font>&nbsp;Tổ hợp:
                                     </label>
-                                    <input type="text" id="to_hop" name="to_hop" readonly placeholder="Chọn tổ hợp bạn muốn thêm"
+                                    <input type="text" id="to_hop" name="to_hop" readonly placeholder="tổ hợp"
                                         value="<?php
                                                 if (isset($_GET['ma_nganh'])) {
                                                     echo $test["to_hop"];
@@ -207,7 +207,7 @@ if (isset($_GET['ma_nganh'])) {
                                         <button type="button" onclick="addNote()" style="margin-left: 10px; margin-bottom: 10px">+</button>
                                     </div>
                                     <div id="ghi_chu_ele">
-                                    <?php
+                                        <?php
                                         if (!empty($test["ghi_chu"])) {
                                             // Giải mã JSON thành mảng
                                             $list_mon = json_decode($test["ghi_chu"], true);
@@ -216,19 +216,19 @@ if (isset($_GET['ma_nganh'])) {
                                             if (is_array($list_mon)) {
                                                 foreach ($list_mon as $key => $value) {
                                                     echo '<div class="linediv" style="align-items: center;">';
-                                                    
+
                                                     // Tạo select box với key là option
                                                     echo '<select name="diem[]" required style="margin-right: 10px; margin-bottom: 0px;">';
                                                     echo '<option disabled>Chọn môn</option>';
                                                     echo '<option value="' . htmlspecialchars($key) . '" selected>' . htmlspecialchars($key) . '</option>';
                                                     echo '</select>';
-                                                    
+
                                                     // Tạo input với value được đặt sẵn
-                                                    echo '<input type="number" name="diem_loc[]" min="0" step="1" value="' . htmlspecialchars($value) . '" style="margin-bottom: 0; margin-right: 10px; width: 120px;">';
-                                                    
+                                                    echo '<input type="number" name="diem_loc[]" min="0" step="0.01" value="' . htmlspecialchars($value) . '" style="margin-bottom: 0; margin-right: 10px; width: 120px;">';
+
                                                     // Nút xóa
                                                     echo '<button type="button" onclick="removeProofEntry(this)" style="margin-bottom: 0px; width:fit-content">-</button>';
-                                                    
+
                                                     echo '</div>';
                                                 }
                                             } else {
@@ -316,7 +316,7 @@ if (isset($_GET['ma_nganh'])) {
                                     <input type="text" id="gv_id" name="gv_id" readonly placeholder="Chọn giáo viên phụ trách..." style="width: 350px;"
                                         value="<?php
                                                 if (isset($_GET['ma_nganh'])) {
-                                                    $gv_input =  getDSGV($test['gv_id'],"","")[0];
+                                                    $gv_input =  getDSGV($test['gv_id'], "", "")[0];
                                                     echo $gv_input['id'] . " - " . $gv_input['ten'];
                                                 }
                                                 ?>">
@@ -348,33 +348,38 @@ if (isset($_GET['ma_nganh'])) {
 
                                     <label for="phuong_tien">Phương tiện:</label>
                                     <div style='display:grid; grid-template-columns: repeat(2, 1fr); margin-right: 25px;'>
-                                        <label style="margin:0;"><input type="radio" name="phuong_tien" value="media" onclick="handleRadioClick(this, 'url')" 
-                                        <?php if(isset($_GET['ma_nganh']) && !empty($test['iframe'])){ echo "checked";} ?>> Video URL</label>
+                                        <label style="margin:0;"><input type="radio" name="phuong_tien" value="media" onclick="handleRadioClick(this, 'url')"
+                                                <?php if (isset($_GET['ma_nganh']) && !empty($test['iframe'])) {
+                                                    echo "checked";
+                                                } ?>> Video URL</label>
                                         <label style="margin:0;"><input type="radio" name="phuong_tien" value="image" onclick="handleRadioClick(this, 'file')"
-                                        <?php if(isset($_GET['ma_nganh']) && !empty($test['img_link'])){ echo "checked";} ?>> Tải ảnh</label>
+                                                <?php if (isset($_GET['ma_nganh']) && !empty($test['img_link'])) {
+                                                    echo "checked";
+                                                } ?>> Tải ảnh</label>
                                     </div>
                                     <div style='height: 15px'></div>
-                                    <input tyle="text" id="url" name="url" style="width: 100%; display: none;" placeholder="Điền link nhúng vào" value="<?php echo isset($_GET['ma_nganh'])? $test['iframe'] : '';?>">
+                                    <input tyle="text" id="url" name="url" style="width: 100%; display: none;" placeholder="Điền link nhúng vào" value="<?php echo isset($_GET['ma_nganh']) ? $test['iframe'] : ''; ?>">
                                     <input type="file" id="file_temp" style="width: 100%; display: none;" name="file_temp">
                                     <div id="file_path_hold" style="display: none;">
-                                    <?php if(isset($_GET['ma_nganh']) && !empty($test['img_link'])): ?>
-                                        <p class="file_path_text">File ảnh hiện tại: <a href="<?php echo GetPublicLink('nganh_image', $test['img_link']) ?>" download="<?php echo $test['img_link'];?>"><?php echo $test['img_link'];?></a></p>
-                                    <?php endif; ?>
+                                        <?php if (isset($_GET['ma_nganh']) && !empty($test['img_link'])): ?>
+                                            <p class="file_path_text">File ảnh hiện tại: <a href="<?php echo GetPublicLink('nganh_image', $test['img_link']) ?>" download="<?php echo $test['img_link']; ?>"><?php echo $test['img_link']; ?></a></p>
+                                        <?php endif; ?>
                                     </div>
                                     <div class="chu_thich_hold" style="display:none; margin-top: 10px;">
                                         <label for="chu_thich">
                                             <font color="red">*</font>&nbsp;Chú thích:
                                         </label>
-                                        <input type="text" id="chu_thich" name="chu_thich" style="width: 100%;" placeholder="Thêm chú thích" value="<?php echo isset($_GET['ma_nganh'])? $test['chu_thich'] : '';?>">
+                                        <input type="text" id="chu_thich" name="chu_thich" style="width: 100%;" placeholder="Thêm chú thích" value="<?php echo isset($_GET['ma_nganh']) ? $test['chu_thich'] : ''; ?>">
                                     </div>
 
                                     <div class="linediv" style="margin-bottom: 10px;">
-                                        <input type="checkbox" name="enable" id="enable" <?php if(isset($test['isenable']) && $test['isenable']){ echo "checked";}?>>
+                                        <input type="checkbox" name="enable" id="enable" <?php if (isset($test['isenable']) && $test['isenable']) {
+                                                                                                echo "checked";
+                                                                                            } ?>>
                                         <label for="enable">Hiển thị chuyên ngành đăng ký?</label>
                                     </div>
 
-                                    <button type="submit" class="custom-button" style="width: 100%; margin-top: 20px;" onclick="UpdateNganh(
-    <?php echo isset($_GET['ma_nganh']) ? $_GET['ma_nganh'] : null; ?>)" >Cập nhật thông tin</button>
+                                    <button type="submit" class="custom-button" style="width: 100%; margin-top: 20px;">Cập nhật thông tin</button>
                                 </div>
                             </form>
 
@@ -414,47 +419,47 @@ if (isset($_GET['ma_nganh'])) {
         }
     });
 
-    function GetMonList(selectedOptionId){
+    function GetMonList(selectedOptionId) {
         // Gán giá trị id vào textInput (tránh trùng lặp)
 
-                const xhr2 = new XMLHttpRequest();
-                xhr2.open("POST", "../php_control/data/get_list_mon.php", true);
-                xhr2.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                xhr2.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+        const xhr2 = new XMLHttpRequest();
+        xhr2.open("POST", "../php_control/data/get_list_mon.php", true);
+        xhr2.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr2.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
 
-                xhr2.onload = function() {
-                    if (xhr2.status === 200) {
-                        const response = JSON.parse(xhr2.responseText);
-                        list_mon = response.map(row => row.mon);
-                        const dropdowns = document.querySelectorAll('#ghi_chu_ele select[name="diem[]"]');
+        xhr2.onload = function() {
+            if (xhr2.status === 200) {
+                const response = JSON.parse(xhr2.responseText);
+                list_mon = response.map(row => row.mon);
+                const dropdowns = document.querySelectorAll('#ghi_chu_ele select[name="diem[]"]');
 
-                        // Duyệt qua các dropdown và cập nhật lại các option
-                        dropdowns.forEach(dropdown => {
-                            const selectedValue = dropdown.value;
+                // Duyệt qua các dropdown và cập nhật lại các option
+                dropdowns.forEach(dropdown => {
+                    const selectedValue = dropdown.value;
 
-                            // Xóa hết các option cũ và thêm option mới từ list_mon
-                            dropdown.innerHTML = `<option disabled selected>Chọn môn</option>`; // Thêm option "Chọn môn"
+                    // Xóa hết các option cũ và thêm option mới từ list_mon
+                    dropdown.innerHTML = `<option disabled selected>Chọn môn</option>`; // Thêm option "Chọn môn"
 
-                            list_mon.forEach(mon => {
-                                const option = document.createElement('option');
-                                option.value = mon;
-                                option.textContent = mon;
+                    list_mon.forEach(mon => {
+                        const option = document.createElement('option');
+                        option.value = mon;
+                        option.textContent = mon;
 
-                                // Nếu môn trong list_mon đã được chọn trước đó, giữ lại lựa chọn
-                                if (selectedValue === mon) {
-                                    option.selected = true;
-                                }
+                        // Nếu môn trong list_mon đã được chọn trước đó, giữ lại lựa chọn
+                        if (selectedValue === mon) {
+                            option.selected = true;
+                        }
 
-                                dropdown.appendChild(option);
-                            });
-                        });
-                    } else {
-                        // Xử lý lỗi nếu có
-                        console.error('Error:', xhr2.status);
-                    }
-                };
+                        dropdown.appendChild(option);
+                    });
+                });
+            } else {
+                // Xử lý lỗi nếu có
+                console.error('Error:', xhr2.status);
+            }
+        };
 
-                xhr2.send(`list=${encodeURIComponent(textInputToHop.value)}`);
+        xhr2.send(`list=${encodeURIComponent(textInputToHop.value)}`);
     }
 
     // Xóa lựa chọn bằng phím Backspace hoặc Delete
@@ -573,58 +578,111 @@ if (isset($_GET['ma_nganh'])) {
 
     // Lắng nghe sự kiện submit của form
     document.getElementById("userForm").addEventListener("submit", function(event) {
-        event.preventDefault();
-        let inputs = document.querySelectorAll("#userForm input[data-required]"); // Lấy tất cả input có data-required
+        event.preventDefault(); // Ngừng hành vi gửi form mặc định
+
+        let inputs = document.querySelectorAll("#userForm input[data-required]");
         let isValid = true;
         let invalidFields = [];
+        let formData = new FormData(); // Sử dụng FormData để thu thập dữ liệu
+
+        inputs.forEach(function(input) {
+            input.classList.remove("error");
+        });
+
+        // Kiểm tra từng input
         inputs.forEach(function(input) {
             let inputValue = input.value.trim();
-            console.log("Input value: ", inputValue);            
             if (!inputValue) {
-                input.setCustomValidity("Trường này là bắt buộc."); // Đặt thông báo lỗi
                 isValid = false;
-                invalidFields.push(input.getAttribute('placeholder') || input.id); // Thêm tên trường vào mảng lỗi
+                invalidFields.push(input.getAttribute('placeholder') || input.name || input.id);
+                input.classList.add("error");
+                
             } else {
-                input.setCustomValidity(""); // Reset lỗi khi input có giá trị hợp lệ
+                formData.append(input.name || input.id, inputValue); // Thêm dữ liệu vào FormData
             }
+        });
+
+        formData.forEach(function(value, key) {
+            console.log(key + ": " + value);
         });
         if (!isValid) {
             Swal.fire({
                 icon: 'error',
                 title: 'Lỗi nhập liệu',
-                text: `Vui lòng nhập giá trị cho các trường: ${invalidFields.join(', ')}`
-
+                text: `Giá trị ${invalidFields.join(', ')} không hợp lệ vui lòng kiểm tra lại`,
+                confirmButtonText: 'OK'
             });
-            event.preventDefault();
         } else {
-            event.target.submit();
+            // xử lý hộ em cái XHR nha 
+
+            // Gửi form bằng XHR
+            let xhr = new XMLHttpRequest();
+            xhr.open("POST",  "../php_control/data/chinhsuanganhdata.php", true); // Gửi tới file PHP xử lý form
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    // Xử lý khi gửi thành công, bạn có thể redirect hay hiển thị kết quả tại đây
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Thành công',
+                        text: 'Dữ liệu đã được gửi thành công!',
+                        confirmButtonText: 'OK'
+                    }).then(() => {
+                        window.location.href = "../php_control/data/chinhsuanganhdata.php"; // Chuyển hướng sang success_page.php
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi gửi dữ liệu',
+                        text: 'Đã xảy ra lỗi khi gửi dữ liệu. Vui lòng thử lại!',
+                        confirmButtonText: 'OK'
+                    });
+                }
+            };
+            xhr.send(formData); // Gửi FormData qua XHR
         }
-        $(this).unbind('submit').submit()
+    });
+
+
+    // Thêm sự kiện input để loại bỏ class lỗi khi người dùng nhập lại
+    document.querySelectorAll("#userForm input[data-required]").forEach(function(input) {
+        input.addEventListener("input", function() {
+            if (input.value.trim()) {
+                input.classList.remove("error");
+            } else {
+                input.classList.add("error");
+            }
+        });
     });
 </script>
 
-<?php if(isset($_GET['ma_nganh'])): ?>
+
+input[data-required]
+<?php if (isset($_GET['ma_nganh'])): ?>
     <script>
         const toHopInputStart = document.getElementById('to_hop');
         if (toHopInputStart && toHopInputStart.value) {
-        const toHopArray = toHopInputStart.value.split(',').map(item => item.trim());
+            const toHopArray = toHopInputStart.value.split(',').map(item => item.trim());
 
-        toHopArray.forEach(mon => {
-            if (mon) {
-                GetMonList(mon); 
-            }
-        });
-    }
-    console.log(list_mon);
+            toHopArray.forEach(mon => {
+                if (mon) {
+                    GetMonList(mon);
+                }
+            });
+        }
+        console.log(list_mon);
     </script>
 <?php endif; ?>
 
-<?php if(isset($_GET['ma_nganh'])): ?>
-    <?php if(!empty($test['iframe'])): ?>
-        <script>handleRadioClick('media', 'url');</script>
-    <?php elseif(!empty($test['img_link'])): ?>
-        <script>handleRadioClick('image', 'file');</script>
-    <?php endif;?>
+<?php if (isset($_GET['ma_nganh'])): ?>
+    <?php if (!empty($test['iframe'])): ?>
+        <script>
+            handleRadioClick('media', 'url');
+        </script>
+    <?php elseif (!empty($test['img_link'])): ?>
+        <script>
+            handleRadioClick('image', 'file');
+        </script>
+    <?php endif; ?>
 <?php endif; ?>
 
 <!-- Log kiểm tra dữ liệu, không được xóa -->
@@ -640,5 +698,3 @@ echo 'var postData = ' . json_encode($_POST) . ';';
 echo 'console.log("POST Data:", postData);';
 echo '</script>';
 ?>
-
- 
