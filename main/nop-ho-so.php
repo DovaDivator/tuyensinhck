@@ -116,11 +116,11 @@ $list_htts = GetListHinhThucXetTuyen();
                                     <div class="form-fields" style="margin: 0 auto; ">
                                     <label for="so_cccd"><font color="red">*&nbsp;</font>Số CCCD</label>
                                     <input type="text" id="so_cccd" name="so_cccd" placeholder="Nhập 12 chữ số!" maxlength="12" pattern="\d{12}" 
-                                    inputmode="numeric" title="Vui lòng nhập đúng 12 chữ số"  oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+                                    inputmode="numeric" title="Vui lòng nhập đúng 12 chữ số"  oninput="this.value = this.value.replace(/[^0-9]/g, '');" data-required>
                                     <label for="hoTen"><font color="red">*&nbsp;</font>Họ và tên:</label>
-                                    <input type="text" id="hoTen" name="hoTen" placeholder="Nhập theo CCCD!" >
+                                    <input type="text" id="hoTen" name="hoTen" placeholder="Nhập theo CCCD!"data-required >
                                     <label for="date_birth"><font color="red">*&nbsp;</font>Ngày sinh: </label>
-                                   <input type="text" id="date_birth" name="date_birth" placeholder="Nhập ngày sinh (dd/mm/yyyy)" >
+                                   <input type="text" id="date_birth" name="date_birth" placeholder="Nhập ngày sinh (dd/mm/yyyy)"data-required >
                                 
                                    <script>
                                        $(function () {
@@ -142,12 +142,12 @@ $list_htts = GetListHinhThucXetTuyen();
                                     </div>
 
                                     <label for="que_quan"><font color="red">*&nbsp;</font>Quê quán:</label>
-                                    <input type="text" id="que_quan" name="que_quan" placeholder="Nhập theo CCCD!" >
+                                    <input type="text" id="que_quan" name="que_quan" placeholder="Nhập theo CCCD!"data-required >
 
                                     <div class="linediv" style="margin-bottom: 10px">
                                     <label for="selection" style="margin:0;"><font color="red">*&nbsp;</font>Hình thức xét tuyển:</label>
                                     <div style="width:10px"></div>
-                                    <select id="selection" name="selection"  onchange="handleSelectionChange()">
+                                    <select id="selection" name="selection"  onchange="handleSelectionChange()" data-required>
                                         <option value="" disabled selected>Chọn hình thức</option>
                                         <?php foreach ($list_htts as $row): ?>
                                             <option value="<?php echo $row['ma_htts']; ?>" data-list-mon="<?php echo $row['list_mon']; ?>"><?php echo $row['ten_htts']; ?></option>
@@ -157,7 +157,7 @@ $list_htts = GetListHinhThucXetTuyen();
 
                                     <div id="form-section" style="display: none; flex-direction: column;">
                                         <label for="mts"><font color="red">*&nbsp;</font>Mã tuyển sinh:</label>
-                                        <input type="text" id="mts" name="mts" placeholder="Nhập mã tuyển sinh theo hình thức đã đăng ký" >
+                                        <input type="text" id="mts" name="mts" placeholder="Nhập mã tuyển sinh theo hình thức đã đăng ký" data-required>
 
                                         <p style="margin:0; margin-bottom: 10px !important"><font color="red">*&nbsp;</font>Điểm từng môn:</p> 
                                         
@@ -166,7 +166,7 @@ $list_htts = GetListHinhThucXetTuyen();
                                         </div>   
                                         
                                         <label for="img_ts"><font color="red">*&nbsp;</font>Ảnh chụp xác minh:</label>
-                                        <input type="file" id="img_ts" name="img_ts" accept="image/*" >
+                                        <input type="file" id="img_ts" name="img_ts" accept="image/*" data-required>
                                         <p class="note">Tải ảnh minh chứng rõ ràng, đầy đủ theo hướng dẫn <a href="https://www.google.com/" target="_blank">TẠI ĐÂY</a>!</p>
                                     </div> 
 
@@ -319,38 +319,129 @@ function handleSelectionChange() {
 }
 
 function NopHoSo() {
-        event.preventDefault();
-        ShowLoading();
+    event.preventDefault();
+        let inputs = document.querySelectorAll("#Nophs input[data-required]");
+        let selectedGender = document.querySelector('input[name="gender"]:checked');
+        let Input = document.querySelectorAll("#Nophs input");
+        let selects = document.querySelectorAll("#Nophs select")
+        let textArea = document.querySelectorAll("#Nophs textarea");
+        let radios = document.getElementsByName("gender");
+        let checkgender = false;
+        let check = true;
+        let isValid = true;
+        let invalidFields = [];
+        let formData = new FormData(); // Sử dụng FormData để thu thập dữ liệu
 
-        const xhr = new XMLHttpRequest();
-        xhr.open("POST", "../php_control/data/PushHoSoData.php", true);
-        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+        inputs.forEach(function(input) {
+            input.classList.remove("error");
+        });
 
-        xhr.onload = function() {
-            if (xhr.status === 200) {
-                const response = xhr.responseText; // Lấy dữ liệu phản hồi
-
-                // Nếu bạn không trả về JSON, xử lý phản hồi như một chuỗi
-                if (response.trim().startsWith("success")) {
-                    HideLoading();
-                    SuccessDialog("Thông báo", response.replace("success: ", "Gửi hồ sơ thành công"));
-                } else if (response.trim().startsWith("warming: ")) {
-                    HideLoading();
-                    WarmingDialog("Thông báo", response.replace("warming: ", ""));
-                } else if (response.trim().startsWith("errorAuth: ")) {
-                    HideLoading();
-                    ErrorDialog("Lỗi phiên người dùng", response.replace("errorAuth: ", ""));
-                } else {
-                    HideLoading();
-                    ErrorDialog("Thông báo lỗi", response.replace("error: ", ""));
-                }
-            } else {
-                HideLoading();
-                ErrorDialog("Lỗi kết nối", "Không thể kết nối đến máy chủ. Vui lòng thử lại sau.");
+        // Kiểm tra từng input
+        inputs.forEach(function(input) {
+            let inputValue = input.value.trim();
+            if (!inputValue) {
+                isValid = false;
+                invalidFields.push(input.getAttribute('placeholder') || input.name || input.id);
+                input.classList.add("error");
+                check = false
             }
-        };
+        });
 
-        xhr.send();
+        for (let i = 0; i < radios.length; i++) {
+            if (radios[i].checked) {
+                checkgender = true;
+                break;
+            }
+            if (!checkgender) {
+                invalidField = "vui lòng chọn giới tính";
+            }
+        }
+
+        if (!checkgender) {
+            isValid = false;
+        }
+
+        if (check) {
+            Input.forEach(function(input) {
+                let inputValue = "";
+                if (input.type === "radio") {
+                    if (input.checked) {
+                        inputValue = input.value;
+                    }
+                } else {
+                    inputValue = input.value.trim();
+                }
+                if (inputValue) {
+                    formData.append(input.name || input.id, inputValue);
+                }
+            });
+            textArea.forEach(function(text) {
+                let textValue = text.value.trim();
+                formData.append(text.name || text.id, textValue);
+            });
+            selects.forEach(function(select) {
+                let sValue = select.value.trim();
+                formData.append(select.getAttribute('placeholder') || select.name, sValue);
+            });
+        }
+
+        formData.forEach(function(value, key) {
+            console.log(key + ": " + value);
+        });
+        if (!isValid) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Lỗi nhập liệu',
+                text: `${invalidFields.join(', ')} không được bỏ trống vui lòng kiểm tra lại`,
+                confirmButtonText: 'OK'
+            });
+        } else {
+            // Gửi form bằng XHR
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", "../php_control/data/PushHoSoData.php"<?php echo isset($_GET['ma_nganh']) ? '?update=true' : '';?>, true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    // Xử lý khi gửi thành công, bạn có thể redirect hay hiển thị kết quả tại đây
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Thành công',
+                        text: 'Dữ liệu đã được gửi thành công!',
+                        confirmButtonText: 'OK'
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi gửi dữ liệu',
+                        text: 'Đã xảy ra lỗi khi gửi dữ liệu. Vui lòng thử lại!',
+                        confirmButtonText: 'OK'
+                    });
+                }
+            };
+
+            xhr.onerror = function() {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi kết nối',
+                    text: 'Không thể kết nối đến máy chủ. Vui lòng kiểm tra mạng hoặc thử lại!',
+                    confirmButtonText: 'OK'
+                });
+            };
+            xhr.send(formData); // Gửi FormData qua XHR
+        }
+
+
+
+        // Thêm sự kiện input để loại bỏ class lỗi khi người dùng nhập lại
+        document.querySelectorAll("#userForm input[data-required]").forEach(function(input) {
+            input.addEventListener("input", function() {
+                if (input.value.trim()) {
+                    input.classList.remove("error");
+                } else {
+                    input.classList.add("error");
+                }
+            });
+        });
     }
 </script>
