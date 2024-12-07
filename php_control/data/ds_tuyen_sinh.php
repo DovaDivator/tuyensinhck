@@ -36,24 +36,22 @@ function getDSGV($query){
     SELECT 
         CAST(gv.gv_id AS CHAR) AS id,
         CAST(gv.ten AS CHAR) AS ten,
-        'ĐH' AS khoa,
+        gv.khoa,
         GROUP_CONCAT(ng.nganh_id SEPARATOR ', ') AS list_nganh
     FROM 
-        giao_vien gv";
-    if($condition !== '') {
-        $query_input .= " WHERE " . $condition;
-    }
-    $query_input .= "
+        giao_vien gv
     LEFT JOIN 
-        nganh ng ON gv.gv_id = ng.gv_id
+        nganh ng ON gv.gv_id = ng.gv_id";
+if ($condition !== '') {
+    $query_input .= " WHERE " . $condition;
+}
+$query_input .= "
     GROUP BY 
-        gv.gv_id, gv.ten;
-    ";
+        gv.gv_id, gv.ten, gv.khoa";
     
     $stmt = $pdo->prepare($query_input);
     $stmt->execute();
     $courses = $stmt->fetchAll(PDO::FETCH_ASSOC); 
-    print_r($courses);
     return $courses;
 }
 
@@ -196,20 +194,20 @@ function getConditionDSGV($query) {
     $condition = '';
     
     if ($query!= '') {
-        $condition.= " (id ilike '%$query%' or ten ilike '%$query%')";
+        $condition.= " (gv.gv_id LIKE '%$query%' COLLATE utf8_general_ci or gv.ten LIKE '%$query%' COLLATE utf8_general_ci)";
     }
 
-    return $condition == '' ? '' : "AND " . $condition;
+    return $condition;
 }
 
 function getConditionDSSV($query){
     $condition = '';
     
     if ($query!= '') {
-        $condition.= " (id ilike '%$query%' or ten ilike '%$query%')";
+        $condition.= " (stu_id LIKE '%$query%' COLLATE utf8_general_ci or ten LIKE '%$query%'  COLLATE utf8_general_ci)";
     }
 
-    return $condition == '' ? '' : "AND " . $condition;
+    return $condition;
 }
 
 function GetKhoaDaoTao() {

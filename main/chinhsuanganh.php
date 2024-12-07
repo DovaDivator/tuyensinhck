@@ -326,8 +326,8 @@ if (isset($_GET['ma_nganh'])) {
                                             <div class="dropdown-list">
                                                 <div class="dropdown-item default" data-id="default">Trống...</div>
                                                 <?php foreach (getDSGV("") as $row): ?>
-                                                    <div data-id="<?php echo $row['gv_id']; ?>">
-                                                        <?php echo $row['gv_id'] . " - " . $row['ten']; ?>
+                                                    <div data-id="<?php echo $row['id']; ?>">
+                                                        <?php echo $row['id'] . " - " . $row['ten']; ?>
                                                     </div>
                                                 <?php endforeach; ?>
                                             </div>
@@ -361,9 +361,21 @@ if (isset($_GET['ma_nganh'])) {
                                     <input tyle="text" id="url" name="url" style="width: 100%; display: none;" placeholder="Điền link nhúng vào" value="<?php echo isset($_GET['ma_nganh']) ? $test['iframe'] : ''; ?>">
                                     <input type="file" id="file_temp" style="width: 100%; display: none;" name="file_temp">
                                     <div id="file_path_hold" style="display: none;">
-                                        <?php if (isset($_GET['ma_nganh']) && !empty($test['img_link'])): ?>
-                                            <p class="file_path_text">File ảnh hiện tại: <a href="<?php echo GetPublicLink('nganh_image', $test['img_link']) ?>" download="<?php echo $test['img_link']; ?>"><?php echo $test['img_link']; ?></a></p>
-                                        <?php endif; ?>
+                                            <?php
+                                            // Hàm chuyển đổi BLOB sang Data URL base64
+                                            function blobToDataUrl($blobData, $mimeType = 'image/png') {
+                                                $base64 = base64_encode($blobData);
+                                                return 'data:' . $mimeType . ';base64,' . $base64;
+                                            }
+
+                                            // Tạo Data URL từ dữ liệu BLOB
+                                            $dataUrl = blobToDataUrl($test['img_link'], 'image/jpeg'); // Chỉnh sửa mimeType nếu cần
+
+                                            // Hiển thị ảnh với Data URL
+                                            if (isset($_GET['ma_nganh']) && !empty($test['img_link'])){
+                                            echo '<p class="file_path_text">File ảnh hiện tại: <a href="' . $dataUrl . '" target="_blank" download="image.png">Xem ảnh</a></p>';
+                                            }
+                                            ?>
                                     </div>
                                     <div class="chu_thich_hold" style="display:none; margin-top: 10px;">
                                         <label for="chu_thich">
@@ -429,6 +441,7 @@ if (isset($_GET['ma_nganh'])) {
 
         xhr2.onload = function() {
             if (xhr2.status === 200) {
+                console.log(xhr2.responseText);
                 const response = JSON.parse(xhr2.responseText);
                 list_mon = response.map(row => row.mon);
                 const dropdowns = document.querySelectorAll('#ghi_chu_ele select[name="diem[]"]');

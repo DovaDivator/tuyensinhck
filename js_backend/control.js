@@ -271,7 +271,7 @@ function renderCoursesSV(jsonData) {
             jsonData = JSON.parse(jsonData);
         } catch (e) {
             console.error("Dữ liệu JSON không hợp lệ:", e);
-            renderErrorGV("Dữ liệu không hợp lệ, vui lòng thử lại sau!", "course_table_dssv", "danh_sach_sinh_vien");
+            renderErrorSV("Dữ liệu không hợp lệ, vui lòng thử lại sau!", "course_table_dssv", "danh_sach_sinh_vien");
             return;
         }
     }
