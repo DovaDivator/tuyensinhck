@@ -13,7 +13,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // $_POST = array();
 
     // Thực hiện truy vấn SQL
-
+    $file = 'pushhs.txt';
+    if (file_put_contents($file, print_r($_POST, true)) !== false) {
+        echo json_encode([
+            'status' => 'success',
+            'message' => 'Dữ liệu đã được ghi vào file thành công!',
+        ]);
+    } else {
+        echo json_encode([
+            'status' => 'error',
+            'message' => 'Lỗi khi ghi dữ liệu vào file.',
+        ]);
+    }
     if (isset($_SESSION['file_path']) && is_array($_SESSION['file_path'])) {
         $uploadedFiles = [];
         $errors = [];

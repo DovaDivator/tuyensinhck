@@ -1,0 +1,61 @@
+Array
+(
+    [------WebKitFormBoundarydgLffni0qnXWA9QK
+Content-Disposition:_form-data;_name] => "so_cccd"
+
+2131
+------WebKitFormBoundarydgLffni0qnXWA9QK
+Content-Disposition: form-data; name="hoTen"
+
+23123
+------WebKitFormBoundarydgLffni0qnXWA9QK
+Content-Disposition: form-data; name="date_birth"
+
+02/12/2024
+------WebKitFormBoundarydgLffni0qnXWA9QK
+Content-Disposition: form-data; name="gender"
+
+nam
+------WebKitFormBoundarydgLffni0qnXWA9QK
+Content-Disposition: form-data; name="que_quan"
+
+123
+------WebKitFormBoundarydgLffni0qnXWA9QK
+Content-Disposition: form-data; name="mts"
+
+123
+------WebKitFormBoundarydgLffni0qnXWA9QK
+Content-Disposition: form-data; name="mon_Toán"
+
+233
+------WebKitFormBoundarydgLffni0qnXWA9QK
+Content-Disposition: form-data; name="mon_Văn"
+
+4
+------WebKitFormBoundarydgLffni0qnXWA9QK
+Content-Disposition: form-data; name="mon_Anh"
+
+31
+------WebKitFormBoundarydgLffni0qnXWA9QK
+Content-Disposition: form-data; name="mon_Lý"
+
+123
+------WebKitFormBoundarydgLffni0qnXWA9QK
+Content-Disposition: form-data; name="mon_Hóa"
+
+23
+------WebKitFormBoundarydgLffni0qnXWA9QK
+Content-Disposition: form-data; name="mon_Sinh"
+
+3
+------WebKitFormBoundarydgLffni0qnXWA9QK
+Content-Disposition: form-data; name="sumbit_hoso"
+
+Nộp hồ sơ
+------WebKitFormBoundarydgLffni0qnXWA9QK
+Content-Disposition: form-data; name="htts"
+
+QGKHTN
+------WebKitFormBoundarydgLffni0qnXWA9QK--
+
+)

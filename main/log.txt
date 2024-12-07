@@ -28,3 +28,52 @@ run logHttp: 200    Response: {"signedURL":"/object/sign/protect_files/250000000
 run logHttp: 200    Response: {"signedURL":"/object/sign/protect_files/2500000001/674ffaa1d33fd_1733294753.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJwcm90ZWN0X2ZpbGVzLzI1MDAwMDAwMDEvNjc0ZmZhYTFkMzNmZF8xNzMzMjk0NzUzLnBuZyIsImlhdCI6MTczMzMwMTI3MywiZXhwIjoxNzMzMzA0ODczfQ.bOt-qLKYo_aOWj9JXFGs0F4wLpmhQWLb0eILN8dGNUQ"}
 run logHttp: 400    Response: {"statusCode":"404","error":"not_found","message":"Object not found"}
 run logHttp: 200    Response: {"signedURL":"/object/sign/protect_files/2500000001/674ffaa1d33fd_1733294753.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJwcm90ZWN0X2ZpbGVzLzI1MDAwMDAwMDEvNjc0ZmZhYTFkMzNmZF8xNzMzMjk0NzUzLnBuZyIsImlhdCI6MTczMzMwMTMwOCwiZXhwIjoxNzMzMzA0OTA4fQ.8tAEuP2jMXfkc6Ix7eGqLqP2A4StgEaaBO1uWhHjIU0"}
+run logHttp: 400    Response: {"statusCode":"404","error":"not_found","message":"Object not found"}
+run logHttp: 400    Response: {"statusCode":"404","error":"not_found","message":"Object not found"}
+run logHttp: 400    Response: {"statusCode":"404","error":"not_found","message":"Object not found"}
+run logHttp: 400    Response: {"statusCode":"404","error":"not_found","message":"Object not found"}
+run logHttp: 400    Response: {"statusCode":"404","error":"not_found","message":"Object not found"}
+run logHttp: 400    Response: {"statusCode":"404","error":"not_found","message":"Object not found"}
+run logHttp: 400    Response: {"statusCode":"404","error":"not_found","message":"Object not found"}
+run logHttp: 400    Response: {"statusCode":"404","error":"not_found","message":"Object not found"}
+run logHttp: 400    Response: {"statusCode":"404","error":"not_found","message":"Object not found"}
+run logHttp: 400    Response: {"statusCode":"404","error":"not_found","message":"Object not found"}
+run logHttp: 400    Response: {"statusCode":"403","error":"Unauthorized","message":"jwt expired"}
+run logHttp: 400    Response: {"statusCode":"403","error":"Unauthorized","message":"jwt expired"}
+run logHttp: 400    Response: {"statusCode":"403","error":"Unauthorized","message":"jwt expired"}
+run logHttp: 400    Response: {"statusCode":"403","error":"Unauthorized","message":"jwt expired"}
+run logHttp: 400    Response: {"statusCode":"403","error":"Unauthorized","message":"jwt expired"}
+run logHttp: 400    Response: {"statusCode":"403","error":"Unauthorized","message":"jwt expired"}
+run logHttp: 400    Response: {"statusCode":"403","error":"Unauthorized","message":"jwt expired"}
+run logHttp: 400    Response: {"statusCode":"403","error":"Unauthorized","message":"jwt expired"}
+run logHttp: 400    Response: {"statusCode":"403","error":"Unauthorized","message":"jwt expired"}
+run logHttp: 400    Response: {"statusCode":"403","error":"Unauthorized","message":"jwt expired"}
+run logHttp: 400    Response: {"statusCode":"403","error":"Unauthorized","message":"jwt expired"}
+run logHttp: 400    Response: {"statusCode":"403","error":"Unauthorized","message":"jwt expired"}
+run logHttp: 400    Response: {"statusCode":"403","error":"Unauthorized","message":"jwt expired"}
+run logHttp: 400    Response: {"statusCode":"403","error":"Unauthorized","message":"jwt expired"}
+run logHttp: 400    Response: {"statusCode":"403","error":"Unauthorized","message":"jwt expired"}
+run logHttp: 400    Response: {"statusCode":"403","error":"Unauthorized","message":"jwt expired"}
+run logHttp: 400    Response: {"statusCode":"403","error":"Unauthorized","message":"jwt expired"}
+run logHttp: 400    Response: {"statusCode":"403","error":"Unauthorized","message":"jwt expired"}
+run logHttp: 400    Response: {"statusCode":"403","error":"Unauthorized","message":"jwt expired"}
+run logHttp: 400    Response: {"statusCode":"403","error":"Unauthorized","message":"jwt expired"}
+run logHttp: 400    Response: {"statusCode":"403","error":"Unauthorized","message":"jwt expired"}
+run logHttp: 400    Response: {"statusCode":"403","error":"Unauthorized","message":"jwt expired"}
+run logHttp: 400    Response: {"statusCode":"403","error":"Unauthorized","message":"jwt expired"}
+run logHttp: 400    Response: {"statusCode":"403","error":"Unauthorized","message":"jwt expired"}
+run logHttp: 400    Response: {"statusCode":"403","error":"Unauthorized","message":"jwt expired"}
+run logHttp: 400    Response: {"statusCode":"403","error":"Unauthorized","message":"jwt expired"}
+run logHttp: 400    Response: {"statusCode":"403","error":"Unauthorized","message":"jwt expired"}
+run logHttp: 400    Response: {"statusCode":"403","error":"Unauthorized","message":"jwt expired"}
+run logHttp: 400    Response: {"statusCode":"403","error":"Unauthorized","message":"jwt expired"}
+run logHttp: 400    Response: {"statusCode":"403","error":"Unauthorized","message":"jwt expired"}
+run logHttp: 400    Response: {"statusCode":"403","error":"Unauthorized","message":"jwt expired"}
+run logHttp: 400    Response: {"statusCode":"403","error":"Unauthorized","message":"jwt expired"}
+run logHttp: 400    Response: {"statusCode":"403","error":"Unauthorized","message":"jwt expired"}
+run logHttp: 400    Response: {"statusCode":"403","error":"Unauthorized","message":"jwt expired"}
+run logHttp: 400    Response: {"statusCode":"403","error":"Unauthorized","message":"jwt expired"}
+run logHttp: 400    Response: {"statusCode":"403","error":"Unauthorized","message":"jwt expired"}
+run logHttp: 400    Response: {"statusCode":"403","error":"Unauthorized","message":"jwt expired"}
+run logHttp: 400    Response: {"statusCode":"403","error":"Unauthorized","message":"jwt expired"}
+run logHttp: 400    Response: {"statusCode":"403","error":"Unauthorized","message":"jwt expired"}

@@ -1,36 +1,35 @@
 Array
 (
-    [id_nganh] => TC003
-    [ten] => CNTT1
-    [chi_tieu] => 9
-    [chuong_trinh] => 4
-    [to_hop] => A00
-    [searchInputToHop] => 
-    [date_open_day] => 21/11/2024
-    [date_open_time] => 21:49
-    [date_end_day] => 28/11/2024
-    [date_end_time] => 21:49
-    [diem_chuan] => 21.00
-    [diem_loc] => Array
+    [frontof_CCCD] => 
+    [behind_CCCD] => 
+    [so_cccd] => 11231
+    [hoTen] => 123123
+    [date_birth] => 03/12/2024
+    [gender] => 
+    [que_quan] => 123
+    [mts] => dsfdsfsdfsdf
+    [mon_Toán] => 1
+    [mon_Văn] => 5
+    [mon_Anh] => 1
+    [mon_Sử] => 4
+    [mon_Địa] => 2
+    [mon_GDCD] => 3
+    [img_ts] => 
+    [imgs_bonus] => Array
         (
-            [0] => 9
-            [1] => 8.5
+            [0] => C:\fakepath\465673197_1242397526859863_1577957087824783414_n (1).png
         )
 
-    [gv_id] => GV0001 - Ngô Đình Minh Trang
-    [searchInput_gv_id] => 
-    [phuong_tien] => image
-    [url] => 
-    [file_temp] => 
-    [chu_thich] => 
-    [enable] => on
-    [mo_ta] => Mình tên là Trần Trúc Ly, quê mình ở Lào Cai, đó là một nơi rất đẹp, nếu có dịp mình sẽ kể cho các bạn nhiều điều thú vị về nơi mình từng sống. Trước đây mình từng học tại trường THCS Lê Quý Đôn ở thành phố Lào Cai. Vì bố mẹ mình chuyển công tác xuống Hà Nội nên từ bây giờ mình sẽ học ở đây.
-
-Gia đình mình có sáu người: ông , bà, bố, mẹ, anh trai và mình. Ông bà mình vẫn đang ở quê thu xếp công việc nhà cửa, trong thời gian tới bố mẹ mình sẽ đón ông bà xuống Hà Nội. Bố mình là một kĩ sư tin học còn mẹ mình làm giáo viên dạy môn Tiếng Anh. Anh trai mình tên là Trần Trung Quân, anh ấy đang là sinh viên năm nhất của trường Đại học Công nghệ. Anh lúc nào cũng nhường nhịn mình mọi thứ. Nhà mình vừa chuyển đến một căn trung cư trên đường Xuân Thủy – Cầu Giấy. Chỗ đó cũng khá gần đây, nếu có dịp các bạn sang nhà mình chơi nhé! Trong nhà bố mẹ mình đều rất thân thiện, anh trai mình thì cực kì vui tính. Khi nào bà mình chuyển xuống đây bà sẽ nấu chè cho chúng mình ăn, tay nghề của bà mình tuyệt vời lắm.
-    [diem] => Array
+    [sumbit_hoso] => Nộp hồ sơ
+    [htts] => QGKHXH
+    [proof_type] => Array
         (
-            [0] => Anh
-            [1] => Toán
+            [0] => english_certificate
+        )
+
+    [proof_detail] => Array
+        (
+            [0] => 1
         )
 
 )
