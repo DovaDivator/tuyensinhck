@@ -77,3 +77,4 @@ run logHttp: 400    Response: {"statusCode":"403","error":"Unauthorized","messag
 run logHttp: 400    Response: {"statusCode":"403","error":"Unauthorized","message":"jwt expired"}
 run logHttp: 400    Response: {"statusCode":"403","error":"Unauthorized","message":"jwt expired"}
 run logHttp: 400    Response: {"statusCode":"403","error":"Unauthorized","message":"jwt expired"}
+run logHttp: 400    Response: {"statusCode":"404","error":"not_found","message":"Object not found"}

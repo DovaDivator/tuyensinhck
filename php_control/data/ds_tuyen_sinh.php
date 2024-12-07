@@ -36,11 +36,6 @@ function getDSGV($query, $khoa, $ma_nganh){
     $stmt = $pdo->prepare($query_input);
     $stmt->execute();
     $courses = $stmt->fetchAll(PDO::FETCH_ASSOC); 
-    foreach ($courses as &$course) {
-        if (isset($course['create_date'])) {
-            $course['create_date'] = (new DateTime(substr($course['create_date'], 0, 19)))->format('(H\hi) d/m/Y');
-        }
-    }
     return $courses;
 }
 
