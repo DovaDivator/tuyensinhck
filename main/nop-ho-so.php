@@ -77,116 +77,136 @@ $list_htts = GetListHinhThucXetTuyen();
                     <div class="body_path">
                         <div class="info_layout change_layout_div" id="change_pass_path">
                             <h1>Nộp hồ sơ tuyển sinh</h1>
-                            <form method="post" enctype="multipart/form-data" >
+                            <form method="post" id="Nophs" enctype="multipart/form-data">
                                 <div class="form-fields">
-                                    <p><font color="red">*&nbsp;</font>Tải ảnh CCCD:</p>
-                                        <div class="linediv">
-                                            <div class="avatar_container" style="width: 300px; height: 200px; display:flex; justify-content:center; align-items:center; background-color:white;" onclick="document.getElementById('frontof_CCCD').click()">
-                                                <input type="file" name="frontof_CCCD" id="frontof_CCCD" accept="image/*" style="display: none;" onchange="uploadNewImage('frontof_CCCD', 'frontof_CCCD_img')">
+                                    <p>
+                                        <font color="red">*&nbsp;</font>Tải ảnh CCCD:
+                                    </p>
+                                    <div class="linediv">
+                                        <div class="avatar_container" style="width: 300px; height: 200px; display:flex; justify-content:center; align-items:center; background-color:white;" onclick="document.getElementById('frontof_CCCD').click()">
+                                            <input type="file" name="mặt trước CCCD" id="frontof_CCCD" accept="image/*" style="display: none;" onchange="uploadNewImage('frontof_CCCD', 'frontof_CCCD_img')" data-required>
 
-                                                <p class="qweq">Mặt trước CCCD</p>
-                                                <!-- Avatar Image -->
-                                                <img src="<?php echo getSignedUrl('protect_files', $id.'/'.'674ffaa1d33fd_1733294753.png') ?>" id="frontof_CCCD_img" class="CCCD">
+                                            <p class="qweq">Mặt trước CCCD</p>
+                                            <!-- Avatar Image -->
+                                            <img src="<?php echo getSignedUrl('protect_files', $id . '/' . '674ffaa1d33fd_1733294753.png') ?>" id="frontof_CCCD_img" class="CCCD" >
 
-                                                <!-- Edit Icon Overlay -->
-                                                <div class="edit_avatar_img_layout cccd">
-                                                    <img src="../assets/icon/upload.png?v=<?php echo filemtime('../assets/icon/upload.png'); ?>" 
+                                            <!-- Edit Icon Overlay -->
+                                            <div class="edit_avatar_img_layout cccd">
+                                                <img src="../assets/icon/upload.png?v=<?php echo filemtime('../assets/icon/upload.png'); ?>"
                                                     alt="Upload Icon" height="50" width="50">
-                                                </div>
-                                            </div>
-                                            <div style="width: 10px"></div>
-                                            <div class="avatar_container" style="width: 300px; height: 200px; display:flex; justify-content:center; align-items:center; background-color:white;" onclick="document.getElementById('behind_CCCD').click()">
-                                                <input type="file" name="behind_CCCD" id="behind_CCCD" accept="image/*" style="display: none;" onchange="uploadNewImage('behind_CCCD', 'behind_CCCD_img')">
-
-                                                <p class="qweq">Mặt sau CCCD</p>
-
-                                                <!-- Avatar Image -->
-                                                <img src="" id="behind_CCCD_img" class="CCCD">
-
-                                                <!-- Edit Icon Overlay -->
-                                                <div class="edit_avatar_img_layout cccd">
-                                                    <img src="../assets/icon/upload.png?v=<?php echo filemtime('../assets/icon/upload.png'); ?>" 
-                                                    alt="Upload Icon" height="50" width="50">
-                                                </div>
                                             </div>
                                         </div>
-                                        
-                                        <p class="note" style="text-align:center !important;">Chú ý chụp hình rõ ràng, tải hoặc kéo thả ảnh đúng vị trí để quét chính xác thông tin!</p>
+                                        <div style="width: 10px"></div>
+                                        <div class="avatar_container" style="width: 300px; height: 200px; display:flex; justify-content:center; align-items:center; background-color:white;" onclick="document.getElementById('behind_CCCD').click()">
+                                            <input type="file" name="mặt sau CCCD" id="behind_CCCD" accept="image/*" style="display: none;" onchange="uploadNewImage('behind_CCCD', 'behind_CCCD_img')" data-required>
+
+                                            <p class="qweq">Mặt sau CCCD</p>
+
+                                            <!-- Avatar Image -->
+                                            <img src="" id="behind_CCCD_img" class="CCCD">
+
+                                            <!-- Edit Icon Overlay -->
+                                            <div class="edit_avatar_img_layout cccd">
+                                                <img src="../assets/icon/upload.png?v=<?php echo filemtime('../assets/icon/upload.png'); ?>"
+                                                    alt="Upload Icon" height="50" width="50">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <p class="note" style="text-align:center !important;">Chú ý chụp hình rõ ràng, tải hoặc kéo thả ảnh đúng vị trí để quét chính xác thông tin!</p>
 
                                     <div class="form-fields" style="margin: 0 auto; ">
-                                    <label for="so_cccd"><font color="red">*&nbsp;</font>Số CCCD</label>
-                                    <input type="text" id="so_cccd" name="so_cccd" placeholder="Nhập 12 chữ số!" maxlength="12" pattern="\d{12}" 
-                                    inputmode="numeric" title="Vui lòng nhập đúng 12 chữ số"  oninput="this.value = this.value.replace(/[^0-9]/g, '');" data-required>
-                                    <label for="hoTen"><font color="red">*&nbsp;</font>Họ và tên:</label>
-                                    <input type="text" id="hoTen" name="hoTen" placeholder="Nhập theo CCCD!"data-required >
-                                    <label for="date_birth"><font color="red">*&nbsp;</font>Ngày sinh: </label>
-                                   <input type="text" id="date_birth" name="date_birth" placeholder="Nhập ngày sinh (dd/mm/yyyy)"data-required >
-                                
-                                   <script>
-                                       $(function () {
-                                           $("#date_birth").datepicker({
-                                               dateFormat: "dd/mm/yy",      
-                                               changeMonth: true,           
-                                               changeYear: true,          
-                                               yearRange: "-100:+0",        
-                                               maxDate: 0             
+                                        <label for="so_cccd">
+                                            <font color="red">*&nbsp;</font>Số CCCD
+                                        </label>
+                                        <input type="text" id="so_cccd" name="so_cccd" placeholder="Số CCCD" maxlength="12" pattern="\d{12}"
+                                            inputmode="numeric" title="Vui lòng nhập đúng 12 chữ số" oninput="this.value = this.value.replace(/[^0-9]/g, '');" data-required>
+                                        <label for="hoTen">
+                                            <font color="red">*&nbsp;</font>Họ và tên:
+                                        </label>
+                                        <input type="text" id="hoTen" name="hoTen" placeholder="Họ và tên" data-required>
+                                        <label for="date_birth">
+                                            <font color="red">*&nbsp;</font>Ngày sinh:
+                                        </label>
+                                        <input type="text" id="date_birth" name="date_birth" placeholder="Ngày sinh (dd/mm/yyyy)" data-required>
+
+                                        <script>
+                                            $(function() {
+                                                $("#date_birth").datepicker({
+                                                    dateFormat: "dd/mm/yy",
+                                                    changeMonth: true,
+                                                    changeYear: true,
+                                                    yearRange: "-100:+0",
+                                                    maxDate: 0
+                                                });
                                             });
-                                        });
-                                   </script>
-                                    <div class="linediv radio_gender" style="margin-bottom: 10px">
-                                        <label><font color="red">*&nbsp;</font>Giới tính:</label>
-                                        <input type="radio" name="gender" value="nam"/>
-                                        <label for="nam">Nam</label>
-                                        <input type="radio" name="gender" value="nu"/>
-                                        <label for="nu">Nữ</label>
-                                    </div>
+                                        </script>
+                                        <div class="linediv radio_gender" style="margin-bottom: 10px">
+                                            <label>
+                                                <font color="red">*&nbsp;</font>Giới tính:
+                                            </label>
+                                            <input type="radio" name="gender" value="nam" />
+                                            <label for="nam">Nam</label>
+                                            <input type="radio" name="gender" value="nu" />
+                                            <label for="nu">Nữ</label>
+                                        </div>
 
-                                    <label for="que_quan"><font color="red">*&nbsp;</font>Quê quán:</label>
-                                    <input type="text" id="que_quan" name="que_quan" placeholder="Nhập theo CCCD!"data-required >
+                                        <label for="que_quan">
+                                            <font color="red">*&nbsp;</font>Quê quán:
+                                        </label>
+                                        <input type="text" id="que_quan" name="que_quan" placeholder="Quê quán" data-required>
 
-                                    <div class="linediv" style="margin-bottom: 10px">
-                                    <label for="selection" style="margin:0;"><font color="red">*&nbsp;</font>Hình thức xét tuyển:</label>
-                                    <div style="width:10px"></div>
-                                    <select id="selection" name="selection"  onchange="handleSelectionChange()" data-required>
-                                        <option value="" disabled selected>Chọn hình thức</option>
-                                        <?php foreach ($list_htts as $row): ?>
-                                            <option value="<?php echo $row['ma_htts']; ?>" data-list-mon="<?php echo $row['list_mon']; ?>"><?php echo $row['ten_htts']; ?></option>
-                                        <?php endforeach; ?>
-                                    </select>
-                                    </div>    
+                                        <div class="linediv" style="margin-bottom: 10px">
+                                            <label for="selection" style="margin:0;">
+                                                <font color="red">*&nbsp;</font>Hình thức xét tuyển:
+                                            </label>
+                                            <div style="width:10px"></div>
+                                            <select id="selection" name="htts" aria-placeholder="hình thức tuyển sinh" onchange="handleSelectionChange()" data-required>
+                                                <option value="" disabled selected>Chọn hình thức</option>
+                                                <?php foreach ($list_htts as $row): ?>
+                                                    <option value="<?php echo $row['ma_htts']; ?>" data-list-mon="<?php echo $row['list_mon']; ?>"><?php echo $row['ten_htts']; ?></option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                        </div>
 
-                                    <div id="form-section" style="display: none; flex-direction: column;">
-                                        <label for="mts"><font color="red">*&nbsp;</font>Mã tuyển sinh:</label>
-                                        <input type="text" id="mts" name="mts" placeholder="Nhập mã tuyển sinh theo hình thức đã đăng ký" data-required>
+                                        <div id="form-section" style="display: none; flex-direction: column;">
+                                            <label for="mts">
+                                                <font color="red">*&nbsp;</font>Mã tuyển sinh:
+                                            </label>
+                                            <input type="text" id="mts" name="mts" placeholder="Nhập mã tuyển sinh theo hình thức đã đăng ký" data-required>
 
-                                        <p style="margin:0; margin-bottom: 10px !important"><font color="red">*&nbsp;</font>Điểm từng môn:</p> 
-                                        
-                                        <div class="diem_mon">
-                                            
-                                        </div>   
-                                        
-                                        <label for="img_ts"><font color="red">*&nbsp;</font>Ảnh chụp xác minh:</label>
-                                        <input type="file" id="img_ts" name="img_ts" accept="image/*" data-required>
-                                        <p class="note">Tải ảnh minh chứng rõ ràng, đầy đủ theo hướng dẫn <a href="https://www.google.com/" target="_blank">TẠI ĐÂY</a>!</p>
-                                    </div> 
+                                            <p style="margin:0; margin-bottom: 10px !important">
+                                                <font color="red">*&nbsp;</font>Điểm từng môn:
+                                            </p>
 
-                                    <div class="linediv">
-                                    <label for="imgs_bonus[]">Giấy chứng nhận đi kèm:</label>
-                                    <button type="button" onclick="addProofEntry()" style="margin-left: 10px; margin-bottom: 10px">+</button>
-                                    </div>
-                                    <div id="proof-container">
-                                    </div>
-                                    <script>
-                                    function addProofEntry() {
-                                       // Lấy container
-                                       var container = document.getElementById('proof-container');
-                                    
-                                       // Tạo một div mới cho mục bằng chứng
-                                       var newEntry = document.createElement('div');
-                                       newEntry.classList.add('proof-entry');
-                                    
-                                       // Nội dung HTML cho div mới
-                                       newEntry.innerHTML = `
+                                            <div class="diem_mon">
+
+                                            </div>
+
+                                            <label for="img_ts">
+                                                <font color="red">*&nbsp;</font>Ảnh chụp xác minh:
+                                            </label>
+                                            <input type="file" id="img_ts" name="img_ts" accept="image/*">
+                                            <p class="note">Tải ảnh minh chứng rõ ràng, đầy đủ theo hướng dẫn <a href="https://www.google.com/" target="_blank">TẠI ĐÂY</a>!</p>
+                                        </div>
+
+                                        <div class="linediv">
+                                            <label for="imgs_bonus[]">Giấy chứng nhận đi kèm:</label>
+                                            <button type="button" onclick="addProofEntry()" style="margin-left: 10px; margin-bottom: 10px">+</button>
+                                        </div>
+                                        <div id="proof-container">
+                                        </div>
+                                        <script>
+                                            function addProofEntry() {
+                                                // Lấy container
+                                                var container = document.getElementById('proof-container');
+
+                                                // Tạo một div mới cho mục bằng chứng
+                                                var newEntry = document.createElement('div');
+                                                newEntry.classList.add('proof-entry');
+
+                                                // Nội dung HTML cho div mới
+                                                newEntry.innerHTML = `
                                     
                                            <select name="proof_type[]" >
                                                <option value="" disabled selected>Chọn loại bằng chứng</option>
@@ -206,18 +226,18 @@ $list_htts = GetListHinhThucXetTuyen();
                                                 <button type="button" onclick="removeProofEntry(this)" style="margin-bottom: 10px; width:fit-content">Xóa chỉ mục</button>
                                             <div style="height: 1px; background-color: grey;"></div>
                                         `;
-                                    
-                                        // Thêm mục mới vào container
-                                        container.appendChild(newEntry);
-                                    }
-                                    </script>
+
+                                                // Thêm mục mới vào container
+                                                container.appendChild(newEntry);
+                                            }
+                                        </script>
 
 
-                                    <p class="note">Nộp đúng yêu cầu, thông tin chi tiết <a href="https://www.google.com/" target="_blank">TẠI ĐÂY</a>!</p>
+                                        <p class="note">Nộp đúng yêu cầu, thông tin chi tiết <a href="https://www.google.com/" target="_blank">TẠI ĐÂY</a>!</p>
 
-                                    <input type="submit" value="Nộp hồ sơ" name="sumbit_hoso" class="custom-button" onclick="NopHoSo()">
+                                        <input type="submit" value="Nộp hồ sơ" name="sumbit_hoso" class="custom-button" onclick="NopHoSo()">
                                     </div>
-                                </form>
+                            </form>
                             </div>
 
                         </div>
@@ -312,7 +332,7 @@ function handleSelectionChange() {
             diemMonDiv.innerHTML += `
                 <div class="linediv">
                     <label for="mon_${index + 1}">${mon.charAt(0).toUpperCase() + mon.slice(1)}:&nbsp;</label>
-                    <input type="number" id="mon_${index + 1}" name="mon_${index + 1}" >
+                    <input type="number" id="mon_${index + 1}" name="mon_${mon.charAt(0).toUpperCase() + mon.slice(1)}" data-required>
                 </div>`;
         });
     }
