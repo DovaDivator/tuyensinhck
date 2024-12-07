@@ -170,7 +170,7 @@ if (isset($_GET['ma_nganh'])) {
                             <?php if(isset($info['iframe']) && $info['iframe'] != null): ?>
                                 <iframe src="<?php echo $info['iframe']; ?>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin"></iframe>
                             <?php elseif(isset($info['img_link']) && $info['img_link'] != null): ?>
-                                <img src="<?php echo "https://iwelyvdecathaeppslzw.supabase.co/storage/v1/object/public/nganh_image/".$info['img_link'] ?>">
+                                <img src="<?php echo 'data:image/png;base64,' . base64_encode( $info['img_link'] ); ?>">
                             <?php endif;?>
                             <p><?php echo isset($info['chu_thich']) ?  $info['chu_thich'] : ""  ?></p>
                         </div>

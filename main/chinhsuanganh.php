@@ -316,7 +316,7 @@ if (isset($_GET['ma_nganh'])) {
                                     <input type="text" id="gv_id" name="gv_id" readonly placeholder="Chọn giáo viên phụ trách..." style="width: 350px;"
                                         value="<?php
                                                 if (isset($_GET['ma_nganh'])) {
-                                                    $gv_input =  getDSGV($test['gv_id'], "", "")[0];
+                                                    $gv_input =  getDSGV($test['gv_id'])[0];
                                                     echo $gv_input['id'] . " - " . $gv_input['ten'];
                                                 }
                                                 ?>">
@@ -325,9 +325,9 @@ if (isset($_GET['ma_nganh'])) {
                                             <input type="text" id="searchInput_gv_id" placeholder="Tìm kiếm..." class="dropdown-search">
                                             <div class="dropdown-list">
                                                 <div class="dropdown-item default" data-id="default">Trống...</div>
-                                                <?php foreach (getDSGV("", "", "") as $row): ?>
-                                                    <div data-id="<?php echo $row['id']; ?>">
-                                                        <?php echo $row['id'] . " - " . $row['ten']; ?>
+                                                <?php foreach (getDSGV("") as $row): ?>
+                                                    <div data-id="<?php echo $row['gv_id']; ?>">
+                                                        <?php echo $row['gv_id'] . " - " . $row['ten']; ?>
                                                     </div>
                                                 <?php endforeach; ?>
                                             </div>

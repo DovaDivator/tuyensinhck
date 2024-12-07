@@ -16,16 +16,9 @@ include '../php_control/data/ds_tuyen_sinh.php';
 $query = isset($_GET['query']) ? $_GET['query'] : "";
 
 if(!isset($_GET['ma_nganh_sv']) || $_GET['ma_nganh_sv'] === 'sinhvien'){
-    $trang_thai = isset($_GET['trang_thai']) ? $_GET['trang_thai'] : "0";
-    $date_created = isset($_GET['date_created']) ? $_GET['date_created'] : "0";
-    $hinh_thuc = isset($_GET['hinh_thuc']) ? $_GET['hinh_thuc'] : "0";
-    $ds_sv = getDSSV($query, $trang_thai, $date_created, $hinh_thuc);
-    echo $trang_thai."\n".$date_created."\n".$hinh_thuc;
-    print_r($ds_sv);
+    $ds_sv = getDSSV($query);
 }else if($_GET['ma_nganh_sv'] ==='giaovien'){
-    $khoa = isset($_GET['khoa']) ? $_GET['khoa'] : "";
-    $ma_nganh = isset($_GET['ma_nganh']) ? $_GET['ma_nganh'] : "";
-    $ds_gv = getDSGV($query, $khoa, $ma_nganh);
+    $ds_gv = getDSGV($query);
 }else{
     header("Location: qlnd.php");
     exit();
