@@ -581,6 +581,10 @@ if (isset($_GET['ma_nganh'])) {
         event.preventDefault(); // Ngừng hành vi gửi form mặc định
 
         let inputs = document.querySelectorAll("#userForm input[data-required]");
+        let Input = document.querySelectorAll("#userForm input");
+        let selects = document.querySelectorAll("#userForm select")
+        let textArea = document.querySelectorAll("#userForm textarea");
+        let check = true;
         let isValid = true;
         let invalidFields = [];
         let formData = new FormData(); // Sử dụng FormData để thu thập dữ liệu
@@ -596,11 +600,25 @@ if (isset($_GET['ma_nganh'])) {
                 isValid = false;
                 invalidFields.push(input.getAttribute('placeholder') || input.name || input.id);
                 input.classList.add("error");
-                
+                check= false
             } else {
-                formData.append(input.name || input.id, inputValue); // Thêm dữ liệu vào FormData
+                // formData.append(input.name || input.id, inputValue); // Thêm dữ liệu vào FormData
             }
         });
+        if(check){
+            Input.forEach(function(input){
+                let inputValue = input.value.trim();
+                formData.append(input.name || input.id, inputValue);
+            });
+            textArea.forEach(function(text){
+                let textValue = text.value.trim();
+                formData.append(text.name || text.id, textValue);
+            });
+            selects.forEach(function(select){
+                let sValue = select.value.trim();
+                formData.append(select.name || select.id, sValue);
+            });
+        }
 
         formData.forEach(function(value, key) {
             console.log(key + ": " + value);
