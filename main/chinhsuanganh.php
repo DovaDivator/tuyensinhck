@@ -362,12 +362,6 @@ if (isset($_GET['ma_nganh'])) {
                                     <input type="file" id="file_temp" style="width: 100%; display: none;" name="file_temp">
                                     <div id="file_path_hold" style="display: none;">
                                             <?php
-                                            // Hàm chuyển đổi BLOB sang Data URL base64
-                                            function blobToDataUrl($blobData, $mimeType = 'image/png') {
-                                                $base64 = base64_encode($blobData);
-                                                return 'data:' . $mimeType . ';base64,' . $base64;
-                                            }
-
                                             // Tạo Data URL từ dữ liệu BLOB
                                             $dataUrl = blobToDataUrl($test['img_link'], 'image/jpeg'); // Chỉnh sửa mimeType nếu cần
 

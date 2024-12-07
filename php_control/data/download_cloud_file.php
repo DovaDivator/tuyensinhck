@@ -5,7 +5,8 @@
 
     include "db_connect.php";
 
-    function GetPublicLink($bucket, $name){
-        return "https://iwelyvdecathaeppslzw.supabase.co/storage/v1/object/".$bucket."/".$name;
+    function blobToDataUrl($blobData, $mimeType = 'image/png') {
+        $base64 = base64_encode($blobData);
+        return 'data:' . $mimeType . ';base64,' . $base64;
     }
 ?>

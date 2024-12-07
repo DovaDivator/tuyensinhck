@@ -2,9 +2,8 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-$apiUrlSignIn = 'https://iwelyvdecathaeppslzw.supabase.co/auth/v1/token?grant_type=password';
-$apiUrlUpdatePassword = 'https://iwelyvdecathaeppslzw.supabase.co/auth/v1/user';
-$apiKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml3ZWx5dmRlY2F0aGFlcHBzbHp3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzAxMTgzMDAsImV4cCI6MjA0NTY5NDMwMH0.QY-EVOhlyYJXIJqzummyUblLmGQR3JPt2U0IWfPXLwY";
+
+include "db_connect.php";
 
 // Kiểm tra nếu form gửi mật khẩu hiện tại, mật khẩu mới và email
 if (isset($_POST['current_password'], $_POST['new_password'])) {
@@ -14,62 +13,39 @@ if (isset($_POST['current_password'], $_POST['new_password'])) {
     unset($_POST);
     $_POST = array();
 
-    // Xác thực mật khẩu hiện tại bằng cách đăng nhập
-    $dataSignIn = [
-        "email" => $email,
-        "password" => $currentPassword
-    ];
-    
-    $chSignIn = curl_init($apiUrlSignIn);
-    curl_setopt($chSignIn, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($chSignIn, CURLOPT_HTTPHEADER, [
-        'Content-Type: application/json',
-        'apikey: ' . $apiKey
-    ]);
-    curl_setopt($chSignIn, CURLOPT_POST, true);
-    curl_setopt($chSignIn, CURLOPT_POSTFIELDS, json_encode($dataSignIn));
-    
-    // Gửi yêu cầu đăng nhập để xác thực mật khẩu hiện tại
-    $responseSignIn = curl_exec($chSignIn);
-    $httpCodeSignIn = curl_getinfo($chSignIn, CURLINFO_HTTP_CODE);
-    $signInData = json_decode($responseSignIn, true);
-    curl_close($chSignIn);
+    try {
+        global $pdo; // Biến PDO đã kết nối
 
-    // Nếu đăng nhập thành công
-    if ($httpCodeSignIn == 200 && isset($signInData['access_token'])) {
-        $_SESSION['access_token'] = $signInData['access_token']; 
-        $_SESSION['refresh_token'] = $signInData['refresh_token']; 
+        // Lấy hash mật khẩu hiện tại từ cơ sở dữ liệu
+        $stmt = $pdo->prepare("SELECT password FROM user WHERE email = :email");
+        $stmt->execute([':email' => $email]);
+        $hashedPassword = $stmt->fetchColumn();
 
-        // Gửi yêu cầu cập nhật mật khẩu mới
-        $dataUpdatePassword = [
-            "password" => $newPassword
-        ];
-        
-        $chUpdatePassword = curl_init($apiUrlUpdatePassword);
-        curl_setopt($chUpdatePassword, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($chUpdatePassword, CURLOPT_HTTPHEADER, [
-            'Content-Type: application/json',
-            'apikey: ' . $apiKey,
-            'Authorization: Bearer ' . $_SESSION['access_token']
-        ]);
-        curl_setopt($chUpdatePassword, CURLOPT_CUSTOMREQUEST, "PUT");
-        curl_setopt($chUpdatePassword, CURLOPT_POSTFIELDS, json_encode($dataUpdatePassword));
-
-        // Thực hiện yêu cầu cập nhật mật khẩu
-        $responseUpdatePassword = curl_exec($chUpdatePassword);
-        $httpCodeUpdatePassword = curl_getinfo($chUpdatePassword, CURLINFO_HTTP_CODE);
-        curl_close($chUpdatePassword);
-
-        //file_get_contents('log.txt', $responseUpdatePassword);
-
-        // Kiểm tra phản hồi
-        if ($httpCodeUpdatePassword == 200) {
-            echo "success";
-        } else {
-            echo "error: Không thể cập nhật mật khẩu. Vui lòng thử lại sau. ($httpCodeUpdatePassword)";
+        if (!$hashedPassword) {
+            echo "Không tìm thấy người dùng với email này.";
+            exit;
         }
-    } else {
-        echo "error: Mật khẩu hiện tại không đúng.";
+
+        // Kiểm tra mật khẩu hiện tại
+        if (!password_verify($currentPassword, $hashedPassword)) {
+            echo "Mật khẩu hiện tại không đúng.";
+            exit;
+        }
+
+        // Hash mật khẩu mới
+        $newHashedPassword = password_hash($newPassword, PASSWORD_BCRYPT);
+
+        // Cập nhật mật khẩu mới vào cơ sở dữ liệu
+        $updateStmt = $pdo->prepare("UPDATE user SET password = :newPassword WHERE email = :email");
+        $updateStmt->execute([
+            ':newPassword' => $newHashedPassword,
+            ':email' => $email
+        ]);
+
+        echo "suceess";
+    } catch (PDOException $e) {
+        error_log("Lỗi khi thay đổi mật khẩu: " . $e->getMessage());
+        echo "Có lỗi xảy ra. Vui lòng thử lại.";
     }
 } else {
     echo "error: Dữ liệu không hợp lệ.";

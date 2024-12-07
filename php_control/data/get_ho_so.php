@@ -4,7 +4,6 @@
     }
 
     include "db_connect.php";
-    include "refresh_token.php";
 
     function getSignedUrl($bucket, $path, $expiresIn = 3600, $retry = true) {
         file_put_contents("log.txt", "run log", FILE_APPEND);
@@ -48,7 +47,6 @@
             if (isset($responseData['message']) && $responseData['message'] == "jwt expired") {
                 // Nếu chưa retry thì làm mới token và thử lại
                 if ($retry) {
-                    get_token(); // Làm mới token
                     return getSignedUrl($bucket, $path, $expiresIn, false); // Gọi lại hàm và đánh dấu đã thử lại
                 }
             }

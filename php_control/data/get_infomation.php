@@ -63,15 +63,15 @@ function GetKhoaDaoTao($id) {
 function GetDateAccCreated($id) {
     global $pdo;
 
-    $query = "select au.created_at 
-            from auth.users au
-            where au.email = (select ur.email from public.user ur where ur.id_user = :id);";
+    $query = "select create_at 
+            from user
+            where id_user = :id;";
     $stmt = $pdo->prepare($query);
     $stmt->bindParam(':id', $id);
     $stmt->execute();
     
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    return $result ? $result['created_at'] : ''; 
+    return $result ? $result['create_at'] : ''; 
 }
 
 function getNameGV($id){
