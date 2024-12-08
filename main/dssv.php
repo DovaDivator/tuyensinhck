@@ -53,10 +53,8 @@ echo "<script>console.log(".json_encode(getSVtheonganh("TC001")).")</script>";
                                     <?php
                                         $danh_nganh = [
                                             (object) ['ma_nganh' => 'TC001', 'ten_nganh' => 'Công nghệ thông tin'],
-                                            (object) ['ma_nganh' => 'QTKD', 'ten_nganh' => 'Quản trị kinh doanh'],
-                                            (object) ['ma_nganh' => 'KETOAN', 'ten_nganh' => 'Kế toán'],
-                                            (object) ['ma_nganh' => 'LUAT', 'ten_nganh' => 'Luật'],
-                                            (object) ['ma_nganh' => 'NN', 'ten_nganh' => 'Ngôn ngữ Anh']
+                                            (object) ['ma_nganh' => 'TC002', 'ten_nganh' => 'Tin1'],
+                                            (object) ['ma_nganh' => 'TC003', 'ten_nganh' => 'CNTT1']
                                     ];
                                 ?>
                                 <?php foreach($danh_nganh as $nganh): ?>

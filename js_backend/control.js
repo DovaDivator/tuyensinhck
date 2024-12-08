@@ -392,7 +392,7 @@ function renderCourseDS(jsonData) {
         row.innerHTML = `
         <td>${course.id}</td>
         <td>${course.ten}</td>
-        <td>${course.create_date}</td>
+        <td>${course.date_of_birth}</td>
         <td style="color: ${course.htts_id ? 'inherit' : 'red'};">
             ${course.htts_id ?? 'Không có'}
         </td>
