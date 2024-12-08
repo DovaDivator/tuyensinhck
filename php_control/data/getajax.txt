@@ -1,11 +1,11 @@
 Array
 (
-    [id_nganh] => AC002
-    [ten] => Kỹ thuật phần mềm
-    [chi_tieu] => 200
+    [id_nganh] => TC001
+    [ten] => CNTT
+    [chi_tieu] => 99
     [chuong_trinh] => 4
-    [to_hop] => A00, A01
-    [date_end_day] => 31/12/2024
-    [date_end_time] => 23:59
-    [diem_chuan] => 24.50
+    [to_hop] => A00
+    [date_end_day] => 01/12/2024
+    [date_end_time] => 00:00
+    [diem_chuan] => 24.00
 )

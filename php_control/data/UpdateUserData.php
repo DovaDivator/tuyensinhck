@@ -65,7 +65,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Kiểm tra kết quả trả về từ cURL
         if($push_ava_http['httpCode'] == 400){
             if($push_ava_http['response']['statusCode'] == 403){
-                get_token();
                 if($_SESSION['access_token'] == ''){
                     echo "errorAuth: Phiên hoạt động của bạn đã hết hạn, vui lòng đăng nhập lại để sử dụng các chức năng";
                     exit();
