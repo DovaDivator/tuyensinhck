@@ -487,26 +487,26 @@ if (isset($_GET['ma_nganh'])) {
     });
 
     $(function() {
-
-        $("#date_open_day, #date_end_day").datepicker({
-            dateFormat: "dd/mm/yy",
-            changeMonth: true,
-            changeYear: true,
-            yearRange: "-100:+0",
-            maxDate: 0
-        });
-
-        $("#date_open_time, #date_end_time").timepicker({
-            timeFormat: 'HH:mm',
-            interval: 5,
-            minTime: '00:00',
-            maxTime: '23:55',
-            dynamic: false,
-            dropdown: true,
-            scrollbar: false,
-            controlType: 'select'
-        });
+    // Cấu hình Datepicker
+    $("#date_open_day, #date_end_day").datepicker({
+        dateFormat: "dd/mm/yy",
+        changeMonth: true,
+        changeYear: true,
+        yearRange: "-100:+100" 
     });
+
+    // Cấu hình Timepicker
+    $("#date_open_time, #date_end_time").timepicker({
+        timeFormat: 'HH:mm',
+        interval: 5, 
+        minTime: '00:00', 
+        maxTime: '23:55', 
+        dynamic: false, 
+        dropdown: true, 
+        scrollbar: false, 
+        controlType: 'select' 
+    });
+});
 
     let lastCheckedRadio = null; // Biến lưu radio đang được chọn
 

@@ -10,6 +10,7 @@ if (isset($_SESSION['user'])) {
     exit();
 }
 
+
 if (isset($_GET['rolecheck'])) {
     $role = $_GET['rolecheck'];
     echo "<script>console.log('PHP Data: " .  $role . "');</script>";
@@ -28,6 +29,9 @@ if (isset($_GET['rolecheck'])) {
             $id = $_GET['masv'];
             echo "<script>console.log('PHP Data: " .  $_GET['masv'] . "');</script>";
 
+            include "../php_control/data/get_ho_so.php";
+            $info = GetHoSo($id);
+
         }else {
             echo "khong nhan duoc du lieu";
             
@@ -39,7 +43,7 @@ echo "<script>console.log('id: " .  $id . "');</script>";
  include "../php_control/data/get_infomation.php";
  $course = get_user_info($id);
  echo "<script>console.log('sdt: " .  $course['ten'] . "');</script>";
-
+ 
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -119,25 +123,19 @@ echo "<script>console.log('id: " .  $id . "');</script>";
                             <div class="info_layout" id="hoso_path">
                                 <div class="linediv">
                                     <h1>Hồ sơ sinh viên</h1>
-                                <?php
-                                $chitietsv = getSV($id);
-                                echo "<script>console.log('id sv: " .  $chitietsv['date_of_birth'] . "');</script>";
-
-                                ?>
+                                    <?php
+                                    // Giả sử $info đã được định nghĩa và chứa dữ liệu sinh viên
+                                    echo "<script>console.log('id sv: " .  $info['date_of_birth'] . "');</script>";
+                                    ?>
                                 </div>                        
-                                <P id='cccd'>CCCD:     <?php echo !empty($chitietsv['cccd']) ? $chitietsv['cccd'] : "Chưa nhập"; ?>
-                                </p>
-                                <p id='gender'>Giới tính:</p>
-                                <p id='birth_date'>Ngày sinh: <?php echo !empty($chitietsv['date_of_birth']) ? date('d/m/Y', strtotime($chitietsv['date_of_birth'])) : "Chưa nhập"; ?>
-                                </p>
-                                <p id='address'>Địa chỉ:    <?php echo !empty($chitietsv['address']) ? $chitietsv['address'] : "Chưa nhập"; ?>
-                                </p>
-                                <p id='hinhthucts'>Hình thức tuyển sinh:     <?php echo !empty($chitietsv['ma_htts']) ? $chitietsv['ma_htts'] : "Chưa nhập"; ?>
-                                </p>
-                                <p id='id_ts'>Mã tuyển sinh:    <?php echo !empty($chitietsv['ma_tuyen_sinh']) ? $chitietsv['ma_tuyen_sinh'] : "Chưa nhập"; ?>
-                                </p>
+                                <p id='cccd'>CCCD: <?php echo !empty($info['cccd']) ? $info['cccd'] : "Chưa nhập"; ?></p>
+                                <p id='gender'>Giới tính: <?php echo !empty($info['gender']) ? $info['gender'] : "Chưa nhập"; ?></p>
+                                <p id='birth_date'>Ngày sinh: <?php echo !empty($info['date_of_birth']) ? date('d/m/Y', strtotime($info['date_of_birth'])) : "Chưa nhập"; ?></p>
+                                <p id='address'>Địa chỉ: <?php echo !empty($info['address']) ? $info['address'] : "Chưa nhập"; ?></p>
+                                <p id='hinhthucts'>Hình thức tuyển sinh: <?php echo !empty($info['ma_htts']) ? $info['ma_htts'] : "Chưa nhập"; ?></p>
+                                <p id='id_ts'>Mã tuyển sinh: <?php echo !empty($info['ma_tuyen_sinh']) ? $info['ma_tuyen_sinh'] : "Chưa nhập"; ?></p>
                                 <p>Danh sách điểm:</p>
-                                <p id='diem_list'>(Toán: 9, Văn: 8.5, Anh: 4.5)</p>
+                                <p id='diem_list'><?php echo !empty($info['diem']) ? $info['diem'] : "(Chưa nhập)"; ?></p>
                             </div>
                             <div class="info_layout" id="nganh_dky">
                                 <div class="linediv">

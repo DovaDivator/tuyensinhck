@@ -56,6 +56,7 @@ echo "<script>console.log(".json_encode(getSVtheonganh("TC001")).")</script>";
                                             (object) ['ma_nganh' => 'TC002', 'ten_nganh' => 'Tin1'],
                                             (object) ['ma_nganh' => 'TC003', 'ten_nganh' => 'CNTT1']
                                     ];
+                                    $ma_nganh_duoc_chon = $danh_nganh[1]->ma_nganh;
                                 ?>
                                 <?php foreach($danh_nganh as $nganh): ?>
                                     <option value='<?php echo $nganh->ma_nganh;?>' <?php if(isset($_GET['ma_nganh_sv']) && $_GET['ma_nganh_sv'] === $nganh->ma_nganh) echo "selected";?>>

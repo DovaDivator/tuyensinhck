@@ -30,6 +30,7 @@ if (isset($_SESSION['user'])) {
 include "../php_control/data/get-to-hop.php";
 include "../php_control/data/get_ho_so.php";
 $list_htts = GetListHinhThucXetTuyen();
+$info = GetHoSo($_SESSION['user']['id']);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -116,77 +117,89 @@ $list_htts = GetListHinhThucXetTuyen();
                                     <p class="note" style="text-align:center !important;">Chú ý chụp hình rõ ràng, tải hoặc kéo thả ảnh đúng vị trí để quét chính xác thông tin!</p>
 
                                     <div class="form-fields" style="margin: 0 auto; ">
-                                        <label for="so_cccd">
-                                            <font color="red">*&nbsp;</font>Số CCCD
-                                        </label>
-                                        <input type="text" id="so_cccd" name="so_cccd" placeholder="Số CCCD" maxlength="12" pattern="\d{12}"
-                                            inputmode="numeric" title="Vui lòng nhập đúng 12 chữ số" oninput="this.value = this.value.replace(/[^0-9]/g, '');" data-required>
-                                        <label for="hoTen">
-                                            <font color="red">*&nbsp;</font>Họ và tên:
-                                        </label>
-                                        <input type="text" id="hoTen" name="hoTen" placeholder="Họ và tên" data-required>
-                                        <label for="date_birth">
-                                            <font color="red">*&nbsp;</font>Ngày sinh:
-                                        </label>
-                                        <input type="text" id="date_birth" name="date_birth" placeholder="Ngày sinh (dd/mm/yyyy)" data-required>
+                                    <label for="so_cccd">
+                                        <font color="red">*&nbsp;</font>Số CCCD
+                                    </label>
+                                    <input type="text" id="so_cccd" name="so_cccd" placeholder="Số CCCD" maxlength="12" pattern="\d{12}"
+                                        inputmode="numeric" title="Vui lòng nhập đúng 12 chữ số" oninput="this.value = this.value.replace(/[^0-9]/g, '');" 
+                                        data-required value="<?php echo $info['cccd'] ?? ''; ?>">
 
-                                        <script>
-                                            $(function() {
-                                                $("#date_birth").datepicker({
-                                                    dateFormat: "dd/mm/yy",
-                                                    changeMonth: true,
-                                                    changeYear: true,
-                                                    yearRange: "-100:+0",
-                                                    maxDate: 0
-                                                });
+                                    <label for="hoTen">
+                                        <font color="red">*&nbsp;</font>Họ và tên:
+                                    </label>
+                                    <input type="text" id="hoTen" name="hoTen" placeholder="Họ và tên" 
+                                        data-required value="<?php echo $info['ten'] ?? ''; ?>">
+
+                                    <label for="date_birth">
+                                        <font color="red">*&nbsp;</font>Ngày sinh:
+                                    </label>
+                                    <input type="text" id="date_birth" name="date_birth" placeholder="Ngày sinh (dd/mm/yyyy)" 
+                                        data-required value="<?php echo $info['date_of_birth'] ?? ''; ?>">
+
+                                    <script>
+                                        $(function() {
+                                            $("#date_birth").datepicker({
+                                                dateFormat: "dd/mm/yy",
+                                                changeMonth: true,
+                                                changeYear: true,
+                                                yearRange: "-100:+0",
+                                                maxDate: 0
                                             });
-                                        </script>
-                                        <div class="linediv radio_gender" style="margin-bottom: 10px">
-                                            <label>
-                                                <font color="red">*&nbsp;</font>Giới tính:
-                                            </label>
-                                            <input type="radio" name="gender" value="nam" />
-                                            <label for="nam">Nam</label>
-                                            <input type="radio" name="gender" value="nu" />
-                                            <label for="nu">Nữ</label>
-                                        </div>
+                                        });
+                                    </script>
 
-                                        <label for="que_quan">
-                                            <font color="red">*&nbsp;</font>Quê quán:
+                                    <div class="linediv radio_gender" style="margin-bottom: 10px">
+                                        <label>
+                                            <font color="red">*&nbsp;</font>Giới tính:
                                         </label>
-                                        <input type="text" id="que_quan" name="que_quan" placeholder="Quê quán" data-required>
+                                        <input type="radio" name="gender" value="nam" <?php echo ($info['gender'] == 1) ? 'checked' : ''; ?> />
+                                        <label for="nam">Nam</label>
+                                        <input type="radio" name="gender" value="nu" <?php echo ($info['gender'] == 0) ? 'checked' : ''; ?> />
+                                        <label for="nu">Nữ</label>
+                                    </div>
 
-                                        <div class="linediv" style="margin-bottom: 10px">
-                                            <label for="selection" style="margin:0;">
-                                                <font color="red">*&nbsp;</font>Hình thức xét tuyển:
-                                            </label>
-                                            <div style="width:10px"></div>
-                                            <select id="selection" name="htts" aria-placeholder="hình thức tuyển sinh" onchange="handleSelectionChange()" data-required>
-                                                <option value="" disabled selected>Chọn hình thức</option>
-                                                <?php foreach ($list_htts as $row): ?>
-                                                    <option value="<?php echo $row['ma_htts']; ?>" data-list-mon="<?php echo $row['list_mon']; ?>"><?php echo $row['ten_htts']; ?></option>
-                                                <?php endforeach; ?>
-                                            </select>
-                                        </div>
+                                    <label for="que_quan">
+                                        <font color="red">*&nbsp;</font>Quê quán:
+                                    </label>
+                                    <input type="text" id="que_quan" name="que_quan" placeholder="Quê quán" data-required value="<?php echo $info['address'] ?? ''; ?>">
 
-                                        <div id="form-section" style="display: none; flex-direction: column;">
-                                            <label for="mts">
-                                                <font color="red">*&nbsp;</font>Mã tuyển sinh:
-                                            </label>
-                                            <input type="text" id="mts" name="mts" placeholder="Nhập mã tuyển sinh theo hình thức đã đăng ký" data-required>
+                                    <div class="linediv" style="margin-bottom: 10px">
+                                        <label for="selection" style="margin:0;">
+                                            <font color="red">*&nbsp;</font>Hình thức xét tuyển:
+                                        </label>
+                                        <div style="width:10px"></div>
+                                        <select id="selection" name="htts" aria-placeholder="hình thức tuyển sinh" onchange="handleSelectionChange()" data-required>
+                                            <option value="" disabled selected>Chọn hình thức</option>
+                                            <?php foreach ($list_htts as $row): ?>
+                                                <option value="<?php echo $row['ma_htts']; ?>" data-list-mon="<?php echo $row['list_mon']; ?>"
+                                                    <?php echo ($info['ma_htts'] == $row['ma_htts']) ? 'selected' : ''; ?>>
+                                                    <?php echo $row['ten_htts']; ?>
+                                                </option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
 
-                                            <p style="margin:0; margin-bottom: 10px !important">
-                                                <font color="red">*&nbsp;</font>Điểm từng môn:
-                                            </p>
+                                    <div id="form-section" style="display: none; flex-direction: column;">
+                                        <label for="mts">
+                                            <font color="red">*&nbsp;</font>Mã tuyển sinh:
+                                        </label>
+                                        <input type="text" id="mts" name="mts" placeholder="Nhập mã tuyển sinh theo hình thức đã đăng ký" 
+                                            data-required value="<?php echo $info['ma_tuyen_sinh'] ?? ''; ?>">
 
-                                            <div class="diem_mon">
+                                        <p style="margin:0; margin-bottom: 10px !important">
+                                            <font color="red">*&nbsp;</font>Điểm từng môn:
+                                        </p>
 
-                                            </div>
+                                        <div class="diem_mon">
+                                    </div>
+                                    </div>
 
+                                    <div>
+                                        <div>
                                             <label for="img_ts">
                                                 <font color="red">*&nbsp;</font>Ảnh chụp xác minh:
-                                            </label>
-                                            <input type="file" id="img_ts" name="img_ts" accept="image/*">
+                                            </label><br> 
+                                            <input type="file" id="img_ts" name="img_ts" accept="image/*"> 
                                             <p class="note">Tải ảnh minh chứng rõ ràng, đầy đủ theo hướng dẫn <a href="https://www.google.com/" target="_blank">TẠI ĐÂY</a>!</p>
                                         </div>
 
@@ -293,6 +306,31 @@ function handleSelectionChange() {
     }
 }
 
+document.addEventListener('DOMContentLoaded', function() {
+    const selection = document.getElementById("selection");
+    const formSection = document.getElementById('form-section');
+
+    // Kiểm tra nếu có giá trị trong select khi trang tải
+    if (selection.value) {
+        formSection.style.display = 'flex';
+    } else {
+        formSection.style.display = 'none';
+    }
+
+    diemMonDiv.innerHTML = "";
+
+    if (listMon) {
+        // Tách các môn từ chuỗi và tạo nội dung động
+        listMon.split(", ").forEach((mon, index) => {
+            diemMonDiv.innerHTML += `
+                <div class="linediv">
+                    <label for="mon_${index + 1}">${mon.charAt(0).toUpperCase() + mon.slice(1)}:&nbsp;</label>
+                    <input type="number" id="mon_${index + 1}" name="mon_${index}" data-required>
+                </div>`;
+        });
+    }
+});
+
 function NopHoSo() {
     event.preventDefault();
         let inputs = document.querySelectorAll("#Nophs input[data-required]");
@@ -376,23 +414,46 @@ function NopHoSo() {
             xhr.open("POST", "../php_control/data/PushHoSoData.php", true);
             xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest'); // Chỉ giữ lại dòng này
             xhr.onload = function() {
-                if (xhr.status === 200) {
-                    // Xử lý khi gửi thành công, bạn có thể redirect hay hiển thị kết quả tại đây
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Thành công',
-                        text: 'Dữ liệu đã được gửi thành công!',
-                        confirmButtonText: 'OK'
-                    });
-                } else {
+            if (xhr.status === 200) {
+                try {
+                    // Chuyển đổi dữ liệu JSON từ phản hồi
+                    var response = JSON.parse(xhr.responseText);
+                    
+                    // Kiểm tra dữ liệu nhận được (nếu có các thuộc tính như 'status' hoặc 'message')
+                    if (response.status === 'success') {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Thành công',
+                            text: response.message || 'Dữ liệu đã được gửi thành công!',
+                            confirmButtonText: 'OK'
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Lỗi gửi dữ liệu',
+                            text: response.message || 'Đã xảy ra lỗi khi gửi dữ liệu. Vui lòng thử lại!',
+                            confirmButtonText: 'OK'
+                        });
+                    }
+                } catch (e) {
+                    // Xử lý trường hợp phản hồi không phải JSON
+                    console.log(xhr.responseText);
                     Swal.fire({
                         icon: 'error',
-                        title: 'Lỗi gửi dữ liệu',
-                        text: 'Đã xảy ra lỗi khi gửi dữ liệu. Vui lòng thử lại!',
+                        title: 'Lỗi xử lý phản hồi',
+                        text: 'Đã xảy ra lỗi khi xử lý dữ liệu phản hồi.',
                         confirmButtonText: 'OK'
                     });
                 }
-            };
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi gửi dữ liệu',
+                    text: 'Đã xảy ra lỗi khi gửi dữ liệu. Vui lòng thử lại!',
+                    confirmButtonText: 'OK'
+                });
+            }
+        };
 
             xhr.onerror = function() {
                 Swal.fire({

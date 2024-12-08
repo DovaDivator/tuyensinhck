@@ -14,6 +14,12 @@ if (isset($_SESSION['user'])) {
 //     unset($_SESSION['message']); 
 // }
 include "../php_control/data/get_infomation.php";
+
+if($_SESSION['user']['role'] === 'Student'){
+    include "../php_control/data/get_ho_so.php";
+    $info = GetHoSo($_SESSION['user']['id']);
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -160,18 +166,14 @@ include "../php_control/data/get_infomation.php";
                                 <p id='hoso_log'><b>
                                         <font color="red">Bạn chưa đăng ký hồ sơ! </font><a href="nop-ho-so.php">Ấn vào đây để đăng ký</a>
                                     </b></p>
-                                <?php if ($_SESSION['user']['role'] !== 'Student'): ?>
-                                    <P id='cccd'>CCCD: 0123456789012 </p>
-                                <?php endif; ?>
-                                <p id='gender'>Giới tính: Nữ</p>
-                                <p id='birth_date'>Ngày sinh: 16/07/2002</p>
-                                <p id='address'>Địa chỉ: 123 đường 45, Quận 1, TP. Hồ Chí Minh</p>
-                                <p id='hinhthucts'>Hình thức tuyển sinh: THPTQG - KHTN</p>
-                                <?php if ($_SESSION['user']['role'] !== 'Student'): ?>
-                                    <p id='id_ts'>Mã tuyển sinh: 0123456789012 </p>
-                                <?php endif; ?>
+                                <p id='cccd'>CCCD: <?php echo !empty($info['cccd']) ? $info['cccd'] : "Chưa nhập"; ?></p>
+                                <p id='gender'>Giới tính: <?php echo !empty($info['gender']) ? $info['gender'] : "Chưa nhập"; ?></p>
+                                <p id='birth_date'>Ngày sinh: <?php echo !empty($info['date_of_birth']) ? date('d/m/Y', strtotime($info['date_of_birth'])) : "Chưa nhập"; ?></p>
+                                <p id='address'>Địa chỉ: <?php echo !empty($info['address']) ? $info['address'] : "Chưa nhập"; ?></p>
+                                <p id='hinhthucts'>Hình thức tuyển sinh: <?php echo !empty($info['ma_htts']) ? $info['ma_htts'] : "Chưa nhập"; ?></p>
+                                <p id='id_ts'>Mã tuyển sinh: <?php echo !empty($info['ma_tuyen_sinh']) ? $info['ma_tuyen_sinh'] : "Chưa nhập"; ?></p>
                                 <p>Danh sách điểm:</p>
-                                <p id='diem_list'>(Toán: 9, Văn: 8.5, Anh: 4.5)</p>
+                                <p id='diem_list'><?php echo !empty($info['diem']) ? $info['diem'] : "(Chưa nhập)"; ?></p>
                             </div>
                             <div class="info_layout" id="nganh_dky">
                                 <div class="linediv">

@@ -9,43 +9,83 @@ include "db_connect.php";
 // Xử lý yêu cầu đăng nhập
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     file_put_contents('log.txt', print_r($_POST, true));
-    // Lấy dữ liệu từ $_POST và kiểm tra nếu nó tồn tại và không rỗng
-    $frontOfCCCD = isset($_POST['frontof_CCCD']) && $_POST['frontof_CCCD'] !== '' ? $_POST['frontof_CCCD'] : null;
-    $behindOfCCCD = isset($_POST['behind_CCCD']) && $_POST['behind_CCCD'] !== '' ? $_POST['behind_CCCD'] : null;
-    $soCCCD = isset($_POST['so_cccd']) && $_POST['so_cccd'] !== '' ? $_POST['so_cccd'] : null;
-    $hoTen = isset($_POST['hoTen']) && $_POST['hoTen'] !== '' ? $_POST['hoTen'] : null;
-    $dateBirth = isset($_POST['date_birth']) && $_POST['date_birth'] !== '' ? $_POST['date_birth'] : null;
-    $gender = isset($_POST['gender']) && $_POST['gender'] !== '' ? $_POST['gender'] : null;
-    $queQuan = isset($_POST['que_quan']) && $_POST['que_quan'] !== '' ? $_POST['que_quan'] : null;
-    $mts = isset($_POST['mts']) && $_POST['mts'] !== '' ? $_POST['mts'] : null;
+    
+    $so_cccd = isset($_POST['so_cccd']) ? $_POST['so_cccd'] : null;
+    $hoTen = isset($_POST['hoTen']) ? $_POST['hoTen'] : null;
+    $date_birth = isset($_POST['date_birth']) ? $_POST['date_birth'] : null;
 
-    // Lấy điểm các môn học từ dữ liệu POST, kiểm tra nếu nó tồn tại và không rỗng
-    $diem = array();
-    for ($i = 0; $i <= 5; $i++) {
-        $monKey = 'mon_' . $i;
-        $diem[$monKey] = isset($_POST[$monKey]) && $_POST[$monKey] !== '' ? $_POST[$monKey] : null;
+    switch ($_POST['gender'] ?? null) {
+        case 'nam':
+            $gender = 1;
+            break;
+        case 'nu':
+            $gender = 0;
+            break;
+        default:
+            $gender = null;
+            break;
     }
 
-    // Tạo cấu trúc JSON từ các dữ liệu
-    $result = array(
-        'frontOfCCCD' => $frontOfCCCD,
-        'behindOfCCCD' => $behindOfCCCD,
-        'soCCCD' => $soCCCD,
-        'hoTen' => $hoTen,
-        'dateBirth' => $dateBirth,
-        'gender' => $gender,
-        'queQuan' => $queQuan,
-        'mts' => $mts,
-        'diem' => $diem
-    );
+    $que_quan = isset($_POST['que_quan']) ? $_POST['que_quan'] : null;
+    $htts = isset($_POST['htts']) ? $_POST['htts'] : null;
+    $mts = isset($_POST['mts']) ? $_POST['mts'] : null;
 
-    // Chuyển đổi mảng thành JSON
-    $jsonData = json_encode($result, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+    $mon_0 = isset($_POST['mon_0']) ? $_POST['mon_0'] : null;
+    $mon_1 = isset($_POST['mon_1']) ? $_POST['mon_1'] : null;
+    $mon_2 = isset($_POST['mon_2']) ? $_POST['mon_2'] : null;
+    $mon_3 = isset($_POST['mon_3']) ? $_POST['mon_3'] : null;
+    $mon_4 = isset($_POST['mon_4']) ? $_POST['mon_4'] : null;
+    $mon_5 = isset($_POST['mon_5']) ? $_POST['mon_5'] : null;
+    $diem = [
+        'mon_0' => $mon_0,
+        'mon_1' => $mon_1,
+        'mon_2' => $mon_2,
+        'mon_3' => $mon_3,
+        'mon_4' => $mon_4,
+        'mon_5' => $mon_5
+    ];
 
-    // Ghi dữ liệu JSON vào file
-    file_put_contents('data.json', $jsonData);
+    $sql = "UPDATE sinh_vien SET 
+    cccd = :cccd, 
+    address = :address, 
+    date_of_birth = :date_of_birth, 
+    ma_htts = :ma_htts, 
+    diem = :diem, 
+    ma_tuyen_sinh = :ma_tuyen_sinh, 
+    ten = :ten,
+    gender = :gender
+    WHERE stu_id = :stu_id";
 
-    // Trả về kết quả JSON
-    echo $jsonData;
+    // Chuẩn bị câu lệnh
+    $stmt = $pdo->prepare($sql);
+
+    // Gán giá trị cho các tham số
+    $stmt->bindParam(':cccd', $so_cccd);
+    $stmt->bindParam(':address', $que_quan);
+    $stmt->bindParam(':date_of_birth', $date_birth);
+    $stmt->bindParam(':ma_htts', $htts);
+    $stmt->bindParam(':diem', $diem_json);
+    $stmt->bindParam(':ma_tuyen_sinh', $mts);
+    $stmt->bindParam(':ten', $hoTen);
+    $stmt->bindParam(':gender', $gender);
+    $stmt->bindParam(':stu_id', $_SESSION['user']['id']);
+
+    // Thực thi câu lệnh
+    if ($stmt->execute()) {
+        // Nếu thực thi thành công
+        echo json_encode([
+            'status' => 'success',
+            'message' => 'Cập nhật dữ liệu thành công!'
+        ]);
+    } else {    
+        $errorInfo = $stmt->errorInfo();
+        // Nếu có lỗi xảy ra
+        echo json_encode([
+            'status' => 'error',
+            'message' => 'Lỗi khi cập nhật dữ liệu. '. $errorInfo[2]
+        ]);
+    }
 }
+
+
 ?>

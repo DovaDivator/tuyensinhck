@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $diem_loc = $_POST['diem_loc'] ?? [];
     $diem = $_POST['diem'] ?? [];
-    $ghi_chu = !empty($diem) && !empty($diem_loc) ? array_combine($diem, $diem_loc) : [];
+    $ghi_chu = !empty($diem) && !empty($diem_loc) ? array_combine($diem, $diem_loc) : null;
 
     $gv_full = $_POST['gv_id'] ?? '';
     $parts = explode(' - ', $gv_full);
@@ -58,6 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $img_link = null;
     $iframe = null;
+    $chu_thich = null;
     if(isset($_POST['phuong_tien'])){
         if($_POST['phuong_tien'] == 'media'){
             $iframe = $_POST['url']?? null;
@@ -74,6 +75,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     
     if(isset($_GET['update'])){
         $result = UpdateNganh($id_nganh, $ten, $chi_tieu, $to_hop, $chuong_trinh, $diem_chuan, $date_open, $date_end, $gv_id, $ghi_chu, $mo_ta, $iframe, $img_link, $chu_thich, $enable);
+    }else{
+        $result = AddNganh($id_nganh, $ten, $chi_tieu, $to_hop, $chuong_trinh, $diem_chuan, $date_open, $date_end, $gv_id, $ghi_chu, $mo_ta, $iframe, $img_link, $chu_thich, $enable);
     }
 
     if(isset($result) && $result){
@@ -94,45 +97,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         'status' => 'error',
         'message' => 'Yêu cầu không hợp lệ.',
     ]);
-}
-
-function push_image_nganh($fileName){
-    $supabase_url = 'https://iwelyvdecathaeppslzw.supabase.co';    
-    $bucket_name = 'nganh_image';
-
-    // Lấy đường dẫn file tạm từ session
-    $filePath = '../../assets/temp_uploads/'.$fileName;
-
-    // Tạo endpoint cho việc tải lên file
-    $endpoint = $supabase_url . "/storage/v1/object/" . $bucket_name . "/" . $fileName;
-
-    // Đọc nội dung của file
-    $fileContent = file_get_contents($filePath);
-
-    // Thiết lập headers cho cURL
-    $headers = [
-        "Authorization: Bearer " . $_SESSION['access_token'],
-        "Content-Type: image/*"
-    ];
-
-    // Khởi tạo cURL và thiết lập các tùy chọn
-    $ch = curl_init($endpoint);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");  // POST request
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $fileContent); // Đính kèm nội dung file
-    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers); // Thêm headers vào yêu cầu
-
-    // Gửi yêu cầu và nhận phản hồi
-    $response = curl_exec($ch);
-    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    curl_close($ch);
-
-    // Ghi log vào file log.txt
-    // file_put_contents("log.txt", "filename: $fileName\n access: ".$_SESSION['access_token']." \nResponse: $response\n", FILE_APPEND);
-    return [
-        'httpCode' => $httpCode,
-        'response' => json_decode($response, true)
-    ];
 }
 
 function extractSrc($input) {
@@ -207,4 +171,81 @@ WHERE nganh_id = :id_nganh";
         return $errorInfo[2];
     }
 }
+
+function AddNganh($id_nganh, $ten, $chi_tieu, $to_hop, $chuong_trinh, $diem_chuan, $date_open, $date_end, $gv_id, $ghi_chu, $mo_ta, $iframe, $img_link, $chu_thich, $enable) {
+    global $pdo;
+
+    $sql = "INSERT INTO nganh (
+        nganh_id,
+        ten_nganh, 
+        chi_tieu, 
+        id_tohop, 
+        chuong_trinh, 
+        diem_chuan, 
+        date_open, 
+        date_end, 
+        gv_id, 
+        ghi_chu, 
+        mo_ta, 
+        iframe, 
+        id_img, 
+        chu_thich, 
+        isenable
+    ) VALUES (
+        :id_nganh, 
+        :ten, 
+        :chi_tieu, 
+        :to_hop, 
+        :chuong_trinh, 
+        :diem_chuan, 
+        :date_open, 
+        :date_end, 
+        :gv_id, 
+        :ghi_chu, 
+        :mo_ta, 
+        :iframe, 
+        :id_img, 
+        :chu_thich, 
+        :isenable
+    )";
+
+    // Sử dụng prepared statement để bảo vệ khỏi SQL injection
+    $stmt = $pdo->prepare($sql);
+
+    // Gán giá trị cho các tham số
+    $stmt->bindParam(':id_nganh', $id_nganh);
+    $stmt->bindParam(':ten', $ten);
+    $stmt->bindParam(':chi_tieu', $chi_tieu);
+    $stmt->bindParam(':to_hop', $to_hop);
+    $stmt->bindParam(':chuong_trinh', $chuong_trinh);
+    $stmt->bindParam(':diem_chuan', $diem_chuan);
+
+    $date_open_formatted = $date_open ? $date_open->format('Y-m-d H:i:s') : null;
+    $date_end_formatted = $date_end ? $date_end->format('Y-m-d H:i:s') : null;
+    $stmt->bindParam(':date_open', $date_open_formatted);
+    $stmt->bindParam(':date_end', $date_end_formatted);
+
+    $stmt->bindParam(':gv_id', $gv_id);
+    
+    $ghi_chu_json = json_encode($ghi_chu);
+    $stmt->bindParam(':ghi_chu', $ghi_chu_json);
+
+    $stmt->bindParam(':mo_ta', $mo_ta);
+    $stmt->bindParam(':iframe', $iframe);
+
+    $id_img_value = $img_link ? file_get_contents($img_link) : null;
+    $stmt->bindParam(':id_img', $id_img_value);
+
+    $stmt->bindParam(':chu_thich', $chu_thich);
+    $stmt->bindParam(':isenable', $enable, PDO::PARAM_INT); // Chuyển đổi giá trị thành kiểu int
+
+    // Thực thi câu lệnh
+    if ($stmt->execute()) {
+        return true; // Trả về ID của bản ghi vừa thêm
+    } else {
+        $errorInfo = $stmt->errorInfo();
+        return $errorInfo[2];
+    }
+}
+
 ?>
