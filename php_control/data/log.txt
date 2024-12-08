@@ -1,12 +1,36 @@
-filename: 675479a7f31f3_1733589415.png
- access: eyJhbGciOiJIUzI1NiIsImtpZCI6InRmTG51K1hXenA0Sm04Q0UiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2l3ZWx5dmRlY2F0aGFlcHBzbHp3LnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiJkZDk3MTc0OS0wMDJiLTQ0MjYtOWE3My1iM2M3OGRiNWVmMzciLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzMzNTUyOTU4LCJpYXQiOjE3MzM1NDkzNTgsImVtYWlsIjoidmlldGFuaHRoY3N0dEBnbWFpbC5jb20iLCJwaG9uZSI6IiIsImFwcF9tZXRhZGF0YSI6eyJwcm92aWRlciI6ImVtYWlsIiwicHJvdmlkZXJzIjpbImVtYWlsIl19LCJ1c2VyX21ldGFkYXRhIjp7ImVtYWlsIjoidmlldGFuaHRoY3N0dEBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsInBob25lX3ZlcmlmaWVkIjpmYWxzZSwic3ViIjoiZGQ5NzE3NDktMDAyYi00NDI2LTlhNzMtYjNjNzhkYjVlZjM3In0sInJvbGUiOiJhdXRoZW50aWNhdGVkIiwiYWFsIjoiYWFsMSIsImFtciI6W3sibWV0aG9kIjoicGFzc3dvcmQiLCJ0aW1lc3RhbXAiOjE3MzM1NDkzNTh9XSwic2Vzc2lvbl9pZCI6IjljNWNlMDI5LTIzZjktNDIzNS05ODMwLTU4Mzk3NGU4ZGFkNiIsImlzX2Fub255bW91cyI6ZmFsc2V9.S-WYJDsI5wPbUbiSCJjkBVopycMDHK5OrMrP1MG23ic 
-Response: {"statusCode":"403","error":"Unauthorized","message":"jwt expired"}
-filename: 675479a904bab_1733589417.png
- access: eyJhbGciOiJIUzI1NiIsImtpZCI6InRmTG51K1hXenA0Sm04Q0UiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2l3ZWx5dmRlY2F0aGFlcHBzbHp3LnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiJkZDk3MTc0OS0wMDJiLTQ0MjYtOWE3My1iM2M3OGRiNWVmMzciLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzMzNTUyOTU4LCJpYXQiOjE3MzM1NDkzNTgsImVtYWlsIjoidmlldGFuaHRoY3N0dEBnbWFpbC5jb20iLCJwaG9uZSI6IiIsImFwcF9tZXRhZGF0YSI6eyJwcm92aWRlciI6ImVtYWlsIiwicHJvdmlkZXJzIjpbImVtYWlsIl19LCJ1c2VyX21ldGFkYXRhIjp7ImVtYWlsIjoidmlldGFuaHRoY3N0dEBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsInBob25lX3ZlcmlmaWVkIjpmYWxzZSwic3ViIjoiZGQ5NzE3NDktMDAyYi00NDI2LTlhNzMtYjNjNzhkYjVlZjM3In0sInJvbGUiOiJhdXRoZW50aWNhdGVkIiwiYWFsIjoiYWFsMSIsImFtciI6W3sibWV0aG9kIjoicGFzc3dvcmQiLCJ0aW1lc3RhbXAiOjE3MzM1NDkzNTh9XSwic2Vzc2lvbl9pZCI6IjljNWNlMDI5LTIzZjktNDIzNS05ODMwLTU4Mzk3NGU4ZGFkNiIsImlzX2Fub255bW91cyI6ZmFsc2V9.S-WYJDsI5wPbUbiSCJjkBVopycMDHK5OrMrP1MG23ic 
-Response: {"statusCode":"403","error":"Unauthorized","message":"jwt expired"}
-filename: 67547b1a6a118_1733589786.png
- access: eyJhbGciOiJIUzI1NiIsImtpZCI6InRmTG51K1hXenA0Sm04Q0UiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2l3ZWx5dmRlY2F0aGFlcHBzbHp3LnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiJkZDk3MTc0OS0wMDJiLTQ0MjYtOWE3My1iM2M3OGRiNWVmMzciLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzMzNTUyOTU4LCJpYXQiOjE3MzM1NDkzNTgsImVtYWlsIjoidmlldGFuaHRoY3N0dEBnbWFpbC5jb20iLCJwaG9uZSI6IiIsImFwcF9tZXRhZGF0YSI6eyJwcm92aWRlciI6ImVtYWlsIiwicHJvdmlkZXJzIjpbImVtYWlsIl19LCJ1c2VyX21ldGFkYXRhIjp7ImVtYWlsIjoidmlldGFuaHRoY3N0dEBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsInBob25lX3ZlcmlmaWVkIjpmYWxzZSwic3ViIjoiZGQ5NzE3NDktMDAyYi00NDI2LTlhNzMtYjNjNzhkYjVlZjM3In0sInJvbGUiOiJhdXRoZW50aWNhdGVkIiwiYWFsIjoiYWFsMSIsImFtciI6W3sibWV0aG9kIjoicGFzc3dvcmQiLCJ0aW1lc3RhbXAiOjE3MzM1NDkzNTh9XSwic2Vzc2lvbl9pZCI6IjljNWNlMDI5LTIzZjktNDIzNS05ODMwLTU4Mzk3NGU4ZGFkNiIsImlzX2Fub255bW91cyI6ZmFsc2V9.S-WYJDsI5wPbUbiSCJjkBVopycMDHK5OrMrP1MG23ic 
-Response: {"statusCode":"403","error":"Unauthorized","message":"jwt expired"}
-filename: 67547b1b6722a_1733589787.png
- access: eyJhbGciOiJIUzI1NiIsImtpZCI6InRmTG51K1hXenA0Sm04Q0UiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2l3ZWx5dmRlY2F0aGFlcHBzbHp3LnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiJkZDk3MTc0OS0wMDJiLTQ0MjYtOWE3My1iM2M3OGRiNWVmMzciLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzMzNTUyOTU4LCJpYXQiOjE3MzM1NDkzNTgsImVtYWlsIjoidmlldGFuaHRoY3N0dEBnbWFpbC5jb20iLCJwaG9uZSI6IiIsImFwcF9tZXRhZGF0YSI6eyJwcm92aWRlciI6ImVtYWlsIiwicHJvdmlkZXJzIjpbImVtYWlsIl19LCJ1c2VyX21ldGFkYXRhIjp7ImVtYWlsIjoidmlldGFuaHRoY3N0dEBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsInBob25lX3ZlcmlmaWVkIjpmYWxzZSwic3ViIjoiZGQ5NzE3NDktMDAyYi00NDI2LTlhNzMtYjNjNzhkYjVlZjM3In0sInJvbGUiOiJhdXRoZW50aWNhdGVkIiwiYWFsIjoiYWFsMSIsImFtciI6W3sibWV0aG9kIjoicGFzc3dvcmQiLCJ0aW1lc3RhbXAiOjE3MzM1NDkzNTh9XSwic2Vzc2lvbl9pZCI6IjljNWNlMDI5LTIzZjktNDIzNS05ODMwLTU4Mzk3NGU4ZGFkNiIsImlzX2Fub255bW91cyI6ZmFsc2V9.S-WYJDsI5wPbUbiSCJjkBVopycMDHK5OrMrP1MG23ic 
-Response: {"statusCode":"403","error":"Unauthorized","message":"jwt expired"}
+Array
+(
+    [id_nganh] => TC003
+    [ten] => CNTT1
+    [chi_tieu] => 9
+    [chuong_trinh] => 4
+    [to_hop] => A00
+    [date_end_day] => 31/12/2024
+    [date_end_time] => 23:30
+    [diem_chuan] => 23.00
+    [phuong_tien] => image
+    [searchInputToHop] => 
+    [date_open_day] => 21/11/2024
+    [date_open_time] => 21:49
+    [diem_loc] => Array
+        (
+            [0] => 9
+            [1] => 8.5
+        )
+
+    [gv_id] => GV0001 - Ngô Đình Minh Trang
+    [searchInput_gv_id] => 
+    [url] => 
+    [file_temp] => 
+    [chu_thich] => Chú thích thêm
+    [enable] => on
+    [mo_ta] => Mình tên là Trần Trúc Ly, quê mình ở Lào Cai, đó là một nơi rất đẹp, nếu có dịp mình sẽ kể cho các bạn nhiều điều thú vị về nơi mình từng sống. Trước đây mình từng học tại trường THCS Lê Quý Đôn ở thành phố Lào Cai. Vì bố mẹ mình chuyển công tác xuống Hà Nội nên từ bây giờ mình sẽ học ở đây.
+
+Gia đình mình có sáu người: ông , bà, bố, mẹ, anh trai và mình. Ông bà mình vẫn đang ở quê thu xếp công việc nhà cửa, trong thời gian tới bố mẹ mình sẽ đón ông bà xuống Hà Nội. Bố mình là một kĩ sư tin học còn mẹ mình làm giáo viên dạy môn Tiếng Anh. Anh trai mình tên là Trần Trung Quân, anh ấy đang là sinh viên năm nhất của trường Đại học Công nghệ. Anh lúc nào cũng nhường nhịn mình mọi thứ. Nhà mình vừa chuyển đến một căn trung cư trên đường Xuân Thủy – Cầu Giấy. Chỗ đó cũng khá gần đây, nếu có dịp các bạn sang nhà mình chơi nhé! Trong nhà bố mẹ mình đều rất thân thiện, anh trai mình thì cực kì vui tính. Khi nào bà mình chuyển xuống đây bà sẽ nấu chè cho chúng mình ăn, tay nghề của bà mình tuyệt vời lắm.
+    [diem] => Array
+        (
+            [0] => Anh
+            [1] => Toán
+        )
+
+)

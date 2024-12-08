@@ -588,6 +588,10 @@ if (isset($_GET['ma_nganh'])) {
         event.preventDefault(); // Ngừng hành vi gửi form mặc định
 
         let inputs = document.querySelectorAll("#userForm input[data-required]");
+        let Input = document.querySelectorAll("#userForm input");
+        let selects = document.querySelectorAll("#userForm select")
+        let textArea = document.querySelectorAll("#userForm textarea");
+        let check = true;
         let isValid = true;
         let invalidFields = [];
         let formData = new FormData(); // Sử dụng FormData để thu thập dữ liệu
@@ -603,11 +607,25 @@ if (isset($_GET['ma_nganh'])) {
                 isValid = false;
                 invalidFields.push(input.getAttribute('placeholder') || input.name || input.id);
                 input.classList.add("error");
-                
+                check= false
             } else {
-                formData.append(input.name || input.id, inputValue); // Thêm dữ liệu vào FormData
+                // formData.append(input.name || input.id, inputValue); // Thêm dữ liệu vào FormData
             }
         });
+        if(check){
+            Input.forEach(function(input){
+                let inputValue = input.value.trim();
+                formData.append(input.name || input.id, inputValue);
+            });
+            textArea.forEach(function(text){
+                let textValue = text.value.trim();
+                formData.append(text.name || text.id, textValue);
+            });
+            selects.forEach(function(select){
+                let sValue = select.value.trim();
+                formData.append(select.name || select.id, sValue);
+            });
+        }
 
         formData.forEach(function(value, key) {
             console.log(key + ": " + value);
@@ -625,26 +643,59 @@ if (isset($_GET['ma_nganh'])) {
             xhr.open("POST",  "../php_control/data/chinhsuanganhdata.php<?php echo isset($_GET['ma_nganh']) ? '?update=true' : '';?>", true); // Gửi tới file PHP xử lý form
             xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
             xhr.onload = function() {
-                if (xhr.status === 200) {
-                    // Xử lý khi gửi thành công, bạn có thể redirect hay hiển thị kết quả tại đây
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Thành công',
-                        text: 'Dữ liệu đã được gửi thành công!',
-                        confirmButtonText: 'OK'
-                    });
-                    // .then(() => {
-                    //     window.location.href = "chi-tiet-tuyen-sinh.php?ma_nganh="+ document.getElementById('id_nganh').value; // Chuyển hướng sang success_page.php
-                    // });
-                } else {
+            if (xhr.status === 200) {
+                try {
+                    // Phân tích cú pháp JSON từ phản hồi
+                    const response = JSON.parse(xhr.responseText);
+
+                    if (response.status === 'success') {
+                        // Hiển thị thông báo thành công
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Thành công',
+                            text: response.message || 'Dữ liệu đã được gửi thành công!',
+                            confirmButtonText: 'OK'
+                        }).then(() => {
+                            // Chuyển hướng sang trang khác nếu cần
+                            window.location.href = "chi-tiet-tuyen-sinh.php?ma_nganh=" + document.getElementById('id_nganh').value;
+                        });
+                    } else if (response.status === 'error') {
+                        // Hiển thị thông báo lỗi
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Lỗi',
+                            text: response.message || 'Đã xảy ra lỗi khi xử lý yêu cầu.',
+                            confirmButtonText: 'OK'
+                        });
+                    } else {
+                        // Xử lý nếu phản hồi không có trạng thái hợp lệ
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Lỗi',
+                            text: 'Dữ liệu trả về không hợp lệ.',
+                            confirmButtonText: 'OK'
+                        });
+                    }
+                } catch (e) {
+                    // Xử lý lỗi khi phân tích JSON thất bại
+                    console.error(xhr.responseText);
                     Swal.fire({
                         icon: 'error',
-                        title: 'Lỗi gửi dữ liệu',
-                        text: 'Đã xảy ra lỗi khi gửi dữ liệu. Vui lòng thử lại!',
+                        title: 'Lỗi phân tích dữ liệu',
+                        text: 'Đã xảy ra lỗi khi xử lý dữ liệu từ máy chủ.',
                         confirmButtonText: 'OK'
                     });
                 }
-            };
+            } else {
+                // Xử lý khi trạng thái HTTP khác 200
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi gửi dữ liệu',
+                    text: 'Đã xảy ra lỗi khi gửi dữ liệu. Vui lòng thử lại!',
+                    confirmButtonText: 'OK'
+                });
+            }
+        };
 
         xhr.onerror = function() {
             Swal.fire({
