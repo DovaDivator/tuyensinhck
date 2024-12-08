@@ -1,22 +1,19 @@
 Array
 (
-    [id_nganh] => TC001
-    [ten] => CNTT
-    [chi_tieu] => 99
-    [chuong_trinh] => 4
-    [to_hop] => A00
-    [searchInputToHop] => 
-    [date_open_day] => 20/11/2024
-    [date_open_time] => 15:33
-    [date_end_day] => 01/12/2024
-    [date_end_time] => 00:00
-    [diem_chuan] => 24.00
-    [gv_id] => GV0001 - Ngô Đình Minh Trang
-    [searchInput_gv_id] => 
-    [url] => 
-    [file_temp] => 
-    [chu_thich] => 
-    [enable] => on
-    [phuong_tien] => image
-    [mo_ta] => 1111111111
+    [frontof_CCCD] => C:\fakepath\niemtinT1.png
+    [behind_CCCD] => C:\fakepath\niemtinT1.png
+    [so_cccd] => 122
+    [hoTen] => 2
+    [date_birth] => 02/12/2024
+    [gender] => nam
+    [que_quan] => 1
+    [mts] => 1
+    [mon_0] => 1
+    [mon_1] => 1
+    [mon_2] => 1
+    [mon_3] => 1
+    [mon_4] => 1
+    [mon_5] => 1
+    [sumbit_hoso] => Nộp hồ sơ
+    [htts] => QGKHTN
 )

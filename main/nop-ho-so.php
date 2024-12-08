@@ -374,8 +374,7 @@ function NopHoSo() {
             // Gửi form bằng XHR
             const xhr = new XMLHttpRequest();
             xhr.open("POST", "../php_control/data/PushHoSoData.php", true);
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+            xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest'); // Chỉ giữ lại dòng này
             xhr.onload = function() {
                 if (xhr.status === 200) {
                     // Xử lý khi gửi thành công, bạn có thể redirect hay hiển thị kết quả tại đây
