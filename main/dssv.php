@@ -11,6 +11,9 @@ if (isset($_SESSION['user'])) {
     header("Location: login.php");
     exit();
 }
+include '../php_control/data/ds_tuyen_sinh.php';
+$ds_sv = getSVtheonganh($query);
+echo "<script>console.log(".json_encode(getSVtheonganh("TC001")).")</script>";
 
 ?>
 <!DOCTYPE html>
@@ -24,6 +27,8 @@ if (isset($_SESSION['user'])) {
     <link rel="stylesheet" href="../assets/style/teacher_path.css?v=<?php echo filemtime("../assets/style/teacher_path.css")?>">
     <script src="../js_backend/events.js?v=<?php echo filemtime('../js_backend/events.js'); ?>"></script>
     <link rel="stylesheet" href="../assets/style/table.css?v=<?php echo filemtime("../assets/style/table.css")?>">
+    <script src="../js_backend/control.js?v=<?php echo filemtime('../js_backend/control.js'); ?>"></script>
+
 </head>
 <body>
     <div class="body_container">
@@ -47,7 +52,7 @@ if (isset($_SESSION['user'])) {
                                 <select name='ma_nganh_sv' style=' min-width: 350px;' onchange="this.form.submit()">
                                     <?php
                                         $danh_nganh = [
-                                            (object) ['ma_nganh' => 'CNTT', 'ten_nganh' => 'Công nghệ thông tin'],
+                                            (object) ['ma_nganh' => 'TC001', 'ten_nganh' => 'Công nghệ thông tin'],
                                             (object) ['ma_nganh' => 'QTKD', 'ten_nganh' => 'Quản trị kinh doanh'],
                                             (object) ['ma_nganh' => 'KETOAN', 'ten_nganh' => 'Kế toán'],
                                             (object) ['ma_nganh' => 'LUAT', 'ten_nganh' => 'Luật'],
@@ -61,10 +66,20 @@ if (isset($_SESSION['user'])) {
                                 <?php endforeach;?>
                                 </select>
                             </form>
+                            <?php
+                                    if (isset($_GET['ma_nganh_sv'])) {
+                                        $ma_nganh_duoc_chon = $_GET['ma_nganh_sv'];
+                                        echo "<script>console.log('". $ma_nganh_duoc_chon."')</script>";
+
+                                    } else {
+                                        echo "<script>console.log("."null".")</script>";
+
+                                    }
+                                    ?>
                         </div>
                         <div class="UI_qlnd_container">
                             <div class="table_body_scroll" style="height:500px;">
-                            <table class="choose_list danh_sach_ng" id="danh_sach_sv_nganh">
+                            <table class="choose_list danh_sach_ng" id="ds_sv">
                                 <thead>
                                         <tr>
                                         <th id='ma_sv'>Mã tuyển sinh</th>
@@ -75,12 +90,13 @@ if (isset($_SESSION['user'])) {
                                         <th id='diem'>Điểm</th>
                                         </tr>
                                 </thead>
-                                    <tbody id="course_table_tuyen_sinh" >
-                                    <script>
-                                        var userRole = <?php echo json_encode($_SESSION['user']['role']); ?>;
-                                        loadAndRenderCourses(userRole);
-                                        </script>
-                                    </tbody>
+                                    <tbody id="cs_sv" >
+                                    <?php if(!is_array($ds_sv)): ?>
+                                        <script>ErrorSV("<?php echo $ds_sv; ?>", "cs_sv", "ds_sv")</script>
+                                    <?php else: ?>
+                                        <script>renderCourseDS(<?php echo json_encode(getSVtheonganh($ma_nganh_duoc_chon)); ?>)</script>
+                                    <?php endif; ?>
+                                </tbody>
                                 </table>
                             </div>
                         </div>
