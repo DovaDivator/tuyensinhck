@@ -5,5 +5,9 @@
 
     include "db_connect.php";
 
+    function GetHoSo($id){
+        global $pdo;
 
+        return [];
+    }
 ?>
