@@ -150,7 +150,20 @@ function getConditionSV($query)
 function fetachListNganhUser()
 {
     global $pdo;
-    $query = "SELECT * FROM get_list_nganh_user()";
+    $query = "SELECT 
+    CAST(ng.nganh_id AS CHAR) AS id, 
+    CAST(ng.ten_nganh AS CHAR) AS ten, 
+    CAST(ng.id_tohop AS CHAR) AS to_hop, 
+    CASE
+        WHEN CURRENT_DATE BETWEEN ng.date_open AND ng.date_end THEN 'đang mở'
+        WHEN CURRENT_DATE < ng.date_open THEN 'sắp mở'                    
+        WHEN CURRENT_DATE > ng.date_end THEN 'đã đóng'               
+        ELSE 0                                                       
+    END AS trang_thai
+FROM 
+    nganh ng
+WHERE 
+    ng.isenable = 1; -- Chỉ các bản ghi có isenable = 1";
     $stmt = $pdo->prepare($query);
     $stmt->execute();
     $courses = $stmt->fetchAll(PDO::FETCH_ASSOC);

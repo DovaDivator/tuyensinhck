@@ -51,7 +51,7 @@ function get_user_info($username) {
 function GetKhoaDaoTao($id) {
     global $pdo;
 
-    $query = "SELECT khoa FROM public.giao_vien WHERE gv_id = :id";
+    $query = "SELECT khoa FROM giao_vien WHERE gv_id = :id";
     $stmt = $pdo->prepare($query);
     $stmt->bindParam(':id', $id);
     $stmt->execute();

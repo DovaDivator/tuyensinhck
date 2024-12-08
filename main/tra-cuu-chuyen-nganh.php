@@ -73,66 +73,6 @@ $ds_tuyen_sinh = fetachListNganhUser();
                                     title="Tìm kiếm" class="search-icon">
                                 </button>
                             </div>
-                            <button type="button" class="icon-button" id="filter_option">
-                                <img src="../assets/icon/filter_tag.png?v=<?php echo filemtime("../assets/icon/filter_tag.png"); ?>" 
-                                alt="Bộ lọc" title="Bộ lọc" onclick="showChartOption('options layout filter_div_options', 'chart_option', 'show', event); GiveForm('search_form'), handleCheckboxClick('status')">
-                            </button>
-                            <button type="button" class="icon-button" id="filter_option">
-                                <img src="../assets/icon/plus.png?v=<?php echo filemtime("../assets/icon/plus.png"); ?>" 
-                                alt="Thêm chuyên ngành" title="Thêm chuyên ngành" onclick="window.location.href='chinhsuanganh.php'">
-                            </button>
-                            <div style="position: relative;">   
-                                <div class="filter_div_options options layout" id="filter_tag_options">
-                                    <div class="linediv">
-                                        <h3>Bộ lọc tìm kiếm:</h3>
-                                        <div class="button_div">
-                                            <input type="button" value="Bỏ chọn tất cả" onclick='uncheckAllCheckboxes("filter_tag_options")'>
-                                        </div>
-                                    </div>
-
-                                    <!-- Trạng thái tuyển sinh -->
-                                    <div class="filter-group">
-                                    <label>Trạng thái tuyển sinh:</label>
-                                        <div class="checkbox-group">
-                                            <input type="checkbox" id="dangmo" name="status" value="dangmo">
-                                            <label for="dangmo">Đang mở</label>
-
-                                            <input type="checkbox" id="dadong" name="status" value="dadong">
-                                            <label for="dadong">Đã đóng</label>
-
-                                            <input type="checkbox" id="dangan" name="status" value="dangan">
-                                            <label for="dangan">Đang ẩn</label>
-                                        </div>
-                                    </div>
-
-                                    <!-- Tổ hợp xét tuyển -->
-                                    <div class="filter-group">
-                                        <label>Tổ hợp xét tuyển:</label>
-                                        <div class="checkbox-group tohopxettuyen">
-                                            <div class="checkbox-item">
-                                                <input type="checkbox" id="A01" name="tohop[]" value="A01">
-                                                <label for="A01">A01</label>
-                                            </div>
-                                            <div class="checkbox-item">
-                                                <input type="checkbox" id="A00" name="tohop[]" value="A00">
-                                                <label for="A00">A00</label>
-                                            </div>
-                                            <div class="checkbox-item">
-                                                <input type="checkbox" id="D01" name="tohop[]" value="D01">
-                                                <label for="D01">D01</label>
-                                            </div>
-                                            <div class="checkbox-item">
-                                                <input type="checkbox" id="B00" name="tohop[]" value="B00">
-                                                <label for="B00">B00</label>
-                                            </div>
-                                            <div class="checkbox-item">
-                                                <input type="checkbox" id="C00" name="tohop[]" value="C00">
-                                                <label for="C00">C00</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         </form>
                         <div class="table_body_scroll" style="height:600px;">
                             <table class="choose_list nganh_hoc" id="top_list_nganh">
@@ -143,11 +83,8 @@ $ds_tuyen_sinh = fetachListNganhUser();
                                         <?php if ($_SESSION['user']['role'] == 'Admin') { 
                                             echo "<th id='trangthai'>Trạng thái</th>";
                                         }?>
-                                        <?php if ($_SESSION['user']['role'] != 'Student') { 
-                                            echo "<th id='so_luong_dang_ky'>Số lượng đăng ký</th>";
-                                        }?>
                                         <th id='to_hop_xet_tuyen'>Tổ hợp xét tuyển</th>
-                                        <th id='thoi_gian'>Thời gian tuyển sinh</th>
+                                        <th id='thoi_gian'>Trạng thái</th>
                                     </tr>
                                 </thead>
                                 <tbody id="course_table_list_nganh" >
