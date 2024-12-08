@@ -4,10 +4,11 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 include 'db_connect.php';
 
-function getDSTuyenSinh($query){
+function getDSTuyenSinh($query)
+{
     $condition = getConditionNganh($query);
 
-    switch($_SESSION['user']['role']){
+    switch ($_SESSION['user']['role']) {
         case 'Student':
             $courses = fetchNganhSV($condition);
             break;
@@ -29,7 +30,8 @@ function getDSTuyenSinh($query){
     return $courses;
 }
 
-function getDSGV($query){
+function getDSGV($query)
+{
     global $pdo;
     $condition = getConditionDSGV($query);
     $query_input = "
@@ -42,20 +44,21 @@ function getDSGV($query){
         giao_vien gv
     LEFT JOIN 
         nganh ng ON gv.gv_id = ng.gv_id";
-if ($condition !== '') {
-    $query_input .= " WHERE " . $condition;
-}
-$query_input .= "
+    if ($condition !== '') {
+        $query_input .= " WHERE " . $condition;
+    }
+    $query_input .= "
     GROUP BY 
         gv.gv_id, gv.ten, gv.khoa";
-    
+
     $stmt = $pdo->prepare($query_input);
     $stmt->execute();
-    $courses = $stmt->fetchAll(PDO::FETCH_ASSOC); 
+    $courses = $stmt->fetchAll(PDO::FETCH_ASSOC);
     return $courses;
 }
 
-function getDSSV($query){
+function getDSSV($query)
+{
     global $pdo;
     $condition = getConditionDSSV($query);
     $query_input = "
@@ -73,13 +76,13 @@ function getDSSV($query){
     ON 
         sv.stu_id = ur.id_user";
 
-if ($condition !== '') {
-    $query_input .= " WHERE " . $condition;
-}
-$query_input .= ";";
+    if ($condition !== '') {
+        $query_input .= " WHERE " . $condition;
+    }
+    $query_input .= ";";
     $stmt = $pdo->prepare($query_input);
     $stmt->execute();
-    $courses = $stmt->fetchAll(PDO::FETCH_ASSOC);    
+    $courses = $stmt->fetchAll(PDO::FETCH_ASSOC);
     foreach ($courses as &$course) {
         if (isset($course['create_date'])) {
             $course['create_date'] = (new DateTime(substr($course['create_date'], 0, 19)))->format('(H\hi) d/m/Y');
@@ -88,12 +91,69 @@ $query_input .= ";";
     return $courses;
 }
 
-function fetachListNganhUser(){
+function getSVtheonganh($query)
+{
+    global $pdo;
+
+    // Tạo câu lệnh SQL chính
+    $query_input = "
+    SELECT 
+        CAST(sv.stu_id AS CHAR) AS id,
+        sv.ten,
+        CAST(ur.create_at AS DATETIME) AS create_date,
+        CAST(sv.ma_htts AS CHAR) AS htts_id,
+        CAST(sv.nganh_id AS CHAR) AS nganh_id,
+        ur.trang_thai
+    FROM 
+        sinh_vien sv
+    JOIN 
+        `user` ur ON sv.stu_id = ur.id_user
+    JOIN 
+        nganh ON sv.nganh_id = nganh.nganh_id";
+
+    // Thêm điều kiện lọc nếu có
+    $condition = getConditionSV($query);
+    if ($condition !== '') {
+        $query_input .= " WHERE " . $condition;
+    }
+
+    // Chuẩn bị và thực thi câu lệnh SQL
+    $stmt = $pdo->prepare($query_input);
+    if ($query !== '') {
+        $stmt->bindValue(':query', "%$query%");
+    }
+    $stmt->execute();
+
+    // Lấy kết quả
+    $courses = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // Định dạng lại create_date
+    foreach ($courses as &$course) {
+        if (!empty($course['create_date'])) {
+            $course['create_date'] = (new DateTime(substr($course['create_date'], 0, 19)))->format('(H\hi) d/m/Y');
+        }
+    }
+
+    return $courses;
+}
+
+// Hàm tạo điều kiện lọc với prepared statement
+function getConditionSV($query)
+{
+    if ($query !== '') {
+        return "nganh.nganh_id LIKE :query COLLATE utf8_general_ci";
+    }
+    return '';
+}
+
+
+function fetachListNganhUser()
+{
     global $pdo;
     $query = "SELECT * FROM get_list_nganh_user()";
     $stmt = $pdo->prepare($query);
     $stmt->execute();
-    $courses = $stmt->fetchAll(PDO::FETCH_ASSOC);    
+    $courses = $stmt->fetchAll(PDO::FETCH_ASSOC);
     foreach ($courses as &$course) {
         if (isset($course['create_date'])) {
             $course['create_date'] = (new DateTime(substr($course['create_date'], 0, 19)))->format('(H\hi) d/m/Y');
@@ -102,7 +162,8 @@ function fetachListNganhUser(){
     return $courses;
 }
 
-function fetchNganhSV($condition){
+function fetchNganhSV($condition)
+{
     global $pdo;
     $query = "
     SELECT 
@@ -121,11 +182,12 @@ function fetchNganhSV($condition){
     $query .= ";";
     $stmt = $pdo->prepare($query);
     $stmt->execute();
-    return $stmt->fetchAll(PDO::FETCH_ASSOC); 
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
 // Hàm lấy dữ liệu từ bảng nganh
-function fetchNganhGV($condition){
+function fetchNganhGV($condition)
+{
     global $pdo;
     $query = "
     SELECT 
@@ -139,20 +201,21 @@ function fetchNganhGV($condition){
     WHERE ng.isEnable 
       AND CAST(ng.gv_id AS CHAR) = :id ";
 
-if ($condition !== '') {
-    $query .= " AND " . $condition;
-}
+    if ($condition !== '') {
+        $query .= " AND " . $condition;
+    }
 
-$query .= "
+    $query .= "
     GROUP BY ng.nganh_id, ng.ten_nganh, ng.id_tohop, ng.date_end;
 ";
     $stmt = $pdo->prepare($query);
     $stmt->bindParam(':id', $_SESSION['user']['id']);
     $stmt->execute();
-    return $stmt->fetchAll(PDO::FETCH_ASSOC); 
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-function fetchNganhAD($condition){
+function fetchNganhAD($condition)
+{
     global $pdo;
     $query = "
     SELECT 
@@ -170,47 +233,52 @@ function fetchNganhAD($condition){
     FROM nganh ng
     LEFT JOIN sinh_vien sv ON ng.nganh_id = sv.nganh_id
 ";
-if ($condition !== '') {
-    $query .= " WHERE " . $condition;
-}
-$query .= " GROUP BY ng.nganh_id, ng.ten_nganh, ng.isenable, ng.id_tohop, ng.date_open, ng.date_end;";
+    if ($condition !== '') {
+        $query .= " WHERE " . $condition;
+    }
+    $query .= " GROUP BY ng.nganh_id, ng.ten_nganh, ng.isenable, ng.id_tohop, ng.date_open, ng.date_end;";
 
     $stmt = $pdo->prepare($query);
     $stmt->execute();
-    return $stmt->fetchAll(PDO::FETCH_ASSOC); 
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-function getConditionNganh($query) {
+function getConditionNganh($query)
+{
     $condition = '';
-    
+
     if ($query != '') {
         $condition .= "(ng.nganh_id LIKE '%$query%' COLLATE utf8_general_ci OR ng.ten_nganh LIKE '%$query%' COLLATE utf8_general_ci)";
-    }       
-
-    return $condition;
-}
-
-function getConditionDSGV($query) {
-    $condition = '';
-    
-    if ($query!= '') {
-        $condition.= " (gv.gv_id LIKE '%$query%' COLLATE utf8_general_ci or gv.ten LIKE '%$query%' COLLATE utf8_general_ci)";
     }
 
     return $condition;
 }
 
-function getConditionDSSV($query){
+function getConditionDSGV($query)
+{
     $condition = '';
-    
-    if ($query!= '') {
-        $condition.= " (stu_id LIKE '%$query%' COLLATE utf8_general_ci or ten LIKE '%$query%'  COLLATE utf8_general_ci)";
+
+    if ($query != '') {
+        $condition .= " (gv.gv_id LIKE '%$query%' COLLATE utf8_general_ci or gv.ten LIKE '%$query%' COLLATE utf8_general_ci)";
     }
 
     return $condition;
 }
 
-function GetKhoaDaoTao() {
+function getConditionDSSV($query)
+{
+    $condition = '';
+
+    if ($query != '') {
+        $condition .= " (stu_id LIKE '%$query%' COLLATE utf8_general_ci or ten LIKE '%$query%'  COLLATE utf8_general_ci)";
+    }
+
+    return $condition;
+}
+
+
+function GetKhoaDaoTao()
+{
     global $pdo;
     $query = "SELECT DISTINCT khoa FROM giao_vien";
     $stmt = $pdo->prepare($query);
@@ -218,7 +286,8 @@ function GetKhoaDaoTao() {
     return $stmt->fetchAll(PDO::FETCH_ASSOC); // Trả về tất cả kết quả
 }
 
-function GetMaNganh(){
+function GetMaNganh()
+{
     global $pdo;
     $query = "SELECT DISTINCT nganh_id FROM nganh";
     $stmt = $pdo->prepare($query);
@@ -226,11 +295,11 @@ function GetMaNganh(){
     return $stmt->fetchAll(PDO::FETCH_ASSOC); // Trả về tất cả kết quả
 }
 
-function GetHinhThucXetTuyen(){
+function GetHinhThucXetTuyen()
+{
     global $pdo;
     $query = "SELECT DISTINCT ma_htts FROM hinh_thuc_xet_tuyen";
     $stmt = $pdo->prepare($query);
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC); // Trả về tất cả kết quả
 }
-?>
