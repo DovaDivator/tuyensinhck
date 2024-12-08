@@ -84,11 +84,11 @@ $list_htts = GetListHinhThucXetTuyen();
                                     </p>
                                     <div class="linediv">
                                         <div class="avatar_container" style="width: 300px; height: 200px; display:flex; justify-content:center; align-items:center; background-color:white;" onclick="document.getElementById('frontof_CCCD').click()">
-                                            <input type="file" name="mặt trước CCCD" id="frontof_CCCD" accept="image/*" style="display: none;" onchange="uploadNewImage('frontof_CCCD', 'frontof_CCCD_img')" data-required>
+                                            <input type="file" name="frontof_CCCD" id="frontof_CCCD" accept="image/*" style="display: none;" onchange="uploadNewImage('frontof_CCCD', 'frontof_CCCD_img')" data-required>
 
                                             <p class="qweq">Mặt trước CCCD</p>
                                             <!-- Avatar Image -->
-                                            <img src="<?php echo getSignedUrl('protect_files', $id . '/' . '674ffaa1d33fd_1733294753.png') ?>" id="frontof_CCCD_img" class="CCCD" >
+                                            <img src="" id="frontof_CCCD_img" class="CCCD" >
 
                                             <!-- Edit Icon Overlay -->
                                             <div class="edit_avatar_img_layout cccd">
@@ -98,7 +98,7 @@ $list_htts = GetListHinhThucXetTuyen();
                                         </div>
                                         <div style="width: 10px"></div>
                                         <div class="avatar_container" style="width: 300px; height: 200px; display:flex; justify-content:center; align-items:center; background-color:white;" onclick="document.getElementById('behind_CCCD').click()">
-                                            <input type="file" name="mặt sau CCCD" id="behind_CCCD" accept="image/*" style="display: none;" onchange="uploadNewImage('behind_CCCD', 'behind_CCCD_img')" data-required>
+                                            <input type="file" name="behind_CCCD" id="behind_CCCD" accept="image/*" style="display: none;" onchange="uploadNewImage('behind_CCCD', 'behind_CCCD_img')" data-required>
 
                                             <p class="qweq">Mặt sau CCCD</p>
 
@@ -189,51 +189,6 @@ $list_htts = GetListHinhThucXetTuyen();
                                             <input type="file" id="img_ts" name="img_ts" accept="image/*">
                                             <p class="note">Tải ảnh minh chứng rõ ràng, đầy đủ theo hướng dẫn <a href="https://www.google.com/" target="_blank">TẠI ĐÂY</a>!</p>
                                         </div>
-
-                                        <div class="linediv">
-                                            <label for="imgs_bonus[]">Giấy chứng nhận đi kèm:</label>
-                                            <button type="button" onclick="addProofEntry()" style="margin-left: 10px; margin-bottom: 10px">+</button>
-                                        </div>
-                                        <div id="proof-container">
-                                        </div>
-                                        <script>
-                                            function addProofEntry() {
-                                                // Lấy container
-                                                var container = document.getElementById('proof-container');
-
-                                                // Tạo một div mới cho mục bằng chứng
-                                                var newEntry = document.createElement('div');
-                                                newEntry.classList.add('proof-entry');
-
-                                                // Nội dung HTML cho div mới
-                                                newEntry.innerHTML = `
-                                    
-                                           <select name="proof_type[]" >
-                                               <option value="" disabled selected>Chọn loại bằng chứng</option>
-                                               <option value="english_certificate">Chứng chỉ tiếng Anh</option>
-                                                <option value="international_award">Giải quốc tế</option>
-                                                <option value="hsg_exam">Thi HSG</option>
-                                                <option value="priority_subject">Đối tượng ưu tiên</option>
-                                            </select>
-                                    
-                                            <select name="proof_detail[]" >
-                                                <option value="1" selected>1</option>
-                                               <option value="2">2</option>
-                                                <option value="3">3</option>
-                                            </select>
-                                    
-                                            <input type="file" name="imgs_bonus[]" accept="image/*" >
-                                                <button type="button" onclick="removeProofEntry(this)" style="margin-bottom: 10px; width:fit-content">Xóa chỉ mục</button>
-                                            <div style="height: 1px; background-color: grey;"></div>
-                                        `;
-
-                                                // Thêm mục mới vào container
-                                                container.appendChild(newEntry);
-                                            }
-                                        </script>
-
-
-                                        <p class="note">Nộp đúng yêu cầu, thông tin chi tiết <a href="https://www.google.com/" target="_blank">TẠI ĐÂY</a>!</p>
 
                                         <input type="submit" value="Nộp hồ sơ" name="sumbit_hoso" class="custom-button" onclick="NopHoSo()">
                                     </div>
@@ -332,7 +287,7 @@ function handleSelectionChange() {
             diemMonDiv.innerHTML += `
                 <div class="linediv">
                     <label for="mon_${index + 1}">${mon.charAt(0).toUpperCase() + mon.slice(1)}:&nbsp;</label>
-                    <input type="number" id="mon_${index + 1}" name="mon_${mon.charAt(0).toUpperCase() + mon.slice(1)}" data-required>
+                    <input type="number" id="mon_${index + 1}" name="mon_${index}" data-required>
                 </div>`;
         });
     }
@@ -418,7 +373,7 @@ function NopHoSo() {
         } else {
             // Gửi form bằng XHR
             const xhr = new XMLHttpRequest();
-            xhr.open("POST", "../php_control/data/PushHoSoData.php"<?php echo isset($_GET['ma_nganh']) ? '?update=true' : '';?>, true);
+            xhr.open("POST", "../php_control/data/PushHoSoData.php", true);
             xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
             xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
             xhr.onload = function() {

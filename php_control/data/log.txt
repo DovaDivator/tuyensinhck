@@ -1,36 +1,73 @@
 Array
 (
-    [id_nganh] => TC003
-    [ten] => CNTT1
-    [chi_tieu] => 9
-    [chuong_trinh] => 4
-    [to_hop] => A00
-    [date_end_day] => 31/12/2024
-    [date_end_time] => 23:30
-    [diem_chuan] => 23.00
-    [phuong_tien] => image
-    [searchInputToHop] => 
-    [date_open_day] => 21/11/2024
-    [date_open_time] => 21:49
-    [diem_loc] => Array
-        (
-            [0] => 9
-            [1] => 8.5
-        )
+    [------WebKitFormBoundaryBNAQP69l5sU80mfL
+Content-Disposition:_form-data;_name] => "frontof_CCCD"
 
-    [gv_id] => GV0001 - Ngô Đình Minh Trang
-    [searchInput_gv_id] => 
-    [url] => 
-    [file_temp] => 
-    [chu_thich] => Chú thích thêm
-    [enable] => on
-    [mo_ta] => Mình tên là Trần Trúc Ly, quê mình ở Lào Cai, đó là một nơi rất đẹp, nếu có dịp mình sẽ kể cho các bạn nhiều điều thú vị về nơi mình từng sống. Trước đây mình từng học tại trường THCS Lê Quý Đôn ở thành phố Lào Cai. Vì bố mẹ mình chuyển công tác xuống Hà Nội nên từ bây giờ mình sẽ học ở đây.
+C:\fakepath\image (2).png
+------WebKitFormBoundaryBNAQP69l5sU80mfL
+Content-Disposition: form-data; name="behind_CCCD"
 
-Gia đình mình có sáu người: ông , bà, bố, mẹ, anh trai và mình. Ông bà mình vẫn đang ở quê thu xếp công việc nhà cửa, trong thời gian tới bố mẹ mình sẽ đón ông bà xuống Hà Nội. Bố mình là một kĩ sư tin học còn mẹ mình làm giáo viên dạy môn Tiếng Anh. Anh trai mình tên là Trần Trung Quân, anh ấy đang là sinh viên năm nhất của trường Đại học Công nghệ. Anh lúc nào cũng nhường nhịn mình mọi thứ. Nhà mình vừa chuyển đến một căn trung cư trên đường Xuân Thủy – Cầu Giấy. Chỗ đó cũng khá gần đây, nếu có dịp các bạn sang nhà mình chơi nhé! Trong nhà bố mẹ mình đều rất thân thiện, anh trai mình thì cực kì vui tính. Khi nào bà mình chuyển xuống đây bà sẽ nấu chè cho chúng mình ăn, tay nghề của bà mình tuyệt vời lắm.
-    [diem] => Array
-        (
-            [0] => Anh
-            [1] => Toán
-        )
+C:\fakepath\image (1).png
+------WebKitFormBoundaryBNAQP69l5sU80mfL
+Content-Disposition: form-data; name="so_cccd"
+
+123213131321
+------WebKitFormBoundaryBNAQP69l5sU80mfL
+Content-Disposition: form-data; name="hoTen"
+
+213213213
+------WebKitFormBoundaryBNAQP69l5sU80mfL
+Content-Disposition: form-data; name="date_birth"
+
+01/11/2024
+------WebKitFormBoundaryBNAQP69l5sU80mfL
+Content-Disposition: form-data; name="gender"
+
+nam
+------WebKitFormBoundaryBNAQP69l5sU80mfL
+Content-Disposition: form-data; name="que_quan"
+
+12321313
+------WebKitFormBoundaryBNAQP69l5sU80mfL
+Content-Disposition: form-data; name="mts"
+
+123213213
+------WebKitFormBoundaryBNAQP69l5sU80mfL
+Content-Disposition: form-data; name="mon_0"
+
+1
+------WebKitFormBoundaryBNAQP69l5sU80mfL
+Content-Disposition: form-data; name="mon_1"
+
+1
+------WebKitFormBoundaryBNAQP69l5sU80mfL
+Content-Disposition: form-data; name="mon_2"
+
+1
+------WebKitFormBoundaryBNAQP69l5sU80mfL
+Content-Disposition: form-data; name="mon_3"
+
+1
+------WebKitFormBoundaryBNAQP69l5sU80mfL
+Content-Disposition: form-data; name="mon_4"
+
+1
+------WebKitFormBoundaryBNAQP69l5sU80mfL
+Content-Disposition: form-data; name="mon_5"
+
+1
+------WebKitFormBoundaryBNAQP69l5sU80mfL
+Content-Disposition: form-data; name="img_ts"
+
+C:\fakepath\image (2).png
+------WebKitFormBoundaryBNAQP69l5sU80mfL
+Content-Disposition: form-data; name="sumbit_hoso"
+
+Nộp hồ sơ
+------WebKitFormBoundaryBNAQP69l5sU80mfL
+Content-Disposition: form-data; name="htts"
+
+QGKHTN
+------WebKitFormBoundaryBNAQP69l5sU80mfL--
 
 )

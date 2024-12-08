@@ -1,0 +1,18 @@
+{
+    "frontOfCCCD": null,
+    "behindOfCCCD": null,
+    "soCCCD": null,
+    "hoTen": null,
+    "dateBirth": null,
+    "gender": null,
+    "queQuan": null,
+    "mts": null,
+    "diem": {
+        "mon_0": null,
+        "mon_1": null,
+        "mon_2": null,
+        "mon_3": null,
+        "mon_4": null,
+        "mon_5": null
+    }
+}

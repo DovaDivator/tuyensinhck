@@ -1,148 +1,51 @@
 <?php
+header('Content-Type: application/json; charset=utf-8');
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
 include "db_connect.php";
-include "refresh_token.php";
 
 // Xử lý yêu cầu đăng nhập
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Kiểm tra xem các khóa có tồn tại không
-    // unset($_POST);
-    // $_POST = array();
+    file_put_contents('log.txt', print_r($_POST, true));
+    // Lấy dữ liệu từ $_POST và kiểm tra nếu nó tồn tại và không rỗng
+    $frontOfCCCD = isset($_POST['frontof_CCCD']) && $_POST['frontof_CCCD'] !== '' ? $_POST['frontof_CCCD'] : null;
+    $behindOfCCCD = isset($_POST['behind_CCCD']) && $_POST['behind_CCCD'] !== '' ? $_POST['behind_CCCD'] : null;
+    $soCCCD = isset($_POST['so_cccd']) && $_POST['so_cccd'] !== '' ? $_POST['so_cccd'] : null;
+    $hoTen = isset($_POST['hoTen']) && $_POST['hoTen'] !== '' ? $_POST['hoTen'] : null;
+    $dateBirth = isset($_POST['date_birth']) && $_POST['date_birth'] !== '' ? $_POST['date_birth'] : null;
+    $gender = isset($_POST['gender']) && $_POST['gender'] !== '' ? $_POST['gender'] : null;
+    $queQuan = isset($_POST['que_quan']) && $_POST['que_quan'] !== '' ? $_POST['que_quan'] : null;
+    $mts = isset($_POST['mts']) && $_POST['mts'] !== '' ? $_POST['mts'] : null;
 
-    // Thực hiện truy vấn SQL
-
-    if (isset($_SESSION['file_path']) && is_array($_SESSION['file_path'])) {
-        $uploadedFiles = [];
-        $errors = [];
-        
-        foreach ($_SESSION['file_path'] as $fileType => $filePaths) {
-            // Nếu filePaths là chuỗi, chuyển nó thành mảng để xử lý thống nhất
-            if (is_string($filePaths)) {
-                $filePaths = [$filePaths];
-            }
-    
-            // Duyệt qua từng file trong mảng con
-            if (is_array($filePaths)) {
-                foreach ($filePaths as $filePath) {
-                    // Kiểm tra và tải file lên
-                    if (!empty($filePath)) {
-                        $filePath = str_replace('../../assets/temp_uploads/', '', $filePath);
-                        $pushResult = push_file($filePath);
-                        
-                        if ($pushResult['httpCode'] == 200) {
-                            $uploadedFiles[] = $filePath; // Thêm file vào danh sách đã tải lên
-                        } else {
-                            // Xử lý lỗi tải file lên
-                            if ($pushResult['response']['statusCode'] == 403) {
-                                if (strpos($pushResult['response']['message'], 'row-level security policy')) {
-                                    $errors[] = "RLS Error for file: $filePath";
-                                } else {
-                                    $errors[] = "Auth Error for file: $filePath";
-                                }
-                            } elseif ($pushResult['response']['statusCode'] == 409) {
-                                $errors[] = "Conflict Error for file: $filePath";
-                            } else {
-                                $errors[] = "HTTP Error ({$pushResult['response']['statusCode']}) for file: $filePath";
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    
-        // Nếu có lỗi, xóa các file đã tải lên
-        if (!empty($errors)) {
-            foreach ($uploadedFiles as $uploadedFile) {
-                delete_uploaded_file($uploadedFile); // Hàm xóa file đã tải lên
-            }
-            echo json_encode([
-                'success' => false,
-                'message' => 'Some files failed to upload',
-                'errors' => $errors,
-            ]);
-            exit();
-        }
-    
-        // Nếu tất cả file tải lên thành công
-        echo json_encode([
-            'success' => true,
-            'message' => 'All files uploaded successfully',
-        ]);
-    } else {
-        echo json_encode([
-            'success' => false,
-            'message' => 'No files to upload',
-        ]);
+    // Lấy điểm các môn học từ dữ liệu POST, kiểm tra nếu nó tồn tại và không rỗng
+    $diem = array();
+    for ($i = 0; $i <= 5; $i++) {
+        $monKey = 'mon_' . $i;
+        $diem[$monKey] = isset($_POST[$monKey]) && $_POST[$monKey] !== '' ? $_POST[$monKey] : null;
     }
 
-} else {
-    echo "error: Lỗi PHP request";
-}
-exit();
+    // Tạo cấu trúc JSON từ các dữ liệu
+    $result = array(
+        'frontOfCCCD' => $frontOfCCCD,
+        'behindOfCCCD' => $behindOfCCCD,
+        'soCCCD' => $soCCCD,
+        'hoTen' => $hoTen,
+        'dateBirth' => $dateBirth,
+        'gender' => $gender,
+        'queQuan' => $queQuan,
+        'mts' => $mts,
+        'diem' => $diem
+    );
 
-function delete_uploaded_file($fileName) {
-    $supabase_url = 'https://iwelyvdecathaeppslzw.supabase.co';
-    $bucket_name = 'protect_files';
-    $endpoint = $supabase_url . "/storage/v1/object/" . $bucket_name . "/" . $fileName;
+    // Chuyển đổi mảng thành JSON
+    $jsonData = json_encode($result, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
 
-    $headers = [
-        "Authorization: Bearer " . $_SESSION['access_token']
-    ];
+    // Ghi dữ liệu JSON vào file
+    file_put_contents('data.json', $jsonData);
 
-    $ch = curl_init($endpoint);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
-    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-
-    $response = curl_exec($ch);
-    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    curl_close($ch);
-
-    return [
-        'httpCode' => $httpCode,
-        'response' => json_decode($response, true)
-    ];
-}
-
-function push_file($fileName ){
-    $supabase_url = 'https://iwelyvdecathaeppslzw.supabase.co';    
-    $bucket_name = 'protect_files';
-
-    // Lấy đường dẫn file tạm từ session
-    $filePath = '../../assets/temp_uploads/'.$fileName;
-
-    // Tạo endpoint cho việc tải lên file
-    $endpoint = $supabase_url . "/storage/v1/object/" . $bucket_name . "/" . $fileName;
-
-    // Đọc nội dung của file
-    $fileContent = file_get_contents($filePath);
-
-    // Thiết lập headers cho cURL
-    $headers = [
-        "Authorization: Bearer " . $_SESSION['access_token'],
-        "Content-Type: image/*"
-    ];
-
-    // Khởi tạo cURL và thiết lập các tùy chọn
-    $ch = curl_init($endpoint);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");  // POST request
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $fileContent); // Đính kèm nội dung file
-    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers); // Thêm headers vào yêu cầu
-
-    // Gửi yêu cầu và nhận phản hồi
-    $response = curl_exec($ch);
-    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    curl_close($ch);
-
-    // Ghi log vào file log.txt
-    file_put_contents("log.txt", "filename: $fileName\n access: ".$_SESSION['access_token']." \nResponse: $response\n", FILE_APPEND);
-    return [
-        'httpCode' => $httpCode,
-        'response' => json_decode($response, true)
-    ];
+    // Trả về kết quả JSON
+    echo $jsonData;
 }
 ?>
