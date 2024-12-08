@@ -1,73 +1,22 @@
 Array
 (
-    [------WebKitFormBoundaryBNAQP69l5sU80mfL
-Content-Disposition:_form-data;_name] => "frontof_CCCD"
-
-C:\fakepath\image (2).png
-------WebKitFormBoundaryBNAQP69l5sU80mfL
-Content-Disposition: form-data; name="behind_CCCD"
-
-C:\fakepath\image (1).png
-------WebKitFormBoundaryBNAQP69l5sU80mfL
-Content-Disposition: form-data; name="so_cccd"
-
-123213131321
-------WebKitFormBoundaryBNAQP69l5sU80mfL
-Content-Disposition: form-data; name="hoTen"
-
-213213213
-------WebKitFormBoundaryBNAQP69l5sU80mfL
-Content-Disposition: form-data; name="date_birth"
-
-01/11/2024
-------WebKitFormBoundaryBNAQP69l5sU80mfL
-Content-Disposition: form-data; name="gender"
-
-nam
-------WebKitFormBoundaryBNAQP69l5sU80mfL
-Content-Disposition: form-data; name="que_quan"
-
-12321313
-------WebKitFormBoundaryBNAQP69l5sU80mfL
-Content-Disposition: form-data; name="mts"
-
-123213213
-------WebKitFormBoundaryBNAQP69l5sU80mfL
-Content-Disposition: form-data; name="mon_0"
-
-1
-------WebKitFormBoundaryBNAQP69l5sU80mfL
-Content-Disposition: form-data; name="mon_1"
-
-1
-------WebKitFormBoundaryBNAQP69l5sU80mfL
-Content-Disposition: form-data; name="mon_2"
-
-1
-------WebKitFormBoundaryBNAQP69l5sU80mfL
-Content-Disposition: form-data; name="mon_3"
-
-1
-------WebKitFormBoundaryBNAQP69l5sU80mfL
-Content-Disposition: form-data; name="mon_4"
-
-1
-------WebKitFormBoundaryBNAQP69l5sU80mfL
-Content-Disposition: form-data; name="mon_5"
-
-1
-------WebKitFormBoundaryBNAQP69l5sU80mfL
-Content-Disposition: form-data; name="img_ts"
-
-C:\fakepath\image (2).png
-------WebKitFormBoundaryBNAQP69l5sU80mfL
-Content-Disposition: form-data; name="sumbit_hoso"
-
-Nộp hồ sơ
-------WebKitFormBoundaryBNAQP69l5sU80mfL
-Content-Disposition: form-data; name="htts"
-
-QGKHTN
-------WebKitFormBoundaryBNAQP69l5sU80mfL--
-
+    [id_nganh] => TC001
+    [ten] => CNTT
+    [chi_tieu] => 99
+    [chuong_trinh] => 4
+    [to_hop] => A00
+    [searchInputToHop] => 
+    [date_open_day] => 20/11/2024
+    [date_open_time] => 15:33
+    [date_end_day] => 01/12/2024
+    [date_end_time] => 00:00
+    [diem_chuan] => 24.00
+    [gv_id] => GV0001 - Ngô Đình Minh Trang
+    [searchInput_gv_id] => 
+    [url] => 
+    [file_temp] => 
+    [chu_thich] => 
+    [enable] => on
+    [phuong_tien] => image
+    [mo_ta] => 1111111111
 )

@@ -361,15 +361,15 @@ if (isset($_GET['ma_nganh'])) {
                                     <input tyle="text" id="url" name="url" style="width: 100%; display: none;" placeholder="Điền link nhúng vào" value="<?php echo isset($_GET['ma_nganh']) ? $test['iframe'] : ''; ?>">
                                     <input type="file" id="file_temp" style="width: 100%; display: none;" name="file_temp">
                                     <div id="file_path_hold" style="display: none;">
-                                            <?php
-                                            // Tạo Data URL từ dữ liệu BLOB
-                                            $dataUrl = blobToDataUrl($test['img_link'], 'image/jpeg'); // Chỉnh sửa mimeType nếu cần
+                                        <?php
+                                        // Tạo Data URL từ dữ liệu BLOB
+                                        $dataUrl = blobToDataUrl($test['img_link'], 'image/jpeg'); // Chỉnh sửa mimeType nếu cần
 
-                                            // Hiển thị ảnh với Data URL
-                                            if (isset($_GET['ma_nganh']) && !empty($test['img_link'])){
+                                        // Hiển thị ảnh với Data URL
+                                        if (isset($_GET['ma_nganh']) && !empty($test['img_link'])) {
                                             echo '<p class="file_path_text">File ảnh hiện tại: <a href="' . $dataUrl . '" target="_blank" download="image.png">Xem ảnh</a></p>';
-                                            }
-                                            ?>
+                                        }
+                                        ?>
                                     </div>
                                     <div class="chu_thich_hold" style="display:none; margin-top: 10px;">
                                         <label for="chu_thich">
@@ -541,6 +541,9 @@ if (isset($_GET['ma_nganh'])) {
             }
             note_div[0].style.display = "block";
         }
+        const radivalue = radio.value;
+        console.log(radivalue);
+
     }
 
     document.addEventListener('DOMContentLoaded', function() {
@@ -586,7 +589,6 @@ if (isset($_GET['ma_nganh'])) {
     // Lắng nghe sự kiện submit của form
     document.getElementById("userForm").addEventListener("submit", function(event) {
         event.preventDefault(); // Ngừng hành vi gửi form mặc định
-
         let inputs = document.querySelectorAll("#userForm input[data-required]");
         let Input = document.querySelectorAll("#userForm input");
         let selects = document.querySelectorAll("#userForm select")
@@ -595,6 +597,10 @@ if (isset($_GET['ma_nganh'])) {
         let isValid = true;
         let invalidFields = [];
         let formData = new FormData(); // Sử dụng FormData để thu thập dữ liệu
+
+        //radio
+        let radios = document.querySelectorAll('input[name="phuong_tien"]');
+        let selectedValue = null;
 
         inputs.forEach(function(input) {
             input.classList.remove("error");
@@ -607,24 +613,39 @@ if (isset($_GET['ma_nganh'])) {
                 isValid = false;
                 invalidFields.push(input.getAttribute('placeholder') || input.name || input.id);
                 input.classList.add("error");
-                check= false
+                check = false
             } else {
                 // formData.append(input.name || input.id, inputValue); // Thêm dữ liệu vào FormData
             }
         });
-        if(check){
-            Input.forEach(function(input){
+        if (check) {
+            // Input.forEach(function(input) {
+            //     let inputValue = input.value.trim();
+            //     formData.append(input.name || input.id, inputValue);
+            // });
+            Input.forEach(function(input) {
+                if (input.name === 'phuong_tien') return;
                 let inputValue = input.value.trim();
                 formData.append(input.name || input.id, inputValue);
             });
-            textArea.forEach(function(text){
+
+
+            radios.forEach(function(radio) {
+                if (radio.checked) {
+                    selectedValue = radio.value;
+                    formData.append("phuong_tien", radio.value);
+                }
+            });
+
+            textArea.forEach(function(text) {
                 let textValue = text.value.trim();
                 formData.append(text.name || text.id, textValue);
             });
-            selects.forEach(function(select){
+            selects.forEach(function(select) {
                 let sValue = select.value.trim();
                 formData.append(select.name || select.id, sValue);
             });
+
         }
 
         formData.forEach(function(value, key) {
@@ -640,71 +661,71 @@ if (isset($_GET['ma_nganh'])) {
         } else {
             // Gửi form bằng XHR
             const xhr = new XMLHttpRequest();
-            xhr.open("POST",  "../php_control/data/chinhsuanganhdata.php<?php echo isset($_GET['ma_nganh']) ? '?update=true' : '';?>", true); // Gửi tới file PHP xử lý form
+            xhr.open("POST", "../php_control/data/chinhsuanganhdata.php<?php echo isset($_GET['ma_nganh']) ? '?update=true' : ''; ?>", true); // Gửi tới file PHP xử lý form
             xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
             xhr.onload = function() {
-            if (xhr.status === 200) {
-                try {
-                    // Phân tích cú pháp JSON từ phản hồi
-                    const response = JSON.parse(xhr.responseText);
+                if (xhr.status === 200) {
+                    try {
+                        // Phân tích cú pháp JSON từ phản hồi
+                        const response = JSON.parse(xhr.responseText);
 
-                    if (response.status === 'success') {
-                        // Hiển thị thông báo thành công
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Thành công',
-                            text: response.message || 'Dữ liệu đã được gửi thành công!',
-                            confirmButtonText: 'OK'
-                        }).then(() => {
-                            // Chuyển hướng sang trang khác nếu cần
-                            window.location.href = "chi-tiet-tuyen-sinh.php?ma_nganh=" + document.getElementById('id_nganh').value;
-                        });
-                    } else if (response.status === 'error') {
-                        // Hiển thị thông báo lỗi
+                        if (response.status === 'success') {
+                            // Hiển thị thông báo thành công
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Thành công',
+                                text: response.message || 'Dữ liệu đã được gửi thành công!',
+                                confirmButtonText: 'OK'
+                            }).then(() => {
+                                // Chuyển hướng sang trang khác nếu cần
+                                window.location.href = "chi-tiet-tuyen-sinh.php?ma_nganh=" + document.getElementById('id_nganh').value;
+                            });
+                        } else if (response.status === 'error') {
+                            // Hiển thị thông báo lỗi
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Lỗi',
+                                text: response.message || 'Đã xảy ra lỗi khi xử lý yêu cầu.',
+                                confirmButtonText: 'OK'
+                            });
+                        } else {
+                            // Xử lý nếu phản hồi không có trạng thái hợp lệ
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Lỗi',
+                                text: 'Dữ liệu trả về không hợp lệ.',
+                                confirmButtonText: 'OK'
+                            });
+                        }
+                    } catch (e) {
+                        // Xử lý lỗi khi phân tích JSON thất bại
+                        console.error(xhr.responseText);
                         Swal.fire({
                             icon: 'error',
-                            title: 'Lỗi',
-                            text: response.message || 'Đã xảy ra lỗi khi xử lý yêu cầu.',
-                            confirmButtonText: 'OK'
-                        });
-                    } else {
-                        // Xử lý nếu phản hồi không có trạng thái hợp lệ
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Lỗi',
-                            text: 'Dữ liệu trả về không hợp lệ.',
+                            title: 'Lỗi phân tích dữ liệu',
+                            text: 'Đã xảy ra lỗi khi xử lý dữ liệu từ máy chủ.',
                             confirmButtonText: 'OK'
                         });
                     }
-                } catch (e) {
-                    // Xử lý lỗi khi phân tích JSON thất bại
-                    console.error(xhr.responseText);
+                } else {
+                    // Xử lý khi trạng thái HTTP khác 200
                     Swal.fire({
                         icon: 'error',
-                        title: 'Lỗi phân tích dữ liệu',
-                        text: 'Đã xảy ra lỗi khi xử lý dữ liệu từ máy chủ.',
+                        title: 'Lỗi gửi dữ liệu',
+                        text: 'Đã xảy ra lỗi khi gửi dữ liệu. Vui lòng thử lại!',
                         confirmButtonText: 'OK'
                     });
                 }
-            } else {
-                // Xử lý khi trạng thái HTTP khác 200
+            };
+
+            xhr.onerror = function() {
                 Swal.fire({
                     icon: 'error',
-                    title: 'Lỗi gửi dữ liệu',
-                    text: 'Đã xảy ra lỗi khi gửi dữ liệu. Vui lòng thử lại!',
+                    title: 'Lỗi kết nối',
+                    text: 'Không thể kết nối đến máy chủ. Vui lòng kiểm tra mạng hoặc thử lại!',
                     confirmButtonText: 'OK'
                 });
-            }
-        };
-
-        xhr.onerror = function() {
-            Swal.fire({
-                icon: 'error',
-                title: 'Lỗi kết nối',
-                text: 'Không thể kết nối đến máy chủ. Vui lòng kiểm tra mạng hoặc thử lại!',
-                confirmButtonText: 'OK'
-            });
-        };
+            };
             xhr.send(formData); // Gửi FormData qua XHR
         }
     });
