@@ -148,7 +148,18 @@ if (isset($_GET['ma_nganh'])) {
                         <?php endif; ?>
                         <?php if($_SESSION['user']['role'] === 'Admin'):?>
                         <div style='margin-top: 10px; margin-left: 10px;'>
-                            <button class="custom-button-dktc" onclick="window.location.href = 'chinhsuanganh.php?ma_nganh=<?php echo $_GET['ma_nganh']; ?>'">&#128203; CHỈNH SỬA HỒ SƠ TUYỂN SINH</button>
+                            <button class="custom-button-dktc" onclick="window. location.href = 'chinhsuanganh.php?ma_nganh=<?php echo $_GET['ma_nganh']; ?>'">&#128203; CHỈNH SỬA HỒ SƠ TUYỂN SINH</button>
+                        </div>
+                        <div style='margin-top: 10px; margin-left: 10px;'>
+                            <button class="custom-button-dktc" onclick="SetEnable()">
+                                <?php
+                                     if($info['isenable']){
+                                        echo "ẨN CHUYÊN NGÀNH";
+                                     }else{
+                                        echo "HIỂN THỊ CHUYÊN NGÀNH";
+                                     }
+                                ?>
+                            </button>
                         </div>
                         <?php endif; ?>
                     </div>
@@ -195,6 +206,33 @@ if (isset($_GET['ma_nganh'])) {
         }, 3500);
     </script>
 <?php endif; ?>
+
+<script>
+    function SetEnable() {
+        // Gán giá trị id vào textInput (tránh trùng lặp)
+
+        const xhr2 = new XMLHttpRequest();
+        xhr2.open("POST", "../php_control/data/switch-enable.php", true);
+        xhr2.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr2.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+
+        xhr2.onload = function() {
+            if (xhr2.status === 200) {
+                window.location.reload();               
+            } else {
+                // Xử lý lỗi nếu có
+                console.error('Error:', xhr2.status);
+            }
+        };
+        const currentUrl = new URL(window.location.href);
+
+        // Lấy giá trị của tham số 'ma_nganh'
+        const ma_nganh = currentUrl.searchParams.get('ma_nganh');
+
+
+        xhr2.send(`id=${ma_nganh}`);
+    }
+</script>
 
 <!-- Log kiểm tra dữ liệu, không được xóa -->
 <?php

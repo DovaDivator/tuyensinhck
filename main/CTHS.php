@@ -73,7 +73,7 @@ echo "<script>console.log('id: " .  $id . "');</script>";
                     <div class="body_path">
                         <div class="info_layout" id="nguoidung_path">
                             <div class="linediv">
-                                <h1>Thông tin chi tiết id: <?php echo $course['id']; ?></h1> 
+                                <h1>Thông tin chi tiết</h1> 
                                     <button type="submit" class="icon-button" id="blockAcc">
                                         <img src="../assets/icon/banning.png?v=<?php echo filemtime("../assets/icon/banning.png"); ?>"
                                             alt="Đình chỉ tài khoản" title="Đình chỉ tài khoản" onclick="">
@@ -89,7 +89,7 @@ echo "<script>console.log('id: " .  $id . "');</script>";
                                 </div>
                                 <div class="info_text_container">
                                     <h2 style='margin-top: 0;'><?php echo $course['ten']; ?></h2>
-                                    <p id="id_user">ID: <?php echo $course['id']; ?></p>
+                                    <p id="id_user">ID: <?php echo $course['id_user']; ?></p>
                                     <p id="role">Vai trò:
                                         <?php
                                         if ($role === 'sv') {

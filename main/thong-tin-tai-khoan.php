@@ -52,12 +52,6 @@ include "../php_control/data/get_infomation.php";
                                     <img src="../assets/icon/info_icon.png?v=<?php echo filemtime("../assets/icon/info_icon.png"); ?>"
                                         alt="Chỉnh sửa thông tin" title="Chỉnh sửa thông tin" onclick="MovePage('chinhsuathongtin.php')">
                                 </button>
-                                <?php if ($_SESSION['user']['role'] === 'Admin'): ?>
-                                    <button type="submit" class="icon-button" id="blockAcc">
-                                        <img src="../assets/icon/banning.png?v=<?php echo filemtime("../assets/icon/banning.png"); ?>"
-                                            alt="Đình chỉ tài khoản" title="Đình chỉ tài khoản" onclick="">
-                                    </button>
-                                <?php endif; ?>
                             </div>
                             <div class="linediv" style="gap:30px; align-items:flex-start;">
                                 <div class="avatar_container disable" style="width: 200px; height: 200px; 
