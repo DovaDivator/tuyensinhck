@@ -1,18 +1,18 @@
 {
-    "frontOfCCCD": null,
-    "behindOfCCCD": null,
-    "soCCCD": null,
-    "hoTen": null,
-    "dateBirth": null,
-    "gender": null,
-    "queQuan": null,
-    "mts": null,
+    "frontOfCCCD": "C:\\fakepath\\niemtinT1.png",
+    "behindOfCCCD": "C:\\fakepath\\niemtinT1.png",
+    "soCCCD": "122",
+    "hoTen": "2",
+    "dateBirth": "02\/12\/2024",
+    "gender": "nam",
+    "queQuan": "1",
+    "mts": "1",
     "diem": {
-        "mon_0": null,
-        "mon_1": null,
-        "mon_2": null,
-        "mon_3": null,
-        "mon_4": null,
-        "mon_5": null
+        "mon_0": "1",
+        "mon_1": "1",
+        "mon_2": "1",
+        "mon_3": "1",
+        "mon_4": "1",
+        "mon_5": "1"
     }
 }
