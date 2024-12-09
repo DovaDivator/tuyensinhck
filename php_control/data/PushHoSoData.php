@@ -8,22 +8,24 @@ include "refresh_token.php";
 
 // Xử lý yêu cầu đăng nhập
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Kiểm tra xem các khóa có tồn tại không
-    // unset($_POST);
-    // $_POST = array();
+    // Lấy dữ liệu JSON từ php://input
+    $jsonData = file_get_contents('php://input');
+    $data = json_decode($jsonData, true);
 
-    // Thực hiện truy vấn SQL
-    $file = 'pushhs.txt';
-    if (file_put_contents($file, print_r($_POST, true)) !== false) {
-        echo json_encode([
-            'status' => 'success',
-            'message' => 'Dữ liệu đã được ghi vào file thành công!',
-        ]);
-    } else {
-        echo json_encode([
-            'status' => 'error',
-            'message' => 'Lỗi khi ghi dữ liệu vào file.',
-        ]);
+    // Kiểm tra xem dữ liệu có hợp lệ không
+    if ($data) {
+        $file = 'pushhs.txt';
+        if (file_put_contents($file, print_r($data, true)) !== false) {
+            echo json_encode([
+                'status' => 'success',
+                'message' => 'Dữ liệu đã được ghi vào file thành công!',
+            ]);
+        } else {
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'Lỗi khi ghi dữ liệu vào file.',
+            ]);
+        }
     }
     if (isset($_SESSION['file_path']) && is_array($_SESSION['file_path'])) {
         $uploadedFiles = [];

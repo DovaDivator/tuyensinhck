@@ -1,73 +1,84 @@
 Array
 (
-    [------WebKitFormBoundarybvml6nWaOwUgugB5
-Content-Disposition:_form-data;_name] => "mặt trước CCCD"
+    [0] => Array
+        (
+            [key] => frontof_CCCD
+            [value] => ../assets/temp_uploads/niemtinT1.png
+        )
 
-C:\fakepath\banning.png
-------WebKitFormBoundarybvml6nWaOwUgugB5
-Content-Disposition: form-data; name="mặt sau CCCD"
+    [1] => Array
+        (
+            [key] => behind_CCCD
+            [value] => ../assets/temp_uploads/niemtinT1.png
+        )
 
-C:\fakepath\mcnugget.webp
-------WebKitFormBoundarybvml6nWaOwUgugB5
-Content-Disposition: form-data; name="so_cccd"
+    [2] => Array
+        (
+            [key] => so_cccd
+            [value] => 123
+        )
 
-123213123213
-------WebKitFormBoundarybvml6nWaOwUgugB5
-Content-Disposition: form-data; name="hoTen"
+    [3] => Array
+        (
+            [key] => hoTen
+            [value] => 213
+        )
 
-123231313213213
-------WebKitFormBoundarybvml6nWaOwUgugB5
-Content-Disposition: form-data; name="date_birth"
+    [4] => Array
+        (
+            [key] => date_birth
+            [value] => 09/12/2024
+        )
 
-02/12/2024
-------WebKitFormBoundarybvml6nWaOwUgugB5
-Content-Disposition: form-data; name="gender"
+    [5] => Array
+        (
+            [key] => gender
+            [value] => nam
+        )
 
-nam
-------WebKitFormBoundarybvml6nWaOwUgugB5
-Content-Disposition: form-data; name="que_quan"
+    [6] => Array
+        (
+            [key] => que_quan
+            [value] => 123
+        )
 
-12321313
-------WebKitFormBoundarybvml6nWaOwUgugB5
-Content-Disposition: form-data; name="mts"
+    [7] => Array
+        (
+            [key] => htts
+            [value] => QGKHTN
+        )
 
-323131
-------WebKitFormBoundarybvml6nWaOwUgugB5
-Content-Disposition: form-data; name="mon_Toán"
+    [8] => Array
+        (
+            [key] => mts
+            [value] => 123
+        )
 
-4
-------WebKitFormBoundarybvml6nWaOwUgugB5
-Content-Disposition: form-data; name="mon_Văn"
+    [9] => Array
+        (
+            [mon_Toán] => 321
+            [mon_Văn] => 56
+            [mon_Anh] => 23
+            [mon_Lý] => 56
+            [mon_Hóa] => 23
+            [mon_Sinh] => 4
+        )
 
-4
-------WebKitFormBoundarybvml6nWaOwUgugB5
-Content-Disposition: form-data; name="mon_Anh"
+    [10] => Array
+        (
+            [key] => img_ts
+            [value] => ../assets/temp_uploads/465673197_1242397526859863_1577957087824783414_n (1).png
+        )
 
-4
-------WebKitFormBoundarybvml6nWaOwUgugB5
-Content-Disposition: form-data; name="mon_Lý"
+    [11] => Array
+        (
+            [0] => Array
+                (
+                    [proofType] => priority_subject
+                    [proofDetail] => 2
+                    [proofFileName] => ../assets/temp_uploads/chapterlist.png
+                )
 
-4
-------WebKitFormBoundarybvml6nWaOwUgugB5
-Content-Disposition: form-data; name="mon_Hóa"
-
-4
-------WebKitFormBoundarybvml6nWaOwUgugB5
-Content-Disposition: form-data; name="mon_Sinh"
-
-4
-------WebKitFormBoundarybvml6nWaOwUgugB5
-Content-Disposition: form-data; name="img_ts"
-
-C:\fakepath\banning.png
-------WebKitFormBoundarybvml6nWaOwUgugB5
-Content-Disposition: form-data; name="sumbit_hoso"
-
-Nộp hồ sơ
-------WebKitFormBoundarybvml6nWaOwUgugB5
-Content-Disposition: form-data; name="htts"
-
-QGKHTN
-------WebKitFormBoundarybvml6nWaOwUgugB5--
+        )
 
 )

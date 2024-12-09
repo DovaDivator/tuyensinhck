@@ -1,35 +1,32 @@
 Array
 (
-    [frontof_CCCD] => 
-    [behind_CCCD] => 
-    [so_cccd] => 11231
-    [hoTen] => 123123
-    [date_birth] => 03/12/2024
-    [gender] => 
-    [que_quan] => 123
-    [mts] => dsfdsfsdfsdf
-    [mon_Toán] => 1
-    [mon_Văn] => 5
-    [mon_Anh] => 1
-    [mon_Sử] => 4
-    [mon_Địa] => 2
-    [mon_GDCD] => 3
-    [img_ts] => 
-    [imgs_bonus] => Array
+    [id_nganh] => AC002
+    [ten] => Kỹ thuật phần mềm
+    [chi_tieu] => 200
+    [chuong_trinh] => 4
+    [to_hop] => A00, A01
+    [searchInputToHop] => 
+    [date_open_day] => 01/09/2024
+    [date_open_time] => 08:00
+    [date_end_day] => 31/12/2024
+    [date_end_time] => 23:59
+    [diem_chuan] => 24.50
+    [diem_loc] => Array
         (
-            [0] => C:\fakepath\465673197_1242397526859863_1577957087824783414_n (1).png
+            [0] => 9
         )
 
-    [sumbit_hoso] => Nộp hồ sơ
-    [htts] => QGKHXH
-    [proof_type] => Array
+    [gv_id] => GV0001 - Ngô Đình Minh Trang
+    [searchInput_gv_id] => 
+    [phuong_tien] => image
+    [url] => https://www.youtube.com/embed/r95XahnBg_A?si=GhNgHFjy5pWlJz3k
+    [file_temp] => C:\fakepath\textmodifile.png
+    [chu_thich] => Chú thích thêm
+    [enable] => on
+    [mo_ta] => Mô tả chương trình
+    [diem] => Array
         (
-            [0] => english_certificate
-        )
-
-    [proof_detail] => Array
-        (
-            [0] => 1
+            [0] => Lý
         )
 
 )

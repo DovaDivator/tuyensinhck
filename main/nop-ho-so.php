@@ -88,7 +88,7 @@ $list_htts = GetListHinhThucXetTuyen();
 
                                             <p class="qweq">Mặt trước CCCD</p>
                                             <!-- Avatar Image -->
-                                            <img src="<?php echo getSignedUrl('protect_files', $id . '/' . '674ffaa1d33fd_1733294753.png') ?>" id="frontof_CCCD_img" class="CCCD" >
+                                            <img src="<?php echo getSignedUrl('protect_files', $id . '/' . '674ffaa1d33fd_1733294753.png') ?>" id="frontof_CCCD_img" class="CCCD">
 
                                             <!-- Edit Icon Overlay -->
                                             <div class="edit_avatar_img_layout cccd">
@@ -339,112 +339,202 @@ $list_htts = GetListHinhThucXetTuyen();
         }
     }
 
-    // function NopHoSo() {
-    //     event.preventDefault();
-    //     ShowLoading();
+    function getProofEntries() {
+        // Lấy tất cả các mục chứng từ
 
-    //     const xhr = new XMLHttpRequest();
-    //     xhr.open("POST", "../php_control/data/PushHoSoData.php", true);
-    //     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    //     xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+        console.log(data);
+        return data;
+    }
 
-    //     xhr.onload = function() {
-    //         if (xhr.status === 200) {
-    //             const response = xhr.responseText; // Lấy dữ liệu phản hồi
-
-    //             // Nếu bạn không trả về JSON, xử lý phản hồi như một chuỗi
-    //             if (response.trim().startsWith("success")) {
-    //                 HideLoading();
-    //                 SuccessDialog("Thông báo", response.replace("success: ", "Gửi hồ sơ thành công"));
-    //             } else if (response.trim().startsWith("warming: ")) {
-    //                 HideLoading();
-    //                 WarmingDialog("Thông báo", response.replace("warming: ", ""));
-    //             } else if (response.trim().startsWith("errorAuth: ")) {
-    //                 HideLoading();
-    //                 ErrorDialog("Lỗi phiên người dùng", response.replace("errorAuth: ", ""));
-    //             } else {
-    //                 HideLoading();
-    //                 ErrorDialog("Thông báo lỗi", response.replace("error: ", ""));
-    //             }
-    //         } else {
-    //             HideLoading();
-    //             ErrorDialog("Lỗi kết nối", "Không thể kết nối đến máy chủ. Vui lòng thử lại sau.");
-    //         }
-    //     };
-
-    //     xhr.send();
-    // }
 
     function NopHoso() {
         event.preventDefault();
-        let inputs = document.querySelectorAll("#Nophs input[data-required]");
-        let selectedGender = document.querySelector('input[name="gender"]:checked');
-        let Input = document.querySelectorAll("#Nophs input");
-        let selects = document.querySelectorAll("#Nophs select")
-        let textArea = document.querySelectorAll("#Nophs textarea");
         let radios = document.getElementsByName("gender");
         let checkgender = false;
         let check = true;
         let isValid = true;
         let invalidFields = [];
-        let formData = new FormData(); // Sử dụng FormData để thu thập dữ liệu
+        let Array = [];
+        // let formData = new FormData(); // Sử dụng FormData để thu thập dữ liệu
+        let radiocheck;
+        let frontof_CCCD = document.getElementById("frontof_CCCD");
+        if (!frontof_CCCD.value.trim()) {
+            isValid = false;
+            invalidFields.push("Ảnh mặt trước của CCCD");
+            // so_cccd.classList.add("error");
+            check = false;
+        }
+        let frontC = frontof_CCCD ? frontof_CCCD.files[0].name : '';
+        let behind_CCCD = document.getElementById("behind_CCCD");
+        if (!behind_CCCD.value.trim()) {
+            isValid = false;
+            invalidFields.push("Căn cước công dân");
+            // so_cccd.classList.add("error");
+            check = false;
+        }
+        let behindC = behind_CCCD ? behind_CCCD.files[0].name : '';
 
-        inputs.forEach(function(input) {
-            input.classList.remove("error");
-        });
+        console.log(frontC);
+        console.log(behindC);
 
-        // Kiểm tra từng input
-        inputs.forEach(function(input) {
-            let inputValue = input.value.trim();
-            if (!inputValue) {
-                isValid = false;
-                invalidFields.push(input.getAttribute('placeholder') || input.name || input.id);
-                input.classList.add("error");
-                check = false
-            }
-        });
+        let so_cccd = document.getElementById("so_cccd");
+        if (!so_cccd.value.trim()) {
+            isValid = false;
+            invalidFields.push("Căn cước công dân");
+            // so_cccd.classList.add("error");
+            check = false;
+        }
 
+        let hoTen = document.getElementById("hoTen");
+
+        if (!hoTen.value.trim()) {
+            isValid = false;
+            invalidFields.push("Họ và tên");
+            // so_cccd.classList.add("error");
+            check = false;
+        }
+        let date_birth = document.getElementById("date_birth");
+        if (!date_birth.value.trim()) {
+            isValid = false;
+            invalidFields.push("Ngày sinh");
+            // so_cccd.classList.add("error");
+            check = false;
+        }
         for (let i = 0; i < radios.length; i++) {
             if (radios[i].checked) {
                 checkgender = true;
+                radiocheck = radios[i].value;
                 break;
             }
-            if (!checkgender) {
-                invalidField = "vui lòng chọn giới tính";
-            }
+        }
+        console.log(radiocheck);
+        if (!checkgender) {
+            invalidFields.push("giới tính");
         }
 
         if (!checkgender) {
             isValid = false;
         }
 
-        if (check) {
-            Input.forEach(function(input) {
-                let inputValue = "";
-                if (input.type === "radio") {
-                    if (input.checked) {
-                        inputValue = input.value;
-                    }
-                } else {
-                    inputValue = input.value.trim();
-                }
-                if (inputValue) {
-                    formData.append(input.name || input.id, inputValue);
-                }
-            });
-            textArea.forEach(function(text) {
-                let textValue = text.value.trim();
-                formData.append(text.name || text.id, textValue);
-            });
-            selects.forEach(function(select) {
-                let sValue = select.value.trim();
-                formData.append(select.getAttribute('placeholder') || select.name, sValue);
-            });
+        let que_quan = document.getElementById("que_quan");
+        if (!date_birth.value.trim()) {
+            isValid = false;
+            invalidFields.push("Quê quán");
+            // so_cccd.classList.add("error");
+            check = false;
+        }
+        let htts = document.getElementById("selection");
+        if (!htts.value.trim()) {
+            isValid = false;
+            invalidFields.push("Hình thức xét tuyển");
+            // so_cccd.classList.add("error");
+            check = false;
         }
 
-        formData.forEach(function(value, key) {
-            console.log(key + ": " + value);
+        let mts = document.getElementById("mts");
+        if (!mts.value.trim()) {
+            isValid = false;
+            invalidFields.push("Mã tuyển sinh");
+            // so_cccd.classList.add("error");
+            check = false;
+        }
+
+        let img_ts = document.getElementById("img_ts");
+        if (!img_ts.value.trim()) {
+            isValid = false;
+            invalidFields.push("Mã tuyển sinh");
+            // so_cccd.classList.add("error");
+            check = false;
+        }
+        let img = img_ts ? img_ts.files[0].name : '';
+
+
+        const inputDiem = document.querySelectorAll(".diem_mon input[type='number']");
+        const diemValues = {};
+
+        inputDiem.forEach(input => {
+            if (!input.value.trim()) {
+                isValid = false;
+                invalidFields.push(input.getAttribute('placeholder') || input.name || input.id);
+                // so_cccd.classList.add("error");
+                check = false;
+            } else {
+                diemValues[input.name] = input.value;
+            }
         });
+
+        let proofEntries = document.querySelectorAll('.proof-entry');
+        let data = [];
+
+        // Lặp qua từng mục chứng từ và lấy giá trị
+        proofEntries.forEach(function(entry) {
+            let proofType = entry.querySelector('select[name="proof_type[]"]').value;
+            let proofDetail = entry.querySelector('select[name="proof_detail[]"]').value;
+            let proofFile = entry.querySelector('input[name="imgs_bonus[]"]').files[0]; // Lấy file đầu tiên (nếu có)
+
+            // Kiểm tra và lấy tên của file (nếu có)
+            let proofFileName = proofFile ? proofFile.name : '';
+
+            // Nếu có dữ liệu, đẩy vào mảng data
+            if (proofType && proofDetail && proofFileName) {
+                data.push({
+                    proofType: proofType,
+                    proofDetail: proofDetail,
+                    proofFileName: "../assets/temp_uploads/" + proofFileName // Lưu tên tệp ảnh
+                });
+            }
+        });
+
+        console.log(data)
+        if (check) {
+            if (checkgender) {
+                Array.push({
+                    key: "frontof_CCCD",
+                    value: "../assets/temp_uploads/" + frontC
+                })
+                Array.push({
+                    key: "behind_CCCD",
+                    value: "../assets/temp_uploads/" + behindC
+                })
+                Array.push({
+                    key: so_cccd.name || so_cccd.id,
+                    value: so_cccd.value
+                });
+                Array.push({
+                    key: hoTen.name || hoTen.id,
+                    value: hoTen.value
+                });
+                Array.push({
+                    key: date_birth.name || date_birth.id,
+                    value: date_birth.value
+                });
+                Array.push({
+                    key: "gender",
+                    value: radiocheck
+                });
+                Array.push({
+                    key: que_quan.name || que_quan.id,
+                    value: que_quan.value
+                });
+                Array.push({
+                    key: htts.name || htts.id,
+                    value: htts.value
+                });
+                Array.push({
+                    key: mts.name || mts.id,
+                    value: mts.value
+                });
+
+                Array.push(diemValues);
+                Array.push({
+                    key: img_ts.name || img_ts.id,
+                    value: "../assets/temp_uploads/" + img
+                })
+                Array.push(data);
+            }
+        }
+
+        console.log(Array);
         if (!isValid) {
             Swal.fire({
                 icon: 'error',
@@ -455,8 +545,9 @@ $list_htts = GetListHinhThucXetTuyen();
         } else {
             // Gửi form bằng XHR
             const xhr = new XMLHttpRequest();
-            xhr.open("POST", "../php_control/data/PushHoSoData.php"<?php echo isset($_GET['ma_nganh']) ? '?update=true' : '';?>, true);
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.open("POST", "../php_control/data/PushHoSoData.php"
+                <?php echo isset($_GET['ma_nganh']) ? '?update=true' : ''; ?>, true);
+            xhr.setRequestHeader("Content-Type", "application/json");
             xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
             xhr.onload = function() {
                 if (xhr.status === 200) {
@@ -485,7 +576,9 @@ $list_htts = GetListHinhThucXetTuyen();
                     confirmButtonText: 'OK'
                 });
             };
-            xhr.send(formData); // Gửi FormData qua XHR
+            let jsonData = JSON.stringify(Array);
+            console.log(jsonData);
+            xhr.send(jsonData); 
         }
 
 
