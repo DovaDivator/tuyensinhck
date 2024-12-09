@@ -3,31 +3,31 @@ Array
     [0] => Array
         (
             [key] => frontof_CCCD
-            [value] => ../assets/temp_uploads/niemtinT1.png
+            [value] => ../assets/temp_uploads/67571da5e3dde_1733762469.png
         )
 
     [1] => Array
         (
             [key] => behind_CCCD
-            [value] => ../assets/temp_uploads/niemtinT1.png
+            [value] => ../assets/temp_uploads/67571da743b1d_1733762471.png
         )
 
     [2] => Array
         (
             [key] => so_cccd
-            [value] => 123
+            [value] => 11111
         )
 
     [3] => Array
         (
             [key] => hoTen
-            [value] => 213
+            [value] => 1
         )
 
     [4] => Array
         (
             [key] => date_birth
-            [value] => 09/12/2024
+            [value] => 03/12/2024
         )
 
     [5] => Array
@@ -39,7 +39,7 @@ Array
     [6] => Array
         (
             [key] => que_quan
-            [value] => 123
+            [value] => 22
         )
 
     [7] => Array
@@ -51,34 +51,27 @@ Array
     [8] => Array
         (
             [key] => mts
-            [value] => 123
+            [value] => 2222
         )
 
     [9] => Array
         (
-            [mon_Toán] => 321
-            [mon_Văn] => 56
-            [mon_Anh] => 23
-            [mon_Lý] => 56
-            [mon_Hóa] => 23
-            [mon_Sinh] => 4
+            [mon_Toán] => 1
+            [mon_Văn] => 5
+            [mon_Anh] => 2
+            [mon_Lý] => 4
+            [mon_Hóa] => 1
+            [mon_Sinh] => 3
         )
 
     [10] => Array
         (
             [key] => img_ts
-            [value] => ../assets/temp_uploads/465673197_1242397526859863_1577957087824783414_n (1).png
+            [value] => ../assets/temp_uploads/chapterlist.png
         )
 
     [11] => Array
         (
-            [0] => Array
-                (
-                    [proofType] => priority_subject
-                    [proofDetail] => 2
-                    [proofFileName] => ../assets/temp_uploads/chapterlist.png
-                )
-
         )
 
 )

@@ -272,6 +272,8 @@ $list_htts = GetListHinhThucXetTuyen();
             });
     };
 
+    var x = [];
+
     async function uploadNewImage(inputId, imgId) {
         const inputFile = document.getElementById(inputId); // Lấy input file
         const file = inputFile.files[0]; // Lấy file đầu tiên được chọn
@@ -293,10 +295,29 @@ $list_htts = GetListHinhThucXetTuyen();
                 // Gọi hàm tải file tạm lên server
                 const uploadData = await UploadTempFile(inputId, formData);
                 if (uploadData.success) {
+                    const imagePath = uploadData.imagePath; // Đường dẫn ảnh từ server
+                    const fileName = imagePath.split('/').pop(); // Tách tên file từ đường dẫn
+
+                    // Thêm hoặc cập nhật đường dẫn ảnh trong mảng x
+                    const existingIndex = x.findIndex(item => item.key === inputId);
+                    if (existingIndex !== -1) {
+                        x[existingIndex].value = imagePath; // Cập nhật nếu đã tồn tại
+                    } else {
+                        x.push({
+                            key: inputId,
+                            value: imagePath
+                        }); // Thêm mới nếu chưa tồn tại
+                    }
+
                     // Cập nhật ảnh hiển thị sau khi tải lên
-                    const element_image = document.getElementById(imgId);
-                    element_image.src = uploadData.imagePath + '?v=' + new Date().getTime();
-                    element_image.style.scale = 1.5; // Thay đổi kích thước ảnh nếu cần
+                    const elementImage = document.getElementById(imgId);
+                    elementImage.src = imagePath + '?v=' + new Date().getTime();
+                    elementImage.style.scale = 1.5; // Thay đổi kích thước ảnh nếu cần
+
+                    return {
+                        imagePath,
+                        fileName
+                    };
                 } else {
                     console.error('Có lỗi xảy ra khi tải ảnh lên: ' + uploadData.message);
                 }
@@ -307,6 +328,14 @@ $list_htts = GetListHinhThucXetTuyen();
         } else {
             alert('Vui lòng chọn một tệp tin.');
         }
+    }
+
+
+    function getProofEntries() {
+        // Lấy tất cả các mục chứng từ
+
+        console.log(data);
+        return data;
     }
 
     function handleSelectionChange() {
@@ -339,11 +368,16 @@ $list_htts = GetListHinhThucXetTuyen();
         }
     }
 
-    function getProofEntries() {
-        // Lấy tất cả các mục chứng từ
 
-        console.log(data);
-        return data;
+
+    function getImagePathByInputId(inputId) {
+    const entry = x.find(item => item.key === inputId);
+    if (entry) {
+        return entry.value;
+    } else {
+        console.error('Không tìm thấy đường dẫn ảnh cho inputId:', inputId);
+        return null;
+    }
     }
 
 
@@ -356,6 +390,12 @@ $list_htts = GetListHinhThucXetTuyen();
         let invalidFields = [];
         let Array = [];
         // let formData = new FormData(); // Sử dụng FormData để thu thập dữ liệu
+        const front = getImagePathByInputId("frontof_CCCD");
+        const back = getImagePathByInputId("behind_CCCD")
+        console.log("Ảnh mặt trước của CCCD: " + front);
+        console.log("Ảnh mặt trước của CCCD: " + back);
+
+
         let radiocheck;
         let frontof_CCCD = document.getElementById("frontof_CCCD");
         if (!frontof_CCCD.value.trim()) {
@@ -364,7 +404,6 @@ $list_htts = GetListHinhThucXetTuyen();
             // so_cccd.classList.add("error");
             check = false;
         }
-        let frontC = frontof_CCCD ? frontof_CCCD.files[0].name : '';
         let behind_CCCD = document.getElementById("behind_CCCD");
         if (!behind_CCCD.value.trim()) {
             isValid = false;
@@ -372,10 +411,6 @@ $list_htts = GetListHinhThucXetTuyen();
             // so_cccd.classList.add("error");
             check = false;
         }
-        let behindC = behind_CCCD ? behind_CCCD.files[0].name : '';
-
-        console.log(frontC);
-        console.log(behindC);
 
         let so_cccd = document.getElementById("so_cccd");
         if (!so_cccd.value.trim()) {
@@ -446,8 +481,6 @@ $list_htts = GetListHinhThucXetTuyen();
             // so_cccd.classList.add("error");
             check = false;
         }
-        let img = img_ts ? img_ts.files[0].name : '';
-
 
         const inputDiem = document.querySelectorAll(".diem_mon input[type='number']");
         const diemValues = {};
@@ -490,11 +523,11 @@ $list_htts = GetListHinhThucXetTuyen();
             if (checkgender) {
                 Array.push({
                     key: "frontof_CCCD",
-                    value: "../assets/temp_uploads/" + frontC
+                    value: front
                 })
                 Array.push({
                     key: "behind_CCCD",
-                    value: "../assets/temp_uploads/" + behindC
+                    value: back
                 })
                 Array.push({
                     key: so_cccd.name || so_cccd.id,
@@ -526,6 +559,7 @@ $list_htts = GetListHinhThucXetTuyen();
                 });
 
                 Array.push(diemValues);
+                let img = img_ts ? img_ts.files[0].name : '';
                 Array.push({
                     key: img_ts.name || img_ts.id,
                     value: "../assets/temp_uploads/" + img
@@ -578,7 +612,7 @@ $list_htts = GetListHinhThucXetTuyen();
             };
             let jsonData = JSON.stringify(Array);
             console.log(jsonData);
-            xhr.send(jsonData); 
+            xhr.send(jsonData);
         }
 
 

@@ -20,7 +20,7 @@ Array
     [searchInput_gv_id] => 
     [phuong_tien] => image
     [url] => https://www.youtube.com/embed/r95XahnBg_A?si=GhNgHFjy5pWlJz3k
-    [file_temp] => C:\fakepath\textmodifile.png
+    [file_temp] => 
     [chu_thich] => Chú thích thêm
     [enable] => on
     [mo_ta] => Mô tả chương trình
