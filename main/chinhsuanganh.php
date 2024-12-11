@@ -578,62 +578,166 @@ if (isset($_GET['ma_nganh'])) {
 
     // Lắng nghe sự kiện submit của form
     document.getElementById("userForm").addEventListener("submit", function(event) {
-        event.preventDefault(); // Ngừng hành vi gửi form mặc định
-
-        let inputs = document.querySelectorAll("#userForm input[data-required]");
-        let Input = document.querySelectorAll("#userForm input");
-        let selects = document.querySelectorAll("#userForm select")
-        let textArea = document.querySelectorAll("#userForm textarea");
+        event.preventDefault(); 
         let check = true;
         let isValid = true;
         let invalidFields = [];
-        let formData = new FormData(); // Sử dụng FormData để thu thập dữ liệu
+        let Array = [];
+        let formData = new FormData(); 
 
-        inputs.forEach(function(input) {
-            input.classList.remove("error");
-        });
+        let idNganh = document.getElementById("id_nganh");
+        if (!idNganh.value.trim()) {
+            isValid = false;
+            invalidFields.push("Mã ngành");
+            check = false;
+        }
+        let ten = document.getElementById("ten");
+        if (!ten.value.trim()) {
+            isValid = false;
+            invalidFields.push("Tên");
+            check = false;
+        }
+        let chiTieu = document.getElementById("chi_tieu");
+        if (!chiTieu.value.trim()) {
+            isValid = false;
+            invalidFields.push("Chỉ tiêu");
+            check = false;
+        }
+        let chuongTrinh = document.getElementById("chuong_trinh");
+        if (!chuongTrinh.value.trim()) {
+            isValid = false;
+            invalidFields.push("Số năm đào tạo");
+            check = false;
+        }
+        let toHop = document.getElementById("to_hop");
+        if (!toHop.value.trim()) {
+            isValid = false;
+            invalidFields.push("Tổ hợp");
+            check = false;
+        }
+        let dateOpenDay = document.getElementById("date_open_day");
+        let dateOpenTime = document.getElementById("date_open_time");
+        let dateEndDay = document.getElementById("date_end_day");
+        if (!dateEndDay.value.trim()) {
+            isValid = false;
+            invalidFields.push("Ngày kết thúc");
+            check = false;
+        }
+        let dateEndTime = document.getElementById("date_end_time");
+        if (!dateEndTime.value.trim()) {
+            isValid = false;
+            invalidFields.push("Giờ kết thúc");
+            check = false;
+        }
+        let diemChuan = document.getElementById("diem_chuan");
+        if (!diemChuan.value.trim()) {
+            isValid = false;
+            invalidFields.push("Điểm chuẩn");
+            check = false;
+        }
+        let gvId = document.getElementById("gv_id");
+        let moTa = document.getElementById("mo_ta");
+        let url = document.getElementById("url");
+        let file_temp = document.getElementById("file_temp");
 
-        // Kiểm tra từng input
-        inputs.forEach(function(input) {
-            let inputValue = input.value.trim();
-            if (!inputValue) {
-                isValid = false;
-                invalidFields.push(input.getAttribute('placeholder') || input.name || input.id);
-                input.classList.add("error");
-                check= false
-            } else {
-                // formData.append(input.name || input.id, inputValue); // Thêm dữ liệu vào FormData
-            }
-        });
-        if(check){
-            Input.forEach(function(input){
-                let inputValue = input.value.trim();
-                formData.append(input.name || input.id, inputValue);
-            });
-            textArea.forEach(function(text){
-                let textValue = text.value.trim();
-                formData.append(text.name || text.id, textValue);
-            });
-            selects.forEach(function(select){
-                let sValue = select.value.trim();
-                formData.append(select.name || select.id, sValue);
-            });
+        let chu_thich = document.getElementById("chu_thich");
+        if (!chu_thich.value.trim()) {
+            isValid = false;
+            invalidFields.push("Chú thích thêm");
+            check = false;
         }
 
-        formData.forEach(function(value, key) {
-            console.log(key + ": " + value);
+        const entries = document.querySelectorAll('#ghi_chu_ele .linediv');
+        const values = [];
+
+        entries.forEach(entry => {
+            const select = entry.querySelector('select[name="diem[]"]');
+            const input = entry.querySelector('input[name="diem_loc[]"]');
+
+            // Kiểm tra nếu cả select và input đều có giá trị
+            if (select && input) {
+                const selectedMon = select.value;
+                const diem = input.value;
+
+                values.push({
+                    mon: selectedMon,
+                    diem: diem
+                });
+            }
         });
+
+        if (check) {
+            Array.push({
+                key: idNganh.name || idNganh.id,
+                value: idNganh.value
+            })
+            Array.push({
+                key: ten.name || ten.id,
+                value: ten.value
+            })
+            Array.push({
+                key: chiTieu.name || chiTieu.id,
+                value: chiTieu.value
+            });
+            Array.push({
+                key: chuongTrinh.name || chuongTrinh.id,
+                value: chuongTrinh.value
+            });
+            Array.push({
+                key: toHop.name || toHop.id,
+                value: toHop.value
+            });
+            Array.push({
+                key: "day_open",
+                value: dateOpenDay.value + "  " + dateOpenTime.value
+            });
+            Array.push({
+                key: "day_close",
+                value: dateEndDay.value + "  " + dateEndTime.value
+            });
+            Array.push({
+                key: diemChuan.name || diemChuan.id,
+                value: diemChuan.value
+            });
+            Array.push(values);
+            Array.push({
+                key: gvId.name || gvId.id,
+                value: gvId.value
+            });
+            Array.push({
+                key: moTa.name || moTa.id,
+                value: moTa.value
+            });
+
+            Array.push({
+                key: url.name || url.id,
+                value: url.value
+            });
+
+            Array.push({
+                key: file_temp.name || file_temp.id,
+                value: file_temp.value
+            });
+
+            Array.push({
+                key: chu_thich.name || chu_thich.id,
+                value: chu_thich.value
+            });
+        }
+        console.log(Array);
+
         if (!isValid) {
             Swal.fire({
                 icon: 'error',
                 title: 'Lỗi nhập liệu',
-                text: `Giá trị ${invalidFields.join(', ')} không hợp lệ vui lòng kiểm tra lại`,
+                text: `${invalidFields.join(', ')} không hợp lệ vui lòng kiểm tra lại`,
                 confirmButtonText: 'OK'
             });
         } else {
             // Gửi form bằng XHR
             const xhr = new XMLHttpRequest();
-            xhr.open("POST",  "../php_control/data/chinhsuanganhdata.php<?php echo isset($_GET['ma_nganh']) ? '?update=true' : '';?>", true); // Gửi tới file PHP xử lý form
+            xhr.open("POST", "../php_control/data/chinhsuanganhdata.php<?php echo isset($_GET['ma_nganh']) ? '?update=true' : ''; ?>", true); // Gửi tới file PHP xử lý form
+            xhr.setRequestHeader("Content-Type", "application/json");
             xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
             xhr.onload = function() {
                 if (xhr.status === 200) {
@@ -657,15 +761,17 @@ if (isset($_GET['ma_nganh'])) {
                 }
             };
 
-        xhr.onerror = function() {
-            Swal.fire({
-                icon: 'error',
-                title: 'Lỗi kết nối',
-                text: 'Không thể kết nối đến máy chủ. Vui lòng kiểm tra mạng hoặc thử lại!',
-                confirmButtonText: 'OK'
-            });
-        };
-            xhr.send(formData); // Gửi FormData qua XHR
+            xhr.onerror = function() {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi kết nối',
+                    text: 'Không thể kết nối đến máy chủ. Vui lòng kiểm tra mạng hoặc thử lại!',
+                    confirmButtonText: 'OK'
+                });
+            };
+            let jsonData = JSON.stringify(Array);
+            console.log(jsonData);
+            xhr.send(jsonData); // Gửi FormData qua XHR
         }
     });
 

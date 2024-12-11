@@ -10,6 +10,8 @@ include "refresh_token.php";
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Nhận dữ liệu từ form
 
+
+    
     $id_nganh = $_POST['id_nganh'];
     $ten = $_POST['ten'] ?? '';
     $chi_tieu = $_POST['chi_tieu'] ?? '';
@@ -20,17 +22,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $diem_chuan = $_POST['diem_chuan'] ?? '';
 
     // Ghi nội dung vào file getajax.txt
-    $file = 'getajax.txt';
-    if (file_put_contents($file, print_r($_POST, true)) !== false) {
-        echo json_encode([
-            'status' => 'success',
-            'message' => 'Dữ liệu đã được ghi vào file thành công!',
-        ]);
-    } else {
-        echo json_encode([
-            'status' => 'error',
-            'message' => 'Lỗi khi ghi dữ liệu vào file.',
-        ]);
+
+    $jsonData = file_get_contents('php://input');
+    $data = json_decode($jsonData, true);
+    // Kiểm tra xem dữ liệu có hợp lệ không
+    if ($data) {
+        $file = 'getajax.txt';
+        if (file_put_contents($file, print_r($data, true)) !== false) {
+            echo json_encode([
+                'status' => 'success',
+                'message' => 'Dữ liệu đã được ghi vào file thành công!',
+            ]);
+        } else {
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'Lỗi khi ghi dữ liệu vào file.',
+            ]);
+        }
     }
 } else {
     // Nếu không phải POST, hiển thị form

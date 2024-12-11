@@ -1,32 +1,91 @@
 Array
 (
-    [id_nganh] => AC002
-    [ten] => Kỹ thuật phần mềm
-    [chi_tieu] => 200
-    [chuong_trinh] => 4
-    [to_hop] => A00, A01
-    [searchInputToHop] => 
-    [date_open_day] => 01/09/2024
-    [date_open_time] => 08:00
-    [date_end_day] => 31/12/2024
-    [date_end_time] => 23:59
-    [diem_chuan] => 24.50
-    [diem_loc] => Array
+    [0] => Array
         (
-            [0] => 9
+            [key] => id_nganh
+            [value] => AC002
         )
 
-    [gv_id] => GV0001 - Ngô Đình Minh Trang
-    [searchInput_gv_id] => 
-    [phuong_tien] => image
-    [url] => https://www.youtube.com/embed/r95XahnBg_A?si=GhNgHFjy5pWlJz3k
-    [file_temp] => 
-    [chu_thich] => Chú thích thêm
-    [enable] => on
-    [mo_ta] => Mô tả chương trình
-    [diem] => Array
+    [1] => Array
         (
-            [0] => Lý
+            [key] => ten
+            [value] => Kỹ thuật phần mềm
+        )
+
+    [2] => Array
+        (
+            [key] => chi_tieu
+            [value] => 200
+        )
+
+    [3] => Array
+        (
+            [key] => chuong_trinh
+            [value] => 4
+        )
+
+    [4] => Array
+        (
+            [key] => to_hop
+            [value] => A00, A01
+        )
+
+    [5] => Array
+        (
+            [key] => day_open
+            [value] => 01/09/2024  08:00
+        )
+
+    [6] => Array
+        (
+            [key] => day_close
+            [value] => 31/12/2024  23:59
+        )
+
+    [7] => Array
+        (
+            [key] => diem_chuan
+            [value] => 24.50
+        )
+
+    [8] => Array
+        (
+            [0] => Array
+                (
+                    [mon] => Lý
+                    [diem] => 9
+                )
+
+        )
+
+    [9] => Array
+        (
+            [key] => gv_id
+            [value] => GV0001 - Ngô Đình Minh Trang
+        )
+
+    [10] => Array
+        (
+            [key] => mo_ta
+            [value] => Mô tả chương trình
+        )
+
+    [11] => Array
+        (
+            [key] => url
+            [value] => https://www.youtube.com/embed/r95XahnBg_A?si=GhNgHFjy5pWlJz3k
+        )
+
+    [12] => Array
+        (
+            [key] => file_temp
+            [value] => 
+        )
+
+    [13] => Array
+        (
+            [key] => chu_thich
+            [value] => Chú thích thêm
         )
 
 )
