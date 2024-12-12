@@ -240,7 +240,7 @@ if (isset($_SESSION['user'])) {
             document.getElementById('cropperModal').style.display = 'none';
             if (cropper) {
                 cropper.destroy(); // Hủy cropper nếu nó đã được khởi tạo
-                cropper = null; // Đặt lại cropper
+                cropper = null; 
             }
         }
     </script>
@@ -291,9 +291,8 @@ if (isset($_SESSION['user'])) {
 
         xhr.onload = function() {
             if (xhr.status === 200) {
-                const response = xhr.responseText; // Lấy dữ liệu phản hồi
+                const response = xhr.responseText;
 
-                // Nếu bạn không trả về JSON, xử lý phản hồi như một chuỗi
                 if (response.trim().startsWith("success")) {
                     HideLoading();
                     // SuccessDialog("Thông báo", response.replace("success: ", ));
