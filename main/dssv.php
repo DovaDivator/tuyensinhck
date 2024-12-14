@@ -11,7 +11,9 @@ if (isset($_SESSION['user'])) {
     header("Location: login.php");
     exit();
 }
-
+include "../php_control/data/ds_tuyen_sinh.php";
+$x = fetchDSSV("AC002");
+echo "<script>console.log(".json_encode(fetchDSSV("AC002")).")</script>";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -23,6 +25,8 @@ if (isset($_SESSION['user'])) {
     <link rel="stylesheet" href="../assets/style/style.css?v=<?php echo filemtime('../assets/style/style.css'); ?>">
     <link rel="stylesheet" href="../assets/style/teacher_path.css?v=<?php echo filemtime("../assets/style/teacher_path.css")?>">
     <script src="../js_backend/events.js?v=<?php echo filemtime('../js_backend/events.js'); ?>"></script>
+    <script src="../js_backend/control.js?v=<?php echo filemtime('../js_backend/control.js'); ?>"></script>
+
 </head>
 <body>
     <div class="body_container">
@@ -45,18 +49,36 @@ if (isset($_SESSION['user'])) {
                         <h2 style='margin-left: 50px; color:#DC143C; margin-top: 0;'>Ngành đào tạo:</h2>
                         <form method="get"  style='margin-left: 20px;'>
                             <select name='ma_nganh_sv' style=' min-width: 350px;' onchange="this.form.submit()">
-                                
+                            <?php
+                                        $danh_nganh = [
+                                            (object) ['ma_nganh' => 'TC001', 'ten_nganh' => 'Công nghệ thông tin'],
+                                            (object) ['ma_nganh' => 'TC002', 'ten_nganh' => 'Tin1'],
+                                            (object) ['ma_nganh' => 'TC003', 'ten_nganh' => 'CNTT1'],
+                                            (object) ['ma_nganh' => 'AC002', 'ten_nganh' => 'Kỹ thuật phần mềm']
+                                    ];
+                                    $ma_nganh_duoc_chon = $danh_nganh[1]->ma_nganh;
+                                ?>
                             <?php foreach($danh_nganh as $nganh): ?>
-                                <option value='<?php echo $nganh->ma_nganh;?>' <?php if(isset($_GET['ma_nganh_sv']) && $_GET['ma_nganh_sv'] === $nganh->ma_nganh) echo "selected";?>>
+                                <option value='<?php echo $nganh->nganh;?>' <?php if(isset($_GET['ma_nganh_sv']) && $_GET['ma_nganh_sv'] === $nganh->ma_nganh) echo "selected";?>>
                                     <?php echo $nganh->ma_nganh;?> - <?php echo $nganh->ten_nganh;?>
                                 </option>
                             <?php endforeach;?>
                             </select>
                         </form>
+                        <?php
+                                    if (isset($_GET['ma_nganh_sv'])) {
+                                        $ma_nganh_duoc_chon = $_GET['ma_nganh_sv'];
+                                        echo "<script>console.log('". $ma_nganh_duoc_chon."')</script>";
+
+                                    } else {
+                                        echo "<script>console.log("."null".")</script>";
+
+                                    }
+                                    ?>
                     </div>
                     <div class="UI_qlnd_container">
                         <div class="table_body_scroll" style="height:500px;">
-                        <table class="choose_list danh_sach_ng" id="danh_sach_sv_nganh">
+                        <table class="choose_list danh_sach_ng" id="danh_sach_sv">
                             <thead>
                                     <tr>
                                     <th id='ma_sv'>Mã tuyển sinh</th>
@@ -66,10 +88,10 @@ if (isset($_SESSION['user'])) {
                                     <th id='diem'>Điểm</th>
                                     </tr>
                             </thead>
-                                <tbody id="course_table_tuyen_sinh" >
+                                <tbody id="course_table_sinh_vien" >
                                 <script>
                                     var userRole = <?php echo json_encode($_SESSION['user']['role']); ?>;
-                                    loadAndRenderCourses(userRole);
+                                    renderCoursesDSSV(<?php echo json_encode(fetchDSSV($ma_nganh_duoc_chon)); ?>);
                                     </script>
                                 </tbody>
                             </table>

@@ -314,6 +314,54 @@ function renderCoursesSV(jsonData) {
     });  
 }
 
+
+function renderCoursesDSSV(jsonData) {
+    console.log("Dữ liệu ban đầu:", jsonData);
+
+    // Parse dữ liệu nếu là chuỗi JSON
+    if (typeof jsonData === "string") {
+        try {
+            jsonData = JSON.parse(jsonData);
+        } catch (e) {
+            console.error("Dữ liệu JSON không hợp lệ:", e);
+            renderErrorGV("Dữ liệu không hợp lệ, vui lòng thử lại sau!", "course_table_sinh_vien", "danh_sach_sv");
+            return;
+        }
+    }
+
+    // Đưa dữ liệu về dạng mảng nếu là object
+    let courses = Array.isArray(jsonData) ? jsonData : [jsonData];
+
+    // Kiểm tra nếu không có dữ liệu
+    if (!courses || courses.length === 0) {
+        renderErrorDSSV("Không có sinh viên!", "course_table_sinh_vien", "danh_sach_sv");
+        return;
+    }
+
+    var tbody = document.getElementById('course_table_sinh_vien');
+    tbody.innerHTML = '';
+
+    // Duyệt qua danh sách courses
+    courses.forEach(function(course) {
+        var row = document.createElement('tr');
+        row.title = 'Ấn vào để xem thông tin chi tiết';
+        row.innerHTML = `
+        <td>${course.id}</td>
+        <td>${course.ten}</td>
+        <td>${course.date_birth}</td>
+        <td>${course.tohop_id}</td>
+        <td>${course.diem}</td>
+    `;
+        //            
+        // Gắn sự kiện click cho mỗi hàng để chuyển đến trang chi tiết
+        row.addEventListener('click', function() {
+           
+        });
+
+        tbody.appendChild(row);
+    });  
+}
+
 function getTrangThai(trangThai) {
     switch (trangThai) {
         case 1:
@@ -405,6 +453,25 @@ function renderErrorSV(message, tbody_id, table_id) {
     `;
     tbody.appendChild(row);
 }
+
+function renderErrorDSSV(message, tbody_id, table_id) {
+    var tbody = document.getElementById(tbody_id);
+    var table = document.getElementById(table_id);
+    tbody.innerHTML = '';
+    table.style.height = 'fit-content';
+
+    var row = document.createElement('tr');
+    row.className = 'error_tdtable';
+
+    var table = document.getElementById('danh_sach_sv');
+    var columnCount = table.rows[0].cells.length;
+
+    row.innerHTML = `
+        <td colspan="${columnCount}">${message}</td>
+    `;
+    tbody.appendChild(row);
+}
+
 
 function IsEmail(email) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

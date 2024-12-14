@@ -76,6 +76,15 @@ function fetchNganhSV($condition){
     return $stmt->fetchAll(PDO::FETCH_ASSOC); 
 }
 
+function fetchDSSV($condition){
+    global $pdo;
+    $query = "SELECT * FROM getdssv(:id) ";
+    $stmt = $pdo->prepare($query);
+    $stmt->bindParam(':id', $condition);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC); 
+}
+
 // Hàm lấy dữ liệu từ bảng nganh
 function fetchNganhGV($condition){
     global $pdo;
