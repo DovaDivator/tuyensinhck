@@ -3,77 +3,76 @@ Array
     [0] => Array
         (
             [key] => id_nganh
-            [value] => AC002
+            [value] => 11111111
         )
 
     [1] => Array
         (
             [key] => ten
-            [value] => Kỹ thuật phần mềm
+            [value] => 111
         )
 
     [2] => Array
         (
             [key] => chi_tieu
-            [value] => 200
+            [value] => 1
         )
 
     [3] => Array
         (
             [key] => chuong_trinh
-            [value] => 4
+            [value] => 1
         )
 
     [4] => Array
         (
             [key] => to_hop
-            [value] => A00, A01
+            [value] => A00
         )
 
     [5] => Array
         (
             [key] => day_open
-            [value] => 01/09/2024  08:00
+            [value] => 02/12/2024  15:00
         )
 
     [6] => Array
         (
             [key] => day_close
-            [value] => 31/12/2024  23:59
+            [value] => 02/12/2024  15:00
         )
 
     [7] => Array
         (
             [key] => diem_chuan
-            [value] => 24.50
+            [value] => 1
         )
 
     [8] => Array
         (
-            [0] => Array
-                (
-                    [mon] => Lý
-                    [diem] => 9
-                )
-
         )
 
     [9] => Array
         (
             [key] => gv_id
-            [value] => GV0001 - Ngô Đình Minh Trang
+            [value] => 
         )
 
     [10] => Array
         (
             [key] => mo_ta
-            [value] => Mô tả chương trình
+            [value] => 
         )
 
     [11] => Array
         (
+<<<<<<< HEAD
             [key] => phuong_tien
             [value] => image
+=======
+            [key] => url
+            [value] => 
+>>>>>>> 7d74079636f2c43e290f4baadc904d4604d93703
         )
 
     [12] => Array
@@ -91,7 +90,7 @@ Array
     [14] => Array
         (
             [key] => chu_thich
-            [value] => Chú thích thêm
+            [value] => 1
         )
 
 )

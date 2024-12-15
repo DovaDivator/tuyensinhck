@@ -629,6 +629,18 @@ if (isset($_GET['ma_nganh'])) {
             invalidFields.push("Giờ kết thúc");
             check = false;
         }
+        if(dateEndTime.value < dateOpenDay.value){
+            isValid = false;
+            invalidFields.push("ngày bắt đầu và kết thúc");
+            check = false;
+            console.log("X");
+        }
+        if(dateEndDay.value === dateOpenDay.value && dateOpenTime.value >= dateEndTime.value){
+            isValid = false;
+            invalidFields.push("Giờ bắt đầu và kết thúc");
+            check = false;
+        }
+
         let diemChuan = document.getElementById("diem_chuan");
         if (!diemChuan.value.trim()) {
             isValid = false;
