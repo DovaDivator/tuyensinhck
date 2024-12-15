@@ -72,17 +72,23 @@ Array
 
     [11] => Array
         (
-            [key] => url
-            [value] => https://www.youtube.com/embed/r95XahnBg_A?si=GhNgHFjy5pWlJz3k
+            [key] => phuong_tien
+            [value] => image
         )
 
     [12] => Array
         (
-            [key] => file_temp
-            [value] => 
+            [key] => url
+            [value] => https://www.youtube.com/embed/r95XahnBg_A?si=GhNgHFjy5pWlJz3k
         )
 
     [13] => Array
+        (
+            [key] => file_temp
+            [value] => C:\fakepath\image (1).png
+        )
+
+    [14] => Array
         (
             [key] => chu_thich
             [value] => Chú thích thêm

@@ -637,11 +637,13 @@ if (isset($_GET['ma_nganh'])) {
         }
         let gvId = document.getElementById("gv_id");
         let moTa = document.getElementById("mo_ta");
+        let phuong_tien = document.getElementById("userForm").querySelector('input[name="phuong_tien"]:checked');
         let url = document.getElementById("url");
         let file_temp = document.getElementById("file_temp");
 
         let chu_thich = document.getElementById("chu_thich");
-        if (!chu_thich.value.trim()) {
+        if (!chu_thich.value.trim() && phuong_tien) {
+            console.log("catch");
             isValid = false;
             invalidFields.push("Chú thích thêm");
             check = false;
@@ -710,6 +712,11 @@ if (isset($_GET['ma_nganh'])) {
             });
 
             Array.push({
+                key: 'phuong_tien',
+                value: phuong_tien ? phuong_tien.value : ''
+            });
+
+            Array.push({
                 key: url.name || url.id,
                 value: url.value
             });
@@ -723,6 +730,29 @@ if (isset($_GET['ma_nganh'])) {
                 key: chu_thich.name || chu_thich.id,
                 value: chu_thich.value
             });
+
+            if (phuong_tien && phuong_tien.value === 'image' && file_temp && file_temp.value !== '') {
+                const fileType = 'file_temp';
+                const formData = new FormData();
+                const fileInput = document.getElementById('file_temp');
+                console.log(<?php json_encode($_FILES)?>);
+
+                // Xóa file tạm
+                DeleteExistFile(fileType, formData);
+
+                // Tải lên file mới
+                formData.append('file_type', fileType);
+                formData.append('file_temp', fileInput.files[0]);
+                UploadTempFile('file_temp', formData)
+                .then(response => {
+                if (response.success) {
+                    console.log('Tải lên file thành công');
+                } else {
+                    console.log('Tải lên file thất bại: ' + response.message);
+                }
+                })
+                .catch(error => console.error('Lỗi tải lên:', error));
+            }
         }
         console.log(Array);
 
@@ -789,7 +819,6 @@ if (isset($_GET['ma_nganh'])) {
 </script>
 
 
-input[data-required]
 <?php if (isset($_GET['ma_nganh'])): ?>
     <script>
         const toHopInputStart = document.getElementById('to_hop');
