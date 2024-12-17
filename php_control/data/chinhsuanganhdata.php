@@ -9,9 +9,7 @@ include "refresh_token.php";
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Nhận dữ liệu từ form
-
-
-    
+ 
     $id_nganh = $_POST['id_nganh'];
     $ten = $_POST['ten'] ?? '';
     $chi_tieu = $_POST['chi_tieu'] ?? '';
@@ -21,7 +19,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $date_end_time = $_POST['date_end_time'] ?? '';
     $diem_chuan = $_POST['diem_chuan'] ?? '';
 
-    // Ghi nội dung vào file getajax.txt
 
     $jsonData = file_get_contents('php://input');
     $data = json_decode($jsonData, true);

@@ -3,31 +3,31 @@ Array
     [0] => Array
         (
             [key] => frontof_CCCD
-            [value] => ../assets/temp_uploads/67571da5e3dde_1733762469.png
+            [value] => ../assets/temp_uploads/67619125b8789_1734447397.png
         )
 
     [1] => Array
         (
             [key] => behind_CCCD
-            [value] => ../assets/temp_uploads/67571da743b1d_1733762471.png
+            [value] => ../assets/temp_uploads/6761911fbfc31_1734447391.png
         )
 
     [2] => Array
         (
             [key] => so_cccd
-            [value] => 11111
+            [value] => 321313132131
         )
 
     [3] => Array
         (
             [key] => hoTen
-            [value] => 1
+            [value] => 232313123
         )
 
     [4] => Array
         (
             [key] => date_birth
-            [value] => 03/12/2024
+            [value] => 10/12/2024
         )
 
     [5] => Array
@@ -39,7 +39,7 @@ Array
     [6] => Array
         (
             [key] => que_quan
-            [value] => 22
+            [value] => 12321313
         )
 
     [7] => Array
@@ -51,23 +51,23 @@ Array
     [8] => Array
         (
             [key] => mts
-            [value] => 2222
+            [value] => 1231
         )
 
     [9] => Array
         (
             [mon_Toán] => 1
-            [mon_Văn] => 5
-            [mon_Anh] => 2
-            [mon_Lý] => 4
+            [mon_Văn] => 1
+            [mon_Anh] => 1
+            [mon_Lý] => 1
             [mon_Hóa] => 1
-            [mon_Sinh] => 3
+            [mon_Sinh] => 1
         )
 
     [10] => Array
         (
             [key] => img_ts
-            [value] => ../assets/temp_uploads/chapterlist.png
+            [value] => ../assets/temp_uploads/image (2).png
         )
 
     [11] => Array

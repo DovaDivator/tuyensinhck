@@ -181,3 +181,6 @@ run logHttp: 400    Response: {"statusCode":"403","error":"Unauthorized","messag
 run logHttp: 400    Response: {"statusCode":"403","error":"Unauthorized","message":"jwt expired"}
 run logHttp: 400    Response: {"statusCode":"403","error":"Unauthorized","message":"jwt expired"}
 run logHttp: 400    Response: {"statusCode":"403","error":"Unauthorized","message":"jwt expired"}
+run logHttp: 200    Response: {"signedURL":"/object/sign/protect_files/2500000001/674ffaa1d33fd_1733294753.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJwcm90ZWN0X2ZpbGVzLzI1MDAwMDAwMDEvNjc0ZmZhYTFkMzNmZF8xNzMzMjk0NzUzLnBuZyIsImlhdCI6MTczNDQ0NzM0OSwiZXhwIjoxNzM0NDUwOTQ5fQ.z0JeotOM1gHgVbNd5VCdS1RB2hIoMiqoS71c_RsPoEU"}
+run logHttp: 200    Response: {"signedURL":"/object/sign/protect_files/2500000001/674ffaa1d33fd_1733294753.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJwcm90ZWN0X2ZpbGVzLzI1MDAwMDAwMDEvNjc0ZmZhYTFkMzNmZF8xNzMzMjk0NzUzLnBuZyIsImlhdCI6MTczNDQ0NzM2MiwiZXhwIjoxNzM0NDUwOTYyfQ.57Q87DbbUbGNamytkQnO70WQ15SeImEd8ygC8R3EGY4"}
+run logHttp: 200    Response: {"signedURL":"/object/sign/protect_files/2500000001/674ffaa1d33fd_1733294753.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJwcm90ZWN0X2ZpbGVzLzI1MDAwMDAwMDEvNjc0ZmZhYTFkMzNmZF8xNzMzMjk0NzUzLnBuZyIsImlhdCI6MTczNDQ0NzUxNSwiZXhwIjoxNzM0NDUxMTE1fQ.flkpetHoj2hreQ-X9uFxUHegr1w0yiCerjgkfg7Ewcg"}
