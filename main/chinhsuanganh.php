@@ -43,6 +43,9 @@ if (isset($_GET['ma_nganh'])) {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ui-timepicker-addon/1.6.3/jquery-ui-timepicker-addon.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-ui-timepicker-addon/1.6.3/jquery-ui-timepicker-addon.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
 
 </head>
 
@@ -158,14 +161,14 @@ if (isset($_GET['ma_nganh'])) {
                                                         echo (new DateTime(substr($test["date_open"], 0, 19)))->format('d/m/Y');
                                                     }
                                                     ?>"
-                                            readonly>
+                                            class="flatpickr">
                                         <input type="text" id="date_open_time" name="date_open_time" placeholder="hh:mm" style="width: 100px;"
                                             value="<?php
                                                     if (isset($_GET['ma_nganh'])) {
                                                         echo (new DateTime(substr($test["date_open"], 0, 19)))->format('H:i');
                                                     }
                                                     ?>"
-                                            readonly>
+                                            class="flatpickr">
                                     </div>
                                     <p class="note_input">Bạn không thể thay đổi thời gian khi tín chỉ đã mở</p>
 
@@ -179,14 +182,14 @@ if (isset($_GET['ma_nganh'])) {
                                                         echo (new DateTime(substr($test["date_end"], 0, 19)))->format('d/m/Y');
                                                     }
                                                     ?>" aria-placeholder="Ngày đóng tín chỉ"
-                                            readonly data-required>
+                                            class="flatpickr" data-required>
                                         <input type="text" id="date_end_time" name="date_end_time" placeholder="hh:mm" style="width: 100px;"
                                             value="<?php
                                                     if (isset($_GET['ma_nganh'])) {
                                                         echo (new DateTime(substr($test["date_end"], 0, 19)))->format('H:i');
                                                     }
                                                     ?>" aria-placeholder="Giờ đóng tín chỉ"
-                                            readonly data-required>
+                                            class="flatpickr" data-required>
                                     </div>
 
                                     <div class="linediv" style="margin-top: 15px;">
@@ -201,7 +204,6 @@ if (isset($_GET['ma_nganh'])) {
                                                     ?>"
                                             placeholder="điểm chuẩn" data-required>
                                     </div>
-
                                     <div class="linediv" style="margin-top: 15px;">
                                         <label>Ghi chú:</label>
                                         <button type="button" onclick="addNote()" style="margin-left: 10px; margin-bottom: 10px">+</button>
@@ -481,24 +483,27 @@ if (isset($_GET['ma_nganh'])) {
 
     $(function() {
 
-        $("#date_open_day, #date_end_day").datepicker({
-            dateFormat: "dd/mm/yy",
-            changeMonth: true,
-            changeYear: true,
-            yearRange: "-100:+0",
-            maxDate: 0
+        flatpickr("#date_end_day", {
+            dateFormat: "d/m/Y", // Định dạng ngày
+            minDate: "",
+        });
+        flatpickr("#date_end_time", {
+            enableTime: true, // Bật chế độ chọn giờ
+            noCalendar: true, // Tắt lịch (chỉ chọn giờ)
+            dateFormat: "H:i", // Định dạng giờ
+            time_24hr: true // Sử dụng định dạng 24 giờ
+        });
+        flatpickr("#date_open_day", {
+            dateFormat: "d/m/Y", // Định dạng ngày
+            minDate: "",
+        });
+        flatpickr("#date_open_time", {
+            enableTime: true, // Bật chế độ chọn giờ
+            noCalendar: true, // Tắt lịch (chỉ chọn giờ)
+            dateFormat: "H:i", // Định dạng giờ
+            time_24hr: true // Sử dụng định dạng 24 giờ
         });
 
-        $("#date_open_time, #date_end_time").timepicker({
-            timeFormat: 'HH:mm',
-            interval: 5,
-            minTime: '00:00',
-            maxTime: '23:55',
-            dynamic: false,
-            dropdown: true,
-            scrollbar: false,
-            controlType: 'select'
-        });
     });
 
     let lastCheckedRadio = null; // Biến lưu radio đang được chọn
@@ -578,12 +583,12 @@ if (isset($_GET['ma_nganh'])) {
 
     // Lắng nghe sự kiện submit của form
     document.getElementById("userForm").addEventListener("submit", function(event) {
-        event.preventDefault(); 
+        event.preventDefault();
         let check = true;
         let isValid = true;
         let invalidFields = [];
         let Array = [];
-        let formData = new FormData(); 
+        let formData = new FormData();
 
         let idNganh = document.getElementById("id_nganh");
         if (!idNganh.value.trim()) {
@@ -629,13 +634,13 @@ if (isset($_GET['ma_nganh'])) {
             invalidFields.push("Giờ kết thúc");
             check = false;
         }
-        if(dateEndTime.value < dateOpenDay.value){
+        if (dateEndDay.value < dateOpenDay.value) {
             isValid = false;
             invalidFields.push("ngày bắt đầu và kết thúc");
             check = false;
             console.log("X");
         }
-        if(dateEndDay.value === dateOpenDay.value && dateOpenTime.value >= dateEndTime.value){
+        if (dateEndDay.value === dateOpenDay.value && dateOpenTime.value >= dateEndTime.value) {
             isValid = false;
             invalidFields.push("Giờ bắt đầu và kết thúc");
             check = false;
@@ -747,7 +752,7 @@ if (isset($_GET['ma_nganh'])) {
                 const fileType = 'file_temp';
                 const formData = new FormData();
                 const fileInput = document.getElementById('file_temp');
-                console.log(<?php json_encode($_FILES)?>);
+                console.log(<?php json_encode($_FILES) ?>);
 
                 // Xóa file tạm
                 DeleteExistFile(fileType, formData);
@@ -756,15 +761,14 @@ if (isset($_GET['ma_nganh'])) {
                 formData.append('file_type', fileType);
                 formData.append('file_temp', fileInput.files[0]);
                 UploadTempFile('file_temp', formData)
-                .then(response => {
-                if (response.success) {
-                    console.log('Tải lên file thành công');
-                    
-                } else {
-                    console.log('Tải lên file thất bại: ' + response.message);
-                }
-                })
-                .catch(error => console.error('Lỗi tải lên:', error));
+                    .then(response => {
+                        if (response.success) {
+                            console.log('Tải lên file thành công');
+                        } else {
+                            console.log('Tải lên file thất bại: ' + response.message);
+                        }
+                    })
+                    .catch(error => console.error('Lỗi tải lên:', error));
             }
         }
         console.log(Array);
