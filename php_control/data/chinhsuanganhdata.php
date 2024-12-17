@@ -14,83 +14,113 @@ try {
     // Đọc dữ liệu JSON từ yêu cầu POST
     $input = file_get_contents("php://input");
 
-    // Giải mã dữ liệu JSON thành mảng PHP
-    $data = json_decode($input, true);
+// Bước 2: Giải mã dữ liệu JSON thành mảng PHP
+$data = json_decode($input, true);
 
-    // Kiểm tra dữ liệu
-    if ($data === null) {
-        throw new Exception("Dữ liệu không hợp lệ hoặc trống.");
-    }
+// Bước 3: Kiểm tra nếu dữ liệu là mảng hợp lệ
+if (is_array($data)) {
 
-    // Tạo nội dung để ghi vào file TXT
-    $content = "Dữ liệu nhận được:\n";
-    foreach ($data as $item) {
-        if (is_array($item) && isset($item['key']) && isset($item['value'])) {
-            $content .= "Key: " . $item['key'] . " - Value: " . $item['value'] . "\n";
-        } else {
-            $content .= "Dữ liệu không đúng định dạng.\n";
+    // Bước 4: Tạo mảng mới để lưu dữ liệu theo cấu trúc mới
+    $newData = [];
+
+    // Lọc các mục có key và value (từ chỉ mục 0 đến 6, 9 đến 14)
+    foreach ($data as $key => $item) {
+        // Kiểm tra nếu mảng có khóa 'key' và 'value'
+        if (isset($item['key']) && isset($item['value'])) {
+            // Thêm vào mảng mới theo tên trường
+            $newData[$item['key']] = $item['value'];
         }
     }
+
+    // Bước 5: Đảm bảo trường 'mon_diem' có cấu trúc đúng
+    if (isset($data[8]) && is_array($data[8])) {
+        $newData['mon_diem'] = $data[8];  // Gán trường 'mon_diem'
+    }
+
+    // Bước 6: Mã hóa lại thành JSON một bậc, giữ nguyên ký tự Unicode
+    $json_output = json_encode($newData, JSON_UNESCAPED_UNICODE);
 
     // Đường dẫn file TXT để lưu dữ liệu
     $filePath = __DIR__ . "/data_output.txt";
 
-    // Ghi dữ liệu vào file TXT
-    if (file_put_contents($filePath, $content)) {
-        echo json_encode([
-            "success" => true,
-            "message" => "Dữ liệu đã được ghi vào file: $filePath"
-        ]);
-    } else {
-        throw new Exception("Không thể ghi dữ liệu vào file.");
+    // Ghi dữ liệu vào tệp (append mode để không ghi đè)
+    if (file_put_contents($filePath, $json_output . PHP_EOL, FILE_APPEND) === false) {
+        echo json_encode(["success" => false, "message" => "Lỗi khi ghi vào tệp."]);
+        exit();
     }
+
+    // Trả về phản hồi thành công
+    echo json_encode(["success" => true, "message" => "Dữ liệu đã được lưu thành công."]);
+
+} else {
+    // Trả về thông báo lỗi nếu dữ liệu không hợp lệ
+    echo json_encode(["success" => false, "message" => "Dữ liệu không hợp lệ"]);
+    exit();
+}
 } catch (Exception $e) {
     // Trả về lỗi nếu xảy ra vấn đề
     echo json_encode([
         "success" => false,
         "message" => $e->getMessage()
     ]);
+    exit();
 }
 
+    // Kiểm tra dữ liệu 'phuong_tien' và file tạm trong SESSION
+    if (isset($_SESSION['file_path']['file_temp'])) {
+        var_dump($_SESSION['file_path']['file_temp']);
+        $avatarTemp = $_SESSION['file_path']['file_temp'];
+        $push_img_http = push_image_nganh($avatarTemp);
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Nhận dữ liệu từ form
-
-
-
-    $id_nganh = $_POST['id_nganh'];
-    $ten = $_POST['ten'] ?? '';
-    $chi_tieu = $_POST['chi_tieu'] ?? '';
-    $chuong_trinh = $_POST['chuong_trinh'] ?? '';
-    $to_hop = $_POST['to_hop'] ?? '';
-    $date_end_day = $_POST['date_end_day'] ?? '';
-    $date_end_time = $_POST['date_end_time'] ?? '';
-    $diem_chuan = $_POST['diem_chuan'] ?? '';
-
-
-    $jsonData = file_get_contents('php://input');
-    $data = json_decode($jsonData, true);
-    // Kiểm tra xem dữ liệu có hợp lệ không
-    if ($data) {
-        $file = 'getajax.txt';
-        if (file_put_contents($file, print_r($data, true)) !== false) {
+        // Kiểm tra kết quả trả về từ cURL
+        if ($push_img_http['httpCode'] == 400) {
+            if ($push_img_http['response']['statusCode'] == 403) {
+                get_token();
+                if (empty($_SESSION['access_token'])) {
+                    echo json_encode([
+                        "success" => false,
+                        "message" => "lỗi 1"
+                    ]);
+                    exit();
+                } else {
+                    $push_img_http = push_image_nganh($avatarTemp);
+                    if ($push_img_http['httpCode'] != 200) {
+                        echo json_encode([
+                            "success" => false,
+                            "message" => "lỗi 2"
+                        ]);
+                        exit();
+                    }
+                }
+            } else {
+                echo json_encode([
+                    "success" => false,
+                    "message" => "lỗi 3"
+                ]);
+                exit();
+            }
+        } elseif ($push_img_http['httpCode'] != 200) {
             echo json_encode([
-                'status' => 'success',
-                'message' => 'Dữ liệu đã được ghi vào file thành công!',
+                "success" => false,
+                "message" => "lỗi 3"
             ]);
-        } else {
-            echo json_encode([
-                'status' => 'error',
-                'message' => 'Lỗi khi ghi dữ liệu vào file.',
-            ]);
+            exit();
         }
+    }else{
+        echo json_encode([
+            "success" => false,
+            "message" => "lỗi 4"
+        ]);
+        exit();
     }
-} else {
-    // Nếu không phải POST, hiển thị form
+
     echo json_encode([
-        'status' => 'error',
-        'message' => 'Yêu cầu không hợp lệ.',
+        "success" => true,
+        "message" => "yes"
     ]);
+ exit();
+if(isset($_GET['update'])){
+
 }
 
 function push_image_nganh($fileName)
@@ -99,7 +129,7 @@ function push_image_nganh($fileName)
     $bucket_name = 'nganh_image';
 
     // Lấy đường dẫn file tạm từ session
-    $filePath = '../../assets/temp_uploads/' . $fileName;
+    $filePath = $fileName;
 
     // Tạo endpoint cho việc tải lên file
     $endpoint = $supabase_url . "/storage/v1/object/" . $bucket_name . "/" . $fileName;
@@ -126,7 +156,7 @@ function push_image_nganh($fileName)
     curl_close($ch);
 
     // Ghi log vào file log.txt
-    // file_put_contents("log.txt", "filename: $fileName\n access: ".$_SESSION['access_token']." \nResponse: $response\n", FILE_APPEND);
+    file_put_contents("log.txt", "filename: $fileName\n access: ".$_SESSION['access_token']." \nResponse: $response\n", FILE_APPEND);
     return [
         'httpCode' => $httpCode,
         'response' => json_decode($response, true)

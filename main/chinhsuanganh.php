@@ -759,6 +759,7 @@ if (isset($_GET['ma_nganh'])) {
                 .then(response => {
                 if (response.success) {
                     console.log('Tải lên file thành công');
+                    
                 } else {
                     console.log('Tải lên file thất bại: ' + response.message);
                 }
@@ -783,24 +784,51 @@ if (isset($_GET['ma_nganh'])) {
             xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
             xhr.onload = function() {
                 if (xhr.status === 200) {
-                    // Xử lý khi gửi thành công, bạn có thể redirect hay hiển thị kết quả tại đây
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Thành công',
-                        text: 'Dữ liệu đã được gửi thành công!',
-                        confirmButtonText: 'OK'
-                    });
-                    // .then(() => {
-                    //     window.location.href = "chi-tiet-tuyen-sinh.php?ma_nganh="+ document.getElementById('id_nganh').value; // Chuyển hướng sang success_page.php
-                    // });
-                } else {
+                try {
+                    // Parse dữ liệu JSON trả về từ server
+                    console.log(xhr.responseText);
+                    const response = JSON.parse(xhr.responseText);
+                    if (response.success) {
+                        // Hiển thị thông báo thành công dựa trên dữ liệu trả về
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Thành công',
+                            text: response.message || 'Dữ liệu đã được gửi thành công!',
+                            confirmButtonText: 'OK'
+                        }).then(() => {
+                            // Nếu có URL chuyển hướng trong JSON
+                            if (response.redirect_url) {
+                                window.location.href = response.redirect_url;
+                            }
+                        });
+                    } else {
+                        // Hiển thị thông báo lỗi từ server
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Lỗi gửi dữ liệu',
+                            text: response.message || 'Đã xảy ra lỗi khi gửi dữ liệu. Vui lòng thử lại!',
+                            confirmButtonText: 'OK'
+                        });
+                    }
+                } catch (e) {
+                    // Xử lý khi JSON không hợp lệ
                     Swal.fire({
                         icon: 'error',
-                        title: 'Lỗi gửi dữ liệu',
-                        text: 'Đã xảy ra lỗi khi gửi dữ liệu. Vui lòng thử lại!',
+                        title: 'Lỗi phản hồi',
+                        text: 'Phản hồi từ máy chủ không hợp lệ. Vui lòng thử lại!',
                         confirmButtonText: 'OK'
                     });
+                    console.error('Lỗi parse JSON:', e);
                 }
+            } else {
+                // Xử lý lỗi HTTP khi `xhr.status` khác 200
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi kết nối',
+                    text: 'Không thể kết nối đến máy chủ. Mã lỗi: ' + xhr.status,
+                    confirmButtonText: 'OK'
+                });
+            }
             };
 
             xhr.onerror = function() {

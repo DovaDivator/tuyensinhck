@@ -1,16 +1,4 @@
-Dữ liệu nhận được:
-Key: id_nganh - Value: TC002
-Key: ten - Value: Tin
-Key: chi_tieu - Value: 244
-Key: chuong_trinh - Value: 4
-Key: to_hop - Value: A01
-Key: day_open - Value: 11/11/2024  15:33
-Key: day_close - Value: 30/11/2024  15:57
-Key: diem_chuan - Value: 19.00
-Dữ liệu không đúng định dạng.
-Key: gv_id - Value: GV0001 - Ngô Đình Minh Trang
-Key: mo_ta - Value: 
-Key: phuong_tien - Value: media
-Key: url - Value: https://www.youtube.com/embed/Fv9wuC_bSTU?si=xcVlHC-WGBoLqRis
-Key: file_temp - Value: 
-Key: chu_thich - Value: 12
+{"0":{"key":"id_nganh","value":"AC002"},"1":{"key":"ten","value":"K\u1ef9 thu\u1eadt ph\u1ea7n m\u1ec1m"},"2":{"key":"chi_tieu","value":"200"},"3":{"key":"chuong_trinh","value":"4"},"4":{"key":"to_hop","value":"A00, A01"},"5":{"key":"day_open","value":"01\/09\/2024  08:00"},"6":{"key":"day_close","value":"31\/12\/2024  23:59"},"8":[{"mon":"L\u00fd","diem":"9"}],"9":{"key":"gv_id","value":"GV0001 - Ng\u00f4 \u0110\u00ecnh Minh Trang"},"10":{"key":"mo_ta","value":"M\u00f4 t\u1ea3 ch\u01b0\u01a1ng tr\u00ecnh"},"11":{"key":"phuong_tien","value":"media"},"12":{"key":"url","value":"https:\/\/www.youtube.com\/embed\/r95XahnBg_A?si=GhNgHFjy5pWlJz3k"},"13":{"key":"file_temp","value":""},"14":{"key":"chu_thich","value":"Ch\u00fa th\u00edch th\u00eam"},"mon_diem":{"key":"diem_chuan","value":"24.50"}}{"0":{"key":"id_nganh","value":"AC002"},"1":{"key":"ten","value":"Kỹ thuật phần mềm"},"2":{"key":"chi_tieu","value":"200"},"3":{"key":"chuong_trinh","value":"4"},"4":{"key":"to_hop","value":"A00, A01"},"5":{"key":"day_open","value":"01\/09\/2024  08:00"},"6":{"key":"day_close","value":"31\/12\/2024  23:59"},"8":[{"mon":"Lý","diem":"9"}],"9":{"key":"gv_id","value":"GV0001 - Ngô Đình Minh Trang"},"10":{"key":"mo_ta","value":"Mô tả chương trình"},"11":{"key":"phuong_tien","value":"media"},"12":{"key":"url","value":"https:\/\/www.youtube.com\/embed\/r95XahnBg_A?si=GhNgHFjy5pWlJz3k"},"13":{"key":"file_temp","value":""},"14":{"key":"chu_thich","value":"Chú thích thêm"},"mon_diem":{"key":"diem_chuan","value":"24.50"}}
+{"0":{"key":"id_nganh","value":"AC002"},"1":{"key":"ten","value":"Kỹ thuật phần mềm"},"2":{"key":"chi_tieu","value":"200"},"3":{"key":"chuong_trinh","value":"4"},"4":{"key":"to_hop","value":"A00, A01"},"5":{"key":"day_open","value":"01\/09\/2024  08:00"},"6":{"key":"day_close","value":"31\/12\/2024  23:59"},"8":[{"mon":"Lý","diem":"9"}],"9":{"key":"gv_id","value":"GV0001 - Ngô Đình Minh Trang"},"10":{"key":"mo_ta","value":"Mô tả chương trình"},"11":{"key":"phuong_tien","value":"media"},"12":{"key":"url","value":"https:\/\/www.youtube.com\/embed\/r95XahnBg_A?si=GhNgHFjy5pWlJz3k"},"13":{"key":"file_temp","value":""},"14":{"key":"chu_thich","value":"Chú thích thêm"},"mon_diem":{"key":"diem_chuan","value":"24.50"}}
+{"id_nganh":"AC002","ten":"Kỹ thuật phần mềm","chi_tieu":"200","chuong_trinh":"4","to_hop":"A00, A01","day_open":"01\/09\/2024  08:00","day_close":"31\/12\/2024  23:59","diem_chuan":"24.50","gv_id":"GV0001 - Ngô Đình Minh Trang","mo_ta":"Mô tả chương trình","phuong_tien":"media","url":"https:\/\/www.youtube.com\/embed\/r95XahnBg_A?si=GhNgHFjy5pWlJz3k","file_temp":"","chu_thich":"Chú thích thêm","mon_diem":[{"mon":"Lý","diem":"9"}]}
+{"id_nganh":"AC002","ten":"Kỹ thuật phần mềm","chi_tieu":"200","chuong_trinh":"4","to_hop":"A00, A01","day_open":"01\/09\/2024  08:00","day_close":"31\/12\/2024  23:59","diem_chuan":"24.50","gv_id":"GV0001 - Ngô Đình Minh Trang","mo_ta":"Mô tả chương trình","phuong_tien":"image","url":"https:\/\/www.youtube.com\/embed\/r95XahnBg_A?si=GhNgHFjy5pWlJz3k","chu_thich":"Chú thích thêm","mon_diem":[{"mon":"Lý","diem":"9"}]}

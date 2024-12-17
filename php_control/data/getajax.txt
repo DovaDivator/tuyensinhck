@@ -3,19 +3,19 @@ Array
     [0] => Array
         (
             [key] => id_nganh
-            [value] => TC002
+            [value] => AC002
         )
 
     [1] => Array
         (
             [key] => ten
-            [value] => Tin
+            [value] => Kỹ thuật phần mềm
         )
 
     [2] => Array
         (
             [key] => chi_tieu
-            [value] => 244
+            [value] => 200
         )
 
     [3] => Array
@@ -27,29 +27,35 @@ Array
     [4] => Array
         (
             [key] => to_hop
-            [value] => A01
+            [value] => A00, A01
         )
 
     [5] => Array
         (
             [key] => day_open
-            [value] => 11/11/2024  15:33
+            [value] => 01/09/2024  08:00
         )
 
     [6] => Array
         (
             [key] => day_close
-            [value] => 30/11/2024  15:57
+            [value] => 31/12/2024  23:59
         )
 
     [7] => Array
         (
             [key] => diem_chuan
-            [value] => 19.00
+            [value] => 24.50
         )
 
     [8] => Array
         (
+            [0] => Array
+                (
+                    [mon] => Lý
+                    [diem] => 9
+                )
+
         )
 
     [9] => Array
@@ -61,31 +67,31 @@ Array
     [10] => Array
         (
             [key] => mo_ta
-            [value] => 
+            [value] => Mô tả chương trình
         )
 
     [11] => Array
         (
             [key] => phuong_tien
-            [value] => media
+            [value] => image
         )
 
     [12] => Array
         (
             [key] => url
-            [value] => https://www.youtube.com/embed/Fv9wuC_bSTU?si=xcVlHC-WGBoLqRis
+            [value] => https://www.youtube.com/embed/r95XahnBg_A?si=GhNgHFjy5pWlJz3k
         )
 
     [13] => Array
         (
             [key] => file_temp
-            [value] => 
+            [value] => C:\fakepath\image (1).png
         )
 
     [14] => Array
         (
             [key] => chu_thich
-            [value] => 12
+            [value] => Chú thích thêm
         )
 
 )
