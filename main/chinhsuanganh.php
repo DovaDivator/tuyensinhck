@@ -481,49 +481,29 @@ if (isset($_GET['ma_nganh'])) {
         }
     });
 
-    flatpickr("#date_end_day", {
-        dateFormat: "d/m/Y", // Định dạng ngày
-        minDate: "",
-    });
-    flatpickr("#date_end_time", {
-        enableTime: true, // Bật chế độ chọn giờ
-        noCalendar: true, // Tắt lịch (chỉ chọn giờ)
-        dateFormat: "H:i", // Định dạng giờ
-        time_24hr: true // Sử dụng định dạng 24 giờ
-    });
-    flatpickr("#date_open_day", {
-        dateFormat: "d/m/Y", // Định dạng ngày
-        minDate: "",
-    });
-    flatpickr("#date_open_time", {
-        enableTime: true, // Bật chế độ chọn giờ
-        noCalendar: true, // Tắt lịch (chỉ chọn giờ)
-        dateFormat: "H:i", // Định dạng giờ
-        time_24hr: true // Sử dụng định dạng 24 giờ
-    });
-
     $(function() {
 
+        flatpickr("#date_end_day", {
+            dateFormat: "d/m/Y", // Định dạng ngày
+            minDate: "",
+        });
+        flatpickr("#date_end_time", {
+            enableTime: true, // Bật chế độ chọn giờ
+            noCalendar: true, // Tắt lịch (chỉ chọn giờ)
+            dateFormat: "H:i", // Định dạng giờ
+            time_24hr: true // Sử dụng định dạng 24 giờ
+        });
+        flatpickr("#date_open_day", {
+            dateFormat: "d/m/Y", // Định dạng ngày
+            minDate: "",
+        });
+        flatpickr("#date_open_time", {
+            enableTime: true, // Bật chế độ chọn giờ
+            noCalendar: true, // Tắt lịch (chỉ chọn giờ)
+            dateFormat: "H:i", // Định dạng giờ
+            time_24hr: true // Sử dụng định dạng 24 giờ
+        });
 
-
-        // $("#date_open_day, #date_end_day").datepicker({
-        //     dateFormat: "dd/mm/yy",
-        //     changeMonth: true,
-        //     changeYear: true,
-        //     yearRange: "-100:+0",
-        //     maxDate: 0
-        // });
-
-        // $("#date_open_time, #date_end_time").timepicker({
-        //     timeFormat: 'HH:mm',
-        //     interval: 5,
-        //     minTime: '00:00',
-        //     maxTime: '23:55',
-        //     dynamic: false,
-        //     dropdown: true,
-        //     scrollbar: false,
-        //     controlType: 'select'
-        // });
     });
 
     let lastCheckedRadio = null; // Biến lưu radio đang được chọn
