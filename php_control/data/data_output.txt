@@ -1,0 +1,16 @@
+Dữ liệu nhận được:
+Key: id_nganh - Value: AC002
+Key: ten - Value: Kỹ thuật phần mềm
+Key: chi_tieu - Value: 200
+Key: chuong_trinh - Value: 4
+Key: to_hop - Value: A00, A01
+Key: day_open - Value: 17/09/2024  08:00
+Key: day_close - Value: 31/12/2024  23:59
+Key: diem_chuan - Value: 24.50
+Dữ liệu không đúng định dạng.
+Key: gv_id - Value: GV0001 - Ngô Đình Minh Trang
+Key: mo_ta - Value: Mô tả chương trình
+Key: phuong_tien - Value: media
+Key: url - Value: https://www.youtube.com/embed/r95XahnBg_A?si=GhNgHFjy5pWlJz3k
+Key: file_temp - Value: 
+Key: chu_thich - Value: Chú thích thêm

@@ -3,76 +3,77 @@ Array
     [0] => Array
         (
             [key] => id_nganh
-            [value] => 11111111
+            [value] => AC002
         )
 
     [1] => Array
         (
             [key] => ten
-            [value] => 111
+            [value] => Kỹ thuật phần mềm
         )
 
     [2] => Array
         (
             [key] => chi_tieu
-            [value] => 1
+            [value] => 200
         )
 
     [3] => Array
         (
             [key] => chuong_trinh
-            [value] => 1
+            [value] => 4
         )
 
     [4] => Array
         (
             [key] => to_hop
-            [value] => A00
+            [value] => A00, A01
         )
 
     [5] => Array
         (
             [key] => day_open
-            [value] => 02/12/2024  15:00
+            [value] => 17/09/2024  08:00
         )
 
     [6] => Array
         (
             [key] => day_close
-            [value] => 02/12/2024  15:00
+            [value] => 31/12/2024  23:59
         )
 
     [7] => Array
         (
             [key] => diem_chuan
-            [value] => 1
+            [value] => 24.50
         )
 
     [8] => Array
         (
+            [0] => Array
+                (
+                    [mon] => Lý
+                    [diem] => 9
+                )
+
         )
 
     [9] => Array
         (
             [key] => gv_id
-            [value] => 
+            [value] => GV0001 - Ngô Đình Minh Trang
         )
 
     [10] => Array
         (
             [key] => mo_ta
-            [value] => 
+            [value] => Mô tả chương trình
         )
 
     [11] => Array
         (
-<<<<<<< HEAD
             [key] => phuong_tien
-            [value] => image
-=======
-            [key] => url
-            [value] => 
->>>>>>> 7d74079636f2c43e290f4baadc904d4604d93703
+            [value] => media
         )
 
     [12] => Array
@@ -84,13 +85,13 @@ Array
     [13] => Array
         (
             [key] => file_temp
-            [value] => C:\fakepath\image (1).png
+            [value] => 
         )
 
     [14] => Array
         (
             [key] => chu_thich
-            [value] => 1
+            [value] => Chú thích thêm
         )
 
 )
