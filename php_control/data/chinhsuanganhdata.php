@@ -67,58 +67,6 @@ if (is_array($data)) {
 }
 
     // Kiểm tra dữ liệu 'phuong_tien' và file tạm trong SESSION
-    if (isset($_SESSION['file_path']['file_temp'])) {
-        var_dump($_SESSION['file_path']['file_temp']);
-        $avatarTemp = $_SESSION['file_path']['file_temp'];
-        $push_img_http = push_image_nganh($avatarTemp);
-
-        // Kiểm tra kết quả trả về từ cURL
-        if ($push_img_http['httpCode'] == 400) {
-            if ($push_img_http['response']['statusCode'] == 403) {
-                get_token();
-                if (empty($_SESSION['access_token'])) {
-                    echo json_encode([
-                        "success" => false,
-                        "message" => "lỗi 1"
-                    ]);
-                    exit();
-                } else {
-                    $push_img_http = push_image_nganh($avatarTemp);
-                    if ($push_img_http['httpCode'] != 200) {
-                        echo json_encode([
-                            "success" => false,
-                            "message" => "lỗi 2"
-                        ]);
-                        exit();
-                    }
-                }
-            } else {
-                echo json_encode([
-                    "success" => false,
-                    "message" => "lỗi 3"
-                ]);
-                exit();
-            }
-        } elseif ($push_img_http['httpCode'] != 200) {
-            echo json_encode([
-                "success" => false,
-                "message" => "lỗi 3"
-            ]);
-            exit();
-        }
-    }else{
-        echo json_encode([
-            "success" => false,
-            "message" => "lỗi 4"
-        ]);
-        exit();
-    }
-
-    echo json_encode([
-        "success" => true,
-        "message" => "yes"
-    ]);
- exit();
 if(isset($_GET['update'])){
 
 }

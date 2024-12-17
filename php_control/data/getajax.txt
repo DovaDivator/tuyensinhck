@@ -39,7 +39,11 @@ Array
     [6] => Array
         (
             [key] => day_close
+<<<<<<< HEAD
             [value] => 31/12/2024  23:59
+=======
+            [value] => 31/12/2024  03:39
+>>>>>>> 9cde3cfa75a84f1e72af24c5121742af44f0f5e8
         )
 
     [7] => Array
