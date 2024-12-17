@@ -52,19 +52,19 @@ if (isset($_SESSION['user'])) {
                                         echo "selected";
                                     }
                                 ?>
-                            >Thông kê hồ sơ thịt chó</option>
+                            >Thông kê hồ tuyển sinh 1</option>
                             <option value="chart2"
                                 <?php
                                     if(isset($_GET['chart_info_options']) && $_GET['chart_info_options'] === 'chart2'){
                                         echo "selected";
                                     }
                                 ?>
-                            >Thông kê hồ sơ thịt mèo</option>
+                            >Thông kê hồ sơ tuyển sinh 2</option>
                         </select>
                     </form>
                 </div>
                 <!-- Biểu đồ -->
-                <h3 style='text-align: center;'>Thống kê hồ sơ thịt chó</h3>
+                <h3 style='text-align: center;'>Thống kê hồ sơ</h3>
                 <div class="chart_div">
                     <canvas id="chart"></canvas>
                 </div>

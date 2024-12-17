@@ -7,9 +7,57 @@ if (session_status() === PHP_SESSION_NONE) {
 include "db_connect.php";
 include "refresh_token.php";
 
+
+header('Content-Type: application/json');
+
+try {
+    // Đọc dữ liệu JSON từ yêu cầu POST
+    $input = file_get_contents("php://input");
+
+    // Giải mã dữ liệu JSON thành mảng PHP
+    $data = json_decode($input, true);
+
+    // Kiểm tra dữ liệu
+    if ($data === null) {
+        throw new Exception("Dữ liệu không hợp lệ hoặc trống.");
+    }
+
+    // Tạo nội dung để ghi vào file TXT
+    $content = "Dữ liệu nhận được:\n";
+    foreach ($data as $item) {
+        if (is_array($item) && isset($item['key']) && isset($item['value'])) {
+            $content .= "Key: " . $item['key'] . " - Value: " . $item['value'] . "\n";
+        } else {
+            $content .= "Dữ liệu không đúng định dạng.\n";
+        }
+    }
+
+    // Đường dẫn file TXT để lưu dữ liệu
+    $filePath = __DIR__ . "/data_output.txt";
+
+    // Ghi dữ liệu vào file TXT
+    if (file_put_contents($filePath, $content)) {
+        echo json_encode([
+            "success" => true,
+            "message" => "Dữ liệu đã được ghi vào file: $filePath"
+        ]);
+    } else {
+        throw new Exception("Không thể ghi dữ liệu vào file.");
+    }
+} catch (Exception $e) {
+    // Trả về lỗi nếu xảy ra vấn đề
+    echo json_encode([
+        "success" => false,
+        "message" => $e->getMessage()
+    ]);
+}
+
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Nhận dữ liệu từ form
- 
+
+
+
     $id_nganh = $_POST['id_nganh'];
     $ten = $_POST['ten'] ?? '';
     $chi_tieu = $_POST['chi_tieu'] ?? '';
@@ -45,12 +93,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     ]);
 }
 
-function push_image_nganh($fileName){
-    $supabase_url = 'https://iwelyvdecathaeppslzw.supabase.co';    
+function push_image_nganh($fileName)
+{
+    $supabase_url = 'https://iwelyvdecathaeppslzw.supabase.co';
     $bucket_name = 'nganh_image';
 
     // Lấy đường dẫn file tạm từ session
-    $filePath = '../../assets/temp_uploads/'.$fileName;
+    $filePath = '../../assets/temp_uploads/' . $fileName;
 
     // Tạo endpoint cho việc tải lên file
     $endpoint = $supabase_url . "/storage/v1/object/" . $bucket_name . "/" . $fileName;
@@ -83,4 +132,3 @@ function push_image_nganh($fileName){
         'response' => json_decode($response, true)
     ];
 }
-?>

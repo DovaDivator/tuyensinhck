@@ -1,0 +1,16 @@
+Dữ liệu nhận được:
+Key: id_nganh - Value: TC002
+Key: ten - Value: Tin
+Key: chi_tieu - Value: 244
+Key: chuong_trinh - Value: 4
+Key: to_hop - Value: A01
+Key: day_open - Value: 11/11/2024  15:33
+Key: day_close - Value: 30/11/2024  15:57
+Key: diem_chuan - Value: 19.00
+Dữ liệu không đúng định dạng.
+Key: gv_id - Value: GV0001 - Ngô Đình Minh Trang
+Key: mo_ta - Value: 
+Key: phuong_tien - Value: media
+Key: url - Value: https://www.youtube.com/embed/Fv9wuC_bSTU?si=xcVlHC-WGBoLqRis
+Key: file_temp - Value: 
+Key: chu_thich - Value: 12
