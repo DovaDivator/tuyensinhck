@@ -685,7 +685,6 @@ if (isset($_GET['ma_nganh'])) {
             }
         });
 
-        if (check) {
             Array.push({
                 key: idNganh.name || idNganh.id,
                 value: idNganh.value
@@ -739,115 +738,60 @@ if (isset($_GET['ma_nganh'])) {
             });
 
             Array.push({
-                key: file_temp.name || file_temp.id,
-                value: file_temp.value
+                key: chu_thich.name || chu_thich.id,
+                value: chu_thich.value
             });
 
             Array.push({
-                key: chu_thich.name || chu_thich.id,
-                value: chu_thich.value
+                key: 'isenable',
+                value: document.getElementById("enable").checked
             });
 
             if (phuong_tien && phuong_tien.value === 'image' && file_temp && file_temp.value !== '') {
                 const fileType = 'file_temp';
                 const formData = new FormData();
                 const fileInput = document.getElementById('file_temp');
-                console.log(<?php json_encode($_FILES) ?>);
-
-                // Xóa file tạm
+                
                 DeleteExistFile(fileType, formData);
 
-                // Tải lên file mới
                 formData.append('file_type', fileType);
                 formData.append('file_temp', fileInput.files[0]);
+                
                 UploadTempFile('file_temp', formData)
                     .then(response => {
                         if (response.success) {
                             console.log('Tải lên file thành công');
+                            // Thêm giá trị file vào Array sau khi tải xong
+                            Array.push({
+                                key: file_temp.name || file_temp.id,
+                                value: response.imagePath // Đường dẫn file trả về từ server
+                            });
+                            sendFormData(Array); // Gửi form sau khi tải file thành công
                         } else {
                             console.log('Tải lên file thất bại: ' + response.message);
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Lỗi tải lên',
+                                text: response.message || 'Không thể tải file. Vui lòng thử lại!',
+                                confirmButtonText: 'OK'
+                            });
                         }
                     })
-                    .catch(error => console.error('Lỗi tải lên:', error));
-            }
-        }
-        console.log(Array);
-
-        if (!isValid) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Lỗi nhập liệu',
-                text: `${invalidFields.join(', ')} không hợp lệ vui lòng kiểm tra lại`,
-                confirmButtonText: 'OK'
-            });
-        } else {
-            // Gửi form bằng XHR
-            const xhr = new XMLHttpRequest();
-            xhr.open("POST", "../php_control/data/chinhsuanganhdata.php<?php echo isset($_GET['ma_nganh']) ? '?update=true' : ''; ?>", true); // Gửi tới file PHP xử lý form
-            xhr.setRequestHeader("Content-Type", "application/json");
-            xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-            xhr.onload = function() {
-                if (xhr.status === 200) {
-                try {
-                    // Parse dữ liệu JSON trả về từ server
-                    console.log(xhr.responseText);
-                    const response = JSON.parse(xhr.responseText);
-                    if (response.success) {
-                        // Hiển thị thông báo thành công dựa trên dữ liệu trả về
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Thành công',
-                            text: response.message || 'Dữ liệu đã được gửi thành công!',
-                            confirmButtonText: 'OK'
-                        }).then(() => {
-                            // Nếu có URL chuyển hướng trong JSON
-                            if (response.redirect_url) {
-                                window.location.href = response.redirect_url;
-                            }
-                        });
-                    } else {
-                        // Hiển thị thông báo lỗi từ server
+                    .catch(error => {
+                        console.error('Lỗi tải lên:', error);
                         Swal.fire({
                             icon: 'error',
-                            title: 'Lỗi gửi dữ liệu',
-                            text: response.message || 'Đã xảy ra lỗi khi gửi dữ liệu. Vui lòng thử lại!',
+                            title: 'Lỗi tải lên',
+                            text: 'Đã xảy ra lỗi khi tải file. Vui lòng thử lại!',
                             confirmButtonText: 'OK'
                         });
-                    }
-                } catch (e) {
-                    // Xử lý khi JSON không hợp lệ
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Lỗi phản hồi',
-                        text: 'Phản hồi từ máy chủ không hợp lệ. Vui lòng thử lại!',
-                        confirmButtonText: 'OK'
+                    
                     });
-                    console.error('Lỗi parse JSON:', e);
-                }
             } else {
-                // Xử lý lỗi HTTP khi `xhr.status` khác 200
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Lỗi kết nối',
-                    text: 'Không thể kết nối đến máy chủ. Mã lỗi: ' + xhr.status,
-                    confirmButtonText: 'OK'
-                });
+                sendFormData(Array); // Nếu không cần tải file, gửi form ngay lập tức
             }
-            };
-
-            xhr.onerror = function() {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Lỗi kết nối',
-                    text: 'Không thể kết nối đến máy chủ. Vui lòng kiểm tra mạng hoặc thử lại!',
-                    confirmButtonText: 'OK'
-                });
-            };
-            let jsonData = JSON.stringify(Array);
-            console.log(jsonData);
-            xhr.send(jsonData); // Gửi FormData qua XHR
-        }
-    });
+        });
+// Hàm gửi form
 
 
     // Thêm sự kiện input để loại bỏ class lỗi khi người dùng nhập lại
@@ -860,6 +804,106 @@ if (isset($_GET['ma_nganh'])) {
             }
         });
     });
+
+</script>
+
+<script>
+function sendFormData(Array) {
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", "../php_control/data/chinhsuanganhdata.php<?php echo isset($_GET['ma_nganh']) ? '?update=true' : ''; ?>", true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+
+    xhr.onload = function () {
+        if (xhr.status === 200) {
+            try {
+                console.log(xhr.responseText);
+                const response = JSON.parse(xhr.responseText);
+                if (response.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Thành công',
+                        text: response.message || 'Dữ liệu đã được gửi thành công!',
+                        confirmButtonText: 'OK'
+                    }).then(() => {
+                        if (response.redirect_url) {
+                            window.location.href = response.redirect_url;
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi gửi dữ liệu',
+                        text: response.message || 'Đã xảy ra lỗi khi gửi dữ liệu. Vui lòng thử lại!',
+                        confirmButtonText: 'OK'
+                    });
+                }
+            } catch (e) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi phản hồi',
+                    text: 'Phản hồi từ máy chủ không hợp lệ. Vui lòng thử lại!',
+                    confirmButtonText: 'OK'
+                });
+                console.error('Lỗi parse JSON:', e);
+            }
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Lỗi kết nối',
+                text: 'Không thể kết nối đến máy chủ. Mã lỗi: ' + xhr.status,
+                confirmButtonText: 'OK'
+            });
+        }
+    };
+
+    xhr.onerror = function () {
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi kết nối',
+            text: 'Không thể kết nối đến máy chủ. Vui lòng kiểm tra mạng hoặc thử lại!',
+            confirmButtonText: 'OK'
+        });
+    };
+
+    let jsonData = JSON.stringify(Array);
+    console.log(jsonData);
+    xhr.send(jsonData);
+}
+
+
+function handleRadioClick(radio, type) {
+        const urlInput = document.getElementById("url");
+        const fileInput = document.getElementById("file_temp");
+        const filePathHold = document.getElementById("file_path_hold");
+        const note = document.getElementById("chu_thich");
+        const note_div = document.getElementsByClassName("chu_thich_hold");
+
+        // Nếu radio được nhấn lại (bỏ tick)
+        if (lastCheckedRadio === radio) {
+            radio.checked = false; // Bỏ tick
+            lastCheckedRadio = null; // Reset trạng thái
+            urlInput.style.display = "none";
+            fileInput.style.display = "none";
+            filePathHold.style.display = "none";
+            note.value = "";
+            note_div[0].style.display = "none";
+        } else {
+            // Cập nhật radio mới được chọn
+            lastCheckedRadio = radio;
+
+            if (type === "url") {
+                urlInput.style.display = "block";
+                fileInput.style.display = "none";
+                filePathHold.style.display = "none";
+            } else if (type === "file") {
+                urlInput.style.display = "none";
+                fileInput.style.display = "block";
+                filePathHold.style.display = "block";
+            }
+            note_div[0].style.display = "block";
+        }
+    }
 </script>
 
 

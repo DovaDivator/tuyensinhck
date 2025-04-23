@@ -1,0 +1,63 @@
+// =========================================================================
+// 📌 Style dành riêng cho giao diện trang đăng nhập
+// =========================================================================
+@use '../abstracts/variables';
+@use '../abstracts/mixins';
+@use '../abstracts/animations';
+@use '../components/forms';
+
+
+body#login {
+    background: url('../assets/images/LoginBackground.jpg') no-repeat center;
+    background-size: cover;
+    position: relative;
+
+    // Khung chứa login
+    .login-container {
+        @include mixins.flex-center;
+        position: relative;
+        z-index: 2;
+        max-width: 1000px;
+        width: 90%;
+        height: 500px;
+        margin: 0 auto;
+        top: 50%;
+        transform: translateY(-50%);
+        background: variables.$white;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        overflow: hidden;
+        flex-direction: row;
+        @include animations.animate(slideUp, 0.5s, ease-out ,$y: -50%);
+
+        // Ảnh bên trái
+        .login-image {
+            width: 50%;
+            height: 100%;
+            background: url('../assets/images/SquareSchool.jpg') no-repeat center;
+            background-size: cover;
+            flex-shrink: 0;
+        }
+
+        // Phần chứa form đăng nhập
+        .login-form-container {
+            width: 50%;
+            padding: 40px;
+            @include mixins.flex-center;
+            flex-direction: column;
+            box-sizing: border-box;
+            gap: 15px;
+            flex-shrink: 0;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .login-image {
+            display: none;
+        }
+    
+        .login-form-container {
+            width: 100% !important;
+        }
+    }
+}

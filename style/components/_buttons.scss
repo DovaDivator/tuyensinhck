@@ -1,0 +1,20 @@
+// =========================================================================
+// 📌 Style dành riêng cho các nút bấm (button)
+// =========================================================================
+@use '../abstracts/variables';
+@use 'sass:color';
+
+button[type="submit"], input[type="submit"] {
+    padding: 12px;
+    background: variables.$primary-color;
+    color: variables.$white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s;
+
+    &:hover {
+        background: color.adjust(variables.$primary-color, $lightness: -10%);
+    }
+}

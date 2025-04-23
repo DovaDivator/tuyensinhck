@@ -1,0 +1,36 @@
+// =========================================================================
+// 📌 Style dành riêng cho input và form
+// =========================================================================
+@use '../abstracts/variables';
+
+form{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+
+    * {
+        margin-top: 0;
+        margin-bottom: 0;   
+    }
+
+    input[type="text"],
+    input[type="password"] {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 14px;
+        box-sizing: border-box;
+
+        &:focus {
+            outline: none;
+            border-color: variables.$primary-color;
+            box-shadow: 0 0 5px rgba(variables.$primary-color, 0.3);
+        }
+    }
+}
+
+
+
+

@@ -1,0 +1,45 @@
+@use "../../../style/variables";
+@use "../../../style/mixins";
+
+.introduce-section {
+  @include mixins.horizontal-grid(3rem);
+  width: 100%;
+  padding: 2rem;
+  box-sizing: border-box;
+
+  .introduce-section__image{
+    margin: 16px 0;
+    display: flex;
+    justify-content: flex-end;
+
+    img{
+      object-fit: contain;
+      width: 80%;
+    }
+
+    &.start{
+      @include mixins.animate-effect("fadeInLeft", 1.5s);
+    }
+  }
+
+  .introduce-section__limited{
+    width: 80%;
+    aspect-ratio: 20/17;
+
+    &.start{
+      @include mixins.animate-effect("fadeInRight", 1.5s);
+    }
+
+    .introduce-section__limited__text{
+      width: 100%;
+      height: calc(100% - 2rem);
+      overflow: hidden;
+    }
+
+    .introduce-section__limited__link{
+      color: variables.$label-color;
+      font-style: italic;
+      text-decoration: none;
+    }
+  }
+}
