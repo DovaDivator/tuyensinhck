@@ -1,4 +1,4 @@
-import { InputOptions } from "../classes/InputOption";
+import { InputOptions } from "../../classes/InputOption";
 
 export const onChangeInput = (e, setFormData, options = new InputOptions({})) => {
   const { name, value } = e.target;

@@ -8,17 +8,18 @@
     box-sizing: border-box;
     overflow: hidden;
 
-    .key-information__list{
+    &__list{
         @include mixins.horizontal-grid;
         align-items: stretch;
         width: 80%;
+        max-width: 1100px;
 
 
-        section{
-            @include mixins.vertical-display(0.75rem);
-            @include mixins.card;
+        &__item{
+            gap: 0.75rem;
             padding: 2rem 1.25rem;
             flex: 1;
+            justify-content: flex-start;
 
             &.start{
                 @include mixins.animate-effect("fadeInUp", 0.5s);
@@ -34,7 +35,7 @@
 @media (max-width: variables.$bp-md) {
     .key-information{
 
-        .key-information__list{
+        &__list{
             @include mixins.vertical-grid(0.75rem);
         }
     }

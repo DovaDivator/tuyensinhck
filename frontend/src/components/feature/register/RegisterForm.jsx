@@ -1,19 +1,19 @@
 import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { AppContext } from '../../../context/AppContext';
-import InputField from '../../input/InputField';
-import InputChoice from '../../input/InputChoice';
-import Button from '../../input/Button';
+import InputField from '../../ui/input/InputField';
+import InputChoice from '../../ui/input/InputChoice';
+import Button from '../../ui/input/Button';
 import PolicyTerm from '../policy/PolicyTerm';
 import './RegisterForm.scss';
-import LogoGuest from '../../ui/LogoGuest';
+import LogoGuest from '../../ui/layout/LogoGuest';
 import { loginSubmitUtils } from '../../../function/user-action/loginSubmitUtils';
 import {alertLayoutReact} from '../../../function/alert/alertLayoutReact';
 
-import {ChoiceGroup} from '../../../function/classes/ChoiceGroup';
-import { InputOptions } from '../../../function/classes/InputOption';
-import {InputValids} from '../../../function/classes/InputValids';
-import {ChoiceValids} from '../../../function/classes/ChoiceValids';
+import {ChoiceGroup} from '../../../classes/ChoiceGroup';
+import { InputOptions } from '../../../classes/InputOption';
+import {InputValids} from '../../../classes/InputValids';
+import {ChoiceValids} from '../../../classes/ChoiceValids';
 
 
 const RegisterForm = () => {

@@ -10,9 +10,10 @@ $height-form: 500px;
     // Khung chứa login
     .login-container {
         @include mixins.flex-center;
-        @include mixins.card;
         position: relative;
         max-width: 1000px;
+        padding: 0;
+        gap: 0;
         width: 90%;
         height: $height-form;
         flex-direction: row;

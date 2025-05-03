@@ -1,7 +1,7 @@
 import { validateText } from './validateText';
 import { validateChoice } from './validateChoice';
-import { InputValids } from '../classes/InputValids';
-import { ChoiceValids } from '../classes/ChoiceValids';
+import { InputValids } from '../../classes/InputValids';
+import { ChoiceValids } from '../../classes/ChoiceValids';
 
 export const validateInput = (name, value, valid, formData) => {
     if(valid instanceof InputValids){

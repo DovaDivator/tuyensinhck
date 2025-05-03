@@ -1,13 +1,13 @@
 import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { AppContext } from '../../../context/AppContext'; // Import AppContext
-import InputField from '../../input/InputField';
-import Button from '../../input/Button';
+import InputField from '../../ui/input/InputField';
+import Button from '../../ui/input/Button';
 import './LoginForm.scss';
-import LogoGuest from '../../ui/LogoGuest';
+import LogoGuest from '../../ui/layout/LogoGuest';
 import { loginSubmitUtils } from '../../../function/user-action/loginSubmitUtils';
-import { InputOptions } from '../../../function/classes/InputOption';
-import { InputValids } from '../../../function/classes/InputValids';
+import { InputOptions } from '../../../classes/InputOption';
+import { InputValids } from '../../../classes/InputValids';
 import { forgotPassword } from '../../../function/user-action/forgotPassword';
 
 const LoginForm = () => {

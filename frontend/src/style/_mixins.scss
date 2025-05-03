@@ -10,14 +10,6 @@
     align-items: center;
 }
 
-@mixin card{
-    background: v.$white;
-    border-radius: 10px;
-    box-shadow: v.$box-shadow;
-    overflow: hidden;
-}
-
-
 @mixin background{
     height: auto;
     min-height: 100vh;

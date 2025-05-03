@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
+import Card from "../../ui/tag/Card";
 import "./KeyInformation.scss";
 
 const termsData = [
@@ -26,7 +27,7 @@ const KeyInformation = () => {
   useEffect(() => {
     if (inView) {
       const startAnimation = () => {
-        const items = document.querySelectorAll(".key-information__item");
+        const items = document.querySelectorAll(".key-information__list__item");
         items.forEach((item, index) => {
           setTimeout(() => {
             item.classList.remove("hide");
@@ -43,10 +44,10 @@ const KeyInformation = () => {
     <div className="key-information" ref={ref}>
       <div className="key-information__list">
         {termsData.map((item, index) => (
-          <section key={index} className="key-information__item hide">
-            <h4 className="key-information__item-title">{item.title}</h4>
-            <p className="key-information__item-description">{item.description}</p>
-          </section>
+          <Card key={index} className="key-information__list__item hide">
+            <h4 className="key-information__list__item-title">{item.title}</h4>
+            <p className="key-information__list__item-description">{item.description}</p>
+          </Card>
         ))}
       </div>
     </div>

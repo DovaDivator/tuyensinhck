@@ -1,6 +1,6 @@
 import Swal from 'sweetalert2';
 import { validateText } from '../conditions/validateText';
-import { InputValids } from '../classes/InputValids';
+import { InputValids } from '../../classes/InputValids';
 
 export const alertForgotPassword = async () => {
   const name = 'emailForgot';

@@ -11,7 +11,7 @@ const IntroduceSection = () => {
         triggerOnce: true,
         threshold: 0.3,
     });
-    const [animationClass, setAnimationClass] = useState("");
+    const [animationClass, setAnimationClass] = useState("hide");
 
     useEffect(() => {
         if (inView) {
@@ -21,16 +21,18 @@ const IntroduceSection = () => {
 
     return (
         <section className="introduce-section" ref={ref}>
-            <figure className={`introduce-section__image ${animationClass}`}>
-                <img src={introImg} alt="ảnh giới thiệu"/>
-            </figure>
-            <div className={`introduce-section__limited ${animationClass}`}>
-                <div className={`introduce-section__limited__text`}>
-                    <IntroduceText />
+            <div className="introduce-section__control">
+                <figure className={`introduce-section__image ${animationClass}`}>
+                    <img src={introImg} alt="ảnh giới thiệu"/>
+                </figure>
+                <div className={`introduce-section__limited ${animationClass}`}>
+                    <div className={`introduce-section__limited__text`}>
+                        <IntroduceText />
+                    </div>
+                    <Link to="/introduce" className={`introduce-section__limited__link`}>
+                        <span>&gt;&gt;&nbsp;Xem thêm...</span>
+                    </Link>
                 </div>
-                <Link to="/introduce" className={`introduce-section__limited__link`}>
-                    <span>&gt;&gt;&nbsp;Xem thêm...</span>
-                </Link>
             </div>
         </section>
     );

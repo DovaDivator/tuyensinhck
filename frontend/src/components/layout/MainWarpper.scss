@@ -1,8 +1,0 @@
-@use '../../style/variables';
-@use '../../style/mixins';
-
-.main-wrapper {
-    width: 100%;
-    height: auto;
-    @include mixins.vertical-display(0px);
-}

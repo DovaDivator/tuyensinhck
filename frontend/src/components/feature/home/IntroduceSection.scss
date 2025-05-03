@@ -1,13 +1,13 @@
-@use "../../../style/variables";
-@use "../../../style/mixins";
+@use "../../../style/variables" as v;
+@use "../../../style/mixins" as mx;
 
 .introduce-section {
-  @include mixins.horizontal-grid(3rem);
+  @include mx.flex-center;
   width: 100%;
   padding: 2rem;
   box-sizing: border-box;
 
-  .introduce-section__image{
+  &__image{
     margin: 16px 0;
     display: flex;
     justify-content: flex-end;
@@ -18,28 +18,55 @@
     }
 
     &.start{
-      @include mixins.animate-effect("fadeInLeft", 1.5s);
+      @include mx.animate-effect("fadeInLeft", 1.5s);
+      margin: 0;
     }
   }
 
-  .introduce-section__limited{
+  &__limited{
+    @include mx.vertical-display(0px);
+    align-items: flex-start !important;
     width: 80%;
     aspect-ratio: 20/17;
 
     &.start{
-      @include mixins.animate-effect("fadeInRight", 1.5s);
+      @include mx.animate-effect("fadeInRight", 1.5s);
     }
 
-    .introduce-section__limited__text{
+    &__text{
       width: 100%;
       height: calc(100% - 2rem);
       overflow: hidden;
     }
 
-    .introduce-section__limited__link{
-      color: variables.$label-color;
+    &__link{
+      color: v.$label-color;
       font-style: italic;
       text-decoration: none;
+    }
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .introduce-section__control{
+    @include mx.horizontal-grid(3rem);
+    max-height: 400px; 
+    overflow: hidden;
+    .introduce-section__limited{
+      max-height: 390px !important;
+    }
+    img{
+      max-height: 1000px;
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .introduce-section__control{
+    @include mx.vertical-grid(1rem);
+
+    >*{
+      justify-content: center !important;
     }
   }
 }

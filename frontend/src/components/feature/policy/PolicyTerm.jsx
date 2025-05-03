@@ -1,6 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
-import MainWarpper from '../../layout/MainWarpper';
+import MainWarpper from '../../ui/layout/MainWarpper';
 import './PolicyTerm.scss';
 
 const termsData = [

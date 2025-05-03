@@ -1,5 +1,5 @@
 import { validateTypeText } from "./validateTypeText";
-import { InputValids } from "../classes/InputValids";
+import { InputValids } from "../../classes/InputValids";
 
 export const validateText = (name, value, valids = new InputValids({}), formData = {}) => {
     if (valids.required && value.trim() === '') {

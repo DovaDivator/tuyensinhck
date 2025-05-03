@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useInView } from "react-intersection-observer";
 
-import Button from "../../input/Button";
+import Button from "../../ui/input/Button";
 import "./HeroSection.scss";
 
 const HeroSection = () => {

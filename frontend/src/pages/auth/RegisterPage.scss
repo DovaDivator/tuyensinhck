@@ -5,11 +5,11 @@
     // Khung chứa login
     .register-container {
         @include mixins.flex-center;
-        @include mixins.card;
         position: relative;
         max-width: calc(variables.$bp-md - 100px);
         width: 90%;
-        flex-direction: column;
+        padding: 0;
+        gap: 0;
         @include mixins.animate-effect('fadeInUp');
 
         // Ảnh bên trái

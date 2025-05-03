@@ -1,4 +1,4 @@
-import { ChoiceValids } from "../classes/ChoiceValids";
+import { ChoiceValids } from "../../classes/ChoiceValids";
 
 export const validateChoice = (name, value, valids = new ChoiceValids()) => {   
     if (valids.required && value?.length === 0) {

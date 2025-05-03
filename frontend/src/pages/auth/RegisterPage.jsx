@@ -1,8 +1,9 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import RegisterForm from '../../components/feature/register/RegisterForm';
-import GuestBackground from '../../components/layout/GuestBackground';
-import MainWarpper from '../../components/layout/MainWarpper';
+import GuestBackground from '../../components/ui/layout/GuestBackground';
+import MainWarpper from '../../components/ui/layout/MainWarpper';
+import Card from '../../components/ui/tag/Card';
 import './RegisterPage.scss';
 
 const RegisterPage = () => {
@@ -13,10 +14,10 @@ const RegisterPage = () => {
       </Helmet>
       <GuestBackground delay={1000}>
         <MainWarpper>
-          <section className="register-container">
+          <Card className={"register-container"}>
             <figure className="register-image"></figure>
             <RegisterForm/>
-          </section>
+          </Card>
         </MainWarpper>
       </GuestBackground>
     </div>
