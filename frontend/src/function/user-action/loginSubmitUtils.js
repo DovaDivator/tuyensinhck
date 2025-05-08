@@ -1,7 +1,7 @@
 import { validateInput } from '../conditions/validateInput';
 
 import { showToast } from '../alert/alertToast';
-import { showBasicAlert } from '../alert/alertUtils';
+import { alertBasic } from '../alert/alertBasic';
 
 export const loginSubmitUtils = (e, formData, valids, setIsLoading, setErrors) => {
   // e.preventDefault();
@@ -25,7 +25,10 @@ export const loginSubmitUtils = (e, formData, valids, setIsLoading, setErrors) =
   setIsLoading(true);
   setTimeout(() => {
     console.log('Login data:', formData);
-    showBasicAlert('success', null, 'Đăng nhập thành công!');
+    alertBasic({
+      icon: 'success',
+      message: 'Đăng nhập thành công!'
+    });
     setIsLoading(false);
   }, 1000);
 };

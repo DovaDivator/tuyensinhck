@@ -1,8 +1,8 @@
-import React from "react";
-import chibiImg from "../../assets/images/SmallScreen_img.png";
+import React, {JSX} from "react";
+import chibiImg from "../../assets/images/SmallScreen_img.png"; // Ensure this file exists at the specified path
 import "./SmallScreen.scss";
 
-const SmallScreen = () => {
+const SmallScreen = (): JSX.Element => {
     return (
           <div className="bg-small">
             <img src={chibiImg} alt="small-screen" className="img-small-screen" />

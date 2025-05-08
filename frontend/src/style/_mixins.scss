@@ -38,12 +38,18 @@
     grid-template-columns: 1fr;
     grid-auto-rows: 1fr;
     gap: $gap;
+
+    & > * {
+        width: 100%; 
+        box-sizing: border-box;
+    }
 }
 
 @mixin horizontal-grid($gap: 1rem, $min: 100px) {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax($min, 1fr));
     gap: $gap;
+    align-items: stretch;
 }
 
 //hiệu ứng dùng animate.css

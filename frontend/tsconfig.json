@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "target": "es2016",
+    "module": "commonjs",
+    "jsx": "react-jsx",
+    "allowJs": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "outDir": "./dist",
+    "lib": ["es2016", "es2017", "dom"], // Add es2017 and dom for React
+    "resolveJsonModule": true
+
+  },
+  "include": ["src", "src/types"],
+  "exclude": ["src/**/*.js", "dist", "node_modules"]
+}

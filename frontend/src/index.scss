@@ -88,6 +88,12 @@ form {
     opacity: 0;
 }
 
+.has-scrollbar{
+  justify-content: flex-start;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
 //alert
 .btn-confirm {
     background-color: variables.$primary-color;
