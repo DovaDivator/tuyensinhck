@@ -1,0 +1,10 @@
+@use "../../../style/variables" as v;
+@use "../../../style/mixins" as mx;
+
+.introduce-he-section{
+
+    &__container{
+        max-width: 900px;
+        text-indent: 1rem;
+    }
+}

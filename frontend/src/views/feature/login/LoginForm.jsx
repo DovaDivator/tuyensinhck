@@ -87,7 +87,7 @@ const LoginForm = () => {
           disabled={isLoading}
         />
       </form>
-      <Link to="/register" className="register-link">Đăng ký tài khoản sinh viên ở đây!</Link>
+      <Link to="/dang-ky" className="register-link">Đăng ký tài khoản sinh viên ở đây!</Link>
       <a href="" className="forgot-link" onClick={(e) => forgotPassword(e)}>Quên mật khẩu?</a>
     </section>
   );

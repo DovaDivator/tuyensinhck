@@ -45,7 +45,7 @@ const HeroSection = (): JSX.Element => {
                 <Button
                     text="Đăng ký ngay!"
                     className={buttonAnimation}
-                    onClick={() => navigate("/register")}
+                    onClick={() => navigate("/dang-ky")}
                 />
             </div>
         </section>

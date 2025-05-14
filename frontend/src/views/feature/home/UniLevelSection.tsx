@@ -32,7 +32,7 @@ const NewsSection = ({className = ""}: jsxEleProps):JSX.Element => {
                     title="Đại học"
                     des="Khám phá hành trình học Đại học với cơ hội nghề nghiệp rộng mở!"
                     className={animationClass}
-                    url="/introduce/uni/dai-hoc"
+                    url="/kham-pha/he/dai-hoc"
                 />
                 <div className={`uni-level-section__lv2`}>
                     <CardTooltip
@@ -40,14 +40,14 @@ const NewsSection = ({className = ""}: jsxEleProps):JSX.Element => {
                         title="Cao đẳng"
                         des="Học nhanh – Làm sớm với chương trình Cao đẳng thực tiễn!"
                         className={animationClass}
-                        url="/introduce/uni/cao-dang"
+                        url="/kham-pha/he/cao-dang"
                     />
                     <CardTooltip
                         bgUrl="../../../../src/assets/images/lien-thong-home.jpg"
                         title="Liên thông"
                         des="Nâng tầm bằng cấp cùng chương trình Liên thông linh hoạt!"
                         className={animationClass}
-                        url="/introduce/uni/lien-thong"
+                        url="/kham-pha/he/lien-thong"
                     />
                 </div>
             </div>

@@ -33,7 +33,7 @@ const IntroduceSection = ({className = ""}: jsxEleProps): JSX.Element => {
                         <IntroduceText />
                     </div>
                     {className === "home" && (
-                        <Link to="/introduce" className="introduce-section__limited__link">
+                        <Link to="/gioi-thieu" className="introduce-section__limited__link">
                             <span>&gt;&gt;&nbsp;Xem thêm...</span>
                         </Link>
                     )}

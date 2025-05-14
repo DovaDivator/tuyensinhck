@@ -181,7 +181,7 @@ const RegisterForm = () => {
           disabled={isLoading}
         />
       </form>
-      <Link to="/login">Đã có tài khoản? Đăng nhập tại đây!</Link>
+      <Link to="/dang-nhap">Đã có tài khoản? Đăng nhập tại đây!</Link>
       <LogoGuest />
     </section>
   );

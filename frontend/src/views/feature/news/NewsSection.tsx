@@ -57,7 +57,7 @@ const NewsSection = ({className = ""}: jsxEleProps):JSX.Element => {
             <div ref={listRef}
             className={`news-section__list ${animationClass} ${hasScrollbar ? "has-scrollbar" : ""}`}>
                 {test.map((item, index) => (
-                    <Link to="/news" key={index}>
+                    <Link to="/tin-tuc" key={index}>
                         <Card className={`news-section__list__ele`} hover={true}>
                             <figure>
                                 <img src={item.image === '' ? nullImg : item.image}/>
@@ -68,7 +68,7 @@ const NewsSection = ({className = ""}: jsxEleProps):JSX.Element => {
                     </Link>    
                 ))}
                 {className !== "news" &&
-                    (<Link to="/news">
+                    (<Link to="/tin-tuc">
                     <Card className={`news-section__list__ele more`} hover={true}>
                         <figure>
                             <img src={moreImg}/>

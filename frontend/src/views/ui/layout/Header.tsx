@@ -44,25 +44,25 @@ const Header = (): JSX.Element => {
                             <li>
                                 <a>Nhà trường</a>
                                 <ul className={`submenu${screenSize.width < SMALL_MENU_NAV ? "_r2" : ""}`}>
-                                    <li><a href="/introduce">Giới thiệu</a></li>
-                                    <li><a href="/news">Tin tức</a></li>
+                                    <li><a href="/gioi-thieu">Giới thiệu</a></li>
+                                    <li><a href="/tin-tuc">Tin tức</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a>Khám phá</a>
+                                <ul className={`submenu${screenSize.width < SMALL_MENU_NAV ? "_r2" : ""}`}>
+                                    <li><a href="/kham-pha/he/dai-hoc">Hệ đại học</a></li>
+                                    <li><a href="/kham-pha/he/cao-dang">Hệ cao đẳng</a></li>
+                                    <li><a href="/kham-pha/he/lien-thong">Hệ liên thông</a></li>
+                                    <li><a href="#">Các ngành khác</a></li>
                                 </ul>
                             </li>
                             <li>
                                 <a>Thi tuyển</a>
                                 <ul className={`submenu${screenSize.width < SMALL_MENU_NAV ? "_r2" : ""}`}>
                                     <li><a href="#">Thể lệ</a></li>
-                                    <li><a href="#">Tra cứu</a></li>
-                                    <li><a href="#">Đăng ký thi</a></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a>Chuyên ngành</a>
-                                <ul className={`submenu${screenSize.width < SMALL_MENU_NAV ? "_r2" : ""}`}>
-                                    <li><a href="#">Các ngành HOT</a></li>
-                                    <li><a href="#">Các ngành KHTN</a></li>
-                                    <li><a href="#">Các ngành KHXH</a></li>
-                                    <li><a href="#">Tìm kiếm nâng cao</a></li>
+                                    <li><a href="#">Tra cứu thông tin</a></li>
+                                    <li><a href="#">Chính sách phúc lợi</a></li>
                                 </ul>
                             </li>
                             <li>

@@ -62,7 +62,7 @@ const OtherNewsSection = ({className = ""}: jsxEleProps):JSX.Element => {
             <div className={`other-news-section__container`}>
                 <div className="other-news-section__list">
                   {test.map((item, index) => (
-                    <Link to="/news" key={index}>
+                    <Link to="/tin-tuc" key={index}>
                         <div className={`other-news-section__list__ele ${index === test.length - 1 ? 'last' : ''}`}>
                             <figure>
                                 <img src={item.image === '' ? nullImg : item.image}/>
