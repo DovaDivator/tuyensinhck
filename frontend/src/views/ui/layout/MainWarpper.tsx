@@ -1,16 +1,17 @@
-import React, {ReactNode, JSX} from "react";
+import {JSX, ReactNode} from "react";
+import { jsxEleProps } from "../../../types/jsxElementClass";
 import "./MainWarpper.scss";
 
-interface MainWarpperProps{
+interface MainWarpperProps extends jsxEleProps{
   children: ReactNode;
 }
 
 /**
  * Phần <main> trong bố cục của trang web
  */
-const MainWarpper = ({ children}: MainWarpperProps): JSX.Element => {
+const MainWarpper = ({className = "" , children}: MainWarpperProps): JSX.Element => {
   return (
-    <main className={`main-wrapper`}>
+    <main className={`main-wrapper ${className}`}>
       {children}
     </main>
   );

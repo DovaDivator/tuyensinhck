@@ -14,6 +14,8 @@ const LoginPage = React.lazy(() => import('./pages/auth/LoginPage'));
 const RegisterPage = React.lazy(() => import('./pages/auth/RegisterPage'));
 const HomePage = React.lazy(() => import('./pages/main/HomePage'));
 const IntroducePage = React.lazy(() => import('./pages/main/IntroducePage'));
+const NewsPage = React.lazy(() => import('./pages/main/NewsPage'));
+const IntroduceUniSection = React.lazy(() => import('./pages/main/IntroduceUniPage'));
 
 const AppContent = (): JSX.Element => {
   const { isTooSmall, isLoading } = useContext(AppContext);
@@ -33,7 +35,11 @@ const AppContent = (): JSX.Element => {
             <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
-            <Route path="/introduce" element={<IntroducePage />} />
+
+            <Route path="/introduce" element={<IntroducePage />}/>
+            <Route path="/introduce/uni/:type" element={<IntroduceUniSection />} />
+
+            <Route path="/news" element={<NewsPage/>} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </Router>

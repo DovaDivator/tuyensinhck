@@ -1,4 +1,4 @@
-import React, { useMemo, JSX} from 'react';
+import React, { useMemo, JSX, MemoExoticComponent} from 'react';
 import useScrollbar from '../../../function/triggers/useScrollbar';
 import { HeaderProps, RowData} from '../../../types/listTable';
 import './ListTable.scss';
@@ -36,7 +36,7 @@ interface ListTableProps {
  * ```
  */
 // const ListTable = React.memo(({ struct = [], headers = {}, isNumbering = false, className = "", error = "", links = [], isRanking = false}) => {
-  const ListTable = React.memo(({
+  const ListTable = ({
     struct = [],
     headers = {},
     isNumbering = false,
@@ -135,7 +135,10 @@ interface ListTableProps {
       </table>
     </div>
   );
-});
+};
 
-
-export default ListTable;
+/**
+ * Thông tin đầy đủ trong `ListTable.tsx`
+ * @module ListTable
+ */
+export default React.memo(ListTable);

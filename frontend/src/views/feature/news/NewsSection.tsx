@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, JSX} from "react";
 import useScrollbar from "../../../function/triggers/useScrollbar";
 import { Link } from "react-router-dom";
 import { useInView } from "react-intersection-observer";
 
 import Card from '../../ui/components/Card';
+import { jsxEleProps } from "../../../types/jsxElementClass";
 
 import nullImg from "../../../assets/images/null_img.jpg";
 import moreImg from "../../../assets/images/Searching_img.png";
@@ -33,7 +34,7 @@ const test = [
   ];
   
 
-const NewsSection = () => {
+const NewsSection = ({className = ""}: jsxEleProps):JSX.Element => {
     const { ref, inView } = useInView({
         triggerOnce: true,
         threshold: 0.3,
@@ -66,14 +67,16 @@ const NewsSection = () => {
                         </Card>
                     </Link>    
                 ))}
-                <Link to="/news">
+                {className !== "news" &&
+                    (<Link to="/news">
                     <Card className={`news-section__list__ele more`} hover={true}>
                         <figure>
                             <img src={moreImg}/>
                         </figure>
                         <h5>Xem thêm...</h5>
                     </Card>
-                </Link>
+                </Link>)
+                }
             </div>
         </section>
     );

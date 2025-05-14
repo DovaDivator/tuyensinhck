@@ -45,7 +45,7 @@ const Header = (): JSX.Element => {
                                 <a>Nhà trường</a>
                                 <ul className={`submenu${screenSize.width < SMALL_MENU_NAV ? "_r2" : ""}`}>
                                     <li><a href="/introduce">Giới thiệu</a></li>
-                                    <li><a href="#">Tin tức</a></li>
+                                    <li><a href="/news">Tin tức</a></li>
                                 </ul>
                             </li>
                             <li>

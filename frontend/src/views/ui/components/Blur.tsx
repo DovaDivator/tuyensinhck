@@ -1,9 +1,10 @@
 import {JSX} from 'react';
+import { jsxEleProps } from '../../../types/jsxElementClass';
 import "./Blur.scss";
 
-const Blur = (): JSX.Element => {
+const Blur = ({className = ""}: jsxEleProps): JSX.Element => {
     return (
-        <div className="blur"></div>
+        <div className={`blur ${className}`}></div>
     )
 }
 

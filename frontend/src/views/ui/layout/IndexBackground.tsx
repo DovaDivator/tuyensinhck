@@ -29,7 +29,7 @@ const IndexBackground = ({ children, delay = 0, className = "" }: BackgroundProp
     <div className={`index-background ${className}`}>
       <div className="index-background__content">
         <Header/>
-        <MainWarpper>
+        <MainWarpper className="index">
           {children}
         </MainWarpper>
         <Footer/>

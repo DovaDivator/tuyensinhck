@@ -4,10 +4,12 @@ import IndexBackground from "../../views/ui/layout/IndexBackground";
 import HeroSection from "../../views/feature/home/HeroSection";
 import KeyInfomation from "../../views/feature/home/KeyInformation";
 import IntroduceSection from "../../views/feature/introduce/IntroduceSection";
-import NewsSection from "../../views/feature/home/NewsSection";
-import ListTopNganh from "../../views/feature/home/ListTopNganh";
+import NewsSection from "../../views/feature/news/NewsSection";
+import UniLevelSection from "../../views/feature/home/UniLevelSection";
 import OutstadingStuSection from "../../views/feature/home/OutstadingStuSection";
 import "./HomePage.scss";
+
+const CLASS_PAGE = "home";
 
 const HomePage = (): JSX.Element => {
     return (
@@ -17,9 +19,9 @@ const HomePage = (): JSX.Element => {
       </Helmet>
       <IndexBackground>
           <HeroSection/>
-          <IntroduceSection/>
+          <IntroduceSection className={CLASS_PAGE}/>
           <KeyInfomation/>
-          <ListTopNganh/>
+          <UniLevelSection/>
           <NewsSection/>
           <OutstadingStuSection/>
       </IndexBackground>

@@ -4,9 +4,10 @@ import { useInView } from "react-intersection-observer";
 
 import introImg from "../../../assets/images/SquareSchool.jpg";
 import IntroduceText from "./IntroduceText";
+import { jsxEleProps } from "../../../types/jsxElementClass";
 import "./IntroduceSection.scss";
 
-const IntroduceSection = (): JSX.Element => {
+const IntroduceSection = ({className = ""}: jsxEleProps): JSX.Element => {
     const { ref, inView } = useInView({
         triggerOnce: true,
         threshold: 0.1,
@@ -22,7 +23,7 @@ const IntroduceSection = (): JSX.Element => {
     }, [inView]);
 
     return (
-        <section className="introduce-section" ref={ref}>
+        <section className={`introduce-section ${className}`} ref={ref}>
             <div className="introduce-section__control">
                 <figure className={`introduce-section__image ${animationClass}`}>
                     <img src={introImg} alt="ảnh giới thiệu"/>
@@ -31,9 +32,11 @@ const IntroduceSection = (): JSX.Element => {
                     <div className={`introduce-section__limited__text`}>
                         <IntroduceText />
                     </div>
-                    <Link to="/introduce" className={`introduce-section__limited__link`}>
-                        <span>&gt;&gt;&nbsp;Xem thêm...</span>
-                    </Link>
+                    {className === "home" && (
+                        <Link to="/introduce" className="introduce-section__limited__link">
+                            <span>&gt;&gt;&nbsp;Xem thêm...</span>
+                        </Link>
+                    )}
                 </div>
             </div>
         </section>

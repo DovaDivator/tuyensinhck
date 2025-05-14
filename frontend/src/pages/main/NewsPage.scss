@@ -2,7 +2,7 @@
 @use "../../style/mixins" as mx; 
 
 .introduce.introduce-section {
-  padding: 0 0 2rem 0 !important;
+  padding: 0 0 2rem 0;
   
   .introduce-section__control{
     @include mx.vertical-display(2rem);

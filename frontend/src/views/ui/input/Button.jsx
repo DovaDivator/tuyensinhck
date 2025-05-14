@@ -19,9 +19,9 @@ const Button = ({
     className = '', 
     onClick, 
     disabled = false, 
-    text, 
-    icon, 
-    imgSrc 
+    text = "", 
+    icon = "", 
+    imgSrc = "" 
   }) => {
     return (
       <button

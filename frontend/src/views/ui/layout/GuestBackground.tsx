@@ -25,7 +25,7 @@ const GuestBackground = ({ children, delay = 0, className = '' }: BackgroundProp
 
   return (
     <div className={`guest-background ${className}`}>
-      <Blur />
+      <Blur className={"guest-background__blur"}/>
       <div className="guest-background__content">
         <MainWarpper>
           {children}
