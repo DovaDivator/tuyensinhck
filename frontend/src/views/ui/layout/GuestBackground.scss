@@ -5,6 +5,10 @@
     background: url('../../../assets/images/LoginBackground.jpg') no-repeat center;
     background-size: cover;
     @include mixins.background;
+
+    &__blur{
+        background: rgba(0, 0, 0, 0.3);
+    }
 }
 
 .guest-background .guest-background__content {

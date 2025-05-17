@@ -76,7 +76,7 @@ const RegisterForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmiting(true);
-    loginSubmitUtils(e, formData, valids , setIsLoading, setErrors)
+    // loginSubmitUtils(e, formData, valids , setIsLoading, setErrors)
     setIsSubmiting(false);
   }
 

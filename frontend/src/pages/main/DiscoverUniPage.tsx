@@ -4,8 +4,11 @@ import { Helmet } from 'react-helmet-async';
 
 import IndexBackground from '../../views/ui/layout/IndexBackground';
 import IntroduceHe from '../../views/feature/discover-nganh/IntroduceHe';
+import ListTopNganh from '../../views/feature/home/ListTopNganh';
+import BoDemLichThi from '../../views/feature/discover-nganh/BoDemLichThi';
 
 import "./DiscoverUniPage.scss";
+
 
 const DiscoverUniPage = (): JSX.Element => {
     const navigate = useNavigate();
@@ -40,6 +43,8 @@ const DiscoverUniPage = (): JSX.Element => {
       </Helmet>
       <IndexBackground>
             <IntroduceHe type={type}/>    
+            <ListTopNganh/>
+            <BoDemLichThi type={type}/>
       </IndexBackground>
     </div>
     );

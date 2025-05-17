@@ -16,6 +16,7 @@
     border-radius: 8px;
     overflow: hidden;
     font-size: 0.9rem;
+    margin-bottom: 0.5rem;
 
     thead{
         background: linear-gradient(to right, color.adjust(v.$logo-color, $lightness: 30%), color.adjust(v.$logo-color, $lightness: 10%));

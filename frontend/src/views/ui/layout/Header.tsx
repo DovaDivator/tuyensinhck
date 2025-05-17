@@ -1,6 +1,6 @@
 import {JSX, ReactNode,  useContext} from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { AppContext } from '../../../context/AppContext';
+import { useAppContext } from '../../../context/AppContext';
 
 import logoNormal from "../../../assets/images/logo-01.png";
 import logoSmall from "../../../assets/images/logo_small.png";
@@ -11,8 +11,9 @@ import "./Header.scss";
 const Header = (): JSX.Element => {
     const SWITCH_UI_WIDTH = 900;
     const SMALL_MENU_NAV = 480;
-    const { screenSize } = useContext(AppContext);
     const navigate = useNavigate();
+
+    const {screenSize} = useAppContext();
 
     const SmallMenu = ({ children }: { children: React.ReactNode }): ReactNode => {
         if (screenSize.width < SMALL_MENU_NAV) {
@@ -81,7 +82,7 @@ const Header = (): JSX.Element => {
                         text={screenSize.width < SWITCH_UI_WIDTH ? "" : "Đăng nhập"}
                         icon={"fa-solid fa-circle-user"}
                         className="user-action__login-btn"
-                        onClick={() => navigate('/login')}
+                        onClick={() => navigate('/dang-nhap')}
                     />
                 </div>
             </nav>
