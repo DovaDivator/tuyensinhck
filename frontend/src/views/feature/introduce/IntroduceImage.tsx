@@ -1,6 +1,6 @@
 import {JSX} from 'react';
 
-import { jsxEleProps } from '../../../types/jsxElementClass';
+import { jsxEleProps } from '../../../types/jsxElementInterfaces';
 import './IntroduceImage.scss';
 
 interface ImageItemProps {

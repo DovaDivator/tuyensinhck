@@ -1,6 +1,6 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, JSX } from 'react';
 import { Link } from 'react-router-dom';
-import { AppContext } from '../../../context/AppContext'; // Import AppContext
+import { useAppContext } from '../../../context/AppContext'; // Import AppContext
 import InputField from '../../ui/input/InputField';
 import Button from '../../ui/input/Button';
 import './LoginForm.scss';
@@ -9,36 +9,38 @@ import { loginSubmitUtils } from '../../../function/user-action/loginSubmitUtils
 import { InputOptions } from '../../../classes/InputOption';
 import { InputValids } from '../../../classes/InputValids';
 import { forgotPassword } from '../../../function/user-action/forgotPassword';
+import { FormDataProps, ErrorLogProps, DataOptionsProps, DataValidsProps } from '../../../types/FormInterfaces';
 
-const LoginForm = () => {
-  const { isLoading, setIsLoading } = useContext(AppContext); // Sử dụng useContext để lấy isLoading, setIsLoading
+const LoginForm = ():JSX.Element => {
+  const { isLoading, setIsLoading } = useAppContext();
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormDataProps>({
     username: '',
     password: ''
   });
 
-  const [errors, setErrors] = useState({
+
+  const [errors, setErrors] = useState<ErrorLogProps>({
     username: '',
     password: ''
   });
 
-  const [isSubmiting, setIsSubmiting] = useState(false);
+  const [isSubmiting, setIsSubmiting] = useState<boolean>(false);
 
-  const options = {
+  const options: DataOptionsProps = {
     username: new InputOptions({ restrict: true }),
     password: new InputOptions({ restrict: true })
   };
 
-  const valids = {
+  const valids: DataValidsProps = {
     username: new InputValids({ required: true, matchType: ['email', 'phone'] }),
     password: new InputValids({ minlength: 6, required: true, matchType: ['password'] })
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmiting(true);
-    await loginSubmitUtils(e, formData, valids, setIsLoading, setErrors); // Sử dụng setIsLoading từ context
+    await loginSubmitUtils({ e, formData, valids, setIsLoading, setErrors });
     setIsSubmiting(false);
   };
 

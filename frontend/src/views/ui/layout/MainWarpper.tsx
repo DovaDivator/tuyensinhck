@@ -1,5 +1,5 @@
 import {JSX, ReactNode} from "react";
-import { jsxEleProps } from "../../../types/jsxElementClass";
+import { jsxEleProps } from "../../../types/jsxElementInterfaces";
 import "./MainWarpper.scss";
 
 interface MainWarpperProps extends jsxEleProps{

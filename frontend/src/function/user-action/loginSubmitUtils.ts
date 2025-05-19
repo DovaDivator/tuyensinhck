@@ -3,16 +3,14 @@ import { validateInput } from '../conditions/validateInput';
 
 import { showToast } from '../alert/alertToast';
 import { alertBasic } from '../alert/alertBasic';
+import { FormDataProps, ErrorLogProps, DataValidsProps } from '../../types/FormInterfaces';
 
-interface Rules {
-  [key: string]: any;
-}
 
 interface LoginSubmitProps {
   e: FormEvent<HTMLFormElement>;
-  formData: Rules;
-  valids: Rules;
-  setErrors: React.Dispatch<React.SetStateAction<{ username: string; password: string }>>;
+  formData: FormDataProps;
+  valids: DataValidsProps;
+  setErrors: React.Dispatch<React.SetStateAction<ErrorLogProps>>;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
@@ -21,7 +19,7 @@ export const loginSubmitUtils = ({e, formData, valids, setIsLoading, setErrors}:
   let allValid = true;
   const newErrors = {};
 
-  Object.keys(valids).forEach((field) => {
+  Object.keys(valids || {}).forEach((field) => {
     const result = validateInput(field, formData[field], valids[field], formData);
     Object.assign(newErrors, result);
     if (Object.values(result)[0]) allValid = false;
@@ -29,7 +27,7 @@ export const loginSubmitUtils = ({e, formData, valids, setIsLoading, setErrors}:
 
   setErrors(prev => ({
     ...prev,
-    newErrors
+    ...newErrors
   }));
 
   if (!allValid) {

@@ -95,6 +95,10 @@ form {
 }
 
 //alert
+button{
+  transition: background-color 0.3s ease-in-out !important;
+}
+
 .btn-confirm {
     background-color: variables.$primary-color;
   }
@@ -104,11 +108,11 @@ form {
   }
   
   .btn-confirm:hover {
-    background-color: color.adjust(variables.$primary-color, $lightness: -10%);
+    background-color: color.adjust(variables.$primary-color, $lightness: -10%) !important;
   }
   
   .btn-cancel:hover {
-    background-color: color.adjust(variables.$error-color, $lightness: -10%);
+    background-color: color.adjust(variables.$error-color, $lightness: -10%) !important;
   }
 
   .error-message {

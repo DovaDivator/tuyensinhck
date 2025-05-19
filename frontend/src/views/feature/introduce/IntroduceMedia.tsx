@@ -1,6 +1,6 @@
 import {JSX} from 'react';
 
-import { jsxEleProps } from '../../../types/jsxElementClass';
+import { jsxEleProps } from '../../../types/jsxElementInterfaces';
 import './IntroduceMedia.scss';
 
 const VIDEO_URL = "https://www.youtube.com/embed/K085QD2p2f8?si=OYVNwKdKrUrLeg10";

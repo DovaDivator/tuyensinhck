@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useInView } from "react-intersection-observer";
 
 import CardTooltip from '../../ui/components/CardTooltip';
-import { jsxEleProps } from "../../../types/jsxElementClass";
+import { jsxEleProps } from "../../../types/jsxElementInterfaces";
 
 import "./UniLevelSection.scss";
 

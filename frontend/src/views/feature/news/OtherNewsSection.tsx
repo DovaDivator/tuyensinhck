@@ -4,7 +4,7 @@ import { useInView } from "react-intersection-observer";
 
 import InputFieldSearch from "../../ui/input/InputFieldSearch";
 import Pagination from "../../ui/components/Pagination";
-import { jsxEleProps } from "../../../types/jsxElementClass";
+import { jsxEleProps } from "../../../types/jsxElementInterfaces";
 
 import nullImg from "../../../assets/images/null_img.jpg";
 import "./OtherNewsSection.scss";

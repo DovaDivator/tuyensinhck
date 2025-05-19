@@ -2,7 +2,7 @@ import React, { useState, useEffect, JSX } from "react";
 import { useNavigate } from "react-router-dom";
 import { useInView } from "react-intersection-observer";
 
-import { jsxEleProps } from "../../../types/jsxElementClass";
+import { jsxEleProps } from "../../../types/jsxElementInterfaces";
 
 import Button from "../../ui/input/Button";
 import Countdown from "../../ui/components/Countdown";

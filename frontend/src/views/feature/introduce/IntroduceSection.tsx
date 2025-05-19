@@ -4,7 +4,7 @@ import { useInView } from "react-intersection-observer";
 
 import introImg from "../../../assets/images/SquareSchool.jpg";
 import IntroduceText from "./IntroduceText";
-import { jsxEleProps } from "../../../types/jsxElementClass";
+import { jsxEleProps } from "../../../types/jsxElementInterfaces";
 import "./IntroduceSection.scss";
 
 const IntroduceSection = ({className = ""}: jsxEleProps): JSX.Element => {

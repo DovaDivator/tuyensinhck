@@ -5,7 +5,7 @@ import Header from './Header';
 import MainWarpper from './MainWarpper';
 import Footer from './Footer';
 import { toggleScrollAnimation } from '../../../function/triggers/toggleScrollAnimation';
-import { BackgroundProps } from '../../../types/jsxElementClass';
+import { BackgroundProps } from '../../../types/jsxElementInterfaces';
 
 
 /**

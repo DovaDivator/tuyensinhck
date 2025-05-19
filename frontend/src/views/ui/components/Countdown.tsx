@@ -1,5 +1,5 @@
 import {JSX, useState, useEffect } from 'react';
-import { jsxEleProps } from '../../../types/jsxElementClass';
+import { jsxEleProps } from '../../../types/jsxElementInterfaces';
 
 import "./Countdown.scss";
 

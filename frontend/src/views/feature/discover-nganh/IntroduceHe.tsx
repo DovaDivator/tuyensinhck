@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useInView } from "react-intersection-observer";
 import image from "../../../assets/images/dai-hoc-home.jpg";
 
-import { jsxEleProps } from "../../../types/jsxElementClass";
+import { jsxEleProps } from "../../../types/jsxElementInterfaces";
 import "./IntroduceHe.scss";
 import Blur from "../../ui/components/Blur";
 

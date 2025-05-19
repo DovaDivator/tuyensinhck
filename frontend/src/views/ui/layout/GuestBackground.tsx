@@ -3,7 +3,7 @@ import Blur from '../components/Blur';
 import './GuestBackground.scss';
 import { toggleScrollAnimation } from '../../../function/triggers/toggleScrollAnimation';
 import MainWarpper from './MainWarpper';
-import { BackgroundProps } from '../../../types/jsxElementClass';
+import { BackgroundProps } from '../../../types/jsxElementInterfaces';
 
 /**
  * `GuestBackground` là một layout component dành cho các trang dành cho khách (guest),

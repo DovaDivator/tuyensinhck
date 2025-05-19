@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { useInView } from "react-intersection-observer";
 
 import Card from '../../ui/components/Card';
-import { jsxEleProps } from "../../../types/jsxElementClass";
+import { jsxEleProps } from "../../../types/jsxElementInterfaces";
 
 import nullImg from "../../../assets/images/null_img.jpg";
 import moreImg from "../../../assets/images/Searching_img.png";

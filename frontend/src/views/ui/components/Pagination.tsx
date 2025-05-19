@@ -3,7 +3,7 @@ import { AppContext } from "../../../context/AppContext";
 
 
 import Button from '../input/Button';
-import { jsxEleProps } from '../../../types/jsxElementClass';
+import { jsxEleProps } from '../../../types/jsxElementInterfaces';
 import "./Pagination.scss";
 
 interface PaginationProps {

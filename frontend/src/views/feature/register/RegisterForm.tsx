@@ -1,6 +1,6 @@
-import React, { useState, useContext } from 'react';
+import  { FormEvent, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { AppContext } from '../../../context/AppContext';
+import { useAppContext } from '../../../context/AppContext';
 import InputField from '../../ui/input/InputField';
 import InputChoice from '../../ui/input/InputChoice';
 import Button from '../../ui/input/Button';
@@ -14,12 +14,13 @@ import {ChoiceGroup} from '../../../classes/ChoiceGroup';
 import { InputOptions } from '../../../classes/InputOption';
 import {InputValids} from '../../../classes/InputValids';
 import {ChoiceValids} from '../../../classes/ChoiceValids';
+import {FormDataProps, ErrorLogProps, DataOptionsProps, DataValidsProps} from '../../../types/FormInterfaces';
 
 
 const RegisterForm = () => {
-  const { isLoading, setIsLoading } = useContext(AppContext);
+  const { isLoading, setIsLoading } = useAppContext();
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormDataProps>({
     name: '',
     email: '',
     phone: '',
@@ -28,7 +29,7 @@ const RegisterForm = () => {
     checkPolicy: []
   });
 
-  const [errors, setErrors] = useState({
+  const [errors, setErrors] = useState<ErrorLogProps>({
     name: '',
     email: '',
     phone: '',
@@ -37,7 +38,7 @@ const RegisterForm = () => {
     checkPolicy: ''
   });
 
-  const [isSubmiting, setIsSubmiting] = useState(false);
+  const [isSubmiting, setIsSubmiting] = useState<boolean>(false);
 
   const rawOptions = [
     {
@@ -56,7 +57,7 @@ const RegisterForm = () => {
   const checkPolicy = new ChoiceGroup(rawOptions);
 
   // const optionsDefault = {trim: true, restrict: true};
-  const options = {
+  const options: DataOptionsProps = {
     name: new InputOptions({}),
     email: new InputOptions({restrict: true}),
     phone: new InputOptions({restrict: true}),
@@ -64,7 +65,7 @@ const RegisterForm = () => {
     passwordConfirm: new InputOptions({restrict: true})
   }
 
-  const valids = {
+  const valids: DataValidsProps = {
     name: new InputValids({required: true}),
     email: new InputValids({required: true, matchType: ['email']}),
     phone: new InputValids({required: true, matchType: ['phone']}),
@@ -73,7 +74,7 @@ const RegisterForm = () => {
     checkPolicy: new ChoiceValids({required: true})
   }
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmiting(true);
     // loginSubmitUtils(e, formData, valids , setIsLoading, setErrors)
@@ -167,13 +168,15 @@ const RegisterForm = () => {
             name="checkPolicy"
             id="checkPolicy"
             label="Điều khoản sử dụng"
-            choices={checkPolicy.choices}
+            choices={checkPolicy.getOptions()}
             value={formData.checkPolicy}
             setFormData={setFormData}
             errors={errors}
             setErrors={setErrors}
-            valids={valids.checkPolicy}
+            valid={valids.checkPolicy}
             columns={1}
+            isSubmitting={false}
+            disabled={false}
           />
         <Button
           type="submit"

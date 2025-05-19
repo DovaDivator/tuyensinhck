@@ -5,7 +5,7 @@ import { Navigate } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 
 import { ContextProvider } from './context/ContextProvider'; // Import ContextProvider
-import { AppContext } from './context/AppContext'; // Import AppContext
+import { useAppContext } from './context/AppContext'; // Import AppContext
 
 import LoadingScreen from './views/ui/components/LoadingScreen';
 import SmallScreen from './pages/other/SmallScreen';
@@ -18,7 +18,7 @@ const NewsPage = React.lazy(() => import('./pages/main/NewsPage'));
 const DiscoverUniPage = React.lazy(() => import('./pages/main/DiscoverUniPage'));
 
 const AppContent = (): JSX.Element => {
-  const { isTooSmall, isLoading } = useContext(AppContext);
+  const { isTooSmall, isLoading } = useAppContext();
 
   if (isTooSmall) {
     return <SmallScreen />;
