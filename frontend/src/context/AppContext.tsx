@@ -44,7 +44,7 @@ interface AppProviderProps {
  * @returns JSX.Element
  */
 export const AppProvider = ({ children }: AppProviderProps): JSX.Element => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isTooSmall, setIsTooSmall] = useState<boolean>(false);
   const [screenSize, setScreenSize] = useState<ScreenSize>({
     width: window.innerWidth,

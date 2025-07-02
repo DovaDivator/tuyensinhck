@@ -5,7 +5,7 @@ interface InputValidsProps {
   minlength?: number;
   required?: boolean;
   match?: string;
-matchType?: string[];
+  matchType?: string[];
 }
 
 /**
@@ -18,19 +18,19 @@ matchType?: string[];
    * @param {string[]} [param0.matchType=[]] - Danh sách các kiểu so khớp.
    */
 export class InputValids {
-    minlength: number;
-    required: boolean;
-    match: string;
-    matchType: string[];
+  minlength: number;
+  required: boolean;
+  match: string;
+  matchType: string[];
 
-    constructor({ minlength = 0, required = false, match = '', matchType = [] }: InputValidsProps = {}) {
-      this.minlength = minlength;
-      this.required = required;
-      this.match = match;
-      this.matchType = matchType;
-    }
-
-    validate(name: string, value: any, formData?: FormDataProps): { [key: string]: string } {
-      return validateText(name, value, this, formData);
-    }
+  constructor({ minlength = 0, required = false, match = '', matchType = [] }: InputValidsProps = {}) {
+    this.minlength = minlength;
+    this.required = required;
+    this.match = match;
+    this.matchType = matchType;
   }
+
+  validate(name: string, value: any, formData?: FormDataProps): { [key: string]: string } {
+    return validateText(name, value, this, formData);
+  }
+}

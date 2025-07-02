@@ -1,22 +1,18 @@
 import { createContext, useState, useContext, ReactNode } from "react";
-
-/**
- * Kiểu dữ liệu người dùng.
- */
-type User = {
-  id: string;
-  name: string;
-  email: string;
-  phone: string;
-};
+import { loginSubmitApi } from "../api/LoginApi";
+import { BasicUserTitle } from "../classes/BasicUserInfo";
 
 /**
  * Kiểu context.
  */
 type AuthContextType = {
-  user: User | null;
-  login: (userInput: string, password: string) => boolean;
+  login: (userInput: string, password: string) => Promise<boolean>;
   logout: () => void;
+  setToken: React.Dispatch<React.SetStateAction<string>>;
+  getToken: () => string;
+  token: string;
+  user: BasicUserTitle;
+  setUser: React.Dispatch<React.SetStateAction<BasicUserTitle>>;
 };
 
 // Dữ liệu người dùng mẫu
@@ -26,31 +22,53 @@ const mockUser = {
   email: "abc@gmail.com",
   phone: "0123456789",
   password: "123456",
+  role: 1,
+  imageUrl: "https://data.designervn.net/2020/10/12608_8040b633df346bd3f1379ddb90490a64.png",
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [token, setToken] = useState<string>("");
+  const [user, setUser] = useState<BasicUserTitle>(new BasicUserTitle("", "", 0, ""));
 
   /**
    * Hàm đăng nhập kiểm tra dữ liệu đầu vào với mockUser.
    */
-  const login = (userInput: string, password: string): boolean => {
-    if ((userInput === mockUser.email || userInput === mockUser.phone) && password === mockUser.password) {
-      const { password, ...userData } = mockUser;
-      setUser(userData);
-      return true;
+  const login = async (userInput: string, password: string): Promise<any> => {
+    try{
+      const result = await loginSubmitApi(userInput, password);
+      if (result.success && result.token) {
+        localStorage.setItem("token", result.token);
+        setToken(result.token);
+      }else{
+        const errorJson = {
+          status: 400,
+          message: "Không tìm thấy các trường hợp lệ!"
+        };
+        throw errorJson;
+      }
+      return result
+    }catch(error){
+      logout();
+      throw error;
     }
-    return false;
   };
 
   const logout = () => {
-    setUser(null);
+    setToken(""); 
+    localStorage.removeItem("token");
   };
 
+  const getToken = (): string => {
+    const token = localStorage.getItem("token") || "";
+    // console.log(token);
+    return token;
+  };
+
+
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ login, logout, setToken, getToken, token, user, setUser }}>
       {children}
     </AuthContext.Provider>
   );

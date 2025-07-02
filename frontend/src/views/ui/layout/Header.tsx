@@ -1,20 +1,31 @@
-import {JSX, ReactNode,  useContext} from "react";
+import {JSX, ReactNode,  useState, useEffect} from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAppContext } from '../../../context/AppContext';
+import { useAuth } from "../../../context/AuthContext";
 
 import logoNormal from "../../../assets/images/logo-01.png";
 import logoSmall from "../../../assets/images/logo_small.png";
 
 import Button from "../input/Button";
 import "./Header.scss";
+import { getUserSession } from "../../../api/GetBasicUserInfoApi";
+import { BasicUserTitle } from "../../../classes/BasicUserInfo";
+import { alertBasic } from "../../../function/alert/alertBasic";
+import { showToast } from "../../../function/alert/alertToast";
+
 
 const Header = (): JSX.Element => {
-    const SWITCH_UI_WIDTH = 900;
-    const SMALL_MENU_NAV = 480;
+    const SMALL_MENU_NAV = 900;
     const navigate = useNavigate();
 
     const {screenSize} = useAppContext();
+    const {user, logout} = useAuth();
 
+    const handleLogout = () => {
+        logout();
+        window.location.reload();
+    };
+    
     const SmallMenu = ({ children }: { children: React.ReactNode }): ReactNode => {
         if (screenSize.width < SMALL_MENU_NAV) {
             return (
@@ -35,8 +46,8 @@ const Header = (): JSX.Element => {
     return (
         <header className="header">
             <figure className="header__logo" title="Quay về trang chủ">
-                <Link to="/home" className="header__logo-link">
-                    <img src={screenSize.width < SWITCH_UI_WIDTH ? logoSmall : logoNormal} alt="Logo" className="header__logo-img" />
+                <Link to="/" className="header__logo-link">
+                    <img src={switchUiLogo(screenSize.width) ? logoSmall : logoNormal} alt="Logo" className="header__logo-img" />
                 </Link>
             </figure>
             <nav className="header__nav">
@@ -63,9 +74,19 @@ const Header = (): JSX.Element => {
                                 <ul className={`submenu${screenSize.width < SMALL_MENU_NAV ? "_r2" : ""}`}>
                                     <li><a href="#">Thể lệ</a></li>
                                     <li><a href="#">Tra cứu thông tin</a></li>
-                                    <li><a href="#">Chính sách phúc lợi</a></li>
+                                    <li><a href="#">Đăng ký thi</a></li>
                                 </ul>
                             </li>
+                            {user.isAdmin() &&(
+                            <li>
+                                <a>Quản lý</a>
+                                <ul className={`submenu${screenSize.width < SMALL_MENU_NAV ? "_r2" : ""}`}>
+                                    <li><a href="/quan-ly/tai-khoan">DS Tài khoản</a></li>
+                                    <li><a href="/quan-ly/thi-sinh">DS Thí sinh</a></li>
+                                    <li><a href="/quan-ly/giao-vien">DS Giáo viên</a></li>
+                                </ul>
+                            </li> 
+                            )}
                             <li>
                                 <a>Dịch vụ</a>
                                 <ul className={`submenu${screenSize.width < SMALL_MENU_NAV ? "_r2" : ""}`}>
@@ -78,12 +99,39 @@ const Header = (): JSX.Element => {
                         </SmallMenu>
                 </ul>
                 <div className="user-action">
-                    <Button
-                        text={screenSize.width < SWITCH_UI_WIDTH ? "" : "Đăng nhập"}
-                        icon={"fa-solid fa-circle-user"}
-                        className="user-action__login-btn"
-                        onClick={() => navigate('/dang-nhap')}
-                    />
+                    {user.isGuest() ? (
+                        <Button
+                            text={screenSize.width < SMALL_MENU_NAV ? "" : "Đăng nhập"}
+                            icon="fa-solid fa-circle-user"
+                            className="user-action__login-btn"
+                            onClick={() => navigate('/dang-nhap')}
+                            title="Đăng nhập"
+                        />
+                    ) : (
+                        <div className="menu__user-container">
+                            <div className="user-notification-wrapper">
+                                <i className="fa-solid fa-bell small-icon" aria-disabled="true"></i>
+                                <div className="notification-notice"></div>
+                            </div>
+                            <div className={`user-menu-wrapper ${screenSize.width < SMALL_MENU_NAV ? "small-nav" : "big-nav"}`}>
+                                {screenSize.width < SMALL_MENU_NAV ? (
+                                    <i className="fa-solid fa-circle-user small-icon" aria-disabled="true"></i>
+                                ) : (
+                                    <UserNav user={user as BasicUserTitle}/>
+                                )}
+                                <ul className={`submenu`}>
+                                    {screenSize.width < SMALL_MENU_NAV && (
+                                        <UserNav user={user as BasicUserTitle}/>
+                                    )}
+                                    <li><a href="/info/thong-tin-ca-nhan">Xem hồ sơ</a></li>
+                                    <li><a href="/info/cap-nhat-cccd">Cập nhật CCCD</a></li>
+                                    <li><a href="/info/tra-cuu-ky-thi">Tra cứu kỳ thi</a></li>
+                                    <li><a href="/info/doi-mat-khau">Thay đổi mật khẩu</a></li>
+                                    <li><a onClick={handleLogout}>Đăng xuất</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    )}
                 </div>
             </nav>
         </header>
@@ -91,3 +139,25 @@ const Header = (): JSX.Element => {
 };
 
 export default Header;
+
+const switchUiLogo = (screenWidth: number): boolean => {
+    if (screenWidth < 350 || (screenWidth < 1050 && screenWidth > 900)) {
+        return true;
+    }
+    return false;
+};
+
+const UserNav = ({user}: {user: BasicUserTitle}): JSX.Element => {
+    return(
+        <div className="user-nav">
+            <figure className="user-nav__avatar">
+                <img src={user.getImage()} alt="Avatar" className="user-nav__avatar-img" />
+            </figure>
+            <section className="user-nav__info">
+                <h3 className="user-nav__info-name">{user.name}</h3>
+                <p className="user-nav__info-id">ID: {user.id}</p>
+                <p className="user-nav__info-role">Vai trò: {user.getRoleName()}</p>
+            </section>
+        </div>
+    );
+}

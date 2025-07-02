@@ -10,7 +10,7 @@ const LoginPage = (): JSX.Element => {
   return (
     <div>
       <Helmet>
-        <title>Web tuyển sinh - Đăng nhập</title>
+        <title>Đăng nhập - Web tuyển sinh</title>
       </Helmet>
       <GuestBackground delay={1000}>
           <Card className={"login-container"}>

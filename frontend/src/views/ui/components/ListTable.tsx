@@ -119,7 +119,7 @@ interface ListTableProps {
                 )}
                 {keys.map((key, colIndex) => (
                   <td key={`${rowIndex}-${colIndex}`} className={COLUMN_CLASSES[columnClasses[isNumbering ? colIndex + 1 : colIndex]]}>
-                    {item[key] ?? 'N/A'}
+                    {renderCellValue(item[key])}
                   </td>
                 ))}
               </tr>
@@ -136,6 +136,14 @@ interface ListTableProps {
     </div>
   );
 };
+
+const renderCellValue = (value: any): string | JSX.Element => {
+  if (React.isValidElement(value)) return value; // ✅ Nếu là JSX, render luôn
+  if (typeof value === 'boolean') return value ? '✓' : '✗';
+  if (value === null || value === undefined) return 'N/A';
+  return value.toString();
+};
+
 
 /**
  * Thông tin đầy đủ trong `ListTable.tsx`

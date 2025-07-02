@@ -1,11 +1,13 @@
 import { InputOptions } from "../classes/InputOption";
 
+
+
 export interface FormDataProps {
-    [key: string]: string | string[] | undefined;
+  [key: string]: string | string[] | undefined;
 }
 
 export interface ErrorLogProps {
-    [key: string]: string | undefined;
+  [key: string]: string | undefined;
 }
 
 export interface DataOptionsProps {

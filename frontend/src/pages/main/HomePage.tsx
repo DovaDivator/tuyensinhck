@@ -1,4 +1,4 @@
-import {JSX} from "react";
+import {JSX, useState, useEffect} from "react";
 import { Helmet } from "react-helmet-async";
 import IndexBackground from "../../views/ui/layout/IndexBackground";
 import HeroSection from "../../views/feature/home/HeroSection";
@@ -8,17 +8,20 @@ import NewsSection from "../../views/feature/news/NewsSection";
 import UniLevelSection from "../../views/feature/home/UniLevelSection";
 import OutstadingStuSection from "../../views/feature/home/OutstadingStuSection";
 import "./HomePage.scss";
+import { useAuth } from "../../context/AuthContext";
 
 const CLASS_PAGE = "home";
 
 const HomePage = (): JSX.Element => {
+    const {user} = useAuth();
+
     return (
         <div>
       <Helmet>
-        <title>Web tuyển sinh - Trang chủ</title>
+        <title>Trang chủ - Web tuyển sinh</title>
       </Helmet>
       <IndexBackground>
-          <HeroSection/>
+          {!user.isTeacher() && !user.isAdmin() && <HeroSection/>}
           <IntroduceSection className={CLASS_PAGE}/>
           <KeyInfomation/>
           <UniLevelSection/>

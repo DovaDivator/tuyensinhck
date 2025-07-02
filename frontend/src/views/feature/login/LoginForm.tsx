@@ -1,23 +1,27 @@
-import React, { useState, JSX } from 'react';
+import React, { useState, JSX, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAppContext } from '../../../context/AppContext'; // Import AppContext
 import InputField from '../../ui/input/InputField';
 import Button from '../../ui/input/Button';
 import './LoginForm.scss';
 import LogoGuest from '../../ui/components/LogoGuest';
-import { loginSubmitUtils } from '../../../function/user-action/loginSubmitUtils';
+import { checkValidSubmitUtils } from '../../../function/triggers/checkValidSubmitUtils';
 import { InputOptions } from '../../../classes/InputOption';
 import { InputValids } from '../../../classes/InputValids';
 import { forgotPassword } from '../../../function/user-action/forgotPassword';
 import { FormDataProps, ErrorLogProps, DataOptionsProps, DataValidsProps } from '../../../types/FormInterfaces';
+import { useAuth } from "../../../context/AuthContext";
+import { showToast } from '../../../function/alert/alertToast';
+import { alertBasic } from '../../../function/alert/alertBasic';
 
 const LoginForm = ():JSX.Element => {
   const { isLoading, setIsLoading } = useAppContext();
+  const { login} = useAuth();
 
   const [formData, setFormData] = useState<FormDataProps>({
     username: '',
     password: ''
-  });
+  });     
 
 
   const [errors, setErrors] = useState<ErrorLogProps>({
@@ -25,7 +29,7 @@ const LoginForm = ():JSX.Element => {
     password: ''
   });
 
-  const [isSubmiting, setIsSubmiting] = useState<boolean>(false);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   const options: DataOptionsProps = {
     username: new InputOptions({ restrict: true }),
@@ -37,11 +41,38 @@ const LoginForm = ():JSX.Element => {
     password: new InputValids({ minlength: 6, required: true, matchType: ['password'] })
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
-    setIsSubmiting(true);
-    await loginSubmitUtils({ e, formData, valids, setIsLoading, setErrors });
-    setIsSubmiting(false);
+    setIsSubmitting(true);
+    const validResult = await checkValidSubmitUtils(formData, valids, setErrors);
+    if (!validResult) {
+      showToast('error', '', 'Vui lòng kiểm tra lại thông tin đăng nhập!');
+      setIsSubmitting(false);
+      return;
+    }
+    setIsLoading(true);
+    try {
+      const success = await login(String(formData.username), String(formData.password));
+
+      if (success) {
+        showToast('success', '', 'Đăng nhập thành công!');
+      } else {
+        alertBasic({
+          icon: 'error',
+          title: 'Đăng nhập thất bại!',
+          message: 'Tên đăng nhập hoặc mật khẩu không đúng!'
+        });
+      }
+    } catch (error) {
+      alertBasic({
+        icon: 'error',
+        title: 'Lỗi hệ thống!',
+        message: 'Không thể kết nối máy chủ hoặc đã xảy ra lỗi bất ngờ.'
+      });
+    } finally {
+      setIsLoading(false);
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -66,7 +97,7 @@ const LoginForm = ():JSX.Element => {
           errors={errors}
           setErrors={setErrors}
           valids={valids.username}
-          isSubmiting={isSubmiting}
+          isSubmiting={isSubmitting}
         />
         <InputField
           type="password"
@@ -81,7 +112,7 @@ const LoginForm = ():JSX.Element => {
           errors={errors}
           setErrors={setErrors}
           valids={valids.password}
-          isSubmiting={isSubmiting}
+          isSubmiting={isSubmitting}
         />
         <Button
           type="submit"

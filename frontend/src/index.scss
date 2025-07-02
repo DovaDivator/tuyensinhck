@@ -106,6 +106,10 @@ button{
   .btn-cancel {
     background-color: variables.$error-color;
   }
+
+  .btn-accept {
+    background-color: variables.$accept-color;
+  }
   
   .btn-confirm:hover {
     background-color: color.adjust(variables.$primary-color, $lightness: -10%) !important;
@@ -113,6 +117,10 @@ button{
   
   .btn-cancel:hover {
     background-color: color.adjust(variables.$error-color, $lightness: -10%) !important;
+  }
+
+  .btn-accept:hover {
+    background-color: color.adjust(variables.$accept-color, $lightness: -10%) !important;
   }
 
   .error-message {
@@ -135,4 +143,16 @@ button{
 .swal2-html-container {
   max-height: 70vh; 
   padding-right: 0.5rem;
+}
+
+.toast_show{
+  @include mixins.animate-effect(fadeInRight);
+}
+
+.toast_hide{
+  @include mixins.animate-effect(fadeOutRight);
+}
+
+.basic-gap{
+  @include mixins.vertical-grid();
 }

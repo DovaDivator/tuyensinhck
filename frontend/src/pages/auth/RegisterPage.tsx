@@ -10,7 +10,7 @@ const RegisterPage = (): JSX.Element => {
   return (
     <div>
       <Helmet>
-        <title>Web tuyển sinh - Đăng ký tài khoản tuyển sinh</title>
+        <title>Đăng ký tài khoản tuyển sinh - Web tuyển sinh</title>
       </Helmet>
       <GuestBackground delay={1000}>
           <Card className={"register-container"}>

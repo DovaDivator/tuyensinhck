@@ -1,4 +1,4 @@
-import  { FormEvent, useState } from 'react';
+import  { FormEvent, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAppContext } from '../../../context/AppContext';
 import InputField from '../../ui/input/InputField';
@@ -7,18 +7,21 @@ import Button from '../../ui/input/Button';
 import PolicyTerm from '../policy/PolicyTerm';
 import './RegisterForm.scss';
 import LogoGuest from '../../ui/components/LogoGuest';
-import { loginSubmitUtils } from '../../../function/user-action/loginSubmitUtils';
+import { checkValidSubmitUtils } from '../../../function/triggers/checkValidSubmitUtils';
 import {alertLayoutReact} from '../../../function/alert/alertLayoutReact';
+import { showToast } from '../../../function/alert/alertToast';
 
 import {ChoiceGroup} from '../../../classes/ChoiceGroup';
 import { InputOptions } from '../../../classes/InputOption';
 import {InputValids} from '../../../classes/InputValids';
 import {ChoiceValids} from '../../../classes/ChoiceValids';
 import {FormDataProps, ErrorLogProps, DataOptionsProps, DataValidsProps} from '../../../types/FormInterfaces';
+import { registerSubmitApi } from '../../../api/RegisterApi';
+import { alertBasic } from '../../../function/alert/alertBasic';
 
 
 const RegisterForm = () => {
-  const { isLoading, setIsLoading } = useAppContext();
+  const { setIsLoading } = useAppContext();
 
   const [formData, setFormData] = useState<FormDataProps>({
     name: '',
@@ -68,7 +71,7 @@ const RegisterForm = () => {
   const valids: DataValidsProps = {
     name: new InputValids({required: true}),
     email: new InputValids({required: true, matchType: ['email']}),
-    phone: new InputValids({required: true, matchType: ['phone']}),
+    phone: new InputValids({matchType: ['phone']}),
     password: new InputValids({ minlength: 6, required: true, matchType: ['password']}),
     passwordConfirm: new InputValids({ minlength: 6, required: true, match: 'password', matchType: ['password']}),
     checkPolicy: new ChoiceValids({required: true})
@@ -77,9 +80,38 @@ const RegisterForm = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmiting(true);
-    // loginSubmitUtils(e, formData, valids , setIsLoading, setErrors)
-    setIsSubmiting(false);
-  }
+    setIsLoading(true);
+
+    const isAllValid = checkValidSubmitUtils(formData, valids, setErrors);
+    if (!isAllValid) {
+      showToast('error', '', 'Vui lòng kiểm tra lại thông tin đăng nhập!');
+      setIsSubmiting(false);
+      setIsLoading(false);
+      return;
+    }
+
+    try {
+      const result = await registerSubmitApi(formData);
+      alertBasic({
+        icon: 'success',
+        title: 'Thông báo',
+        message: 'Tài khoản đã được đăng ký thành công!',
+      })
+    } catch (err) {
+      const rawErr = err as any;
+      const error = {
+        status: rawErr?.status || 500,
+        message: rawErr?.message || "Lỗi không xác định."
+      };
+      await alertBasic({
+        title: `Lỗi ${error.status}`,
+        message: error.message
+      });
+    } finally {
+      setIsSubmiting(false);
+      setIsLoading(false);
+    }
+  };
 
   return (
     <section className="register-form-container">
@@ -122,7 +154,7 @@ const RegisterForm = () => {
             type="text"
             name="phone"
             id="phone"
-            placeholder="Số điện thoại"
+            placeholder="Số điện thoại (không bắt buộc)"
             value={formData.phone}
             maxLength={12}
             formData={formData}
@@ -180,8 +212,8 @@ const RegisterForm = () => {
           />
         <Button
           type="submit"
-          text={isLoading ? 'Đang xử lý...' : 'Đăng ký!'}
-          disabled={isLoading}
+          text={isSubmiting ? 'Đang xử lý...' : 'Đăng ký!'}
+          disabled={isSubmiting}
         />
       </form>
       <Link to="/dang-nhap">Đã có tài khoản? Đăng nhập tại đây!</Link>

@@ -13,7 +13,7 @@ const IntroducePage = (): JSX.Element => {
     return (
       <div>
       <Helmet>
-        <title>Web tuyển sinh - Giới thiệu trường</title>
+        <title>Giới thiệu trường - Web tuyển sinh</title>
       </Helmet>
       <IndexBackground>
           <IntroduceSection className={CLASS_PAGE}/>

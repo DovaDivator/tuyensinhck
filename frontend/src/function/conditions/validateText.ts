@@ -20,7 +20,7 @@ export const validateText = (
     return { [name]: 'Thông tin không khớp.' };
   }
 
-  if (Array.isArray(valids.matchType) && valids.matchType.length > 0) {
+  if (Array.isArray(valids.matchType) && valids.matchType.length > 0 && value.length > 0) {
     if (checkUnmatchedType(value, valids.matchType)) {
       return { [name]: 'Thông tin không hợp lệ.' };
     }

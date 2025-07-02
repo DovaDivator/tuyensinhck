@@ -11,6 +11,7 @@ interface AlertOptions {
   message: string;
   footer?: string;
   timer?: number;
+  callback?: () => void;
 }
 
 /**
@@ -38,13 +39,11 @@ export const alertBasic = ({
   title = defaultTitle,
   message = '',
   footer = '',
-  timer = 0
+  timer = 0,
+  callback = () => {}
 }: AlertOptions): Promise<SweetAlertResult> => {
   const normalizedIcon = icon.toLowerCase();
   const finalIcon = validIcons.includes(normalizedIcon) ? normalizedIcon : 'error';
-  console.log(icon);
-  console.log(title);
-  console.log(message)
 
   return Swal.fire({
     icon: finalIcon as any,
@@ -53,7 +52,10 @@ export const alertBasic = ({
     footer,
     timer,
     customClass: {
-      confirmButton: 'btn-confirm',
+      confirmButton: 'btn-confirm'
     },
+  }).then((result) => {
+    callback();
+    return result;
   });
 };

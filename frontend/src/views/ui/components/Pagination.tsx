@@ -1,25 +1,62 @@
-import React, {JSX, useContext} from 'react';
-import { AppContext } from "../../../context/AppContext";
-
+import React, {JSX} from 'react';
+import { useAppContext } from "../../../context/AppContext";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 import Button from '../input/Button';
 import { jsxEleProps } from '../../../types/jsxElementInterfaces';
 import "./Pagination.scss";
 
 interface PaginationProps {
-    currentNum: number;
-    listLength: number;
+    curNum?: number;
+    listLength?: number;
 }
 
 type PaginationPageProps = PaginationProps & jsxEleProps;
 
 const Pagination = ({
-    currentNum = 1,
+    curNum = 1,
     listLength = 1,
     className = ""
 }: PaginationPageProps): JSX.Element => {
-    const {screenSize} = useContext(AppContext);
+    const {screenSize} = useAppContext();
     const SMALL_SCREEN_WIDTH = 480;
+    let outOfLength = false;
+
+    let currentNum = 1;
+    if(curNum > 0 ){
+        if(curNum > listLength){
+            outOfLength = true;
+            currentNum = listLength;
+        }else{
+            currentNum = curNum
+        }
+    }
+
+    const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
+
+    const handleClick = (page: number) => {
+        searchParams.set("page", page.toString());
+        navigate(`?${searchParams.toString()}`);
+    };
+
+    const goToPage = () =>{
+        const input = window.prompt(`Nhập số trang: `);
+        if (!input) return;
+
+        let parsed = parseInt(input.trim());
+        if (isNaN(parsed)) {
+            alert(`Vui lòng nhập số nguyên hợp lệ.`);
+            return;
+        }
+
+        if(parsed < 1) parsed = 1;
+        if(parsed > listLength) parsed = listLength;
+
+        if (parsed !== currentNum) {
+            handleClick(parsed);   
+        }
+    };
 
     if (listLength < 1) {
         console.error(`Danh sách không hợp lệ: ${listLength}`);
@@ -44,9 +81,11 @@ const Pagination = ({
 
     return(
         <div className={`pagination ${className}`}>
-            <Button text="<" disabled={currentNum === 1}/>
+            {currentNum > 1 && <Button text="<<" onClick={() => handleClick(1) }/>}
+            <Button text="<" disabled={currentNum === 1}
+            {...(currentNum > 1 ? { onClick: () => handleClick(currentNum - 1) } : {})}/>
             {leftCurNum > 1 && (
-                <span>...</span>
+                <span onClick={() => goToPage()}>...</span>
             )}
             {(() => {
                 const buttons = [];
@@ -54,9 +93,10 @@ const Pagination = ({
                     buttons.push(
                         <Button
                             key={page}
-                            className={currentNum === page ? 'current-num' : ''}
+                            className={currentNum === page && !outOfLength ? 'current-num' : ''}
                             text={page.toString()}
-                            disabled={currentNum === page}
+                            disabled={currentNum === page && !outOfLength}
+                            {...(currentNum !== page || outOfLength? { onClick: () => handleClick(page) } : {})}
                         />
                     );
                 }
@@ -64,7 +104,9 @@ const Pagination = ({
             })()}
 
         {rightCurNum < listLength && <span>...</span>}
-        <Button text=">" disabled={currentNum === listLength}/>
+        <Button text=">" disabled={currentNum === listLength}
+        {...(currentNum < listLength ? { onClick: () => handleClick(currentNum + 1) } : {})}/>
+        {currentNum < listLength && <Button text=">>" onClick={() => handleClick(listLength) }/>}
         </div>
     );
 };

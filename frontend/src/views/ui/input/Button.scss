@@ -22,6 +22,6 @@ button {
     }
 
     &:disabled{
-        cursor: not-allowed;
+        cursor: default;
     }
 }

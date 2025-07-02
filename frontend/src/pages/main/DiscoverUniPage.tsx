@@ -14,6 +14,7 @@ const DiscoverUniPage = (): JSX.Element => {
     const navigate = useNavigate();
     const { type } = useParams();
 
+    const CLASS_PAGES = ['dai-hoc', 'cao-dang', 'lien-thong'];
     let name:string = "";
 
     /**
@@ -21,13 +22,13 @@ const DiscoverUniPage = (): JSX.Element => {
      */
     const getPageInfo = ({type = ""}: {type?: string}): void =>{
         switch(type){
-            case 'dai-hoc':
+            case CLASS_PAGES[0]:
                 name = "đại học";
                 break;
-            case 'cao-dang':
+            case CLASS_PAGES[1]:
                 name = "cao đẳng";
                 break;
-            case 'lien-thong':
+            case CLASS_PAGES[2]:
                 name = "lien-thong";
                 break;
             default:
@@ -39,7 +40,7 @@ const DiscoverUniPage = (): JSX.Element => {
   return (
       <div>
       <Helmet>
-        <title>Web tuyển sinh - Tổng quan hệ {name}</title>
+        <title>Tổng quan hệ {name} - Web tuyển sinh</title>
       </Helmet>
       <IndexBackground>
             <IntroduceHe type={type}/>    

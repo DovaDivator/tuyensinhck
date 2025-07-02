@@ -11,7 +11,7 @@ const NewsPage = (): JSX.Element => {
     return (
         <div>
       <Helmet>
-        <title>Web tuyển sinh - Giới thiệu trường</title>
+        <title>Tin tức - Web tuyển sinh</title>
       </Helmet>
       <IndexBackground>
           <NewsSection className={CLASS_PAGE}/>

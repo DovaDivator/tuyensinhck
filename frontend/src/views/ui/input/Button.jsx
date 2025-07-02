@@ -12,6 +12,7 @@ import './Button.scss';
  * @param {string} [props.text] - Nội dung văn bản của nút
  * @param {string} [props.icon] - Tên lớp của biểu tượng (sử dụng FontAwesome 6)
  * @param {string} [props.imgSrc] - URL nguồn của hình ảnh biểu tượng
+ * @param {string} [props.title] - chú thích hiển thị của nút
  * @returns {JSX.Element} Component nút được render
  */
 const Button = ({ 
@@ -21,7 +22,8 @@ const Button = ({
     disabled = false, 
     text = "", 
     icon = "", 
-    imgSrc = "" 
+    imgSrc = "" ,
+    title = ""
   }) => {
     return (
       <button
@@ -29,6 +31,7 @@ const Button = ({
         className={`${className}`}
         onClick={onClick}
         disabled={disabled}
+        title={title}
       >
         {icon && <i className={`${icon} ${text ? 'mr-2' : ''}`}></i>}
         {imgSrc && <img src={imgSrc} alt="text" className="btn-icon" />}
