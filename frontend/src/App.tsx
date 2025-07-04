@@ -12,6 +12,7 @@ import { showToast } from './function/alert/alertToast';
 
 import LoadingScreen from './views/ui/components/LoadingScreen';
 import SmallScreen from './pages/other/SmallScreen';
+import DateTimePicker from './views/ui/input/DatetimePicker';
 
 const LoginPage = React.lazy(() => import('./pages/auth/LoginPage'));
 const RegisterPage = React.lazy(() => import('./pages/auth/RegisterPage'));
@@ -71,6 +72,7 @@ const AppContent = (): JSX.Element => {
         <Route path="/tin-tuc" element={<NewsPage />} />
         <Route path="/quan-ly/:type" element={<ManagerUserPage />} />
         <Route path="*" element={<Navigate to="/a1s2d3f4" replace />} />
+        {/* <Route path='/test' element={<DateTimePicker/>}/> */}
       </Routes>
     </Suspense>
   );

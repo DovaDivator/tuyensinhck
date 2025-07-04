@@ -282,13 +282,14 @@ export const addGV = async (listMon: { value: string; label: string }[]) => {
   );
 
   if (!resultAlert.isConfirmed) return;
+    const hashedPassword = await hashPassword('123456a@');
     try {
       const result = await api.addGVtoDB("102", {
           name: resultAlert.value.name,
           mon: resultAlert.value.mon,
           email: resultAlert.value.email,
           phone: resultAlert.value.phone,
-          password: String(hashPassword('123456a@'))
+          password: hashedPassword
       });
 
       alertBasic({

@@ -13,4 +13,8 @@ export const validateTypeText: {
     const regex = /^[\x20-\x7E]+$/;
     return regex.test(value);
   },
+  cccd: (value: string): boolean => {
+    const regex = /^\d{12}$/; // đúng 12 chữ số
+    return regex.test(value);
+  }
 };

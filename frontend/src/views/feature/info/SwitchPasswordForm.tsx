@@ -13,10 +13,12 @@ import { FormDataProps, ErrorLogProps, DataOptionsProps, DataValidsProps } from 
 import { useAuth } from "../../../context/AuthContext";
 import { showToast } from '../../../function/alert/alertToast';
 import { alertBasic } from '../../../function/alert/alertBasic';
+import { ChangePassword } from '../../../api/ChangePassword';
+import { hashPassword } from '../../../function/convert/hashPassword';
 
 const SwitchPasswordForm = ():JSX.Element => {
   const { isLoading, setIsLoading } = useAppContext();
-//   const { user, login, setUserByRole} = useAuth();
+  const { token} = useAuth();
 
   const [formData, setFormData] = useState<FormDataProps>({
     currentPassword: '',
@@ -56,17 +58,27 @@ const SwitchPasswordForm = ():JSX.Element => {
     }
     // setIsLoading(true);
     // const success = await login(String(formData.username), String(formData.password));
-    const success = true;
-    // setIsLoading(false);
-    if (success) {
-        showToast('success','', 'Đăng nhập thành công!');
-      } else {
-        alertBasic({
-          icon: 'error',
-          title: 'Đăng nhập thất bại!',
-          message: 'Tên đăng nhập hoặc mật khẩu không đúng!'
-        });
-      }
+    // // setIsLoading(false);
+    // if (success) {
+    //     showToast('success','', 'Đăng nhập thành công!');
+    //   } else {
+        // alertBasic({
+        //   icon: 'error',
+        //   title: 'Đăng nhập thất bại!',
+        //   message: 'Tên đăng nhập hoặc mật khẩu không đúng!'
+        // });
+    //   }
+    const curPassHash = await hashPassword(String(formData.currentPassword));
+    const newPassHash = await hashPassword(String(formData.newPassword))
+
+    try{
+      const result = await ChangePassword(token, {curPass: curPassHash, newPass: newPassHash});
+      console.log(result);
+    }catch(error: any){
+      console.error(error);
+    }
+
+
     setIsSubmitting(false);
   };
 

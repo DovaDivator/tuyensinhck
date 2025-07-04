@@ -7,23 +7,56 @@ import HeroSection from "../../views/feature/home/HeroSection";
 import "./InfoPage.scss";
 import SwitchPasswordForm from "../../views/feature/info/SwitchPasswordForm";
 import BaseInfomation from "../../views/feature/info/BaseInfomation";
+import { useAuth } from "../../context/AuthContext";
+import CccdForm from "../../views/feature/info/CccdForm";
+import { BasicUserTitle } from "../../classes/BasicUserInfo";
 
 const CLASS_PAGE = "info";
+const CLASS_PAGE_GROUPS: Record<string, string[]> = {
+  allUser: ['thong-tin-ca-nhan', 'doi-mat-khau'],
+  studentCase: ['cap-nhat-cccd', 'tra-cuu-ky-thi'],
+  teacherCase: [],
+  adminCase: []
+};
+
+const COMPONENT_MAP:Record<string, JSX.Element> ={
+  'thong-tin-ca-nhan': <BaseInfomation />,
+  'doi-mat-khau': <SwitchPasswordForm />,
+  'cap-nhat-cccd': <CccdForm/>,
+  'tra-cuu-ky-thi': <></>
+}
+
+const PAGE_LABELS:Record<string, String> ={
+  'thong-tin-ca-nhan': 'Thông tin cá nhân',
+  'doi-mat-khau': 'Thay đổi mật khẩu',
+  'cap-nhat-cccd': 'Cập nhật CCCD',
+  'tra-cuu-ky-thi': 'Tra cứu kỳ thi',
+}
 
 const InfoPage = (): JSX.Element => {
     const navigate = useNavigate();
     const { type } = useParams();
-
-    const CLASS_PAGES = ['thong-tin-ca-nhan', 'cap-nhat-cccd', 'tra-cuu-ky-thi', 'doi-mat-khau'];
+    const {user} = useAuth();
+    const [errorLink, setErrorLink] = useState<boolean>(false);
     
-    if(!CLASS_PAGES.includes(type || '')) {
-        navigate("/");
-    }
+    const isAccessible = (type: string, user: BasicUserTitle): boolean => {
+      if (CLASS_PAGE_GROUPS.allUser.includes(type)) return true;
+      if (CLASS_PAGE_GROUPS.studentCase.includes(type)) return user.isStudent();
+      if (CLASS_PAGE_GROUPS.teacherCase.includes(type)) return user.isTeacher(); // giả sử có method
+      if (CLASS_PAGE_GROUPS.adminCase.includes(type)) return user.isAdmin();     // giả sử có method
+      return false;
+    };
 
     const { ref, inView } = useInView({
         triggerOnce: true,
         threshold: 0.2,
     });
+
+    useEffect(() => {
+    if (errorLink) {
+      navigate('/info/thong-tin-ca-nhan');
+    }
+  }, [errorLink]);
 
     const ANIMATION_CLASS_PHASE = ["hide", "start"];
     const [animationClass, setAnimationClass] = useState(ANIMATION_CLASS_PHASE[0]);
@@ -38,17 +71,20 @@ const InfoPage = (): JSX.Element => {
       return(
         <div className="left-menu">
           <ul>
-            <li className={type === CLASS_PAGES[0] ? "active" : ""}>
-              <Link to="/info/thong-tin-ca-nhan">Thông tin cá nhân</Link>
+            <li className={type === CLASS_PAGE_GROUPS.allUser[0] ? "active" : ""}>
+              <Link to="/info/thong-tin-ca-nhan">{PAGE_LABELS['thong-tin-ca-nhan']}</Link>
             </li>
-            <li className={type === CLASS_PAGES[1] ? "active" : ""}>
-              <Link to="/info/cap-nhat-cccd">Cập nhật CCCD</Link>
-            </li>
-            <li className={type === CLASS_PAGES[2] ? "active" : ""}>
-              <Link to="/info/tra-cuu-ky-thi">Tra cứu kỳ thi</Link>
-            </li>
-            <li className={type === CLASS_PAGES[3] ? "active" : ""}>
-              <Link to="/info/doi-mat-khau">Thay đổi mật khẩu</Link>
+            {user.isStudent() &&
+              CLASS_PAGE_GROUPS.studentCase.map((page) => {
+                if (!(page in COMPONENT_MAP)) return null; // Bỏ qua nếu không có component
+                return (
+                  <li key={page} className={type === page ? "active" : ""}>
+                    <Link to={`/info/${page}`}>{PAGE_LABELS[page]}</Link>
+                  </li>
+                );
+              })}
+            <li className={type === CLASS_PAGE_GROUPS.allUser[1] ? "active" : ""}>
+              <Link to="/info/doi-mat-khau">{PAGE_LABELS['doi-mat-khau']}</Link>
             </li>
           </ul>
         </div>
@@ -56,14 +92,12 @@ const InfoPage = (): JSX.Element => {
     }
 
     const RightContent = (): JSX.Element =>{
-      switch(type){
-        case CLASS_PAGES[0]:
-          return(<><BaseInfomation/></>);
-        case CLASS_PAGES[3]:
-          return(<><SwitchPasswordForm/></>);
-        default:
-          return(<></>);
-      }
+      const page = type || '';
+        if (isAccessible(page, user) && COMPONENT_MAP[page]) {
+          return COMPONENT_MAP[page];
+        }
+        setErrorLink(true);
+        return(<></>);
     }
 
     return (

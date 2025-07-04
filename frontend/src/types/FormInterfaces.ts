@@ -6,6 +6,10 @@ export interface FormDataProps {
   [key: string]: string | string[] | undefined;
 }
 
+export interface FileDataProps {
+  [key: string]: File | File[] | undefined;
+}
+
 export interface ErrorLogProps {
   [key: string]: string | undefined;
 }

@@ -9,7 +9,7 @@
  * formatTimestamp(1743619200000, "YYYY-MM-DD") // Returns "2025-05-03"
  */
 export const formatTimestamp = (
-  timestamp: string | number,
+  timestamp: string | number | Date,
   format: string = "DD/MM/YYYY"
 ): string => {
   // Validate input
