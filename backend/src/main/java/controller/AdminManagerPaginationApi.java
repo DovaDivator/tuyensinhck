@@ -12,8 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.tuyensinh.dao.DBConnectionMain;
-import com.tuyensinh.dao.UserManagerDAO;
+import util.DBConnectionMain;
+import dao.UserManagerDAO;
 
 /**
  * Servlet implementation class AdminApi

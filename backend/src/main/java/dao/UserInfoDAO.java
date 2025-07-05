@@ -9,7 +9,7 @@ import java.util.TimeZone;
 
 import org.json.JSONObject;
 
-import com.tuyensinh.function.HttpJson;
+import service.HttpJson;
 
 public class UserInfoDAO {
 	public static JSONObject fetchUserData(Connection conn, String userId) throws Exception {

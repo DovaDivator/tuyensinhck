@@ -12,11 +12,11 @@ import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
 
-import com.tuyensinh.dao.DBConnectionMain;
-import com.tuyensinh.dao.UserInfoDAO;
-import com.tuyensinh.exception.UnauthorizedException;
-import com.tuyensinh.function.HttpJson;
-import com.tuyensinh.model.UserBasic;
+import util.DBConnectionMain;
+import dao.UserInfoDAO;
+import exception.UnauthorizedException;
+import service.HttpJson;
+import model.UserBasic;
 
 /**
  * Servlet implementation class GetUserBasicApi

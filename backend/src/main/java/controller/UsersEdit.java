@@ -11,11 +11,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONObject;
 
-import com.tuyensinh.dao.DBConnectionMain;
-import com.tuyensinh.dao.UserManagerDAO;
-import com.tuyensinh.dao.UserUpdateDAO;
-import com.tuyensinh.exception.UnauthorizedException;
-import com.tuyensinh.function.HttpJson;
+import util.DBConnectionMain;
+import dao.UserManagerDAO;
+import dao.UserUpdateDAO;
+import exception.UnauthorizedException;
+import service.HttpJson;
 
 /**
  * Servlet implementation class FreezeUser

@@ -12,8 +12,8 @@ import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
 
-import com.tuyensinh.function.HttpJson;
-import com.tuyensinh.model.UserBasic;
+import service.HttpJson;
+import model.UserBasic;
 
 /**
  * Servlet implementation class GetUserBasicApi

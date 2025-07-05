@@ -11,10 +11,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONObject;
 
-import com.tuyensinh.dao.AddManagerDAO;
-import com.tuyensinh.dao.DBConnectionMain;
-import com.tuyensinh.exception.UnauthorizedException;
-import com.tuyensinh.function.HttpJson;
+import dao.AddManagerDAO;
+import util.DBConnectionMain;
+import exception.UnauthorizedException;
+import service.HttpJson;
 
 /**
  * Servlet implementation class AddManager

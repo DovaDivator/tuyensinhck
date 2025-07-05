@@ -5,7 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import com.tuyensinh.model.UserBasic;
+import model.UserBasic;
 
 public class LoginDAO {
 	public static UserBasic findUserByLogin(Connection conn, String username, String password) throws SQLException {

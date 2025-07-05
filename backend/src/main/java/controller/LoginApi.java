@@ -13,11 +13,11 @@ import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
 
-import com.tuyensinh.dao.DBConnectionMain;
-import com.tuyensinh.dao.LoginDAO;
-import com.tuyensinh.exception.UnauthorizedException;
-import com.tuyensinh.function.HttpJson;
-import com.tuyensinh.model.UserBasic;
+import util.DBConnectionMain;
+import dao.LoginDAO;
+import exception.UnauthorizedException;
+import service.HttpJson;
+import model.UserBasic;
 
 @WebServlet("api/login")
 public class LoginApi extends HttpServlet {

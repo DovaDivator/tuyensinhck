@@ -11,10 +11,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONObject;
 
-import com.tuyensinh.dao.DBConnectionMain;
-import com.tuyensinh.dao.RegisterDAO;
-import com.tuyensinh.function.ConvertCus;
-import com.tuyensinh.function.HttpJson;
+import util.DBConnectionMain;
+import dao.RegisterDAO;
+import service.ConvertCus;
+import service.HttpJson;
 
 /**
  * Servlet implementation class RegisterApi

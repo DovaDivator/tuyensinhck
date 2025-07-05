@@ -12,9 +12,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.tuyensinh.dao.DBConnectionMain;
-import com.tuyensinh.dao.UserDropdownDAO;
-import com.tuyensinh.dao.UserManagerDAO;
+import util.DBConnectionMain;
+import dao.UserDropdownDAO;
+import dao.UserManagerDAO;
 
 /**
  * Servlet implementation class UsersDropdownList

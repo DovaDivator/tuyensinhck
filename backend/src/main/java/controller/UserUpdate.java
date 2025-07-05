@@ -14,10 +14,10 @@ import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
 
-import com.tuyensinh.function.HttpJson;
-import com.tuyensinh.model.UserBasic;
-import com.tuyensinh.dao.*;
-import com.tuyensinh.exception.UnauthorizedException;
+import service.HttpJson;
+import model.UserBasic;
+import dao.*;
+import exception.UnauthorizedException;
 
 /**
  * Servlet implementation class ChangeUser

@@ -6,7 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-import com.tuyensinh.function.HttpJson;
+import service.HttpJson;
 
 public class UserManagerDAO {
 	public static String getTaiKhoanQuery() {
