@@ -25,7 +25,7 @@ const InputImage = ({
   const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0];
     if (selectedFile) {
-      if(selectedFile.size > maxSize * 1024 * 1024){
+      if(selectedFile.size > maxSize * 1024 * 1024 && maxSize > 0){
         alert("Kích thước ảnh vượt quá yêu cầu tối đa: " + String(maxSize) + "MB");
       }
       setFileData(prev => ({

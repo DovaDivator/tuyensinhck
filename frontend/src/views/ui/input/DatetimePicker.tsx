@@ -55,14 +55,14 @@ const DatetimePicker = ({
   let formatted = '';
   switch (type) {
     case 'date':
-      formatted = formatTimestamp(selected, 'dd/MM/yyyy');
+      formatted = formatTimestamp(selected, 'DD/MM/YYYY');
       break;
     case 'time':
       formatted = formatTimestamp(selected, 'HH:mm');
       break;
     case 'datetime':
     default:
-      formatted = formatTimestamp(selected, 'HH:mm dd/MM/yyyy');
+      formatted = formatTimestamp(selected, 'HH:mm DD/MM/YYYY');
       break;
   }
 

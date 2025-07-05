@@ -167,6 +167,12 @@ const ManagerUserList = ({className = "", name = ""}: ManagerUserListProps): JSX
           users.data.map((user: any) => ({
             ...user,
             isFreeze: user.isFreeze === true ? "Tạm đình chỉ" : "Đang hoạt động",
+            isxacthuc: 
+              user.isFreeze === 0
+              ? "Chờ phê duyệt"
+              : user.isFreeze === 1
+              ? "Đã xác thực"
+              : "Chưa xác thực",
           }))
         );
       } catch (err) {
@@ -410,6 +416,7 @@ const ManagerUserList = ({className = "", name = ""}: ManagerUserListProps): JSX
                       setIsEdit(!isEdit);
                     }}
                   />
+                  {pathParts[2] === CLASS_PAGES[0] &&
                   <Button
                     type="button"
                     title={"Thêm giáo viên"}
@@ -419,6 +426,7 @@ const ManagerUserList = ({className = "", name = ""}: ManagerUserListProps): JSX
                     }}
                     className='btn-confirm'
                   />
+                  }
                 </div>
               </form>
               <hr/>

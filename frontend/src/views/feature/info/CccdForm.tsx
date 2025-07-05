@@ -1,21 +1,35 @@
 import React, { useState, useEffect, JSX } from "react";
-import { Navigate } from "react-router-dom";
 import { useAuth } from "../../../context/AuthContext";
 
 import "./CccdForm.scss";
-import { DataValidsProps, ErrorLogProps, FormDataProps } from "../../../types/FormInterfaces";
+import { DataValidsProps, ErrorLogProps, FileDataProps, FormDataProps } from "../../../types/FormInterfaces";
 import InputField from "../../ui/input/InputField";
 import DatetimePicker from "../../ui/input/DatetimePicker";
+import { formatTimestamp } from "../../../function/convert/formatTimestamp";
+import InputChoice from "../../ui/input/InputChoice";
+import InputImage from "../../ui/input/InputImage";
+import Button from "../../ui/input/Button";
 
 const CccdForm = (): JSX.Element => {
     const {token, user} = useAuth();
-    const friendlyNote = "Bạn đã cập nhật CCCD!";
+    const friendlyNote = ["Thông tin của bạn đang chờ phê duyệt!","Bạn đã cập nhật CCCD!"];
+    const GENDER_CHOICES = [
+        {value: "male", label: "Nam"},
+        {value: "female", label: "Nữ"}
+    ]
+
+    const [isUpdated, setIsUpdated] = useState<boolean>(false);
 
     const [formData, setFormData] = useState<FormDataProps>({
         numCccd: "",
-        dateBirth: "",
+        dateBirth: formatTimestamp(new Date(new Date().getFullYear() - 18, 0, 1)), // Ngày 01/01 của 18 năm về trước
         gender: "",
         address: ""
+    });
+
+    const [imgData, setImgData] = useState<FileDataProps>({
+        front: undefined,
+        back: undefined
     });
 
     const [errors, setErrors] = useState<ErrorLogProps>({
@@ -31,27 +45,47 @@ const CccdForm = (): JSX.Element => {
 
     if(token === "" || user.isGuest()) return(<></>);
 
-        // useEffect(() => {
-        //     const fetchUser = async () => {
-        //     if(token === "") return;
-        //     try {
-        //         // console.log(token);
-        //         const data = await getBasicUserInfo(token);
-        //         setUserInfo(data);
-        //     } catch (error: any) {
-        //         console.error(error);
-        //     }
-        //     };
-    
-        //     fetchUser();
-        // }, [token]);
+    useEffect(() => {
+        //API lấy dữ liệu
+    }, []);
+
+    const handleReset = () => {
+        setFormData({
+            numCccd: "",
+            dateBirth: formatTimestamp(new Date(new Date().getFullYear() - 18, 0, 1)), // Ngày 01/01 của 18 năm về trước
+            gender: "",
+            address: ""
+        });
+        setImgData({
+            front: undefined,
+            back: undefined
+        });
+    }
+
+    const handleSubmit = () =>{
+        //Hàm kiểm tra ở đây
+        console.log("Kiểm tra thành công");
+        //Thực hiện API cập nhật
+    }
 
     return (
         <section className={`cccd-form-container`}>
             <h3>Thêm Căn cước công dân</h3>
+            {isUpdated && <p className="note"></p>}
             <form>
                 <div className="image-form">
-
+                    <InputImage
+                        name="front"
+                        id="front"
+                        value={Array.isArray(imgData.front) ? imgData.front[0] : imgData.front}
+                        setFileData={setImgData}
+                    />
+                    <InputImage
+                        name="back"
+                        id="back"
+                        value={Array.isArray(imgData.back) ? imgData.back[0] : imgData.back}
+                        setFileData={setImgData}
+                    />
                 </div>
                 <div className="text-form">
                     <InputField
@@ -73,8 +107,44 @@ const CccdForm = (): JSX.Element => {
                         value={String(formData.dateBirth)}
                         setFormData={setFormData}
                     />
+                    <InputChoice
+                        type="radio"
+                        name="gender"
+                        id="gender"
+                        label="Giới tính"
+                        value={formData.gender}
+                        choices={GENDER_CHOICES}
+                        setFormData={setFormData}
+                        columns={2}
+                    />
+                    <InputField
+                        type="text"
+                        name="address"
+                        id="address"
+                        placeholder="Địa chỉ"
+                        value={formData.address}
+                        formData={formData}
+                        setFormData={setFormData}
+                        errors={errors}
+                        setErrors={setErrors}    
+                    />
                 </div>
+                
             </form>
+            <div className="button-form">
+                    <Button
+                        type="submit"
+                        className="btn-confirm"
+                        onClick={handleSubmit}
+                        text="Cập nhật!"
+                    />
+                    <Button
+                        type="button"
+                        className="btn-cancel"
+                        onClick={handleReset}
+                        text="Khôi phục"
+                    />
+                </div>
         </section>
     );
 };

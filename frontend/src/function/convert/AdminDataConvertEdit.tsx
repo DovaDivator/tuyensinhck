@@ -34,6 +34,7 @@ export const EditThiSinh = (
                 type="button"
                 icon="fa-solid fa-trash"
                 className="btn-cancel"
+                title="Loại bỏ thí sinh"
                 onClick={async () => {
                   try {
                     const result = await api.deleteThiSinh("102", {
@@ -84,6 +85,7 @@ export const EditTaiKhoan = (
                 type="button"
                 icon={`fa-solid ${user.isFreeze === "Đang hoạt động" ? "fa-lock" : "fa-unlock"}`}
                 className={user.isFreeze === "Đang hoạt động" ? "btn-cancel" : "btn-accept"}
+                title={user.isFreeze === "Đang hoạt động" ? "Đình chỉ nguời dùng" : "Kích hoạt trở lại"}
                 onClick={async () => {
                   try {
                     const result = await api.setFreeze("102", {
@@ -115,7 +117,8 @@ export const EditTaiKhoan = (
                 type="button"
                 icon="fa-solid fa-person-circle-minus"
                 className="btn-cancel"
-                disabled={!user.isxacthuc}
+                disabled={user.isxacthuc === "Chưa xác thực"}
+                title={user.isxacthuc === "Chưa xác thực" ? "Không thể chọn" : "Xóa thông tin CCCD"}
                 onClick={async () => {
                   try {
                     const result = await api.deleteCccd("102", {
@@ -181,6 +184,7 @@ export const EditGiaoVien = (
                 type="button"
                 icon={`fa-solid ${user.isFreeze === "Đang hoạt động" ? "fa-lock" : "fa-unlock"}`}
                 className={user.isFreeze === "Đang hoạt động" ? "btn-cancel" : "btn-accept"}
+                title={user.isFreeze === "Đang hoạt động" ? "Đình chỉ nguời dùng" : "Kích hoạt trở lại"}
                 onClick={async () => {
                   try {
                     const result = await api.setFreeze("102", {
@@ -211,6 +215,7 @@ export const EditGiaoVien = (
               <Button
                 type="button"
                 icon="fa-solid fa-pen"
+                title={"Cập nhật môn quản lý"}
                 onClick={async () => {
                   const matchedMon = listMon.find(mon => mon.label === user.mon_ql);
                   const defaultValue = matchedMon?.value || "";
