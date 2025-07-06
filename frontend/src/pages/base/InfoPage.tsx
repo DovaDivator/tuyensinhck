@@ -8,7 +8,7 @@ import "./InfoPage.scss";
 import SwitchPasswordForm from "../../views/feature/info/SwitchPasswordForm";
 import BaseInfomation from "../../views/feature/info/BaseInfomation";
 import { useAuth } from "../../context/AuthContext";
-import CccdForm from "../../views/feature/info/CccdForm";
+import CccdForm from "../../views/feature/info/CccdEdit";
 import { BasicUserTitle } from "../../classes/BasicUserInfo";
 
 const CLASS_PAGE = "info";

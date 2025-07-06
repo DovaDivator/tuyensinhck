@@ -1,7 +1,7 @@
 import React, { useState, useEffect, JSX } from "react";
 import { useAuth } from "../../../context/AuthContext";
 
-import "./CccdForm.scss";
+import "./CccdEdit.scss";
 import { DataValidsProps, ErrorLogProps, FileDataProps, FormDataProps } from "../../../types/FormInterfaces";
 import InputField from "../../ui/input/InputField";
 import DatetimePicker from "../../ui/input/DatetimePicker";
@@ -9,6 +9,7 @@ import { formatTimestamp } from "../../../function/convert/formatTimestamp";
 import InputChoice from "../../ui/input/InputChoice";
 import InputImage from "../../ui/input/InputImage";
 import Button from "../../ui/input/Button";
+import * as API from "../../../api/StudentCccd";
 
 const CccdForm = (): JSX.Element => {
     const {token, user} = useAuth();
@@ -46,7 +47,16 @@ const CccdForm = (): JSX.Element => {
     if(token === "" || user.isGuest()) return(<></>);
 
     useEffect(() => {
-        //API lấy dữ liệu
+        const fetchData = async () => {
+            try {
+                const result = await API.GetCccd(token);
+                console.log(result);
+            } catch (error: any) {
+                console.error(error);
+            }
+        };
+
+        fetchData();
     }, []);
 
     const handleReset = () => {
@@ -62,10 +72,16 @@ const CccdForm = (): JSX.Element => {
         });
     }
 
-    const handleSubmit = () =>{
+    const handleSubmit = async () =>{
         //Hàm kiểm tra ở đây
         console.log("Kiểm tra thành công");
         //Thực hiện API cập nhật
+        try{
+            const result = await API.UpdateCccd(token, {...formData, ...imgData});
+            console.log(result);
+        }catch(error: any){
+            console.error(error)
+        }
     }
 
     return (
