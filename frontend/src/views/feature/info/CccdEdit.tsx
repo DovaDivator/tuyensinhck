@@ -12,7 +12,7 @@ const CccdEdit = (): JSX.Element => {
     const {token, user} = useAuth();
     const friendlyNote = ["Thông tin của bạn đang chờ phê duyệt!","Bạn đã cập nhật CCCD!"];
 
-    const [isUpdated, setIsUpdated] = useState<boolean>(false);
+    const [isUpdated, setIsUpdated] = useState<number>(-1);
 
     const [formData, setFormData] = useState<FormDataProps>({
         numCccd: "",

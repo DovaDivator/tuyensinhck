@@ -17,8 +17,8 @@ interface CccdFormProps{
 }
 
     const GENDER_CHOICES = [
-        {value: "male", label: "Nam"},
-        {value: "female", label: "Nữ"}
+        {value: "0", label: "Nam"},
+        {value: "1", label: "Nữ"}
     ]
 
 const CccdForm = ({
