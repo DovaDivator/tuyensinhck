@@ -1,5 +1,8 @@
 package controller;
 
+import java.io.IOException;
+import java.sql.Connection;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -9,14 +12,11 @@ import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
 
-import com.tuyensinh.dao.DBConnectionMain;
-import com.tuyensinh.dao.UserUpdateDAO;
-import com.tuyensinh.exception.UnauthorizedException;
-import com.tuyensinh.function.HttpJson;
-import com.tuyensinh.model.UserBasic;
-
-import java.io.IOException;
-import java.sql.Connection;
+import dao.PasswordUpdateDAO;
+import exception.UnauthorizedException;
+import model.UserBasic;
+import service.HttpJson;
+import util.DBConnectionMain;
 
 /**
  * Servlet implementation class PasswordUpdate
@@ -83,9 +83,9 @@ public class PasswordUpdate extends HttpServlet {
 //			if (!success) {
 //				throw new UnauthorizedException("Không tìm thấy user với ID: " + user.getId());
 //			}
-			boolean success = PasswordUpdateDAO.updatePassword(conn, name, curPass, newPass);
+			boolean success = PasswordUpdateDAO.updatePassword(conn, user.getId(), curPass, newPass);
 			if (!success) {
-				throw new UnauthorizedException("Cập nhật không thành công!");
+				throw new UnauthorizedException("Mật khẩu không khớp!");
 			}
 			jsonResponse.put("success", true);
 			jsonResponse.put("message", "Cập nhật thành công!");
