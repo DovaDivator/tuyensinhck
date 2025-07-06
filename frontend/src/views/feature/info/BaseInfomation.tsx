@@ -10,10 +10,10 @@ import { getBasicUserInfo } from "../../../api/GetBasicUserInfoApi";
 import { canNullUI } from "../../../function/convert/canNullUI";
 import Button from "../../ui/input/Button";
 import { InputValids } from "../../../classes/InputValids";
-import { alertSimpleInput } from "../../../function/alert/alerlSimpleInput";
+import { alertSimpleInput } from "../../../alert/alerlSimpleInput";
 import { ChangeUser } from "../../../api/ChangeUser";
-import { alertBasic } from "../../../function/alert/alertBasic";
-import { showToast } from "../../../function/alert/alertToast";
+import { alertBasic } from "../../../alert/alertBasic";
+import { showToast } from "../../../alert/alertToast";
 
 const BaseInfomation = (): JSX.Element => {
     const {token} = useAuth();

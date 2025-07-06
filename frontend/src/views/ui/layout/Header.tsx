@@ -10,8 +10,8 @@ import Button from "../input/Button";
 import "./Header.scss";
 import { getUserSession } from "../../../api/GetBasicUserInfoApi";
 import { BasicUserTitle } from "../../../classes/BasicUserInfo";
-import { alertBasic } from "../../../function/alert/alertBasic";
-import { showToast } from "../../../function/alert/alertToast";
+import { alertBasic } from "../../../alert/alertBasic";
+import { showToast } from "../../../alert/alertToast";
 
 
 const Header = (): JSX.Element => {

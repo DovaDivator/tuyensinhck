@@ -1,14 +1,14 @@
 import { useState } from "react";
 import Button from "../../views/ui/input/Button";
 import * as api from "../../api/AdminEdit";
-import { alertFormReact } from "../alert/alertForm";
+import { alertFormReact } from "../../alert/alertForm";
 import SetMonQuanLyForm from "../../views/alertUI/SetMonQuanLyForm";
 import AddTeacherForm from "../../views/alertUI/AddTeacherForm";
 import { checkValidSubmitUtils } from "../triggers/checkValidSubmitUtils";
 import { ErrorLogProps, DataValidsProps } from "../../types/FormInterfaces";
 import { InputValids } from "../../classes/InputValids";
 import { hashPassword } from "./hashPassword";
-import { alertBasic } from "../alert/alertBasic";
+import { alertBasic } from "../../alert/alertBasic";
 
 interface DefaultProps{
   data: any, 

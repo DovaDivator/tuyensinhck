@@ -1,6 +1,6 @@
 import Swal, { SweetAlertResult } from 'sweetalert2';
-import { validateText } from '../conditions/validateText';
-import { InputValids } from '../../classes/InputValids';
+import { validateText } from '../function/conditions/validateText';
+import { InputValids } from '../classes/InputValids';
 
 interface alerlSimpleInputProps {
   title?: string;

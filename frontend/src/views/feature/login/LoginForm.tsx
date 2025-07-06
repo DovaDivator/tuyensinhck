@@ -11,8 +11,8 @@ import { InputValids } from '../../../classes/InputValids';
 import { forgotPassword } from '../../../function/user-action/forgotPassword';
 import { FormDataProps, ErrorLogProps, DataOptionsProps, DataValidsProps } from '../../../types/FormInterfaces';
 import { useAuth } from "../../../context/AuthContext";
-import { showToast } from '../../../function/alert/alertToast';
-import { alertBasic } from '../../../function/alert/alertBasic';
+import { showToast } from '../../../alert/alertToast';
+import { alertBasic } from '../../../alert/alertBasic';
 
 const LoginForm = ():JSX.Element => {
   const { isLoading, setIsLoading } = useAppContext();

@@ -11,8 +11,8 @@ import { InputValids } from '../../../classes/InputValids';
 import { forgotPassword } from '../../../function/user-action/forgotPassword';
 import { FormDataProps, ErrorLogProps, DataOptionsProps, DataValidsProps } from '../../../types/FormInterfaces';
 import { useAuth } from "../../../context/AuthContext";
-import { showToast } from '../../../function/alert/alertToast';
-import { alertBasic } from '../../../function/alert/alertBasic';
+import { showToast } from '../../../alert/alertToast';
+import { alertBasic } from '../../../alert/alertBasic';
 import { ChangePassword } from '../../../api/ChangePassword';
 import { hashPassword } from '../../../function/convert/hashPassword';
 
@@ -74,13 +74,33 @@ const SwitchPasswordForm = ():JSX.Element => {
     try{
       const result = await ChangePassword(token, {curPass: curPassHash, newPass: newPassHash});
       console.log(result);
+
+     if (result.success) {
+         showToast('success','', 'Đổi mật khẩu thành công!');
+       }
     }catch(error: any){
       console.error(error);
+
+      if (error.status === 401) {
+          alertBasic({
+           icon: 'error',
+           title: 'Đổi mật khẩu thất bại!',
+           message: 'Mật khẩu cũ hoặc mới không đúng!'
+         });
+        } else {
+          alertBasic({
+           icon: 'error',
+           title: 'Lỗi không xác định!',
+           message: 'Có số lỗi xảy ra trong quá trình đổi mật khẩu. Vui lòng thử lại sau.'
+        });
+
+    }
     }
 
 
     setIsSubmitting(false);
   };
+
 
   return (
     <section className="switch-password-form-container">

@@ -1,5 +1,5 @@
 import React from "react";
-import { alertSimpleInput } from "../alert/alerlSimpleInput";
+import { alertSimpleInput } from "../../alert/alerlSimpleInput";
 import { InputValids } from "../../classes/InputValids";
 
 export const forgotPassword = async (e: React.MouseEvent<HTMLAnchorElement>): Promise<void> => {

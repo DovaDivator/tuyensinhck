@@ -8,8 +8,8 @@ import PolicyTerm from '../policy/PolicyTerm';
 import './RegisterForm.scss';
 import LogoGuest from '../../ui/components/LogoGuest';
 import { checkValidSubmitUtils } from '../../../function/triggers/checkValidSubmitUtils';
-import {alertLayoutReact} from '../../../function/alert/alertLayoutReact';
-import { showToast } from '../../../function/alert/alertToast';
+import {alertLayoutReact} from '../../../alert/alertLayoutReact';
+import { showToast } from '../../../alert/alertToast';
 
 import {ChoiceGroup} from '../../../classes/ChoiceGroup';
 import { InputOptions } from '../../../classes/InputOption';
@@ -17,7 +17,7 @@ import {InputValids} from '../../../classes/InputValids';
 import {ChoiceValids} from '../../../classes/ChoiceValids';
 import {FormDataProps, ErrorLogProps, DataOptionsProps, DataValidsProps} from '../../../types/FormInterfaces';
 import { registerSubmitApi } from '../../../api/RegisterApi';
-import { alertBasic } from '../../../function/alert/alertBasic';
+import { alertBasic } from '../../../alert/alertBasic';
 
 
 const RegisterForm = () => {

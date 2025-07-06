@@ -1,8 +1,8 @@
 import ReactDOM from 'react-dom/client';
 import Swal from 'sweetalert2';
 import { ReactElement } from 'react';
-import { checkValidSubmitUtils } from '../triggers/checkValidSubmitUtils';
-import { FormDataProps, DataValidsProps, ErrorLogProps } from '../../types/FormInterfaces';
+import { checkValidSubmitUtils } from '../function/triggers/checkValidSubmitUtils';
+import { FormDataProps, DataValidsProps, ErrorLogProps } from '../types/FormInterfaces';
 
 type AlertFormProps = {
   [key: string]: any;

@@ -1,8 +1,8 @@
 import { FormEvent } from 'react';
 import { validateInput } from '../conditions/validateInput';
 
-import { showToast } from '../alert/alertToast';
-import { alertBasic } from '../alert/alertBasic';
+import { showToast } from '../../alert/alertToast';
+import { alertBasic } from '../../alert/alertBasic';
 import { FormDataProps, ErrorLogProps, DataValidsProps } from '../../types/FormInterfaces';
 
 /**

@@ -8,7 +8,7 @@ import { ContextProvider } from './context/ContextProvider';
 import { useAppContext } from './context/AppContext';
 import { useAuth } from './context/AuthContext';
 import { getUserSession } from './api/GetBasicUserInfoApi';
-import { showToast } from './function/alert/alertToast';
+import { showToast } from './alert/alertToast';
 
 import LoadingScreen from './views/ui/components/LoadingScreen';
 import SmallScreen from './pages/other/SmallScreen';
