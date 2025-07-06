@@ -1,78 +1,36 @@
-import React, { useState, useEffect, JSX } from "react";
-import { useAuth } from "../../../context/AuthContext";
+import React, {JSX} from 'react';
+import InputImage from '../../ui/input/InputImage';
+import InputField from '../../ui/input/InputField';
+import InputChoice from '../../ui/input/InputChoice';
+import DatetimePicker from '../../ui/input/DatetimePicker';
+import { ErrorLogProps, FileDataProps, FormDataProps } from '../../../types/FormInterfaces';
 
-import "./CccdForm.scss";
-import { DataValidsProps, ErrorLogProps, FileDataProps, FormDataProps } from "../../../types/FormInterfaces";
-import InputField from "../../ui/input/InputField";
-import DatetimePicker from "../../ui/input/DatetimePicker";
-import { formatTimestamp } from "../../../function/convert/formatTimestamp";
-import InputChoice from "../../ui/input/InputChoice";
-import InputImage from "../../ui/input/InputImage";
-import Button from "../../ui/input/Button";
+// import "./CccdForm.scss";
 
-const CccdForm = (): JSX.Element => {
-    const {token, user} = useAuth();
-    const friendlyNote = ["Thông tin của bạn đang chờ phê duyệt!","Bạn đã cập nhật CCCD!"];
+interface CccdFormProps{
+    formData: FormDataProps;
+    setFormData: React.Dispatch<React.SetStateAction<FormDataProps>>;
+    imgData: FileDataProps;
+    setImgData: React.Dispatch<React.SetStateAction<FileDataProps>>;
+    errors: ErrorLogProps;
+    setErrors: React.Dispatch<React.SetStateAction<ErrorLogProps>>;
+}
+
     const GENDER_CHOICES = [
         {value: "male", label: "Nam"},
         {value: "female", label: "Nữ"}
     ]
 
-    const [isUpdated, setIsUpdated] = useState<boolean>(false);
-
-    const [formData, setFormData] = useState<FormDataProps>({
-        numCccd: "",
-        dateBirth: formatTimestamp(new Date(new Date().getFullYear() - 18, 0, 1)), // Ngày 01/01 của 18 năm về trước
-        gender: "",
-        address: ""
-    });
-
-    const [imgData, setImgData] = useState<FileDataProps>({
-        front: undefined,
-        back: undefined
-    });
-
-    const [errors, setErrors] = useState<ErrorLogProps>({
-        numCccd: "",
-        dateBirth: "",
-        gender: "",
-        address: ""
-    });
-
-    const valids: DataValidsProps = {
-
-    }
-
-    if(token === "" || user.isGuest()) return(<></>);
-
-    useEffect(() => {
-        //API lấy dữ liệu
-    }, []);
-
-    const handleReset = () => {
-        setFormData({
-            numCccd: "",
-            dateBirth: formatTimestamp(new Date(new Date().getFullYear() - 18, 0, 1)), // Ngày 01/01 của 18 năm về trước
-            gender: "",
-            address: ""
-        });
-        setImgData({
-            front: undefined,
-            back: undefined
-        });
-    }
-
-    const handleSubmit = () =>{
-        //Hàm kiểm tra ở đây
-        console.log("Kiểm tra thành công");
-        //Thực hiện API cập nhật
-    }
-
-    return (
-        <section className={`cccd-form-container`}>
-            <h3>Thêm Căn cước công dân</h3>
-            {isUpdated && <p className="note"></p>}
-            <form>
+const CccdForm = ({
+    formData,
+    setFormData,
+    imgData,
+    setImgData,
+    errors,
+    setErrors
+}: CccdFormProps): JSX.Element => {
+    return(
+    <form>
                 <div className="image-form">
                     <InputImage
                         name="front"
@@ -131,22 +89,7 @@ const CccdForm = (): JSX.Element => {
                 </div>
                 
             </form>
-            <div className="button-form">
-                    <Button
-                        type="submit"
-                        className="btn-confirm"
-                        onClick={handleSubmit}
-                        text="Cập nhật!"
-                    />
-                    <Button
-                        type="button"
-                        className="btn-cancel"
-                        onClick={handleReset}
-                        text="Khôi phục"
-                    />
-                </div>
-        </section>
     );
-};
+}
 
 export default CccdForm;

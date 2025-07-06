@@ -8,7 +8,7 @@ import "./InfoPage.scss";
 import SwitchPasswordForm from "../../views/feature/info/SwitchPasswordForm";
 import BaseInfomation from "../../views/feature/info/BaseInfomation";
 import { useAuth } from "../../context/AuthContext";
-import CccdForm from "../../views/feature/info/CccdForm";
+import CccdEdit from "../../views/feature/info/CccdEdit";
 import { BasicUserTitle } from "../../classes/BasicUserInfo";
 
 const CLASS_PAGE = "info";
@@ -22,7 +22,7 @@ const CLASS_PAGE_GROUPS: Record<string, string[]> = {
 const COMPONENT_MAP:Record<string, JSX.Element> ={
   'thong-tin-ca-nhan': <BaseInfomation />,
   'doi-mat-khau': <SwitchPasswordForm />,
-  'cap-nhat-cccd': <CccdForm/>,
+  'cap-nhat-cccd': <CccdEdit/>,
   'tra-cuu-ky-thi': <></>
 }
 
