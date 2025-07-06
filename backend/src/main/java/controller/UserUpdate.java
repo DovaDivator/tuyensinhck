@@ -18,6 +18,7 @@ import service.HttpJson;
 import model.UserBasic;
 import dao.*;
 import exception.UnauthorizedException;
+import util.DBConnectionMain;
 
 /**
  * Servlet implementation class ChangeUser
