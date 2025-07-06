@@ -3,21 +3,14 @@ import { useAuth } from "../../../context/AuthContext";
 
 import "./CccdEdit.scss";
 import { DataValidsProps, ErrorLogProps, FileDataProps, FormDataProps } from "../../../types/FormInterfaces";
-import InputField from "../../ui/input/InputField";
-import DatetimePicker from "../../ui/input/DatetimePicker";
 import { formatTimestamp } from "../../../function/convert/formatTimestamp";
-import InputChoice from "../../ui/input/InputChoice";
-import InputImage from "../../ui/input/InputImage";
 import Button from "../../ui/input/Button";
 import * as API from "../../../api/StudentCccd";
+import CccdForm from "./CccdForm";
 
-const CccdForm = (): JSX.Element => {
+const CccdEdit = (): JSX.Element => {
     const {token, user} = useAuth();
     const friendlyNote = ["Thông tin của bạn đang chờ phê duyệt!","Bạn đã cập nhật CCCD!"];
-    const GENDER_CHOICES = [
-        {value: "male", label: "Nam"},
-        {value: "female", label: "Nữ"}
-    ]
 
     const [isUpdated, setIsUpdated] = useState<boolean>(false);
 
@@ -56,8 +49,8 @@ const CccdForm = (): JSX.Element => {
             }
         };
 
-        fetchData();
-    }, []);
+        if (token) fetchData();
+    }, [token]);
 
     const handleReset = () => {
         setFormData({
@@ -88,65 +81,14 @@ const CccdForm = (): JSX.Element => {
         <section className={`cccd-form-container`}>
             <h3>Thêm Căn cước công dân</h3>
             {isUpdated && <p className="note"></p>}
-            <form>
-                <div className="image-form">
-                    <InputImage
-                        name="front"
-                        id="front"
-                        value={Array.isArray(imgData.front) ? imgData.front[0] : imgData.front}
-                        setFileData={setImgData}
-                    />
-                    <InputImage
-                        name="back"
-                        id="back"
-                        value={Array.isArray(imgData.back) ? imgData.back[0] : imgData.back}
-                        setFileData={setImgData}
-                    />
-                </div>
-                <div className="text-form">
-                    <InputField
-                        type="text"
-                        name="numCccd"
-                        id="numCccd"
-                        placeholder="Số căn cước công dân"
-                        value={formData.numCccd}
-                        formData={formData}
-                        setFormData={setFormData}
-                        maxLength={12}
-                        errors={errors}
-                        setErrors={setErrors}    
-                    />
-                    <DatetimePicker
-                        type="date"
-                        name="dateBirth"
-                        id="dateBirth"
-                        value={String(formData.dateBirth)}
-                        setFormData={setFormData}
-                    />
-                    <InputChoice
-                        type="radio"
-                        name="gender"
-                        id="gender"
-                        label="Giới tính"
-                        value={formData.gender}
-                        choices={GENDER_CHOICES}
-                        setFormData={setFormData}
-                        columns={2}
-                    />
-                    <InputField
-                        type="text"
-                        name="address"
-                        id="address"
-                        placeholder="Địa chỉ"
-                        value={formData.address}
-                        formData={formData}
-                        setFormData={setFormData}
-                        errors={errors}
-                        setErrors={setErrors}    
-                    />
-                </div>
-                
-            </form>
+            <CccdForm
+                formData={formData}
+                setFormData={setFormData}
+                imgData={imgData}
+                setImgData={setImgData}
+                errors={errors}
+                setErrors={setErrors}
+            />
             <div className="button-form">
                     <Button
                         type="submit"
@@ -165,4 +107,4 @@ const CccdForm = (): JSX.Element => {
     );
 };
 
-export default CccdForm;
+export default React.memo(CccdEdit);
