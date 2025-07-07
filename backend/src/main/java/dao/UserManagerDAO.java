@@ -6,6 +6,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import service.HttpJson;
 
 public class UserManagerDAO {
@@ -15,13 +18,12 @@ public class UserManagerDAO {
 				+ "THEN true ELSE false END AS isxacthuc " + "FROM users u WHERE role = 1";
 	}
 
-	public static String getTaiKhoan(Connection conn, String search, String isCccd, String isFreeze, int page) {
+	public static JSONArray getTaiKhoan(Connection conn, String search, String isCccd, String isFreeze, int page) {
 		int offset = (page - 1) * ADMIN_LIST_USER_LIMIT;
 
 		StringBuilder sql = new StringBuilder();
 		sql.append("SELECT * FROM ( ");
 		sql.append(getTaiKhoanQuery());
-
 		sql.append(") AS sub WHERE 1=1 ");
 
 		if (!search.isEmpty()) {
@@ -36,8 +38,7 @@ public class UserManagerDAO {
 
 		sql.append(" LIMIT ").append(ADMIN_LIST_USER_LIMIT).append(" OFFSET ").append(offset);
 
-		StringBuilder jsonArray = new StringBuilder();
-		jsonArray.append("[");
+		JSONArray jsonArray = new JSONArray();
 
 		try (PreparedStatement stmt = conn.prepareStatement(sql.toString())) {
 			if (!search.isEmpty()) {
@@ -47,32 +48,26 @@ public class UserManagerDAO {
 			}
 
 			ResultSet rs = stmt.executeQuery();
-			boolean first = true;
 
 			while (rs.next()) {
-				if (!first) {
-					jsonArray.append(",");
-				} else {
-					first = false;
-				}
+				JSONObject jsonObject = new JSONObject();
+				jsonObject.put("id", rs.getString("id"));
+				jsonObject.put("name", HttpJson.convertStringToJson(rs.getString("name")));
+				jsonObject.put("created_at", HttpJson.convertTime(rs.getTimestamp("created_at"), "HH:mm dd/MM/yyyy"));
+				jsonObject.put("isxacthuc", rs.getBoolean("isxacthuc"));
+				jsonObject.put("isFreeze", rs.getBoolean("is_freezing"));
 
-				jsonArray.append("{").append("\"id\":\"").append(rs.getString("id")).append("\",").append("\"name\":\"")
-						.append(HttpJson.convertStringToJson(rs.getString("name"))).append("\",")
-						.append("\"created_at\":\"")
-						.append(HttpJson.convertTime(rs.getTimestamp("created_at"), "HH:mm dd/MM/yyyy")).append("\",")
-						.append("\"isxacthuc\":").append(rs.getBoolean("isxacthuc")).append(",").append("\"isFreeze\":")
-						.append(rs.getBoolean("is_freezing")).append("}");
+				jsonArray.put(jsonObject);
 			}
 
 		} catch (Exception e) {
 			throw new RuntimeException("Lỗi khi truy vấn dữ liệu người dùng: " + e.getMessage(), e);
 		}
 
-		jsonArray.append("]");
-		return jsonArray.toString();
+		return jsonArray;
 	}
 
-	public static String getTaiKhoanTotalPage(Connection conn, String search, String isCccd, String isFreeze) {
+	public static JSONObject getTaiKhoanTotalPage(Connection conn, String search, String isCccd, String isFreeze) {
 		StringBuilder sql = new StringBuilder();
 		sql.append("SELECT COUNT(*) FROM (");
 		sql.append("SELECT * FROM ( ");
@@ -89,9 +84,9 @@ public class UserManagerDAO {
 		if (isFreeze.equals("true") || isFreeze.equals("false"))
 			sql.append(" AND is_freezing = ").append(isFreeze);
 
-		sql.append(") as total_list");
+		sql.append(") AS total_list");
 
-		StringBuilder jsonResult = new StringBuilder();
+		JSONObject jsonResult = new JSONObject();
 
 		try (PreparedStatement stmt = conn.prepareStatement(sql.toString())) {
 			if (!search.isEmpty()) {
@@ -101,7 +96,6 @@ public class UserManagerDAO {
 			}
 
 			ResultSet rs = stmt.executeQuery();
-			boolean first = true;
 
 			int listLength = 0;
 			if (rs.next()) {
@@ -109,11 +103,13 @@ public class UserManagerDAO {
 			}
 
 			int totalPage = HttpJson.getTotalPage(listLength, ADMIN_LIST_USER_LIMIT);
-			jsonResult.append("{").append("\"totalPage\":").append(totalPage).append("}");
-			return jsonResult.toString();
+			jsonResult.put("totalPage", totalPage);
+
 		} catch (Exception e) {
-			throw new RuntimeException("Lỗi khi truy vấn dữ liệu người dùng: " + e.getMessage(), e);
+			throw new RuntimeException("Lỗi khi truy vấn tổng số trang người dùng: " + e.getMessage(), e);
 		}
+
+		return jsonResult;
 	}
 
 	public static String getThiSinhQuery() {
@@ -129,14 +125,13 @@ public class UserManagerDAO {
 				+ "from thi_cu tc";
 	}
 
-	public static String getThiSinh(Connection conn, String search, String optionHe, String optionKhoaThi,
+	public static JSONArray getThiSinh(Connection conn, String search, String optionHe, String optionKhoaThi,
 			String optionTc, String optionNn, int page) {
 		int offset = (page - 1) * ADMIN_LIST_USER_LIMIT;
 
 		StringBuilder sql = new StringBuilder();
 		sql.append("SELECT * FROM ( ");
 		sql.append(getThiSinhQuery());
-
 		sql.append(") AS sub WHERE 1=1 ");
 
 		if (!search.isEmpty())
@@ -156,8 +151,7 @@ public class UserManagerDAO {
 
 		sql.append(" LIMIT ").append(ADMIN_LIST_USER_LIMIT).append(" OFFSET ").append(offset);
 
-		StringBuilder jsonArray = new StringBuilder();
-		jsonArray.append("[");
+		JSONArray jsonArray = new JSONArray();
 
 		try (PreparedStatement stmt = conn.prepareStatement(sql.toString())) {
 			if (!search.isEmpty()) {
@@ -168,38 +162,32 @@ public class UserManagerDAO {
 			}
 
 			ResultSet rs = stmt.executeQuery();
-			boolean first = true;
 
 			while (rs.next()) {
-				if (!first) {
-					jsonArray.append(",");
-				} else {
-					first = false;
-				}
+				JSONObject json = new JSONObject();
+				json.put("stu_id", rs.getString("stu_id"));
+				json.put("name", HttpJson.convertStringToJson(rs.getString("name")));
+				json.put("exam_id", rs.getString("exam_id"));
+				json.put("he", rs.getInt("he"));
+				json.put("mon_tc", HttpJson.convertStringToJson(rs.getString("mon_tc_name")));
+				json.put("mon_nn", HttpJson.convertStringToJson(rs.getString("mon_nn_name")));
+				json.put("khoa_thi", rs.getInt("khoa_thi"));
+				json.put("phong1", rs.getString("phong1"));
+				json.put("phong2", rs.getString("phong2"));
+				json.put("phong3", rs.getString("phong3"));
+				json.put("phong4", rs.getString("phong4"));
 
-				jsonArray.append("{").append("\"stu_id\":\"").append(rs.getString("stu_id")).append("\",")
-						.append("\"name\":\"").append(HttpJson.convertStringToJson(rs.getString("name"))).append("\",")
-						.append("\"exam_id\":").append(HttpJson.getNullString(rs.getString("exam_id"))).append(",")
-						.append("\"he\":").append(rs.getInt("he")).append(",").append("\"mon_tc\":\"")
-						.append(HttpJson.convertStringToJson(rs.getString("mon_tc_name"))).append("\",")
-						.append("\"mon_nn\":\"").append(HttpJson.convertStringToJson(rs.getString("mon_nn_name")))
-						.append("\",").append("\"khoa_thi\":").append(rs.getInt("khoa_thi")).append(",")
-						.append("\"phong1\":").append(HttpJson.getNullString(rs.getString("phong1"))).append(",")
-						.append("\"phong2\":").append(HttpJson.getNullString(rs.getString("phong2"))).append(",")
-						.append("\"phong3\":").append(HttpJson.getNullString(rs.getString("phong3"))).append(",")
-						.append("\"phong4\":").append(HttpJson.getNullString(rs.getString("phong4"))).append("")
-						.append("}");
+				jsonArray.put(json);
 			}
 
 		} catch (Exception e) {
-			throw new RuntimeException("Lỗi khi truy vấn dữ liệu người dùng: " + e.getMessage(), e);
+			throw new RuntimeException("Lỗi khi truy vấn dữ liệu thí sinh: " + e.getMessage(), e);
 		}
 
-		jsonArray.append("]");
-		return jsonArray.toString();
+		return jsonArray;
 	}
 
-	public static String getThiSinhTotalPage(Connection conn, String search, String optionHe, String optionKhoaThi,
+	public static JSONObject getThiSinhTotalPage(Connection conn, String search, String optionHe, String optionKhoaThi,
 			String optionTc, String optionNn) {
 		StringBuilder sql = new StringBuilder();
 		sql.append("SELECT COUNT(*) FROM (");
@@ -224,7 +212,7 @@ public class UserManagerDAO {
 
 		sql.append(") as total_list");
 
-		StringBuilder jsonResult = new StringBuilder();
+		JSONObject jsonResult = new JSONObject();
 
 		try (PreparedStatement stmt = conn.prepareStatement(sql.toString())) {
 			if (!search.isEmpty()) {
@@ -235,19 +223,20 @@ public class UserManagerDAO {
 			}
 
 			ResultSet rs = stmt.executeQuery();
-			boolean first = true;
 
 			int listLength = 0;
 			if (rs.next()) {
-				listLength = rs.getInt(1); // lấy giá trị COUNT(*)
+				listLength = rs.getInt(1);
 			}
 
 			int totalPage = HttpJson.getTotalPage(listLength, ADMIN_LIST_USER_LIMIT);
-			jsonResult.append("{").append("\"totalPage\":").append(totalPage).append("}");
-			return jsonResult.toString();
+			jsonResult.put("totalPage", totalPage);
+
 		} catch (Exception e) {
-			throw new RuntimeException("Lỗi khi truy vấn dữ liệu người dùng: " + e.getMessage(), e);
+			throw new RuntimeException("Lỗi khi truy vấn tổng số trang thí sinh: " + e.getMessage(), e);
 		}
+
+		return jsonResult;
 	}
 
 	public static String getGiaoVienQuery() {
@@ -258,100 +247,93 @@ public class UserManagerDAO {
 				+ "from users u where u.role = 2";
 	}
 
-	public static String getGiaoVien(Connection conn, String search, String mon, String isFreeze, int page) {
-		int offset = (page - 1) * ADMIN_LIST_USER_LIMIT;
+	public static JSONArray getGiaoVien(Connection conn, String search, String mon, String isFreeze, int page) {
+	    int offset = (page - 1) * ADMIN_LIST_USER_LIMIT;
 
-		StringBuilder sql = new StringBuilder();
-		sql.append("SELECT * FROM ( ");
-		sql.append(getGiaoVienQuery());
+	    StringBuilder sql = new StringBuilder();
+	    sql.append("SELECT * FROM ( ");
+	    sql.append(getGiaoVienQuery());
+	    sql.append(") AS sub WHERE 1=1 ");
 
-		sql.append(") AS sub WHERE 1=1 ");
+	    if (!search.isEmpty())
+	        sql.append(" AND (name LIKE ? OR id LIKE ?) ");
 
-		if (!search.isEmpty())
-			sql.append(" AND (name LIKE ? OR id LIKE ?) ");
+	    if (!mon.isEmpty())
+	        sql.append(" AND mon_nn = '").append(mon).append("'");
 
-		if (!mon.isEmpty())
-			sql.append(" AND mon_nn = '").append(mon).append("'");
-		
-		if (isFreeze.equals("true") || isFreeze.equals("false"))
-			sql.append(" AND is_freezing = ").append(isFreeze);
+	    if (isFreeze.equals("true") || isFreeze.equals("false"))
+	        sql.append(" AND is_freezing = ").append(isFreeze);
 
-		sql.append(" LIMIT ").append(ADMIN_LIST_USER_LIMIT).append(" OFFSET ").append(offset);
+	    sql.append(" LIMIT ").append(ADMIN_LIST_USER_LIMIT).append(" OFFSET ").append(offset);
 
-		StringBuilder jsonArray = new StringBuilder();
-		jsonArray.append("[");
+	    JSONArray jsonArray = new JSONArray();
 
-		try (PreparedStatement stmt = conn.prepareStatement(sql.toString())) {
-			if (!search.isEmpty()) {
-				String like = "%" + search + "%";
-				stmt.setString(1, like);
-				stmt.setString(2, like);
-			}
+	    try (PreparedStatement stmt = conn.prepareStatement(sql.toString())) {
+	        if (!search.isEmpty()) {
+	            String like = "%" + search + "%";
+	            stmt.setString(1, like);
+	            stmt.setString(2, like);
+	        }
 
-			ResultSet rs = stmt.executeQuery();
-			boolean first = true;
+	        ResultSet rs = stmt.executeQuery();
 
-			while (rs.next()) {
-				if (!first) {
-					jsonArray.append(",");
-				} else {
-					first = false;
-				}
+	        while (rs.next()) {
+	            JSONObject obj = new JSONObject();
+	            obj.put("id", rs.getString("id"));
+	            obj.put("name", HttpJson.convertStringToJson(rs.getString("name")));
+	            obj.put("mon_ql", HttpJson.convertStringToJson(rs.getString("ten_mon")));
+	            obj.put("isFreeze", rs.getBoolean("is_freezing"));
+	            jsonArray.put(obj);
+	        }
 
-				jsonArray.append("{").append("\"id\":").append(rs.getString("id")).append(",").append("\"name\":\"")
-						.append(HttpJson.convertStringToJson(rs.getString("name"))).append("\",").append("\"mon_ql\":")
-						.append(HttpJson.getNullString(HttpJson.convertStringToJson(rs.getString("ten_mon")))).append(",")
-						.append("\"isFreeze\":").append(rs.getBoolean("is_freezing")).append("}");
-			}
+	    } catch (Exception e) {
+	        throw new RuntimeException("Lỗi khi truy vấn dữ liệu giáo viên: " + e.getMessage(), e);
+	    }
 
-		} catch (Exception e) {
-			throw new RuntimeException("Lỗi khi truy vấn dữ liệu người dùng: " + e.getMessage(), e);
-		}
-
-		jsonArray.append("]");
-		return jsonArray.toString();
+	    return jsonArray;
 	}
 
-	public static String getGiaoVienTotalPage(Connection conn, String search, String mon, String isFreeze) {
-		StringBuilder sql = new StringBuilder();
-		sql.append("SELECT COUNT(*) FROM (");
-		sql.append("SELECT * FROM ( ");
-		sql.append(getGiaoVienQuery());
-		sql.append(") AS sub WHERE 1=1 ");
+	public static JSONObject getGiaoVienTotalPage(Connection conn, String search, String mon, String isFreeze) {
+	    StringBuilder sql = new StringBuilder();
+	    sql.append("SELECT COUNT(*) FROM (");
+	    sql.append("SELECT * FROM ( ");
+	    sql.append(getGiaoVienQuery());
+	    sql.append(") AS sub WHERE 1=1 ");
 
-		if (!search.isEmpty())
-			sql.append(" AND (name LIKE ? OR stu_id LIKE ? OR exam_id LIKE ?) ");
+	    if (!search.isEmpty())
+	        sql.append(" AND (name LIKE ? OR id LIKE ?) ");
 
-		if (!mon.isEmpty())
-			sql.append(" AND mon_nn = '").append(mon).append("'");
-		
-		if (isFreeze.equals("true") || isFreeze.equals("false"))
-			sql.append(" AND is_freezing = ").append(isFreeze);
+	    if (!mon.isEmpty())
+	        sql.append(" AND mon_nn = '").append(mon).append("'");
 
-		sql.append(") as total_list");
+	    if (isFreeze.equals("true") || isFreeze.equals("false"))
+	        sql.append(" AND is_freezing = ").append(isFreeze);
 
-		StringBuilder jsonResult = new StringBuilder();
+	    sql.append(") as total_list");
 
-		try (PreparedStatement stmt = conn.prepareStatement(sql.toString())) {
-			if (!search.isEmpty()) {
-				String like = "%" + search + "%";
-				stmt.setString(1, like);
-				stmt.setString(2, like);
-			}
+	    JSONObject jsonResult = new JSONObject();
 
-			ResultSet rs = stmt.executeQuery();
-			boolean first = true;
+	    try (PreparedStatement stmt = conn.prepareStatement(sql.toString())) {
+	        if (!search.isEmpty()) {
+	            String like = "%" + search + "%";
+	            stmt.setString(1, like);
+	            stmt.setString(2, like);
+	        }
 
-			int listLength = 0;
-			if (rs.next()) {
-				listLength = rs.getInt(1); // lấy giá trị COUNT(*)
-			}
+	        ResultSet rs = stmt.executeQuery();
 
-			int totalPage = HttpJson.getTotalPage(listLength, ADMIN_LIST_USER_LIMIT);
-			jsonResult.append("{").append("\"totalPage\":").append(totalPage).append("}");
-			return jsonResult.toString();
-		} catch (Exception e) {
-			throw new RuntimeException("Lỗi khi truy vấn dữ liệu người dùng: " + e.getMessage(), e);
-		}
+	        int listLength = 0;
+	        if (rs.next()) {
+	            listLength = rs.getInt(1);
+	        }
+
+	        int totalPage = HttpJson.getTotalPage(listLength, ADMIN_LIST_USER_LIMIT);
+	        jsonResult.put("totalPage", totalPage);
+
+	    } catch (Exception e) {
+	        throw new RuntimeException("Lỗi khi truy vấn tổng số trang giáo viên: " + e.getMessage(), e);
+	    }
+
+	    return jsonResult;
 	}
 }

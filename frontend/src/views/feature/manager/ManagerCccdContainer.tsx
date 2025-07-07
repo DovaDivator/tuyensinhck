@@ -47,7 +47,7 @@ const ManagerCccdContainer = (): JSX.Element => {
 
     }
 
-    if(token === "" || user.isGuest()) return(<></>);
+    // if(token === "" || user.isGuest()) return(<></>);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -92,7 +92,7 @@ const ManagerCccdContainer = (): JSX.Element => {
     const handleReset = () => {
         if (defaultFormRef.current && defaultImgRef.current) {
             setFormData(defaultFormRef.current);
-            setImgData(defaultImgRef.current);
+            // setImgData(defaultImgRef.current);
         } else {
             console.warn("Dữ liệu mặc định chưa được khởi tạo");
         }
@@ -133,6 +133,7 @@ const ManagerCccdContainer = (): JSX.Element => {
                 setImgData={setImgData}
                 errors={errors}
                 setErrors={setErrors}
+                isAdmin={true}
             />
             <div className="button-form">
                     <Button

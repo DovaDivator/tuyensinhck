@@ -2,7 +2,6 @@ package controller;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.util.Base64;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,8 +12,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import util.DBConnectionMain;
+import com.mysql.cj.xdevapi.JsonArray;
+
 import dao.UserManagerDAO;
+import util.DBConnectionMain;
 
 /**
  * Servlet implementation class FetchUsersManager
@@ -88,7 +89,7 @@ public class FetchUsersManager extends HttpServlet {
 			dbConn = new DBConnectionMain();
 			conn = dbConn.getConnection();
 
-			String result = "";
+			JSONArray result = new JSONArray();
 
 			switch (type) {
 			case "thi-sinh": {
@@ -117,7 +118,7 @@ public class FetchUsersManager extends HttpServlet {
 
 			jsonResponse.put("success", true);
 			jsonResponse.put("message", "Lấy dữ liệu thành công!");
-			jsonResponse.put("data", new JSONArray(result));
+			jsonResponse.put("data", result);
 
 		} catch (Exception e) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);

@@ -14,6 +14,7 @@ interface CccdFormProps{
     setImgData: React.Dispatch<React.SetStateAction<FileDataProps>>;
     errors: ErrorLogProps;
     setErrors: React.Dispatch<React.SetStateAction<ErrorLogProps>>;
+    isAdmin?: boolean;
 }
 
     const GENDER_CHOICES = [
@@ -27,7 +28,8 @@ const CccdForm = ({
     imgData,
     setImgData,
     errors,
-    setErrors
+    setErrors,
+    isAdmin = false
 }: CccdFormProps): JSX.Element => {
     const formRef = useRef<HTMLFormElement>(null);
     const [sizeClass, setSizeClass] = useState<'big' | 'small'>('big');
@@ -60,12 +62,14 @@ const CccdForm = ({
                         id="front"
                         value={Array.isArray(imgData.front) ? imgData.front[0] : imgData.front}
                         setFileData={setImgData}
+                        disabled={isAdmin}
                     />
                     <InputImage
                         name="back"
                         id="back"
                         value={Array.isArray(imgData.back) ? imgData.back[0] : imgData.back}
                         setFileData={setImgData}
+                        disabled={isAdmin}
                     />
                 </div>
                 <div className="text-form">

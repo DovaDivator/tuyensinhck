@@ -40,11 +40,4 @@ public class HttpJson {
 		return pageCount;
 		
 	}
-	
-	public static String getNullString(String str) {
-		if (str == null) {
-			return "null";
-		}
-		return "\"" + str + "\"";
-	}
 }

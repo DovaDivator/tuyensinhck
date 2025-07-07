@@ -73,7 +73,7 @@ public class AdminManagerPaginationApi extends HttpServlet {
 			String type = request.getParameter("type");
 			String search = request.getParameter("search") != null ? request.getParameter("search") : "";
 
-			String result = "";
+			JSONObject result = new JSONObject();
 
 			switch (type) {
 			case "thi-sinh":
@@ -99,7 +99,7 @@ public class AdminManagerPaginationApi extends HttpServlet {
 			}
 			jsonResponse.put("success", true);
 			jsonResponse.put("message", "Lấy dữ liệu thành công!");
-			jsonResponse.put("data", new JSONObject(result));
+			jsonResponse.put("data", result);
 		} catch (Exception e) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			jsonResponse.put("success", false);
