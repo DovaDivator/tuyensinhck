@@ -14,6 +14,7 @@ import javax.servlet.http.Part;
 
 import org.json.JSONObject;
 
+import dao.CccdDAO;
 import dao.PasswordUpdateDAO;
 import exception.UnauthorizedException;
 import model.UserBasic;
@@ -27,29 +28,34 @@ import util.DBConnectionMain;
 @WebServlet("/api/user-cccd")
 public class CccdEdit extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public CccdEdit() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public CccdEdit() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
-		
+
 	}
+
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		
+
 		JSONObject jsonResponse = new JSONObject();
 		DBConnectionMain dbConn = null;
 		Connection conn = null;
@@ -77,7 +83,7 @@ public class CccdEdit extends HttpServlet {
 			}
 			String body = HttpJson.readRequestBody(request);
 			JSONObject json = new JSONObject(body);
-			
+
 			String numCccd = json.getString("numCccd");
 			String dateBirth = json.getString("dateBirth");
 			String gender = json.getString("gender");
@@ -87,41 +93,32 @@ public class CccdEdit extends HttpServlet {
 
 			dbConn = new DBConnectionMain();
 			conn = dbConn.getConnection();
-			
-//			boolean success = PasswordUpdateDAO.updatePassword(conn, user.getId(), formData, imgData);
-//			if (!success) {
-//				throw new UnauthorizedException("Mật khẩu không khớp!");
-//			}
-			
-			
-			 JSONObject data = new JSONObject();
-			    data.put("numCccd", numCccd);
-			    data.put("dateBirth", dateBirth);
-			    data.put("gender", gender);
-			    data.put("address", address);
-			    data.put("frontImg", frontImg);
-			    data.put("backImg", backImg);
-			
+
+			boolean success = CccdDAO.updateCccd(conn, user.getId(), numCccd, dateBirth, gender, address, frontImg,
+					backImg);
+			if (!success) {
+				throw new UnauthorizedException("Mật khẩu không khớp!");
+			}
+
 			jsonResponse.put("success", true);
 			jsonResponse.put("message", "Cập nhật thành công!");
-			jsonResponse.put("data", data);
-	} catch (Exception e) {
-		if (e instanceof UnauthorizedException) {
-			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-		} else {
-			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+		} catch (Exception e) {
+			if (e instanceof UnauthorizedException) {
+				response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+			} else {
+				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			}
+			jsonResponse.put("success", false);
+			jsonResponse.put("message", e.getMessage());
+		} finally {
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (Exception e) {
+					System.err.println("Không thể đóng kết nối: " + e.getMessage());
+				}
+			}
 		}
-		jsonResponse.put("success", false);
-		jsonResponse.put("message", e.getMessage());
-	} finally {
-		if (conn != null) {
-	        try {
-	            conn.close();
-	        } catch (Exception e) {
-	            System.err.println("Không thể đóng kết nối: " + e.getMessage());
-	        }
-	    }
-	}
 		response.getWriter().write(jsonResponse.toString());
 	}
 
