@@ -91,7 +91,7 @@ const CccdEdit = (): JSX.Element => {
             />
             <div className="button-form">
                     <Button
-                        type="submit"
+                        type="button"
                         className="btn-confirm"
                         onClick={handleSubmit}
                         text="Cập nhật!"
