@@ -1,4 +1,4 @@
-import React, { useState, useEffect, JSX } from "react";
+import React, { useState, useEffect, JSX, useRef } from "react";
 import { useAuth } from "../../../context/AuthContext";
 
 import "./CccdEdit.scss";
@@ -7,12 +7,16 @@ import { formatTimestamp } from "../../../function/convert/formatTimestamp";
 import Button from "../../ui/input/Button";
 import * as API from "../../../api/StudentCccd";
 import CccdForm from "./CccdForm";
+import { convertFileDataToBase64 } from "../../../function/convert/convertFileDataToBase64";
 
 const CccdEdit = (): JSX.Element => {
     const {token, user} = useAuth();
     const friendlyNote = ["Thông tin của bạn đang chờ phê duyệt!","Bạn đã cập nhật CCCD!"];
 
     const [isUpdated, setIsUpdated] = useState<number>(-1);
+
+    const defaultFormRef = useRef<FormDataProps | null>(null);
+    const defaultImgRef = useRef<FileDataProps | null>(null);
 
     const [formData, setFormData] = useState<FormDataProps>({
         numCccd: "",
@@ -44,6 +48,27 @@ const CccdEdit = (): JSX.Element => {
             try {
                 const result = await API.GetCccd(token);
                 console.log(result);
+
+                const form = {
+                    realName: result.realName || "",
+                    numCccd: result.numCccd || "",
+                    dateBirth: result.dateBirth || formatTimestamp(new Date(new Date().getFullYear() - 18, 0, 1)),
+                    gender: result.gender || "",
+                    address: result.address || ""
+                };
+                
+                const image = {
+                    front: result.front,
+                    back: result.back
+                };
+
+                // Set dữ liệu hiển thị
+                setFormData(form);
+                setImgData(image);
+
+                // Lưu bản sao gốc
+                defaultFormRef.current = form;
+                defaultImgRef.current = image;
             } catch (error: any) {
                 console.error(error);
             }
@@ -53,24 +78,21 @@ const CccdEdit = (): JSX.Element => {
     }, [token]);
 
     const handleReset = () => {
-        setFormData({
-            numCccd: "",
-            dateBirth: formatTimestamp(new Date(new Date().getFullYear() - 18, 0, 1)), // Ngày 01/01 của 18 năm về trước
-            gender: "",
-            address: ""
-        });
-        setImgData({
-            front: undefined,
-            back: undefined
-        });
-    }
+        if (defaultFormRef.current && defaultImgRef.current) {
+            setFormData(defaultFormRef.current);
+            setImgData(defaultImgRef.current);
+        } else {
+            console.warn("Dữ liệu mặc định chưa được khởi tạo");
+        }
+    };
 
     const handleSubmit = async () =>{
         //Hàm kiểm tra ở đây
         console.log("Kiểm tra thành công");
+        const base64Data = await convertFileDataToBase64(imgData);
         //Thực hiện API cập nhật
         try{
-            const result = await API.UpdateCccd(token, {...formData, ...imgData});
+            const result = await API.UpdateCccd(token, {...formData, ...base64Data});
             console.log(result);
         }catch(error: any){
             console.error(error)

@@ -8,6 +8,7 @@ import { formatTimestamp } from "../../../function/convert/formatTimestamp";
 import Button from "../../ui/input/Button";
 import * as API from "../../../api/StudentCccd";
 import CccdForm from "../info/CccdForm";
+import { convertFileDataToBase64 } from "../../../function/convert/convertFileDataToBase64";
 
 const ManagerCccdContainer = (): JSX.Element => {
     const {token, user} = useAuth();
@@ -101,8 +102,9 @@ const ManagerCccdContainer = (): JSX.Element => {
         //Hàm kiểm tra ở đây
         console.log("Kiểm tra thành công");
         //Thực hiện API cập nhật
+        const base64Data = await convertFileDataToBase64(imgData);
         try{
-            const result = await API.UpdateCccd(token, {...formData, ...imgData});
+            const result = await API.UpdateCccd(token, {...formData, ...base64Data});
             console.log(result);
         }catch(error: any){
             console.error(error)

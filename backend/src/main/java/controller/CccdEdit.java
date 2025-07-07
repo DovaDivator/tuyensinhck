@@ -78,12 +78,12 @@ public class CccdEdit extends HttpServlet {
 			String body = HttpJson.readRequestBody(request);
 			JSONObject json = new JSONObject(body);
 			
-            Part front = request.getPart("front");
-            Part back = request.getPart("back");
 			String numCccd = json.getString("numCccd");
 			String dateBirth = json.getString("dateBirth");
 			String gender = json.getString("gender");
 			String address = json.getString("address");
+			String frontImg = json.getString("front");
+			String backImg = json.getString("back");
 
 			dbConn = new DBConnectionMain();
 			conn = dbConn.getConnection();
@@ -99,9 +99,8 @@ public class CccdEdit extends HttpServlet {
 			    data.put("dateBirth", dateBirth);
 			    data.put("gender", gender);
 			    data.put("address", address);
-			    
-			    data.put("front", front.getSubmittedFileName());
-			    data.put("back", back.getSubmittedFileName());
+			    data.put("frontImg", frontImg);
+			    data.put("backImg", backImg);
 			
 			jsonResponse.put("success", true);
 			jsonResponse.put("message", "Cập nhật thành công!");
