@@ -92,6 +92,7 @@ const InfoPage = (): JSX.Element => {
     }
 
     const RightContent = (): JSX.Element =>{
+      if(user.isGuest()) return(<></>);
       const page = type || '';
         if (isAccessible(page, user) && COMPONENT_MAP[page]) {
           return COMPONENT_MAP[page];

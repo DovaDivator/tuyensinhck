@@ -1,11 +1,11 @@
-import React, {JSX} from 'react';
+import React, {JSX, useEffect, useRef, useState} from 'react';
 import InputImage from '../../ui/input/InputImage';
 import InputField from '../../ui/input/InputField';
 import InputChoice from '../../ui/input/InputChoice';
 import DatetimePicker from '../../ui/input/DatetimePicker';
 import { ErrorLogProps, FileDataProps, FormDataProps } from '../../../types/FormInterfaces';
 
-// import "./CccdForm.scss";
+import "./CccdForm.scss";
 
 interface CccdFormProps{
     formData: FormDataProps;
@@ -29,9 +29,32 @@ const CccdForm = ({
     errors,
     setErrors
 }: CccdFormProps): JSX.Element => {
+    const formRef = useRef<HTMLFormElement>(null);
+    const [sizeClass, setSizeClass] = useState<'big' | 'small'>('big');
+
+    useEffect(() => {
+        const formEl = formRef.current;
+        if (!formEl) return;
+
+        const observer = new ResizeObserver(entries => {
+            for (let entry of entries) {
+                const width = entry.contentRect.width;
+                if (width < 650) {
+                    setSizeClass('small');
+                } else {
+                    setSizeClass('big');
+                }
+            }
+        });
+
+        observer.observe(formEl);
+
+        return () => observer.disconnect();
+    }, []);
+
     return(
-    <form>
-                <div className="image-form">
+    <form ref={formRef} className='cccd-form'>
+                <div className={`image-form ${sizeClass}`}>
                     <InputImage
                         name="front"
                         id="front"

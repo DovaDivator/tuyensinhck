@@ -3,8 +3,9 @@
 @use "sass:color";
 
 .cccd-form-container{
+    @include mx.vertical-display;
 
-    .text-form{
-        
+    .button-form{
+        @include mx.horizontal-display;
     }
 }
