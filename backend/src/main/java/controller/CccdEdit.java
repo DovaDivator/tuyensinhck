@@ -97,7 +97,7 @@ public class CccdEdit extends HttpServlet {
 			boolean success = CccdDAO.updateCccd(conn, user.getId(), numCccd, dateBirth, gender, address, frontImg,
 					backImg);
 			if (!success) {
-				throw new UnauthorizedException("Mật khẩu không khớp!");
+				throw new UnauthorizedException("Cập nhật không thành công!");
 			}
 
 			jsonResponse.put("success", true);
