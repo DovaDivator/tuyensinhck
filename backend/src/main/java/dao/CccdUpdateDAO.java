@@ -7,7 +7,7 @@ import java.sql.SQLException;
 
 import service.ConvertCus;
 
-public class CccdDAO {
+public class CccdUpdateDAO {
 	public static boolean updateCccd(Connection conn, String id, String numCccd, String dateBirth, String gender,
 			String address, String frontImg, String backImg) throws Exception {
 		String checkConfirmSql = "SELECT is_confirm FROM stu_cccd WHERE stu_id = ?";
