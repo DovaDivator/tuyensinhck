@@ -16,7 +16,7 @@ import { FormDataProps, ErrorLogProps, DataValidsProps } from '../../types/FormI
  * @returns {boolean} Trả về `true` nếu tất cả các trường hợp lệ, ngược lại trả về `false`.
  */
 export const checkValidSubmitUtils = (
-  formData: FormDataProps,
+  formData: { [key: string]: any },
   valids: DataValidsProps,
   setErrors: React.Dispatch<React.SetStateAction<ErrorLogProps>> | ((errors: ErrorLogProps) => void)
 ): boolean => {

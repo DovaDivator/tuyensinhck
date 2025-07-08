@@ -18,6 +18,10 @@
     .text-form{
         width: 100%;
         max-width: 400px;
-        @include mx.vertical-grid;
+        @include mx.vertical-display;
+
+        & > *{
+            width: 100%;
+        }
     }
 }

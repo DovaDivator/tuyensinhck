@@ -1,6 +1,6 @@
 import React, {JSX, useState, useRef, ChangeEvent } from 'react';
 import './InputImage.scss'; 
-import { FileDataProps } from '../../../types/FormInterfaces';
+import { FileDataProps, ErrorLogProps } from '../../../types/FormInterfaces';
 
 interface InputImageProps{
    name: string;
@@ -8,7 +8,10 @@ interface InputImageProps{
    value: File | undefined;
    setFileData: React.Dispatch<React.SetStateAction<FileDataProps>>;
    maxSize?: number;
-   disabled?: boolean
+   disabled?: boolean;
+     errors?: ErrorLogProps;
+     setErrors?: React.Dispatch<React.SetStateAction<ErrorLogProps>>;
+     label?: string;
 }
 
 const InputImage = ({
@@ -17,7 +20,10 @@ const InputImage = ({
    value,
    setFileData,
    maxSize = 0,
-   disabled = false
+   disabled = false,
+   errors = {},
+   setErrors = undefined,
+   label = ""
 }: InputImageProps): JSX.Element => {
   const fileInputRef = useRef<HTMLInputElement>(null); // Ref đến input file
 
@@ -54,13 +60,14 @@ const InputImage = ({
         disabled={disabled}
       />
       {/* Container hiển thị ảnh hoặc nhắc chọn file */}
+      {label && <span className="label">{label}</span>}
       <div
         className="image-preview"
         onClick={triggerFileInput}
         style={{
           backgroundImage: value ? `url(${URL.createObjectURL(value)})` : 'none',
           backgroundSize: 'cover',
-          backgroundPosition: 'center',
+          backgroundPosition: 'center'
         }}
       >
       {!value && (
@@ -69,8 +76,9 @@ const InputImage = ({
         </span>
       )}
       </div>
+      <span className={`error-message ${errors[name] ? "" : "not-active"}`}>.{errors[name]}</span>
     </div>
-  );
+  ); 
 }
 
 export default InputImage;

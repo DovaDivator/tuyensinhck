@@ -1,4 +1,4 @@
-import { FormDataProps, ValidateRule} from '../../types/FormInterfaces';
+import { FormDataProps, ValidateRule } from '../../types/FormInterfaces';
 
 /**
  * Hàm kiểm tra giá trị đầu vào dựa trên loại validation đã chỉ định.

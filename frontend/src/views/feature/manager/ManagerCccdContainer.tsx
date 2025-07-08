@@ -1,6 +1,7 @@
 import React, { useState, useEffect, JSX, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useAuth } from "../../../context/AuthContext";
+import { useAppContext } from "../../../context/AppContext";
 
 import "../info/CccdEdit.scss";
 import { DataValidsProps, ErrorLogProps, FileDataProps, FormDataProps } from "../../../types/FormInterfaces";
@@ -9,9 +10,13 @@ import Button from "../../ui/input/Button";
 import * as API from "../../../api/StudentCccd";
 import CccdForm from "../info/CccdForm";
 import { convertFileDataToBase64 } from "../../../function/convert/convertFileDataToBase64";
+import { ImageValids } from "../../../classes/ImageValids";
+import { checkValidSubmitUtils } from "../../../function/triggers/checkValidSubmitUtils";
+import { DateValids } from "../../../classes/DateValids";
 
 const ManagerCccdContainer = (): JSX.Element => {
     const {token, user} = useAuth();
+    const {isLoading, setIsLoading} = useAppContext();
     const STATUS_COMFIRM = ["Đang chờ phê duyệt!","Đã phê duyệt!"];
     const [searchParams] = useSearchParams();
     const stu_id = searchParams.get("id") || "";
@@ -40,11 +45,15 @@ const ManagerCccdContainer = (): JSX.Element => {
         numCccd: "",
         dateBirth: "",
         gender: "",
-        address: ""
+        address: "",
+        front: "",
+        back: "",
     });
 
     const valids: DataValidsProps = {
-
+        front: new ImageValids({required: true}),
+        back: new ImageValids({required: true}),
+        dateBirth: new DateValids({required: true, cons: {max: new Date(new Date().getFullYear() - 16, 11, 31)}}),
     }
 
     // if(token === "" || user.isGuest()) return(<></>);
@@ -92,23 +101,38 @@ const ManagerCccdContainer = (): JSX.Element => {
     const handleReset = () => {
         if (defaultFormRef.current && defaultImgRef.current) {
             setFormData(defaultFormRef.current);
-            // setImgData(defaultImgRef.current);
+            setImgData(defaultImgRef.current);
         } else {
+            setFormData({
+                realName: "",
+                numCccd: "",
+                dateBirth: formatTimestamp(new Date(new Date().getFullYear() - 18, 0, 1)), // Ngày 01/01 của 18 năm về trước
+                gender: "",
+                address: ""
+            });
+            setImgData({
+                front: undefined,
+                back: undefined
+            });
             console.warn("Dữ liệu mặc định chưa được khởi tạo");
         }
     };
 
     const handleSubmit = async () =>{
         //Hàm kiểm tra ở đây
-        console.log("Kiểm tra thành công");
+        setIsLoading(true);
+        const validate = checkValidSubmitUtils({...formData, ...imgData}, valids, setErrors);
+
+        console.log(validate);
         //Thực hiện API cập nhật
-        const base64Data = await convertFileDataToBase64(imgData);
-        try{
-            const result = await API.UpdateCccd(token, {...formData, ...base64Data});
-            console.log(result);
-        }catch(error: any){
-            console.error(error)
-        }
+        // const base64Data = await convertFileDataToBase64(imgData);
+        // try{
+        //     const result = await API.UpdateCccd(token, {...formData, ...base64Data});
+        //     console.log(result);
+        // }catch(error: any){
+        //     console.error(error)
+        // }
+        setIsLoading(false);
     }
 
     // if(isUpdated === -1){
@@ -133,7 +157,8 @@ const ManagerCccdContainer = (): JSX.Element => {
                 setImgData={setImgData}
                 errors={errors}
                 setErrors={setErrors}
-                isAdmin={true}
+                isAdmin={false}
+                valids={valids}
             />
             <div className="button-form">
                     <Button
@@ -141,6 +166,7 @@ const ManagerCccdContainer = (): JSX.Element => {
                         className="btn-confirm"
                         onClick={handleSubmit}
                         text="Xác thực!"
+                        disabled={isLoading}
                     />
                     <Button
                         type="button"

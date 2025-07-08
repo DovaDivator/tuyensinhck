@@ -3,9 +3,10 @@ import InputImage from '../../ui/input/InputImage';
 import InputField from '../../ui/input/InputField';
 import InputChoice from '../../ui/input/InputChoice';
 import DatetimePicker from '../../ui/input/DatetimePicker';
-import { ErrorLogProps, FileDataProps, FormDataProps } from '../../../types/FormInterfaces';
+import { DataValidsProps, ErrorLogProps, FileDataProps, FormDataProps } from '../../../types/FormInterfaces';
 
 import "./CccdForm.scss";
+import { useAppContext } from '../../../context/AppContext';
 
 interface CccdFormProps{
     formData: FormDataProps;
@@ -15,6 +16,7 @@ interface CccdFormProps{
     errors: ErrorLogProps;
     setErrors: React.Dispatch<React.SetStateAction<ErrorLogProps>>;
     isAdmin?: boolean;
+    valids: DataValidsProps;
 }
 
     const GENDER_CHOICES = [
@@ -29,9 +31,11 @@ const CccdForm = ({
     setImgData,
     errors,
     setErrors,
-    isAdmin = false
+    isAdmin = false,
+    valids,
 }: CccdFormProps): JSX.Element => {
     const formRef = useRef<HTMLFormElement>(null);
+    const {isLoading} = useAppContext();
     const [sizeClass, setSizeClass] = useState<'big' | 'small'>('big');
 
     useEffect(() => {
@@ -63,6 +67,9 @@ const CccdForm = ({
                         value={Array.isArray(imgData.front) ? imgData.front[0] : imgData.front}
                         setFileData={setImgData}
                         disabled={isAdmin}
+                        errors={errors}
+                        setErrors={setErrors}
+                        label="Mặt trước cccd"
                     />
                     <InputImage
                         name="back"
@@ -70,6 +77,9 @@ const CccdForm = ({
                         value={Array.isArray(imgData.back) ? imgData.back[0] : imgData.back}
                         setFileData={setImgData}
                         disabled={isAdmin}
+                        errors={errors}
+                        setErrors={setErrors}
+                        label="Mặt sau cccd"
                     />
                 </div>
                 <div className="text-form">
@@ -83,14 +93,19 @@ const CccdForm = ({
                         setFormData={setFormData}
                         maxLength={12}
                         errors={errors}
-                        setErrors={setErrors}    
+                        setErrors={setErrors}   
+                        isSubmiting={isLoading} 
                     />
                     <DatetimePicker
                         type="date"
                         name="dateBirth"
                         id="dateBirth"
                         value={String(formData.dateBirth)}
+                        formData={formData}
                         setFormData={setFormData}
+                        errors={errors}
+                        setErrors={setErrors}
+                        valids={valids.dateBirth}   
                     />
                     <InputChoice
                         type="radio"
@@ -101,6 +116,7 @@ const CccdForm = ({
                         choices={GENDER_CHOICES}
                         setFormData={setFormData}
                         columns={2}
+                        isSubmitting={isLoading}
                     />
                     <InputField
                         type="text"
@@ -111,7 +127,8 @@ const CccdForm = ({
                         formData={formData}
                         setFormData={setFormData}
                         errors={errors}
-                        setErrors={setErrors}    
+                        setErrors={setErrors} 
+                        isSubmiting={isLoading}    
                     />
                 </div>
                 

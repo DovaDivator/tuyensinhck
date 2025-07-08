@@ -3,7 +3,8 @@ import React from 'react';
 import Flatpickr from 'react-flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 import { formatTimestamp } from '../../../function/convert/formatTimestamp';
-import { FormDataProps } from '../../../types/FormInterfaces';
+import { FormDataProps, ErrorLogProps, ValidateRule } from '../../../types/FormInterfaces';
+import { DateValids } from '../../../classes/DateValids';
 import './InputField.scss';
 
 type PickerType = 'date' | 'time' | 'datetime';
@@ -13,9 +14,13 @@ interface DateTimePickerProps {
   name: string;
   id: string;
   value: Date | string | undefined;
+  formData: FormDataProps;
   setFormData: React.Dispatch<React.SetStateAction<FormDataProps>>;
   placeholder?: string;
   className?: string;
+    errors?: ErrorLogProps;
+    setErrors?: React.Dispatch<React.SetStateAction<ErrorLogProps>>;
+    valids?: ValidateRule;
 }
 
 const DatetimePicker = ({
@@ -23,9 +28,13 @@ const DatetimePicker = ({
   name,
   id,
   value,
+  formData,
   setFormData,
   placeholder = 'Chọn thời gian',
   className = 'input',
+  errors = {},
+  setErrors = undefined,
+  valids = new DateValids({}),
 }: DateTimePickerProps) => {
   const options: any = {
     allowInput: true,
@@ -51,7 +60,6 @@ const DatetimePicker = ({
   const handleChange = (dates: Date[]) => {
   const selected = dates[0];
   if (!selected) return;
-  console.log(selected);
 
   let formatted = '';
   switch (type) {
@@ -67,11 +75,26 @@ const DatetimePicker = ({
       break;
   }
 
-  setFormData(prev => ({
-        ...prev,
-        [name]: formatted
-      }));
+   setFormData(prev => {
+    const updated = { ...prev, [name]: formatted };
+
+    // Gọi hàm validate sau khi cập nhật giá trị
+    if (valids && typeof valids.validate === 'function') {
+      // console.log({name, formatted, updated});
+      const errorObj = valids?.validate(name, formatted, updated);
+      console.log(valids);
+      // console.log("errorObj", errorObj);
+      if (setErrors) {
+        setErrors(prevErrors => ({ ...prevErrors, ...errorObj }));
+      }
+      console.log("checked");
+    }
+
+    return updated;
+  });
 };
+
+
 
 
   return (
@@ -89,6 +112,7 @@ const DatetimePicker = ({
           className={className}
         />
       </div>
+      {errors[name] && <span className="error-message">{errors[name]}</span>}
     </div>
   );
 };
