@@ -12,7 +12,9 @@ public class CccdDAO {
 			String address, String frontImg, String backImg) throws SQLException {
 		String checkConfirmSql = "SELECT is_confirm FROM stu_cccd WHERE id = ?";
 		String checkDuplicateSql = "SELECT id FROM stu_cccd WHERE num_cccd = ? AND id <> ?";
-		String updateSql = "UPDATE stu_cccd SET numCccd = ?, dateBirth = ?, gender = ?, address = ? WHERE id = ?";
+		String updateSql = "UPDATE stu_cccd SET numCccd = ?, dateBirth = ?, gender = ?, address = ?, frontImg = ?, backImg = ? WHERE id = ?";
+        String insertSql = "INSERT INTO stu_cccd (id, numCccd, dateBirth, gender, address, frontImg, backImg is_confirm) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, 0)";
 
 		try (PreparedStatement stmt = conn.prepareStatement(checkConfirmSql)) {
 			stmt.setString(1, id);
@@ -20,8 +22,23 @@ public class CccdDAO {
 
 			if (rs.next() && rs.getInt("is_confirm") == 1) {
 				throw new SQLException("CCCD đã được xác nhận, không thể sửa.");
-			}
-		}
+			} else {
+            	try (PreparedStatement insertStmt = conn.prepareStatement(insertSql)) {
+                    insertStmt.setString(1, numCccd);
+                    insertStmt.setString(2, id);
+                    insertStmt.setString(3, dateBirth);
+                    insertStmt.setString(4, gender);
+                    insertStmt.setString(5, address);
+        			insertStmt.setBytes(6, ConvertCus.decodeBase64(frontImg));
+        			insertStmt.setBytes(7, ConvertCus.decodeBase64(backImg));
+                    
+                    int inserted = insertStmt.executeUpdate();
+                    if (inserted == 0) {
+                        throw new SQLException("Thêm mới không thành công.");
+                    }
+                }
+            }
+        }
 
 		try (PreparedStatement stmt = conn.prepareStatement(checkDuplicateSql)) {
 			stmt.setString(1, numCccd);
@@ -49,4 +66,6 @@ public class CccdDAO {
 			return false;
 		}
 	}
+	
+	
 }
