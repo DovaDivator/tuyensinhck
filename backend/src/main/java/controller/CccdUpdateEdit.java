@@ -14,7 +14,7 @@ import javax.servlet.http.Part;
 
 import org.json.JSONObject;
 
-import dao.CccdDAO;
+import dao.CccdUpdateDAO;
 import dao.PasswordUpdateDAO;
 import exception.UnauthorizedException;
 import model.UserBasic;
@@ -26,13 +26,13 @@ import util.DBConnectionMain;
  */
 @MultipartConfig
 @WebServlet("/api/user-cccd")
-public class CccdEdit extends HttpServlet {
+public class CccdUpdateEdit extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public CccdEdit() {
+	public CccdUpdateEdit() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -86,7 +86,7 @@ public class CccdEdit extends HttpServlet {
 
 			String numCccd = json.getString("numCccd");
 			String dateBirth = json.getString("dateBirth");
-			String gender = json.getString("gender");
+			String gender = json.getString("gender").isEmpty() ? "0"  :  json.getString("gender");
 			String address = json.getString("address");
 			String frontImg = json.getString("front");
 			String backImg = json.getString("back");
@@ -94,7 +94,7 @@ public class CccdEdit extends HttpServlet {
 			dbConn = new DBConnectionMain();
 			conn = dbConn.getConnection();
 
-			boolean success = CccdDAO.updateCccd(conn, user.getId(), numCccd, dateBirth, gender, address, frontImg,
+			boolean success = CccdUpdateDAO.updateCccd(conn, user.getId(), numCccd, dateBirth, gender, address, frontImg,
 					backImg);
 			if (!success) {
 				throw new UnauthorizedException("Cập nhật không thành công!");
