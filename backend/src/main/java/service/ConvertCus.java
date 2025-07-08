@@ -1,6 +1,9 @@
 package service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Base64;
+import java.util.Date;
 
 public class ConvertCus {
 	public static String canNullStringSQL(String str) {
@@ -19,4 +22,16 @@ public class ConvertCus {
 
 	    return Base64.getDecoder().decode(base64String);
 	}
+	
+	public static java.sql.Date convertStringToSqlDate(String dateStr, String format) throws ParseException {
+        if (dateStr == null || dateStr.trim().isEmpty()) {
+            return null;
+        }
+
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
+        sdf.setLenient(false); // tránh parse ngày không hợp lệ như 31/02/2024
+
+        Date utilDate = sdf.parse(dateStr);
+        return new java.sql.Date(utilDate.getTime());
+    }
 }

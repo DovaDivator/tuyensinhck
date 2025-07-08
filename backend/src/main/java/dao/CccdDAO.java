@@ -9,7 +9,7 @@ import service.ConvertCus;
 
 public class CccdDAO {
 	public static boolean updateCccd(Connection conn, String id, String numCccd, String dateBirth, String gender,
-			String address, String frontImg, String backImg) throws SQLException {
+			String address, String frontImg, String backImg) throws Exception {
 		String checkConfirmSql = "SELECT is_confirm FROM stu_cccd WHERE stu_id = ?";
 		String checkDuplicateSql = "SELECT stu_id FROM stu_cccd WHERE num_cccd = ? AND stu_id <> ?";
 		String updateSql = "UPDATE stu_cccd SET num_cccd = ?, date_of_birth = ?, gender = ?, address = ?, front_cccd = ?, back_cccd = ? WHERE stu_id = ?";
@@ -37,8 +37,8 @@ public class CccdDAO {
                 } 
         		try (PreparedStatement updateStmt = conn.prepareStatement(updateSql)) {
         			updateStmt.setString(1, numCccd);
-        			updateStmt.setString(2, dateBirth);
-        			updateStmt.setString(3, gender);
+        			updateStmt.setDate(2, ConvertCus.convertStringToSqlDate(dateBirth, "dd/MM/yyyy"));
+        			updateStmt.setInt(3, Integer.parseInt(gender));
         			updateStmt.setString(4, address);
         			updateStmt.setBytes(5, ConvertCus.decodeBase64(frontImg));
         			updateStmt.setBytes(6, ConvertCus.decodeBase64(backImg));
@@ -56,8 +56,8 @@ public class CccdDAO {
             	try (PreparedStatement insertStmt = conn.prepareStatement(insertSql)) {
                     insertStmt.setString(1, id);
                     insertStmt.setString(2, numCccd);
-                    insertStmt.setString(3, dateBirth);
-                    insertStmt.setString(4, gender);
+                    insertStmt.setDate(3, ConvertCus.convertStringToSqlDate(dateBirth, "dd/MM/yyyy"));
+                    insertStmt.setInt(4, Integer.parseInt(gender));
                     insertStmt.setString(5, address);
         			insertStmt.setBytes(6, ConvertCus.decodeBase64(frontImg));
         			insertStmt.setBytes(7, ConvertCus.decodeBase64(backImg));

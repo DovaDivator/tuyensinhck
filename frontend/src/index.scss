@@ -146,11 +146,11 @@ button{
 }
 
 .toast_show{
-  @include mixins.animate-effect(fadeInRight);
+  @include mixins.animate-effect(fadeInLeft);
 }
 
 .toast_hide{
-  @include mixins.animate-effect(fadeOutRight);
+  @include mixins.animate-effect(fadeOutLeft);
 }
 
 .basic-gap{
