@@ -2,8 +2,9 @@ package service;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.Base64;
+import java.util.Date;
 import java.util.TimeZone;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,7 +29,7 @@ public class HttpJson {
         return sb.toString();
     }
 	
-	public static String convertTime(Timestamp time, String format) {
+	public static String convertTime(Date time, String format) {
 		SimpleDateFormat sdf = new SimpleDateFormat(format);
 		sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
 		return sdf.format(time);
@@ -40,4 +41,11 @@ public class HttpJson {
 		return pageCount;
 		
 	}
+	
+	  public static String convertToBase64(byte[] bytes) {
+	        if (bytes == null) {
+	            return "";
+	        }
+	        return Base64.getEncoder().encodeToString(bytes);
+	    }
 }

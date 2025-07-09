@@ -25,7 +25,6 @@ import util.DBConnectionMain;
 /**
  * Servlet implementation class CccdEdit
  */
-@MultipartConfig
 @WebServlet("/api/user-cccd")
 public class CccdUpdateEdit extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -83,7 +82,14 @@ public class CccdUpdateEdit extends HttpServlet {
 				throw new UnauthorizedException("User không tồn tại trong session");
 			}
 			String body = HttpJson.readRequestBody(request);
-			JSONObject json = new JSONObject(body);
+			JSONObject json = new JSONObject();
+			try {
+		        json = new JSONObject(body);
+		    } catch (Exception ex) {
+		        // Không thêm json nếu parse lỗi
+		        System.err.println("Lỗi parse JSON: " + ex.getMessage());
+		    }
+
 
 			dbConn = new DBConnectionMain();
 			conn = dbConn.getConnection();

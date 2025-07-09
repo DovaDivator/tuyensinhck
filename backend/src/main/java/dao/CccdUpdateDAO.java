@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
+import java.sql.Date;
 
 import org.json.JSONObject;
 
@@ -78,7 +78,7 @@ public class CccdUpdateDAO {
         }
 	
      public static JSONObject getCccdById (Connection conn, String id) throws Exception {
-         String getCccdsql = "SELECT num_cccd, date_of_birth, gender, address, front_img, back_img FROM stu_cccd WHERE stu_id = ? LIMIT 1";
+         String getCccdsql = "SELECT num_cccd, date_of_birth, gender, address, front_cccd, back_cccd FROM stu_cccd WHERE stu_id = ? LIMIT 1";
  		 JSONObject cccdJson = new JSONObject();
          
  		try (PreparedStatement stmt = conn.prepareStatement(getCccdsql)) {
@@ -86,18 +86,25 @@ public class CccdUpdateDAO {
 			ResultSet rs = stmt.executeQuery();
 
 			if (rs.next()) {
-				cccdJson.put("numCccd", rs.getString("numCccd"));
+				cccdJson.put("numCccd", rs.getString("num_cccd"));
 				
-				Timestamp timestamp = rs.getTimestamp("dateBirth");
-				String timeConverted = HttpJson.convertTime(timestamp, "yyyy-MM-dd'T'HH:mm:ss");
+				Date date = rs.getDate("date_of_birth");
+				String timeConverted = HttpJson.convertTime(date, "yyyy-MM-dd");
 				cccdJson.put("dateBirth", timeConverted);
 				
 				cccdJson.put("gender", rs.getString("gender"));
 				cccdJson.put("address", rs.getString("address"));
 
-				cccdJson.put("frontImg", JSONObject.NULL);
-				cccdJson.put("backImg", JSONObject.NULL);
+				byte[] frontImgBytes = rs.getBytes("front_cccd");
+				String base64Front = HttpJson.convertToBase64(frontImgBytes);
+				cccdJson.put("front", base64Front.isEmpty() ? JSONObject.NULL : base64Front);
+				
+				byte[] backImgBytes = rs.getBytes("back_cccd");
+				String base64Back = HttpJson.convertToBase64(backImgBytes);
+				cccdJson.put("back", base64Back.isEmpty() ? JSONObject.NULL : base64Back);
 
+     } else {
+    	 throw new Exception ("Dữ liệu trống!");
      }
 	}
 	return cccdJson;
