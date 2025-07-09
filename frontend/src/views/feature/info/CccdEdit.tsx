@@ -63,8 +63,8 @@ const CccdEdit = (): JSX.Element => {
                 };
                 
                 const image = {
-                    front: base64ToFile("data:image/png;base64," + result.data.front, "front.png", "image/png"),
-                    back:  base64ToFile("data:image/png;base64," + result.data.back, "front.png", "image/png")
+                    front: result.data.front === undefined ? result.data.front : base64ToFile("data:image/png;base64," + result.data.front, "front.png", "image/png"),
+                    back:  result.data.back === undefined ? result.data.back : base64ToFile("data:image/png;base64," + result.data.back, "front.png", "image/png")
                 };
 
                 // Set dữ liệu hiển thị
