@@ -16,6 +16,7 @@ import org.json.JSONObject;
 
 import dao.CccdUpdateDAO;
 import dao.PasswordUpdateDAO;
+import dao.UserManagerDAO;
 import exception.UnauthorizedException;
 import model.UserBasic;
 import service.HttpJson;
@@ -84,20 +85,32 @@ public class CccdUpdateEdit extends HttpServlet {
 			String body = HttpJson.readRequestBody(request);
 			JSONObject json = new JSONObject(body);
 
-			String numCccd = json.getString("numCccd");
-			String dateBirth = json.getString("dateBirth");
-			String gender = json.getString("gender").isEmpty() ? "0"  :  json.getString("gender");
-			String address = json.getString("address");
-			String frontImg = json.getString("front");
-			String backImg = json.getString("back");
-
 			dbConn = new DBConnectionMain();
 			conn = dbConn.getConnection();
 
-			boolean success = CccdUpdateDAO.updateCccd(conn, user.getId(), numCccd, dateBirth, gender, address, frontImg,
-					backImg);
-			if (!success) {
-				throw new UnauthorizedException("Cập nhật không thành công!");
+			String action = request.getParameter("action");
+			switch (action) {
+			case "select": {
+				JSONObject cccdData = CccdUpdateDAO.getCccdById(conn, user.getId());
+				jsonResponse.put("data", cccdData);
+				break;
+			}
+			case "update": {
+				String numCccd = json.getString("numCccd");
+				String dateBirth = json.getString("dateBirth");
+				String gender = json.getString("gender").isEmpty() ? "0"  :  json.getString("gender");
+				String address = json.getString("address");
+				String frontImg = json.getString("front");
+				String backImg = json.getString("back");
+				boolean success = CccdUpdateDAO.updateCccd(conn, user.getId(), numCccd, dateBirth, gender, address, frontImg,
+						backImg);
+				if (!success) {
+					throw new UnauthorizedException("Cập nhật không thành công!");
+				}
+				break;
+			}
+			default:
+				throw new Exception("thuộc tính type không hợp lệ " + action);
 			}
 
 			jsonResponse.put("success", true);
