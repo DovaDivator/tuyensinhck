@@ -4,8 +4,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+
+import org.json.JSONObject;
 
 import service.ConvertCus;
+import service.HttpJson;
 
 public class CccdUpdateDAO {
 	public static boolean updateCccd(Connection conn, String id, String numCccd, String dateBirth, String gender,
@@ -70,7 +74,32 @@ public class CccdUpdateDAO {
                     }
                 }
             }
+		
         }
-
-	}
 	
+     public static JSONObject getCccdById (Connection conn, String id) throws Exception {
+         String getCccdsql = "SELECT num_cccd, date_of_birth, gender, address, front_img, back_img FROM stu_cccd WHERE stu_id = ? LIMIT 1";
+ 		 JSONObject cccdJson = new JSONObject();
+         
+ 		try (PreparedStatement stmt = conn.prepareStatement(getCccdsql)) {
+			stmt.setString(1, id);
+			ResultSet rs = stmt.executeQuery();
+
+			if (rs.next()) {
+				cccdJson.put("numCccd", rs.getString("numCccd"));
+				
+				Timestamp timestamp = rs.getTimestamp("dateBirth");
+				String timeConverted = HttpJson.convertTime(timestamp, "yyyy-MM-dd'T'HH:mm:ss");
+				cccdJson.put("dateBirth", timeConverted);
+				
+				cccdJson.put("gender", rs.getString("gender"));
+				cccdJson.put("address", rs.getString("address"));
+
+				cccdJson.put("frontImg", JSONObject.NULL);
+				cccdJson.put("backImg", JSONObject.NULL);
+
+     }
+	}
+	return cccdJson;
+}
+}
