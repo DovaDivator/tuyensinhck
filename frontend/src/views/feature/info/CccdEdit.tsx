@@ -8,6 +8,8 @@ import Button from "../../ui/input/Button";
 import * as API from "../../../api/StudentCccd";
 import CccdForm from "./CccdForm";
 import { convertFileDataToBase64 } from "../../../function/convert/convertFileDataToBase64";
+import { ImageValids } from "../../../classes/ImageValids";
+import { DateValids } from "../../../classes/DateValids";
 
 const CccdEdit = (): JSX.Element => {
     const {token, user} = useAuth();
@@ -38,7 +40,9 @@ const CccdEdit = (): JSX.Element => {
     });
 
     const valids: DataValidsProps = {
-
+        front: new ImageValids({required: true}),
+        back: new ImageValids({required: true}),
+        dateBirth: new DateValids({required: true, cons: {max: new Date(new Date().getFullYear() - 16, 11, 31)}}),
     }
 
     if(token === "" || user.isGuest()) return(<></>);
@@ -110,6 +114,7 @@ const CccdEdit = (): JSX.Element => {
                 setImgData={setImgData}
                 errors={errors}
                 setErrors={setErrors}
+                valids={valids}
             />
             <div className="button-form">
                     <Button
