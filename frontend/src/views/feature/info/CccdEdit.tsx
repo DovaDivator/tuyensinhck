@@ -10,6 +10,7 @@ import CccdForm from "./CccdForm";
 import { convertFileDataToBase64 } from "../../../function/convert/convertFileDataToBase64";
 import { ImageValids } from "../../../classes/ImageValids";
 import { DateValids } from "../../../classes/DateValids";
+import { base64ToFile } from "../../../function/convert/base64ToFile";
 
 const CccdEdit = (): JSX.Element => {
     const {token, user} = useAuth();
@@ -54,16 +55,16 @@ const CccdEdit = (): JSX.Element => {
                 console.log(result);
 
                 const form = {
-                    realName: result.realName || "",
-                    numCccd: result.numCccd || "",
-                    dateBirth: result.dateBirth || formatTimestamp(new Date(new Date().getFullYear() - 18, 0, 1)),
-                    gender: result.gender || "",
-                    address: result.address || ""
+                    realName: result.data.realName || "",
+                    numCccd: result.data.numCccd || "",
+                    dateBirth: result.data.dateBirth || formatTimestamp(new Date(new Date().getFullYear() - 18, 0, 1)),
+                    gender: result.data.gender || "",
+                    address: result.data.address || ""
                 };
                 
                 const image = {
-                    front: result.front,
-                    back: result.back
+                    front: base64ToFile("data:image/png;base64," + result.data.front, "front.png", "image/png"),
+                    back:  base64ToFile("data:image/png;base64," + result.data.back, "front.png", "image/png")
                 };
 
                 // Set dữ liệu hiển thị
