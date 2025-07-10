@@ -78,7 +78,7 @@ public class CccdUpdateDAO {
         }
 	
      public static JSONObject getCccdById (Connection conn, String id) throws Exception {
-         String getCccdsql = "SELECT num_cccd, date_of_birth, gender, address, front_cccd, back_cccd FROM stu_cccd WHERE stu_id = ? LIMIT 1";
+         String getCccdsql = "SELECT num_cccd, date_of_birth, gender, address, front_cccd, back_cccd, is_confirm FROM stu_cccd WHERE stu_id = ? LIMIT 1";
  		 JSONObject cccdJson = new JSONObject();
          
  		try (PreparedStatement stmt = conn.prepareStatement(getCccdsql)) {
@@ -102,9 +102,11 @@ public class CccdUpdateDAO {
 				byte[] backImgBytes = rs.getBytes("back_cccd");
 				String base64Back = HttpJson.convertToBase64(backImgBytes);
 				cccdJson.put("back", base64Back.isEmpty() ? JSONObject.NULL : base64Back);
+				
+				cccdJson.put("confirm", rs.getInt("is_confirm"));
 
      } else {
-    	 throw new Exception ("Dữ liệu trống!");
+			cccdJson.put("confirm", -3000);
      }
 	}
 	return cccdJson;
