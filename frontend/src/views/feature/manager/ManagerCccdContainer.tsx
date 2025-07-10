@@ -7,12 +7,14 @@ import "../info/CccdEdit.scss";
 import { DataValidsProps, ErrorLogProps, FileDataProps, FormDataProps } from "../../../types/FormInterfaces";
 import { formatTimestamp } from "../../../function/convert/formatTimestamp";
 import Button from "../../ui/input/Button";
-import * as API from "../../../api/StudentCccd";
+import * as API from "../../../api/AdminCccdMgr";
 import CccdForm from "../info/CccdForm";
 import { convertFileDataToBase64 } from "../../../function/convert/convertFileDataToBase64";
 import { ImageValids } from "../../../classes/ImageValids";
 import { checkValidSubmitUtils } from "../../../function/triggers/checkValidSubmitUtils";
 import { DateValids } from "../../../classes/DateValids";
+import { InputValids } from "../../../classes/InputValids";
+import { ChoiceValids } from "../../../classes/ChoiceValids";
 
 const ManagerCccdContainer = (): JSX.Element => {
     const {token, user} = useAuth();
@@ -26,6 +28,7 @@ const ManagerCccdContainer = (): JSX.Element => {
 
 
     const [isUpdated, setIsUpdated] = useState<number>(-1);
+    const [getError, setGetError] = useState<boolean>(false);
 
     const [formData, setFormData] = useState<FormDataProps>({
         realName: "",
@@ -54,6 +57,10 @@ const ManagerCccdContainer = (): JSX.Element => {
         front: new ImageValids({required: true}),
         back: new ImageValids({required: true}),
         dateBirth: new DateValids({required: true, cons: {max: new Date(new Date().getFullYear() - 16, 11, 31)}}),
+        realName: new InputValids({required: true}),
+        gender: new ChoiceValids({required: true}),
+        address: new InputValids({required: true}),
+        numCccd: new InputValids({required: true, minlength: 12, matchType: ['cccd']})
     }
 
     // if(token === "" || user.isGuest()) return(<></>);
@@ -61,12 +68,12 @@ const ManagerCccdContainer = (): JSX.Element => {
     useEffect(() => {
         const fetchData = async () => {
             if(!stu_id){
-                setIsUpdated(-1);
+                setGetError(true);
                 return;
             }
 
             try {
-                const result = await API.GetCccd(token);
+                const result = await API.GetCccd(token, {id: stu_id});
                 console.log(result);
 
                 // Giả sử result có dạng {form: {...}, image: {...}}
@@ -135,16 +142,38 @@ const ManagerCccdContainer = (): JSX.Element => {
         setIsLoading(false);
     }
 
-    // if(isUpdated === -1){
-    //     return(
-    //         <div className="container text-center mt-5">
-    //             <div className="alert alert-warning" role="alert">
-    //                 <h4 className="alert-heading">Không tìm thấy CCCD!</h4>
-    //                 <p>Thông tin xác thực của người này không tồn tại hoặc bị xóa trong hệ thống.</p>
-    //             </div>
-    //         </div>
-    //     );
-    // }
+    const handleRemove = async () => {
+        setIsLoading(true);
+        try{
+            const result = await API.RemoveCccd(token, {id: stu_id});
+            console.log(result);
+        }catch(error: any){
+            console.error(error)
+        }
+        setIsLoading(false);
+    }
+
+    const handleNotAccept = async () => {
+        setIsLoading(true);
+        try{
+            const result = await API.RemoveCccd(token, {id: stu_id});
+            console.log(result);
+        }catch(error: any){
+            console.error(error)
+        }
+        setIsLoading(false);
+    }
+
+    if(getError){
+        return(
+            <div className="container text-center mt-5">
+                <div className="alert alert-warning" role="alert">
+                    <h4 className="alert-heading">Không tìm thấy CCCD!</h4>
+                    <p>Thông tin xác thực của id: {stu_id} này không tồn tại hoặc bị xóa trong hệ thống.</p>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <section className={`cccd-form-container`}>
@@ -157,27 +186,39 @@ const ManagerCccdContainer = (): JSX.Element => {
                 setImgData={setImgData}
                 errors={errors}
                 setErrors={setErrors}
-                isAdmin={false}
+                isAdmin={true}
                 valids={valids}
+                status={isUpdated}
             />
             <div className="button-form">
                     <Button
                         type="submit"
                         className="btn-confirm"
                         onClick={handleSubmit}
-                        text="Xác thực!"
-                        disabled={isLoading}
-                    />
-                    <Button
-                        type="button"
-                        onClick={handleReset}
-                        text="Khôi phục"
+                        text="Phê duyệt!"
+                        disabled={isUpdated === 1 || isLoading}
+                        title={isUpdated === 1 ? "CCCD này đã được phê duyệt!" : undefined}
                     />
                     <Button
                         type="button"
                         className="btn-cancel"
+                        onClick={handleNotAccept}
+                        text="Không phê duyệt!"
+                        disabled={isUpdated === -1 || isLoading}
+                        title={isUpdated === -1 ? "CCCD này đang không phê duyệt!" : undefined}
+                    />
+                    <Button 
+                        type="button"
                         onClick={handleReset}
+                        text="Khôi phục"
+                        disabled={isLoading}
+                    />
+                    <Button
+                        type="button"
+                        className="btn-cancel"
+                        onClick={handleRemove}
                         text="Loại bỏ!"
+                        disabled={isLoading}
                     />
                 </div>
         </section>

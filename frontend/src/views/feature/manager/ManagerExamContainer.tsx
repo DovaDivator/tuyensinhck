@@ -21,8 +21,8 @@ const HEADERS = {
     khoa: "Khóa thi",
     time_start: "Thời gian mở",
     time_end: "Thời gian đóng",
+    date_exam: "Ngày tổ chức",
     status: "Tình trạng",
-    is_add: "Bổ sung?"
 }
 const ANH_XA = [
     {value: "hd", label: "Đại học"},
@@ -33,6 +33,7 @@ const ANH_XA = [
 const ManagerExamContainer = ({className = ""}: jsxEleProps): JSX.Element =>{
     const {token} = useAuth();
     const [error, setError] = useState<string>("");
+    const [typeCase, setTypeCase] = useState<any>({type: ""});
 
     return (
         <section className={`manager-exam ${className}`}>
@@ -42,6 +43,15 @@ const ManagerExamContainer = ({className = ""}: jsxEleProps): JSX.Element =>{
               }
               headers={HEADERS}
               error={error}
+            />
+            <h4>Chỉnh sửa nhanh:</h4>
+            <Dropdown
+                name="type"
+                id="type"
+                choices={ANH_XA}
+                value={typeCase.type}
+                setFormData={setTypeCase}
+                label='Kỳ thi'
             />
         </section>
     );
