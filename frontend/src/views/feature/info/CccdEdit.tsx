@@ -11,9 +11,11 @@ import { convertFileDataToBase64 } from "../../../function/convert/convertFileDa
 import { ImageValids } from "../../../classes/ImageValids";
 import { DateValids } from "../../../classes/DateValids";
 import { base64ToFile } from "../../../function/convert/base64ToFile";
+import { useAppContext } from "../../../context/AppContext";
 
 const CccdEdit = (): JSX.Element => {
     const {token, user} = useAuth();
+    const {isLoading} = useAppContext();
     const friendlyNote = ["Thông tin của bạn đang chờ phê duyệt!","Bạn đã cập nhật CCCD!"];
 
     const [isUpdated, setIsUpdated] = useState<number>(-1);
@@ -52,7 +54,9 @@ const CccdEdit = (): JSX.Element => {
         const fetchData = async () => {
             try {
                 const result = await API.GetCccd(token);
-                console.log(result);
+                if (typeof result.data.confirm !== 'undefined') {
+                    setIsUpdated(parseInt(result.data.confirm));
+                }
 
                 const form = {
                     realName: result.data.realName || "",
@@ -107,7 +111,7 @@ const CccdEdit = (): JSX.Element => {
     return (
         <section className={`cccd-form-container`}>
             <h3>Thêm Căn cước công dân</h3>
-            {isUpdated && <p className="note"></p>}
+            {isUpdated >= 0 && <p className="note">{friendlyNote[isUpdated]}</p>}
             <CccdForm
                 formData={formData}
                 setFormData={setFormData}
@@ -116,6 +120,7 @@ const CccdEdit = (): JSX.Element => {
                 errors={errors}
                 setErrors={setErrors}
                 valids={valids}
+                status={isUpdated}
             />
             <div className="button-form">
                     <Button
@@ -123,12 +128,14 @@ const CccdEdit = (): JSX.Element => {
                         className="btn-confirm"
                         onClick={handleSubmit}
                         text="Cập nhật!"
+                        disabled={isLoading || isUpdated === 1}
                     />
                     <Button
                         type="button"
                         className="btn-cancel"
                         onClick={handleReset}
                         text="Khôi phục"
+                        disabled={isLoading}
                     />
                 </div>
         </section>

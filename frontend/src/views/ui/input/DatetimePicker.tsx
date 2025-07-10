@@ -14,7 +14,7 @@ interface DateTimePickerProps {
   name: string;
   id: string;
   value: Date | string | undefined;
-  formData: FormDataProps;
+  disabled?: boolean;
   setFormData: React.Dispatch<React.SetStateAction<FormDataProps>>;
   placeholder?: string;
   className?: string;
@@ -28,7 +28,7 @@ const DatetimePicker = ({
   name,
   id,
   value,
-  formData,
+  disabled = false,
   setFormData,
   placeholder = 'Chọn thời gian',
   className = 'input',

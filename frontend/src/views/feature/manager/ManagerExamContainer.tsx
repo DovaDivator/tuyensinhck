@@ -21,8 +21,8 @@ const HEADERS = {
     khoa: "Khóa thi",
     time_start: "Thời gian mở",
     time_end: "Thời gian đóng",
+    date_exam: "Ngày tổ chức",
     status: "Tình trạng",
-    is_add: "Bổ sung?"
 }
 const ANH_XA = [
     {value: "hd", label: "Đại học"},

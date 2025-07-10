@@ -182,6 +182,7 @@ const ManagerCccdContainer = (): JSX.Element => {
                 setErrors={setErrors}
                 isAdmin={true}
                 valids={valids}
+                status={isUpdated}
             />
             <div className="button-form">
                     <Button
