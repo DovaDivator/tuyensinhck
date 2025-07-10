@@ -83,6 +83,21 @@ const CccdForm = ({
                     />
                 </div>
                 <div className="text-form">
+                {isAdmin && (
+                    <InputField
+                        type="text"
+                        name="realName"
+                        id="realName"
+                        placeholder="Tên thật: "
+                        value={formData.realName}
+                        formData={formData}
+                        setFormData={setFormData}
+                        maxLength={12}
+                        errors={errors}
+                        setErrors={setErrors}   
+                        isSubmiting={isLoading} 
+                    />
+                )}
                     <InputField
                         type="text"
                         name="numCccd"
