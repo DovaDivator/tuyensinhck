@@ -9,11 +9,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
-import util.DBConnectionMain;
 import dao.UserManagerDAO;
+import util.DBConnectionMain;
 
 /**
  * Servlet implementation class AdminApi

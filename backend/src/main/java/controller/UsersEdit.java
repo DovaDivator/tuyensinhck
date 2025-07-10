@@ -11,11 +11,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONObject;
 
-import util.DBConnectionMain;
-import dao.UserManagerDAO;
 import dao.UserUpdateDAO;
 import exception.UnauthorizedException;
 import service.HttpJson;
+import util.DBConnectionMain;
 
 /**
  * Servlet implementation class FreezeUser

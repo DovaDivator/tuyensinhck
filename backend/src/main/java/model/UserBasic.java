@@ -1,7 +1,5 @@
 package model;
 
-import java.sql.Timestamp;
-
 public class UserBasic {
 	String id;
     String name;

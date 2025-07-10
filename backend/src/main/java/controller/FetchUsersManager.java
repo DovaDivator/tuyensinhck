@@ -12,8 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.mysql.cj.xdevapi.JsonArray;
-
 import dao.UserManagerDAO;
 import util.DBConnectionMain;
 

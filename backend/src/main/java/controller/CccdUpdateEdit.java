@@ -4,19 +4,15 @@ import java.io.IOException;
 import java.sql.Connection;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.servlet.http.Part;
 
 import org.json.JSONObject;
 
 import dao.CccdUpdateDAO;
-import dao.PasswordUpdateDAO;
-import dao.UserManagerDAO;
 import exception.UnauthorizedException;
 import model.UserBasic;
 import service.HttpJson;

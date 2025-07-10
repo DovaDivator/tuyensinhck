@@ -12,7 +12,6 @@ import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
 
-import service.HttpJson;
 import model.UserBasic;
 
 /**
