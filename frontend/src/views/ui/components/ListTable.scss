@@ -96,6 +96,22 @@
             min-width: 15rem;
             max-width: 22.5rem;
           }
+
+          .accept{
+            color: green;
+          }
+
+          .denied{
+            color: red;
+          }
+
+          .unknown{
+            color: gray;
+          }
+
+          .warning{
+            color: v.$logo-color;
+          }
         }
       }
     }

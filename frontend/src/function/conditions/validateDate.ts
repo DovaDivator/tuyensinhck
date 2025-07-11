@@ -2,6 +2,7 @@ import { validateTypeText } from "./validateTypeText";
 import { DateValids } from "../../classes/DateValids";
 import { FormDataProps } from "../../types/FormInterfaces";
 import { parseFlexibleDate } from "../convert/parseFlexibleDate";
+import { compareTime, durationToMilliseconds } from "./compareTime";
 
 export const validateDate = (
   name: string,
@@ -23,7 +24,7 @@ export const validateDate = (
           dateValue,
           valids.cons?.max instanceof Date
             ? valids.cons.max
-            : parseFlexibleDate(valids.cons?.max as string),
+            : parseFlexibleDate(formData[valids.cons?.max] as string),
           miliDist,
           valids.dist?.isWithin ?? false
         );
@@ -35,7 +36,7 @@ export const validateDate = (
         const result = compareTime(
           valids.cons?.min instanceof Date
             ? valids.cons.min
-            : parseFlexibleDate(valids.cons?.min as string),
+            : parseFlexibleDate(formData[valids.cons?.min] as string),
           dateValue,
           miliDist,
           valids.dist?.isWithin ?? false
@@ -53,36 +54,4 @@ export const validateDate = (
   }
 };
 
-const compareTime = (
-  dateFrom: Date,
-  dateTo: Date,
-  duration: number,
-  isWithin: boolean
-): boolean => {
-  const delta = dateTo.getTime() - dateFrom.getTime();
-  const isOverDuration = delta > duration;
 
-  if (isOverDuration) return !isWithin;
-  if (delta >= 0) return isWithin;
-  return false
-}
-
-function durationToMilliseconds(dist: Partial<{
-  year: number;
-  month: number;
-  day: number;
-  hour: number;
-  min: number;
-}>): number {
-  const msPerMin = 60 * 1000;
-  const msPerHour = 60 * msPerMin;
-  const msPerDay = 24 * msPerHour;
-  const msPerMonth = 30 * msPerDay;    // Ước lượng: 30 ngày
-  const msPerYear = 365 * msPerDay;    // Ước lượng: 365 ngày
-
-  return (dist.year ?? 0) * msPerYear +
-    (dist.month ?? 0) * msPerMonth +
-    (dist.day ?? 0) * msPerDay +
-    (dist.hour ?? 0) * msPerHour +
-    (dist.min ?? 0) * msPerMin;
-}

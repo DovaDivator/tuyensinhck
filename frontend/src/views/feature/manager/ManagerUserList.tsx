@@ -129,61 +129,61 @@ const ManagerUserList = ({className = "", name = ""}: ManagerUserListProps): JSX
       setIsLoading(true);
       setError("");
 
-  let params = {};
+      let params = {};
 
-  switch (pathParts[2]) {
-    case CLASS_PAGES[1]:
-      params = {
-        he: formData.he,
-        khoa: formData.khoa,
-        tuChon: formData.tuChon,
-        ngoaiNgu: formData.ngoaiNgu
-      };
-      break;
-    case CLASS_PAGES[2]:
-      params = {
-        xacThuc: formData.xacThuc,
-        hoatDong: formData.hoatDong
-      };
-      break;
-    case CLASS_PAGES[0]:
-      params = {
-        mon: formData.mon,
-        hoatDong: formData.hoatDong
-      };
-      break;
-  }
-
-      try {
-        const users = await fetchUsers({
-          token: token,
-          type: pathParts[2],
-          search: String(formData.search),
-          params,
-          page: pageNum
-        });
-        
-        setData(
-          users.data.map((user: any) => ({
-            ...user,
-            isFreeze: user.isFreeze === true ? "Tạm đình chỉ" : "Đang hoạt động",
-            isxacthuc: 
-              user.isFreeze === 0
-              ? "Chờ phê duyệt"
-              : user.isFreeze === 1
-              ? "Đã xác thực"
-              : "Chưa xác thực",
-          }))
-        );
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setIsLoading(false);
+      switch (pathParts[2]) {
+        case CLASS_PAGES[1]:
+          params = {
+            he: formData.he,
+            khoa: formData.khoa,
+            tuChon: formData.tuChon,
+            ngoaiNgu: formData.ngoaiNgu
+          };
+          break;
+        case CLASS_PAGES[2]:
+          params = {
+            xacThuc: formData.xacThuc,
+            hoatDong: formData.hoatDong
+          };
+          break;
+        case CLASS_PAGES[0]:
+          params = {
+            mon: formData.mon,
+            hoatDong: formData.hoatDong
+          };
+          break;
       }
-    };
 
-    getData();
-  }, [pageNum]);
+          try {
+            const users = await fetchUsers({
+              token: token,
+              type: pathParts[2],
+              search: String(formData.search),
+              params,
+              page: pageNum
+            });
+            
+            setData(
+              users.data.map((user: any) => ({
+                ...user,
+                isFreeze: user.isFreeze === true ? "Tạm đình chỉ" : "Đang hoạt động",
+                isxacthuc: 
+                  user.isFreeze === 0
+                  ? "Chờ phê duyệt"
+                  : user.isFreeze === 1
+                  ? "Đã xác thực"
+                  : "Chưa xác thực",
+              }))
+            );
+          } catch (err) {
+            console.error(err);
+          } finally {
+            setIsLoading(false);
+          }
+        };
+
+        getData();
+      }, [pageNum]);
 
   const [totalPage, setTotalPage] = useState<number>(1);
   useEffect(() => {

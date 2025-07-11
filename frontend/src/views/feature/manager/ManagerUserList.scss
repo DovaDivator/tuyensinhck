@@ -22,3 +22,12 @@
         }
     }
 }
+
+    .form-ky-thi{
+        width: 50% !important;
+        max-width: 400px;
+    }
+
+    .button-form{
+            @include mx.horizontal-display();
+        }
