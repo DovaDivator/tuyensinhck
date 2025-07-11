@@ -98,7 +98,7 @@ public class AdminCCCDManager extends HttpServlet {
 						String address = json.getString("address");
 						String frontImg = json.getString("front");
 						String backImg = json.getString("back");
-						boolean success = CccdUpdateDAO.acceptCccd(conn, realName, id, numCccd, dateBirth, gender, address, frontImg,
+						boolean success = CccdUpdateDAO.acceptCccd(conn, id, realName, numCccd, dateBirth, gender, address, frontImg,
 								backImg);
 						if (!success) {
 							throw new UnauthorizedException("Cập nhật không thành công!");

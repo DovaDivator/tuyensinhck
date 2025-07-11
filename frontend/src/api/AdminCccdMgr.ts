@@ -4,7 +4,7 @@ interface Unit {
 
 export const UpdateCccd = async (token: string, dataToSend: Unit): Promise<any> => {
     try {
-        const response = await fetch('http://localhost:8080/api/user-cccd?action=accept', {
+        const response = await fetch('http://localhost:8080/api/admin-cccd-mgr?action=accept', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

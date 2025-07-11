@@ -81,7 +81,7 @@ const ManagerCccdContainer = (): JSX.Element => {
                 const form = {
                     realName: result.data.realName || "",
                     numCccd: result.data.numCccd || "",
-                    dateBirth: result.data.dateBirth || formatTimestamp(new Date(new Date().getFullYear() - 18, 0, 1)),
+                    dateBirth: result.data.dateBirth ? formatTimestamp(result.data.dateBirth ,) : formatTimestamp(new Date(new Date().getFullYear() - 18, 0, 1)),
                     gender: result.data.gender || "",
                     address: result.data.address || ""
                 };
@@ -132,14 +132,13 @@ const ManagerCccdContainer = (): JSX.Element => {
         const validate = checkValidSubmitUtils({...formData, ...imgData}, valids, setErrors);
 
         console.log(validate);
-        //Thực hiện API cập nhật
-        // const base64Data = await convertFileDataToBase64(imgData);
-        // try{
-        //     const result = await API.UpdateCccd(token, {...formData, ...base64Data});
-        //     console.log(result);
-        // }catch(error: any){
-        //     console.error(error)
-        // }
+        const base64Data = await convertFileDataToBase64(imgData);
+        try{
+            const result = await API.UpdateCccd(token, {...formData, ...base64Data, id: stu_id});
+            console.log(result);
+        }catch(error: any){
+            console.error(error)
+        }
         setIsLoading(false);
     }
 

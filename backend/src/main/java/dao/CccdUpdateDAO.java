@@ -151,29 +151,64 @@ return selectJson;
 
 public static boolean acceptCccd (Connection conn, String id, String realName, String numCccd, String dateBirth, String gender,
 		String address, String frontImg, String backImg) throws Exception {
-	String updateUserSql = "UPDATE users SET name = ? WHERE id = ?";
-    String updateCccdSql = "UPDATE stu_cccd SET num_cccd = ?, date_of_birth = ?, gender = ?, address = ?, front_cccd = ?, back_cccd = ?, is_confirm = 1 WHERE stu_id = ?";
+    PreparedStatement stmt1 = null;
+    PreparedStatement stmt2 = null;
+    ResultSet rs = null;
     
+        		try  {
+                    conn.setAutoCommit(false);
+                    
+                    //1. Cập nhật users
+                    String updateUserSql = "UPDATE users SET name = ? WHERE id = ?";
+                    stmt1 = conn.prepareStatement(updateUserSql);
+        	        stmt1.setString(1, realName);
+        	        stmt1.setString(2, id);
+        	        int updatedUser = stmt1.executeUpdate();
+        	        
+        	        if (updatedUser == 0) {
+        	        	throw new SQLException ("Cập nhật dữ liệu người dùng không thành công.");
+        	        }
+        	        
+        	        
+        	        //2. Cập nhật CCCD
+        	        String updateCccdSql = "UPDATE stu_cccd SET num_cccd = ?, date_of_birth = ?, gender = ?, address = ?, front_cccd = ?, back_cccd = ?, is_confirm = 1 WHERE stu_id = ?";
+        	        stmt2 = conn.prepareStatement(updateCccdSql);
+        	        stmt2.setString(1, numCccd);
+        	        stmt2.setDate(2, ConvertCus.convertStringToSqlDate(dateBirth, "dd/MM/yyyy"));
+        	        stmt2.setInt(3, Integer.parseInt(gender));
+        	        stmt2.setString(4, address);
+        	        stmt2.setBytes(5, ConvertCus.decodeBase64(frontImg));
+        	        stmt2.setBytes(6, ConvertCus.decodeBase64(backImg));
+        	        stmt2.setString(7, id);
+        	        int updatedCccd = stmt2.executeUpdate();
+        	        
+        	        if (updatedCccd == 0) {
+        	        	throw new SQLException ("Cập nhật dữ liệu CCCD không thành công.");
+        	        }
+        	        
+        
+                    conn.commit();
+                    return true;
+                    
+                } catch (Exception e) {
+                    try {
+                        if (conn != null) conn.rollback();
+                    } catch (SQLException rollbackEx) {
+                        rollbackEx.printStackTrace();
+                    }
+                    e.printStackTrace();
+                    return false;
 
-        		try (PreparedStatement updateUserStmt = conn.prepareStatement(updateUserSql);
-        		        PreparedStatement updateCccdStmt = conn.prepareStatement(updateCccdSql)) {
-        	        updateUserStmt.setString(1, realName);
-        	        updateUserStmt.setString(2, id);
-        	        int userUpdated = updateUserStmt.executeUpdate();
-        	        
-        	        updateCccdStmt.setString(1, numCccd);
-        	        updateCccdStmt.setDate(2, ConvertCus.convertStringToSqlDate(dateBirth, "dd/MM/yyyy"));
-        	        updateCccdStmt.setInt(3, Integer.parseInt(gender));
-        	        updateCccdStmt.setString(4, address);
-        	        updateCccdStmt.setBytes(5, ConvertCus.decodeBase64(frontImg));
-        	        updateCccdStmt.setBytes(6, ConvertCus.decodeBase64(backImg));
-        	        updateCccdStmt.setString(7, id);
-        	        int cccdUpdated = updateCccdStmt.executeUpdate();
-        	        
-        	        
-        	        return userUpdated > 0 && cccdUpdated > 0;
-        			
+                } finally {
+                    try {
+                        if (conn != null) conn.setAutoCommit(true);
+                        if (rs != null) rs.close();
+                        if (stmt1 != null) stmt1.close();
+                        if (stmt2 != null) stmt2.close();
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            }
+        }
 
-}
-}
-}
