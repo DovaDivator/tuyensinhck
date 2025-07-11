@@ -2,8 +2,6 @@ package controller;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,10 +12,10 @@ import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
 
-import service.HttpJson;
-import model.UserBasic;
-import dao.*;
+import dao.UserUpdateDAO;
 import exception.UnauthorizedException;
+import model.UserBasic;
+import service.HttpJson;
 import util.DBConnectionMain;
 
 /**

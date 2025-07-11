@@ -12,9 +12,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONObject;
 
 import dao.AddManagerDAO;
-import util.DBConnectionMain;
 import exception.UnauthorizedException;
 import service.HttpJson;
+import util.DBConnectionMain;
 
 /**
  * Servlet implementation class AddManager
