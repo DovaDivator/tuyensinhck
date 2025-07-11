@@ -45,6 +45,9 @@ public class AdminCCCDManager extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		
+		        response.setContentType("application/json");
+		        response.setCharacterEncoding("UTF-8");
 				JSONObject jsonResponse = new JSONObject();
 				DBConnectionMain dbConn = null;
 				Connection conn = null;
@@ -85,17 +88,31 @@ public class AdminCCCDManager extends HttpServlet {
 						JSONObject cccdData = CccdUpdateDAO.selectCccd(conn, id);
 						jsonResponse.put("data", cccdData);
 						break;
-						
-					
-					
-					if (!success) {
-						throw new UnauthorizedException("Cập nhật không thành công!");
 					}
+					case "accept": {
+						String realName = json.getString("realName");
+						String id = json.getString("id");
+						String numCccd = json.getString("numCccd");
+						String dateBirth = json.getString("dateBirth");
+						String gender = json.getString("gender").isEmpty() ? "0"  :  json.getString("gender");
+						String address = json.getString("address");
+						String frontImg = json.getString("front");
+						String backImg = json.getString("back");
+						boolean success = CccdUpdateDAO.acceptCccd(conn, id, realName, numCccd, dateBirth, gender, address, frontImg,
+								backImg);
+						if (!success) {
+							throw new UnauthorizedException("Cập nhật không thành công!");
+						}
+						break;
+					}
+					default:
+						throw new Exception("thuộc tính type không hợp lệ " + action);
+					}
+
 					jsonResponse.put("success", true);
-					jsonResponse.put("message", "Cập nhật thành công!");
-				} 
-				}
-				}catch (Exception e) {
+					jsonResponse.put("message", "Cập nhật thành công!");	
+					
+				} catch (Exception e) {
 					if (e instanceof UnauthorizedException) {
 						response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 					} else {
@@ -105,15 +122,14 @@ public class AdminCCCDManager extends HttpServlet {
 					jsonResponse.put("message", e.getMessage());
 				} finally {
 					if (conn != null) {
-				        try {
-				            conn.close();
-				        } catch (Exception e) {
-				            System.err.println("Không thể đóng kết nối: " + e.getMessage());
-				        }
-				    }
+						try {
+							conn.close();
+						} catch (Exception e) {
+							System.err.println("Không thể đóng kết nối: " + e.getMessage());
+						}
+					}
 				}
-				
 				response.getWriter().write(jsonResponse.toString());
-	}
+			}
 
-}
+		}

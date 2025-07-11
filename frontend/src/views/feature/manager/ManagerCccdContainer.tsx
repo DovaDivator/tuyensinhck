@@ -15,6 +15,7 @@ import { checkValidSubmitUtils } from "../../../function/triggers/checkValidSubm
 import { DateValids } from "../../../classes/DateValids";
 import { InputValids } from "../../../classes/InputValids";
 import { ChoiceValids } from "../../../classes/ChoiceValids";
+import { base64ToFile } from "../../../function/convert/base64ToFile";
 
 const ManagerCccdContainer = (): JSX.Element => {
     const {token, user} = useAuth();
@@ -78,16 +79,16 @@ const ManagerCccdContainer = (): JSX.Element => {
 
                 // Giả sử result có dạng {form: {...}, image: {...}}
                 const form = {
-                    realName: result.realName || "",
-                    numCccd: result.numCccd || "",
-                    dateBirth: result.dateBirth || formatTimestamp(new Date(new Date().getFullYear() - 18, 0, 1)),
-                    gender: result.gender || "",
-                    address: result.address || ""
+                    realName: result.data.realName || "",
+                    numCccd: result.data.numCccd || "",
+                    dateBirth: result.data.dateBirth ? formatTimestamp(result.data.dateBirth ,) : formatTimestamp(new Date(new Date().getFullYear() - 18, 0, 1)),
+                    gender: result.data.gender || "",
+                    address: result.data.address || ""
                 };
 
                 const image = {
-                    front: result.front,
-                    back: result.back
+                    front: result.data.front === undefined ? result.data.front : base64ToFile("data:image/png;base64," + result.data.front, "front.png", "image/png"),
+                    back:  result.data.back === undefined ? result.data.back : base64ToFile("data:image/png;base64," + result.data.back, "front.png", "image/png")
                 };
 
                 // Set dữ liệu hiển thị
@@ -131,14 +132,13 @@ const ManagerCccdContainer = (): JSX.Element => {
         const validate = checkValidSubmitUtils({...formData, ...imgData}, valids, setErrors);
 
         console.log(validate);
-        //Thực hiện API cập nhật
-        // const base64Data = await convertFileDataToBase64(imgData);
-        // try{
-        //     const result = await API.UpdateCccd(token, {...formData, ...base64Data});
-        //     console.log(result);
-        // }catch(error: any){
-        //     console.error(error)
-        // }
+        const base64Data = await convertFileDataToBase64(imgData);
+        try{
+            const result = await API.UpdateCccd(token, {...formData, ...base64Data, id: stu_id});
+            console.log(result);
+        }catch(error: any){
+            console.error(error)
+        }
         setIsLoading(false);
     }
 

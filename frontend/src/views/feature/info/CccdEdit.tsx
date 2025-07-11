@@ -59,6 +59,7 @@ const CccdEdit = (): JSX.Element => {
         const fetchData = async () => {
             try {
                 const result = await API.GetCccd(token);
+                console.log(result);
                 if (typeof result.data.confirm !== 'undefined') {
                     setIsUpdated(parseInt(result.data.confirm));
                 }
@@ -66,7 +67,7 @@ const CccdEdit = (): JSX.Element => {
                 const form = {
                     realName: result.data.realName || "",
                     numCccd: result.data.numCccd || "",
-                    dateBirth: result.data.dateBirth || formatTimestamp(new Date(new Date().getFullYear() - 18, 0, 1)),
+                    dateBirth: result.data.dateBirth ? formatTimestamp(result.data.dateBirth ,) : formatTimestamp(new Date(new Date().getFullYear() - 18, 0, 1)),
                     gender: result.data.gender || "",
                     address: result.data.address || ""
                 };
@@ -103,6 +104,7 @@ const CccdEdit = (): JSX.Element => {
     const handleSubmit = async () =>{
         //Hàm kiểm tra ở đây
         console.log("Kiểm tra thành công");
+        console.log(formData);
         const base64Data = await convertFileDataToBase64(imgData);
         //Thực hiện API cập nhật
         try{
