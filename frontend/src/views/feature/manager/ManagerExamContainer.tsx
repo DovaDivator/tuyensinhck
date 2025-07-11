@@ -5,12 +5,9 @@ import { useAuth } from '../../../context/AuthContext';
 import { jsxEleProps } from '../../../types/jsxElementInterfaces';
 import './ManagerUserList.scss';
 import ListTable from '../../ui/components/ListTable';
-import InputField from '../../ui/input/InputField';
 import { DataValidsProps, ErrorLogProps, FormDataProps} from '../../../types/FormInterfaces';
 import InputChoice from '../../ui/input/InputChoice';
-import { ChoiceGroup } from '../../../classes/ChoiceGroup';
 import Button from '../../ui/input/Button';
-import Pagination from '../../ui/components/Pagination';
 import Dropdown from '../../ui/input/Dropdown';
 import { useAppContext } from '../../../context/AppContext';
 import { fetchKyThi } from '../../../api/FetchKyThi';
@@ -38,6 +35,7 @@ const ANH_XA_STATUS = [
   <span className='unknown'>Không xác định</span>,
   <span className='accept'>Đã qua kỳ thi</span>,
   <span className='warning'>Trong kỳ thi</span>,
+  <span className='unknown'>Chờ thi</span>,
   <span className='denied'>Đã đóng</span>,
   <span className='accept'>Đang mở</span>,
   <span className='unknown'>Chưa mở</span>,
@@ -69,7 +67,6 @@ const ManagerExamContainer = ({className = ""}: jsxEleProps): JSX.Element =>{
     const [formData, setFormData] = useState<FormDataProps>({
       timeStart: "",
       timeEnd: "",
-      dateExam: "",
       isAdd: "",
     });
 
@@ -78,7 +75,6 @@ const ManagerExamContainer = ({className = ""}: jsxEleProps): JSX.Element =>{
     const [errors, setErrors] = useState<ErrorLogProps>({
       timeStart: "",
       timeEnd: "",
-      dateExam: "",
       isAdd: "",
     });
 
@@ -98,39 +94,35 @@ const ManagerExamContainer = ({className = ""}: jsxEleProps): JSX.Element =>{
           day: 1,
         }
       }),
-      dateExam: new DateValids({
-        required: true,
-        cons: {
-          min: "timeEnd"
-        },
-        dist: {
-          day: 7,
-        }
-      }),
     })
 
     useEffect(() => {
       const statusCase = (row : Object): number =>{
-        if(!("timeStart" in row && "timeEnd" in row && "dateExam" in row)) return 0; 
+        if(!("timeStart" in row && "timeEnd" in row)) return 0; 
           // return (<span className='unknown'>Không xác định</span>);
 
         const nowDate = new Date();
-        const dayExam = parseFlexibleDate("07:00 " + row.dateExam);
-        
-        const durationOne = dayExam.getTime() - nowDate.getTime();
-        if(durationOne < -36 * 60 * 60 * 1000) return 1;
-          // return (<span className='denied'>Đã thi xong!</span>);
 
-        if(durationOne < 24 * 60 * 60 * 1000) return 2;
-          // return (<span className='warming'>Đang trong kỳ thi</span>);
+        if("dateExam" in row){
+          const dayExam = parseFlexibleDate("07:00 " + row.dateExam);
+          
+          const durationOne = dayExam.getTime() - nowDate.getTime();
+          if(durationOne < -36 * 60 * 60 * 1000) return 1;
+            // return (<span className='denied'>Đã thi xong!</span>);
+
+          if(durationOne < 24 * 60 * 60 * 1000) return 2;
+            // return (<span className='warming'>Đang trong kỳ thi</span>);
+
+          return 3;
+        }
 
         const durationTwo = nowDate.getTime() - parseFlexibleDate(String(row.timeEnd)).getTime();
-        if(durationTwo > 0) return 3;
+        if(durationTwo > 0) return 4;
 
         const durationThree = nowDate.getTime() - parseFlexibleDate(String(row.timeStart)).getTime();
-        if(durationThree > 0) return 4;
+        if(durationThree > 0) return 5;
 
-        return 5;
+        return 6;
       }
 
         const getData = async () => {
@@ -160,11 +152,11 @@ const ManagerExamContainer = ({className = ""}: jsxEleProps): JSX.Element =>{
                   const formDataTemp = {
                     timeStart: item.timeStart ? item.timeStart : "",
                     timeEnd: item.timeEnd ? item.timeEnd : "",
-                    dateExam: item.dateExam ? item.dateExam : "",
                     isAdd: item.isAdd,
                   }
                   setFormData(formDataTemp);
                   defaultFormRef.current = formDataTemp
+                  setStatusNum(item.statusEffect ?? 0);
                 }
 
               } catch (err) {
@@ -184,6 +176,21 @@ const ManagerExamContainer = ({className = ""}: jsxEleProps): JSX.Element =>{
         }
     }, [typeCase.type])
 
+    useEffect(() => {
+      if(statusNum <= 1) return;
+
+      if(statusNum === 5){
+        setValids(prev => {
+          const { timeStart, ...rest } = prev;
+          return rest;
+        });
+      }
+
+      if(statusNum <= 3){
+        setValids({});
+      }
+
+    }, [statusNum])
     
     const handleReset = () => {
         if (defaultFormRef.current) {
@@ -192,7 +199,6 @@ const ManagerExamContainer = ({className = ""}: jsxEleProps): JSX.Element =>{
             setFormData({
               timeStart: "",
               timeEnd: "",
-              dateExam: "",
               isAdd: "",
             })
             console.warn("Dữ liệu mặc định chưa được khởi tạo");
@@ -226,7 +232,7 @@ const ManagerExamContainer = ({className = ""}: jsxEleProps): JSX.Element =>{
                   value={String(formData.timeStart)}
                   setFormData={setFormData}
                   placeholder='Thời gian mở'
-                  disabled={statusNum >= 2 || statusNum <= 4}
+                  disabled={statusNum === 3 || statusNum === 2 || statusNum === 5}
                   errors={errors}
                   setErrors={setErrors}
                   valids={valids.timeStart}
@@ -238,7 +244,7 @@ const ManagerExamContainer = ({className = ""}: jsxEleProps): JSX.Element =>{
                   value={String(formData.timeEnd)}
                   setFormData={setFormData}
                   placeholder='Thời gian đóng'
-                  disabled={statusNum >= 3 && statusNum <= 4}
+                  disabled={statusNum === 3 || statusNum === 2}
                   errors={errors}
                   setErrors={setErrors}
                   valids={valids.timeEnd}
@@ -249,19 +255,7 @@ const ManagerExamContainer = ({className = ""}: jsxEleProps): JSX.Element =>{
                   choices={[{value: 'true', label: "Bổ sung thí sinh?"}]}
                   value={formData.isAdd}
                   setFormData={setFormData}
-                  disabled={statusNum === 2 || statusNum === 4}
-                />
-                <DatetimePicker
-                  type="date"
-                  name="dateExam"
-                  id="dateExam"
-                  value={String(formData.dateExam)}
-                  setFormData={setFormData}
-                  placeholder='Ngày thi dự kiến'
-                  disabled={statusNum === 4}
-                  errors={errors}
-                  setErrors={setErrors}
-                  valids={valids.dateExam}
+                  disabled={statusNum !== 4}
                 />
               </form>
               <div className="button-form">
@@ -270,7 +264,7 @@ const ManagerExamContainer = ({className = ""}: jsxEleProps): JSX.Element =>{
                         className="btn-confirm"
                         // onClick={handleSubmit}
                         text="Cập nhật!"
-                        disabled={isLoading}
+                        disabled={isLoading || statusNum === 2 || statusNum === 3}
                     />
                     <Button
                         type="button"
