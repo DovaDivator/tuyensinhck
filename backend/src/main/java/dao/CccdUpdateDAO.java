@@ -111,4 +111,69 @@ public class CccdUpdateDAO {
 	}
 	return cccdJson;
 }
+
+public static JSONObject selectCccd (Connection conn, String id) throws Exception {
+    String sql = "SELECT u.name as real_name, c.num_cccd, c.date_of_birth, c.gender, c.address, c.front_cccd, c.back_cccd, c.is_confirm FROM stu_cccd c JOIN users u ON c.stu_id = u.id WHERE c.stu_id = ? LIMIT 1";
+	 JSONObject selectJson = new JSONObject();
+    
+	try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+		stmt.setString(1, id);
+		ResultSet rs = stmt.executeQuery();
+
+		if (rs.next()) {
+			selectJson.put("realName", HttpJson.convertStringToJson(rs.getString("real_name")));
+			selectJson.put("numCccd", rs.getString("num_cccd"));
+			
+			Date date = rs.getDate("date_of_birth");
+			String timeConverted = HttpJson.convertTime(date, "yyyy-MM-dd");
+			selectJson.put("dateBirth", timeConverted);
+			
+			selectJson.put("gender", rs.getString("gender"));
+			selectJson.put("address", rs.getString("address"));
+
+			byte[] frontImgBytes = rs.getBytes("front_cccd");
+			String base64Front = HttpJson.convertToBase64(frontImgBytes);
+			selectJson.put("front", base64Front.isEmpty() ? JSONObject.NULL : base64Front);
+			
+			byte[] backImgBytes = rs.getBytes("back_cccd");
+			String base64Back = HttpJson.convertToBase64(backImgBytes);
+			selectJson.put("back", base64Back.isEmpty() ? JSONObject.NULL : base64Back);
+			
+			selectJson.put("confirm", rs.getInt("is_confirm"));
+
+} else {
+		selectJson.put("confirm", -3000);
+}
+}
+return selectJson;
+}
+
+
+public static boolean acceptCccd (Connection conn, String id, String realName, String numCccd, String dateBirth, String gender,
+		String address, String frontImg, String backImg) throws Exception {
+	String updateUserSql = "UPDATE users SET name = ? WHERE id = ?";
+    String updateCccdSql = "UPDATE stu_cccd SET num_cccd = ?, date_of_birth = ?, gender = ?, address = ?, front_cccd = ?, back_cccd = ?, is_confirm = 1 WHERE stu_id = ?";
+    
+
+        		try (PreparedStatement updateUserStmt = conn.prepareStatement(updateUserSql);
+        		        PreparedStatement updateCccdStmt = conn.prepareStatement(updateCccdSql)) {
+        	        updateUserStmt.setString(1, realName);
+        	        updateUserStmt.setString(2, id);
+        	        int userUpdated = updateUserStmt.executeUpdate();
+        	        
+        	        updateCccdStmt.setString(1, numCccd);
+        	        updateCccdStmt.setDate(2, ConvertCus.convertStringToSqlDate(dateBirth, "dd/MM/yyyy"));
+        	        updateCccdStmt.setInt(3, Integer.parseInt(gender));
+        	        updateCccdStmt.setString(4, address);
+        	        updateCccdStmt.setBytes(5, ConvertCus.decodeBase64(frontImg));
+        	        updateCccdStmt.setBytes(6, ConvertCus.decodeBase64(backImg));
+        	        updateCccdStmt.setString(7, id);
+        	        int cccdUpdated = updateCccdStmt.executeUpdate();
+        	        
+        	        
+        	        return userUpdated > 0 && cccdUpdated > 0;
+        			
+
+}
+}
 }
