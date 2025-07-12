@@ -15,6 +15,7 @@ import DatetimePicker from '../../ui/input/DatetimePicker';
 import Card from '../../ui/components/Card';
 import { parseFlexibleDate } from '../../../function/convert/parseFlexibleDate';
 import { DateValids } from '../../../classes/DateValids';
+import { fetchVietnamTime } from '../../../api/FetchVietnamTime';
 
 const HEADERS = {
     loaiThiLabel: "Cấp bậc",
@@ -97,11 +98,11 @@ const ManagerExamContainer = ({className = ""}: jsxEleProps): JSX.Element =>{
     })
 
     useEffect(() => {
-      const statusCase = (row : Object): number =>{
+      const statusCase = async (row : Object): Promise<number> =>{
         if(!("timeStart" in row && "timeEnd" in row)) return 0; 
           // return (<span className='unknown'>Không xác định</span>);
 
-        const nowDate = new Date();
+        const nowDate = await fetchVietnamTime();
 
         if("dateExam" in row){
           const dayExam = parseFlexibleDate("07:00 " + row.dateExam);
@@ -132,19 +133,21 @@ const ManagerExamContainer = ({className = ""}: jsxEleProps): JSX.Element =>{
               try {
                 const result = await fetchKyThi();
                 console.log(result);
-                setData(
-                  result.data.map((row: any) => {
+                const mappedData = await Promise.all(
+                  result.data.map(async (row: any) => {
                     const matched = ANH_XA.find(item => item.value === row.loaiThi);
-                    const statusCaseNum = statusCase(row);
-                    
+                    const statusCaseNum = await statusCase(row);
+
                     return {
                       ...row,
-                      loaiThiLabel: matched?.label || "Không xác định", // Ghi đè hoặc thêm mới loaiThi (nếu bạn muốn giữ lại key)
+                      loaiThiLabel: matched?.label || "Không xác định",
                       statusEffect: statusCaseNum,
                       status: ANH_XA_STATUS[statusCaseNum],
                     };
                   })
                 );
+
+                setData(mappedData);
                 
                 const check = ANH_XA.find(item => item.value === typeCase.type);
                 if (check && searchParams.get("type") !== check.value) {
@@ -232,7 +235,7 @@ const ManagerExamContainer = ({className = ""}: jsxEleProps): JSX.Element =>{
                   value={String(formData.timeStart)}
                   setFormData={setFormData}
                   placeholder='Thời gian mở'
-                  disabled={statusNum === 3 || statusNum === 2 || statusNum === 5}
+                  disabled={[2, 3, 5].includes(typeCase.statusNum)}
                   errors={errors}
                   setErrors={setErrors}
                   valids={valids.timeStart}
@@ -244,7 +247,7 @@ const ManagerExamContainer = ({className = ""}: jsxEleProps): JSX.Element =>{
                   value={String(formData.timeEnd)}
                   setFormData={setFormData}
                   placeholder='Thời gian đóng'
-                  disabled={statusNum === 3 || statusNum === 2}
+                  disabled={[2, 3].includes(typeCase.statusNum)}
                   errors={errors}
                   setErrors={setErrors}
                   valids={valids.timeEnd}
@@ -264,7 +267,7 @@ const ManagerExamContainer = ({className = ""}: jsxEleProps): JSX.Element =>{
                         className="btn-confirm"
                         // onClick={handleSubmit}
                         text="Cập nhật!"
-                        disabled={isLoading || statusNum === 2 || statusNum === 3}
+                        disabled={isLoading || [2, 3].includes(typeCase.statusNum)}
                     />
                     <Button
                         type="button"
