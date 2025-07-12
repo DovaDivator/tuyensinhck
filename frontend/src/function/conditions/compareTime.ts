@@ -5,7 +5,7 @@ export const compareTime = (
     isWithin: boolean = false
 ): boolean => {
     const delta = dateTo.getTime() - dateFrom.getTime();
-    const isOverDuration = delta > duration;
+    const isOverDuration = delta >= duration;
 
     if (isOverDuration) return !isWithin;
     if (delta >= 0) return isWithin;

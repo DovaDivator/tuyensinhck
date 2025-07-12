@@ -1,86 +1,95 @@
-import {JSX, useState, useEffect } from 'react';
+import { JSX, useState, useEffect } from 'react';
 import { jsxEleProps } from '../../../types/jsxElementInterfaces';
 
-import "./Countdown.scss";
+import './Countdown.scss';
+import { fetchVietnamTime } from '../../../api/FetchVietnamTime';
 
-const Countdown = ({className = ""} : jsxEleProps):JSX.Element => {
-  const [timeLeft, setTimeLeft] = useState({
-    days: 999,
-    hours: 23,
-    minutes: 59,
-    seconds: 59,
-  });
+interface CountdownProps extends jsxEleProps{
+  timeTarget?: Date | number;
+}
+
+const Countdown = ({ className = '', timeTarget = new Date().getTime()}: CountdownProps): JSX.Element => {
   const [currentTime, setCurrentTime] = useState<number | null>(null);
+  const [timeLeft, setTimeLeft] = useState({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+  });
 
-          const targetDate = new Date('2026-01-01T00:00:00+07:00').getTime();
+  const targetDate = typeof timeTarget === 'number'
+  ? timeTarget
+  : timeTarget instanceof Date
+    ? timeTarget.getTime()
+    : new Date().getTime();
 
   useEffect(() => {
-    // Gọi API một lần để lấy thời gian Việt Nam
-    fetch('https://timeapi.io/api/Time/current/zone?timeZone=Asia/Ho_Chi_Minh')
-      .then(response => response.json())
-      .then(data => {
-        const vietnamTime = new Date(data.dateTime).getTime();
-        setCurrentTime(vietnamTime);
-      })
-      .catch(error => {
-        console.error('Lỗi khi lấy thời gian từ timeapi.io:', error);
-        const fallbackTime = new Date().getTime();
-        setCurrentTime(fallbackTime);
-      });
+    let interval: number;
 
-    const interval = setInterval(() => {
-      setCurrentTime(prev => {
-        if (prev === null) return prev;
+    fetchVietnamTime().then((vietnamTime) => {
+      let now = vietnamTime.getTime();
+      setCurrentTime(now);
 
-        if (prev >= targetDate) {
-          clearInterval(interval);
-          return prev;
-        }
+      // Bắt đầu đếm lùi từng giây
+      interval = window.setInterval(() => {
+        now += 1000;
+        setCurrentTime(now);
+      }, 1000);
+    });
 
-        return prev + 1000;
-      });
-    }, 1000);
-
-    return () => clearInterval(interval); 
+    return () => {
+      if (interval) clearInterval(interval);
+    };
   }, []);
 
   useEffect(() => {
     if (currentTime === null) return;
 
-    const updateCountdown = () => {
-      const distance = targetDate - currentTime;
+    const distance = targetDate - currentTime;
 
-      if (distance <= 0) return;
+    if (distance <= 0) {
+      setTimeLeft({
+        days: 0,
+        hours: 0,
+        minutes: 0,
+        seconds: 0,
+      });
+      return;
+    }
 
-      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-      setTimeLeft({ days, hours, minutes, seconds });
-    };
-
-    updateCountdown();
+    setTimeLeft({ days, hours, minutes, seconds });
   }, [currentTime]);
+
+  if(
+    timeLeft.days === 0 &&
+    timeLeft.hours === 0 &&
+    timeLeft.minutes === 0 &&
+    timeLeft.seconds === 0
+  ) return(<></>);
 
   return (
     <div className={`countdown-container ${className}`}>
-            <div className={`countdown-unit`}>
-              <span className={`countdown-unit__time`}>{timeLeft.days}</span>
-              <span className={`countdown-unit__name`}>Ngày</span>
-            </div>
-            <div className={`countdown-unit`}>
-              <span className={`countdown-unit__time`}>{timeLeft.hours}</span>
-              <span className={`countdown-unit__name`}>Giờ</span>
-            </div>
-            <div className={`countdown-unit`}>
-              <span className={`countdown-unit__time`}>{timeLeft.minutes}</span>
-              <span className={`countdown-unit__name`}>Phút</span>
-            </div>
-            <div className={`countdown-unit`}>
-              <span className={`countdown-unit__time`}>{timeLeft.seconds}</span>
-              <span className={`countdown-unit__name`}>Giây</span>
-            </div>
+      <div className="countdown-unit">
+        <span className="countdown-unit__time">{timeLeft.days}</span>
+        <span className="countdown-unit__name">Ngày</span>
+      </div>
+      <div className="countdown-unit">
+        <span className="countdown-unit__time">{timeLeft.hours}</span>
+        <span className="countdown-unit__name">Giờ</span>
+      </div>
+      <div className="countdown-unit">
+        <span className="countdown-unit__time">{timeLeft.minutes}</span>
+        <span className="countdown-unit__name">Phút</span>
+      </div>
+      <div className="countdown-unit">
+        <span className="countdown-unit__time">{timeLeft.seconds}</span>
+        <span className="countdown-unit__name">Giây</span>
+      </div>
     </div>
   );
 };
