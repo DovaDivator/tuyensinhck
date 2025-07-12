@@ -143,8 +143,8 @@ public static JSONObject selectCccd (Connection conn, String id) throws Exceptio
 
 } else {
 		selectJson.put("confirm", -3000);
-}
-}
+       }
+     }
 return selectJson;
 }
 
@@ -153,7 +153,6 @@ public static boolean acceptCccd (Connection conn, String id, String realName, S
 		String address, String frontImg, String backImg) throws Exception {
     PreparedStatement stmt1 = null;
     PreparedStatement stmt2 = null;
-    ResultSet rs = null;
     
         		try  {
                     conn.setAutoCommit(false);
@@ -202,7 +201,6 @@ public static boolean acceptCccd (Connection conn, String id, String realName, S
                 } finally {
                     try {
                         if (conn != null) conn.setAutoCommit(true);
-                        if (rs != null) rs.close();
                         if (stmt1 != null) stmt1.close();
                         if (stmt2 != null) stmt2.close();
                     } catch (SQLException ex) {
@@ -210,5 +208,53 @@ public static boolean acceptCccd (Connection conn, String id, String realName, S
                     }
                 }
             }
-        }
+        
 
+public static boolean denyCccd (Connection conn, String id) throws Exception {
+    PreparedStatement denyStmt = null;
+    		
+        		try  {
+                    conn.setAutoCommit(false);
+                    
+                    String denySql = "UPDATE stu_cccd SET is_confirm = -1 WHERE stu_id = ?";
+                    denyStmt = conn.prepareStatement(denySql);
+                    denyStmt.setString(1, id);
+        	        
+                    int updatedDeny = denyStmt.executeUpdate();
+        	        if (updatedDeny == 0) {
+        	        	throw new SQLException ("Không tìm thấy CCCD để từ chối.");
+        	        }
+        	              
+        
+                    conn.commit();
+                    return true;
+                    
+                } catch (Exception e) {
+                    try {
+                        if (conn != null) conn.rollback();
+                    } catch (SQLException rollbackEx) {
+                        rollbackEx.printStackTrace();
+                    }
+                    e.printStackTrace();
+                    return false;
+
+                } finally {
+                    try {
+                        if (conn != null) conn.setAutoCommit(true);
+                        if (denyStmt != null) denyStmt.close();
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            }
+        
+
+public static boolean removeCccd(Connection conn, String id) throws Exception {
+    String deleteSql = "DELETE FROM stu_cccd WHERE stu_id = ?";
+    try (PreparedStatement stmt = conn.prepareStatement(deleteSql)) {
+        stmt.setString(1, id);
+        int rowsAffected = stmt.executeUpdate();
+        return rowsAffected > 0;
+    }
+}
+}

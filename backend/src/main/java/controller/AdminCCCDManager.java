@@ -101,12 +101,28 @@ public class AdminCCCDManager extends HttpServlet {
 						boolean success = CccdUpdateDAO.acceptCccd(conn, id, realName, numCccd, dateBirth, gender, address, frontImg,
 								backImg);
 						if (!success) {
-							throw new UnauthorizedException("Cập nhật không thành công!");
+							throw new UnauthorizedException("Cập nhật dữ liệu không thành công!");
+						}
+						break;
+					}
+					case "denied": {
+						String id = json.getString("id");
+						boolean success = CccdUpdateDAO.denyCccd(conn, id);
+						if (!success) {
+							throw new UnauthorizedException("Từ chối CCCD không thành công!");
+						}
+						break;
+					}
+					case "delete": {
+						String id = json.getString("id");
+						boolean success = CccdUpdateDAO.removeCccd(conn, id);
+						if (!success) {
+							throw new UnauthorizedException("Xóa CCCD không thành công!");
 						}
 						break;
 					}
 					default:
-						throw new Exception("thuộc tính type không hợp lệ " + action);
+						throw new Exception("thuộc tính action không hợp lệ " + action);
 					}
 
 					jsonResponse.put("success", true);

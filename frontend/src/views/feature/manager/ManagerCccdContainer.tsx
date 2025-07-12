@@ -76,6 +76,7 @@ const ManagerCccdContainer = (): JSX.Element => {
             try {
                 const result = await API.GetCccd(token, {id: stu_id});
                 console.log(result);
+                setIsUpdated(result.data.confirm ? parseInt(result.data.confirm) : -1);
 
                 // Giả sử result có dạng {form: {...}, image: {...}}
                 const form = {
@@ -156,7 +157,7 @@ const ManagerCccdContainer = (): JSX.Element => {
     const handleNotAccept = async () => {
         setIsLoading(true);
         try{
-            const result = await API.RemoveCccd(token, {id: stu_id});
+            const result = await API.DeniedCccd(token, {id: stu_id});
             console.log(result);
         }catch(error: any){
             console.error(error)
