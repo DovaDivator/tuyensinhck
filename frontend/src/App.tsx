@@ -12,7 +12,6 @@ import { showToast } from './alert/alertToast';
 
 import LoadingScreen from './views/ui/components/LoadingScreen';
 import SmallScreen from './pages/other/SmallScreen';
-import DateTimePicker from './views/ui/input/DatetimePicker';
 
 const LoginPage = React.lazy(() => import('./pages/auth/LoginPage'));
 const RegisterPage = React.lazy(() => import('./pages/auth/RegisterPage'));
@@ -24,6 +23,7 @@ const InfoPage = React.lazy(() => import('./pages/base/InfoPage'));
 const AskRegister = React.lazy(() => import('./pages/other/AskRegister'));
 const ManagerUserPage = React.lazy(() => import('./pages/admin/ManagerUserPage'));
 const ManagerCccdPage = React.lazy(() => import('./pages/admin/ManagerCccdPage'));
+const ExamRegister = React.lazy(() => import('./pages/base/ExamRegister'));
 
 interface Props {
   children: JSX.Element;
@@ -68,6 +68,7 @@ const AppContent = (): JSX.Element => {
         <Route path="/dang-ky" element={<GuestRoute><RegisterPage /></GuestRoute>} />
         <Route path="/a1s2d3f4" element={<GuestRoute><AskRegister /></GuestRoute>} />
         <Route path="/info/:type" element={<ProtectedRoute><InfoPage /></ProtectedRoute>} />
+        <Route path="/dang-ky-thi" element={<ProtectedRoute><ExamRegister /></ProtectedRoute>} />
         <Route path="/gioi-thieu" element={<IntroducePage />} />
         <Route path="/kham-pha/he/:type" element={<DiscoverUniPage />} />
         <Route path="/tin-tuc" element={<NewsPage />} />

@@ -16,6 +16,8 @@ import Card from '../../ui/components/Card';
 import { parseFlexibleDate } from '../../../function/convert/parseFlexibleDate';
 import { DateValids } from '../../../classes/DateValids';
 import { fetchVietnamTime } from '../../../api/FetchVietnamTime';
+import { checkValidSubmitUtils } from '../../../function/triggers/checkValidSubmitUtils';
+import { UpdateOpenKyThi } from '../../../api/KyThiEdit';
 
 const HEADERS = {
     loaiThiLabel: "Cấp bậc",
@@ -208,6 +210,21 @@ const ManagerExamContainer = ({className = ""}: jsxEleProps): JSX.Element =>{
         }
     };
 
+        const handleSubmit = async () =>{
+            //Hàm kiểm tra ở đây
+            setIsLoading(true);
+            const validate = checkValidSubmitUtils(formData, valids, setErrors);
+    
+            console.log(validate);
+            try{
+                const result = await UpdateOpenKyThi(token, {...formData, type: typeCase.type});
+                console.log(result);
+            }catch(error: any){
+                console.error(error)
+            }
+            setIsLoading(false);
+        }
+
     return (
         <section className={`manager-exam ${className}`}>
             <h2>Quản lý kỳ thi</h2>
@@ -265,7 +282,7 @@ const ManagerExamContainer = ({className = ""}: jsxEleProps): JSX.Element =>{
                     <Button
                         type="button"
                         className="btn-confirm"
-                        // onClick={handleSubmit}
+                        onClick={handleSubmit}
                         text="Cập nhật!"
                         disabled={isLoading || [2, 3].includes(typeCase.statusNum)}
                     />

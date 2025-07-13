@@ -1,6 +1,8 @@
 import { InputOptions } from "../classes/InputOption";
 
-
+export interface Unit {
+  [key: string]: any;
+}
 
 export interface FormDataProps {
   [key: string]: string | string[] | undefined;

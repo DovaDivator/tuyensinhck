@@ -1,7 +1,4 @@
-interface Unit {
-  name: string;
-  value: string;
-}
+import { Unit } from "../types/FormInterfaces";
 
 export const ChangeUser = async (token: string, dataToSend: Unit): Promise<any> => {
   try {
