@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONObject;
 
+import dao.KyThiManagerDAO;
 import exception.UnauthorizedException;
 import service.HttpJson;
 import util.DBConnectionMain;
@@ -49,7 +50,6 @@ public class OpenKyThiManager extends HttpServlet {
 		DBConnectionMain dbConn = null;
 		Connection conn = null;
 		try {
-			String type = request.getParameter("type");
 			String body = HttpJson.readRequestBody(request);
 			JSONObject json = new JSONObject(body);
 
@@ -74,6 +74,18 @@ public class OpenKyThiManager extends HttpServlet {
 //			if (!user.isAdmin()) {
 //				throw new Error("Không có quyền truy cập");
 //			}
+			
+			dbConn = new DBConnectionMain();
+			conn = dbConn.getConnection();
+			
+			String type = json.optString("type", null);
+			String timeStart = json.optString("timeStart", null);
+			String timeEnd = json.optString("timeEnd", null);
+			String isAdd = json.getString("isAdd").equals("true") ? "1" : "0";
+			boolean success = KyThiManagerDAO.updateExamTime(conn, type, timeStart, timeEnd, isAdd);
+			if (!success) {
+				throw new Exception("Cập nhật thời gian kỳ thi không thành công.");
+			}
 
 			jsonResponse.put("success", true);
 			jsonResponse.put("message", "Cập nhật thành công!");	

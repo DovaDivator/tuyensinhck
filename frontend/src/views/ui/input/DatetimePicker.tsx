@@ -6,6 +6,7 @@ import { formatTimestamp } from '../../../function/convert/formatTimestamp';
 import { FormDataProps, ErrorLogProps, ValidateRule } from '../../../types/FormInterfaces';
 import { DateValids } from '../../../classes/DateValids';
 import './InputField.scss';
+import { parseFlexibleDate } from '../../../function/convert/parseFlexibleDate';
 
 type PickerType = 'date' | 'time' | 'datetime';
 
@@ -21,6 +22,12 @@ interface DateTimePickerProps {
     errors?: ErrorLogProps;
     setErrors?: React.Dispatch<React.SetStateAction<ErrorLogProps>>;
     valids?: ValidateRule;
+}
+
+const TIME_CASE = {
+  'date': 'DD/MM/YYYY',
+  'time': 'HH:mm',
+  'datetime': 'HH:mm dd/MM/yyyy'
 }
 
 const DatetimePicker = ({
@@ -40,6 +47,12 @@ const DatetimePicker = ({
     allowInput: true,
     time_24hr: true,
   };
+
+  const parsedValue = value instanceof Date
+    ? value
+    : typeof value === 'string' && value.trim() !== ''
+      ? parseFlexibleDate(value)
+      : '';
 
   switch (type) {
     case 'date':
@@ -61,19 +74,7 @@ const DatetimePicker = ({
   const selected = dates[0];
   if (!selected) return;
 
-  let formatted = '';
-  switch (type) {
-    case 'date':
-      formatted = formatTimestamp(selected, 'DD/MM/YYYY');
-      break;
-    case 'time':
-      formatted = formatTimestamp(selected, 'HH:mm');
-      break;
-    case 'datetime':
-    default:
-      formatted = formatTimestamp(selected, 'HH:mm DD/MM/YYYY');
-      break;
-  }
+  let formatted = formatTimestamp(selected, TIME_CASE[type]);
 
    setFormData(prev => {
     const updated = { ...prev, [name]: formatted };
@@ -107,7 +108,7 @@ const DatetimePicker = ({
           name={name}
           id={id}
           options={options}
-          value={value || ''}
+          value={parsedValue}
           onChange={handleChange}
           className={className}
         />

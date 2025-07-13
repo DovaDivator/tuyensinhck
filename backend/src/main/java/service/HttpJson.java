@@ -32,7 +32,7 @@ public class HttpJson {
 	public static String convertTime(Date time, String format) {
 		if (time == null) return null;
 		SimpleDateFormat sdf = new SimpleDateFormat(format);
-		sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+		sdf.setTimeZone(TimeZone.getTimeZone("Asia/Ho_Chi_Minh"));
 		return sdf.format(time);
 	}
 	

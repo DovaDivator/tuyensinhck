@@ -38,8 +38,8 @@ public class KyThiManagerDAO {
 				jsonObj.put("loaiThi", rs.getString("loai_thi"));
 				jsonObj.put("khoa", rs.getInt("khoa"));
 				jsonObj.put("isAdd", rs.getBoolean("is_add"));
-				jsonObj.put("timeStart", HttpJson.convertTime(rs.getDate("time_start"), "HH:mm dd/MM/yyyy"));
-				jsonObj.put("timeEnd", HttpJson.convertTime(rs.getDate("time_end"), "HH:mm dd/MM/yyyy"));
+				jsonObj.put("timeStart", HttpJson.convertTime(rs.getTimestamp("time_start"), "HH:mm dd/MM/yyyy"));
+				jsonObj.put("timeEnd", HttpJson.convertTime(rs.getTimestamp("time_end"), "HH:mm dd/MM/yyyy"));
 				jsonObj.put("dateExam", HttpJson.convertTime(rs.getDate("date_exam"), "HH:mm dd/MM/yyyy"));
 
 				response.put(jsonObj);
@@ -53,17 +53,17 @@ public class KyThiManagerDAO {
 	}
 
 	
-	public static boolean updateExamTime(Connection conn, String type, String timeStartString, String timeEndString, boolean isAdd) throws Exception{
+	public static boolean updateExamTime(Connection conn, String type, String timeStartString, String timeEndString, String isAdd) throws Exception{
 		if (!type.equals("dh") && !type.equals("cd") && !type.equals("lt")) {
 			throw new Exception ("Loại kỳ thi không hợp lệ.");
 		}
 		
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh: mm dd/MM/yyyy");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd/MM/yyyy");
 		LocalDateTime timeStart = LocalDateTime.parse(timeStartString, formatter);
 		LocalDateTime timeEnd = LocalDateTime.parse(timeEndString, formatter);
 		
-		String selectTimeSql = "SELECT date_exam, time_start, time_end, khoa FROM ky_thi_mgr WHERE type = ?";
-		String updateTimeSql = "UPDATE ky_thi_mgr SET time_start = ?, time_end = ?, is_add = ?, khoa = ?, date_exam = NULL WHERE type = ?";
+		String selectTimeSql = "SELECT date_exam, time_start, time_end, khoa FROM ky_thi_mgr WHERE loai_thi = ?";
+		String updateTimeSql = "UPDATE ky_thi_mgr SET time_start = ?, time_end = ?, is_add = ?, khoa = ?, date_exam = NULL WHERE loai_thi = ?";
 		
 		try (PreparedStatement stmt = conn.prepareStatement(selectTimeSql)) {
 			stmt.setString(1, type);
@@ -85,7 +85,7 @@ public class KyThiManagerDAO {
 			
 			int khoa = rs.getInt("khoa");
 			
-		     if (!isAdd) {
+		     if (isAdd.equals("0")) {
 		            if (dateExam != null && timeStart.isBefore(dateExam.plusDays(3))) {
 		                throw new Exception("Thời gian bắt đầu phải sau ngày thi ít nhất 3 ngày.");
 		            }
@@ -94,13 +94,12 @@ public class KyThiManagerDAO {
 		                throw new Exception("Thời gian bắt đầu phải sau thời gian kết thúc trước đó.");
 		            }
 		        }
-
 		     
 		        try (PreparedStatement updateStmt = conn.prepareStatement(updateTimeSql)) {
 		            updateStmt.setTimestamp(1, Timestamp.valueOf(timeStart));
 		            updateStmt.setTimestamp(2, Timestamp.valueOf(timeEnd));
-		            updateStmt.setBoolean(3, isAdd);
-		            updateStmt.setInt(4, !isAdd ? khoa ++ : khoa);
+		            updateStmt.setInt(3, Integer.parseInt(isAdd));
+		            updateStmt.setInt(4, isAdd.equals("0") ? khoa : khoa++);
 		            updateStmt.setString(5, type);
 
 		            int updated = updateStmt.executeUpdate();

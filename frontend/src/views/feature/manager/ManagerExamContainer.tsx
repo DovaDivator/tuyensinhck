@@ -150,20 +150,6 @@ const ManagerExamContainer = ({className = ""}: jsxEleProps): JSX.Element =>{
                 );
 
                 setData(mappedData);
-                
-                const check = ANH_XA.find(item => item.value === typeCase.type);
-                if (check && searchParams.get("type") !== check.value) {
-                  const item: any = data.find(row => (row as any).loaiThi === typeCase.type);
-                  const formDataTemp = {
-                    timeStart: item.timeStart ? item.timeStart : "",
-                    timeEnd: item.timeEnd ? item.timeEnd : "",
-                    isAdd: item.isAdd,
-                  }
-                  setFormData(formDataTemp);
-                  defaultFormRef.current = formDataTemp
-                  setStatusNum(item.statusEffect ?? 0);
-                }
-
               } catch (err) {
                 console.error(err);
               } finally {
@@ -173,6 +159,23 @@ const ManagerExamContainer = ({className = ""}: jsxEleProps): JSX.Element =>{
     
             getData();
           }, [typeCase.type]);
+
+    useEffect(() => {
+      if(data.length > 0 && typeCase.type !== ""){
+      const check = ANH_XA.find(item => item.value === typeCase.type);
+                if (check) {
+                  const item: any = data.find(row => (row as any).loaiThi === typeCase.type);
+                  const formDataTemp = {
+                    timeStart: item.timeStart ? item.timeStart : "",
+                    timeEnd: item.timeEnd ? item.timeEnd : "",
+                    isAdd: item.isAdd,
+                  }
+                  console.log(formDataTemp)
+                  setFormData(formDataTemp);
+                  defaultFormRef.current = formDataTemp
+                  setStatusNum(item.statusEffect ?? 0);
+                }}
+    }, [typeCase.type, data]);
 
     useEffect(() => {
       const item = ANH_XA.find(item => item.value === typeCase.type);
