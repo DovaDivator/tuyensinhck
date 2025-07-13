@@ -1,8 +1,12 @@
 package dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -48,5 +52,61 @@ public class KyThiManagerDAO {
 		return response;
 	}
 
+	
+	public static boolean updateExamTime(Connection conn, String type, String timeStartString, String timeEndString, boolean isAdd) throws Exception{
+		if (!type.equals("dh") && !type.equals("cd") && !type.equals("lt")) {
+			throw new Exception ("Loại kỳ thi không hợp lệ.");
+		}
+		
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh: mm dd/MM/yyyy");
+		LocalDateTime timeStart = LocalDateTime.parse(timeStartString, formatter);
+		LocalDateTime timeEnd = LocalDateTime.parse(timeEndString, formatter);
+		
+		String selectTimeSql = "SELECT date_exam, time_start, time_end, khoa FROM ky_thi_mgr WHERE type = ?";
+		String updateTimeSql = "UPDATE ky_thi_mgr SET time_start = ?, time_end = ?, is_add = ?, khoa = ?, date_exam = NULL WHERE type = ?";
+		
+		try (PreparedStatement stmt = conn.prepareStatement(selectTimeSql)) {
+			stmt.setString(1, type);
+			ResultSet rs = stmt.executeQuery();
+			
+			if (!rs.next()) {
+				throw new Exception ("Không tìm thấy thông tin kỳ thi.");
+			}
+			
+			Date dateExamsql = rs.getDate("date_exam");
+			LocalDateTime dateExam = null;
+			
+			if (dateExamsql != null) {
+				dateExam = dateExamsql.toLocalDate().atStartOfDay();
+			}
+			
+			Timestamp oldTimeEndsql = rs.getTimestamp("time_end");
+			LocalDateTime oldTimeEnd = oldTimeEndsql != null ? oldTimeEndsql.toLocalDateTime() : null;
+			
+			int khoa = rs.getInt("khoa");
+			
+		     if (!isAdd) {
+		            if (dateExam != null && timeStart.isBefore(dateExam.plusDays(3))) {
+		                throw new Exception("Thời gian bắt đầu phải sau ngày thi ít nhất 3 ngày.");
+		            }
+		        } else {
+		            if (dateExam == null && oldTimeEnd != null && !timeStart.isAfter(oldTimeEnd)) {
+		                throw new Exception("Thời gian bắt đầu phải sau thời gian kết thúc trước đó.");
+		            }
+		        }
 
+		     
+		        try (PreparedStatement updateStmt = conn.prepareStatement(updateTimeSql)) {
+		            updateStmt.setTimestamp(1, Timestamp.valueOf(timeStart));
+		            updateStmt.setTimestamp(2, Timestamp.valueOf(timeEnd));
+		            updateStmt.setBoolean(3, isAdd);
+		            updateStmt.setInt(4, !isAdd ? khoa ++ : khoa);
+		            updateStmt.setString(5, type);
+
+		            int updated = updateStmt.executeUpdate();
+		            return updated > 0;
+		        }
+		    }
+		}
 }
+
