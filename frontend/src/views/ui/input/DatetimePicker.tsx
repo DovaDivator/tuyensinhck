@@ -25,9 +25,9 @@ interface DateTimePickerProps {
 }
 
 const TIME_CASE = {
-  'date': 'dd/MM/yyyy',
+  'date': 'DD/MM/YYYY',
   'time': 'HH:mm',
-  'datetime': 'HH:mm dd/MM/yyyy'
+  'datetime': 'HH:mm DD/MM/YYYY'
 }
 
 const DatetimePicker = ({
