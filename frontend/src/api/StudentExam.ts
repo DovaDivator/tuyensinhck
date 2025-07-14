@@ -1,6 +1,6 @@
 export const GetExamExist = async (token: string): Promise<any> => {
     try {
-        const response = await fetch('http://localhost:8080/api/exam=fetch', {
+        const response = await fetch('http://localhost:8080/api/exam?type=fetch', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
