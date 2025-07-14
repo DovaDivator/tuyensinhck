@@ -94,12 +94,11 @@ public class KyThiManagerDAO {
 		                throw new Exception("Thời gian bắt đầu phải sau thời gian kết thúc trước đó.");
 		            }
 		        }
-		     
 		        try (PreparedStatement updateStmt = conn.prepareStatement(updateTimeSql)) {
 		            updateStmt.setTimestamp(1, Timestamp.valueOf(timeStart));
 		            updateStmt.setTimestamp(2, Timestamp.valueOf(timeEnd));
 		            updateStmt.setInt(3, Integer.parseInt(isAdd));
-		            updateStmt.setInt(4, isAdd.equals("0") ? khoa : khoa++);
+		            updateStmt.setInt(4, isAdd.equals("0") ? ++khoa : khoa);
 		            updateStmt.setString(5, type);
 
 		            int updated = updateStmt.executeUpdate();

@@ -26,7 +26,7 @@ const HEADERS = {
     timeEnd: "Thời gian đóng",
     dateExam: "Ngày tổ chức",
     status: "Tình trạng",
-    isAdd: "Bổ sung?"
+    adding: "Bổ sung?"
 }
 const ANH_XA = [
     {value: "dh", label: "Đại học"},
@@ -70,7 +70,7 @@ const ManagerExamContainer = ({className = ""}: jsxEleProps): JSX.Element =>{
     const [formData, setFormData] = useState<FormDataProps>({
       timeStart: "",
       timeEnd: "",
-      isAdd: "",
+      adding: "",
     });
 
     const defaultFormRef = useRef<FormDataProps | null>(null);
@@ -78,7 +78,7 @@ const ManagerExamContainer = ({className = ""}: jsxEleProps): JSX.Element =>{
     const [errors, setErrors] = useState<ErrorLogProps>({
       timeStart: "",
       timeEnd: "",
-      isAdd: "",
+      adding: "",
     });
 
     const [valids, setValids] = useState<DataValidsProps>({
@@ -168,7 +168,7 @@ const ManagerExamContainer = ({className = ""}: jsxEleProps): JSX.Element =>{
                   const formDataTemp = {
                     timeStart: item.timeStart ? item.timeStart : "",
                     timeEnd: item.timeEnd ? item.timeEnd : "",
-                    isAdd: item.isAdd,
+                    adding: item.adding,
                   }
                   console.log(formDataTemp)
                   setFormData(formDataTemp);
@@ -207,7 +207,7 @@ const ManagerExamContainer = ({className = ""}: jsxEleProps): JSX.Element =>{
             setFormData({
               timeStart: "",
               timeEnd: "",
-              isAdd: "",
+              adding: "",
             })
             console.warn("Dữ liệu mặc định chưa được khởi tạo");
         }
@@ -220,7 +220,8 @@ const ManagerExamContainer = ({className = ""}: jsxEleProps): JSX.Element =>{
     
             console.log(validate);
             try{
-                const result = await UpdateOpenKyThi(token, {...formData, type: typeCase.type});
+                const addingString = formData.adding instanceof Array ? formData.adding[0] : formData.adding;
+                const result = await UpdateOpenKyThi(token, {...formData, adding: addingString, type: typeCase.type});
                 console.log(result);
             }catch(error: any){
                 console.error(error)
@@ -273,10 +274,10 @@ const ManagerExamContainer = ({className = ""}: jsxEleProps): JSX.Element =>{
                   valids={valids.timeEnd}
                 />
                 <InputChoice
-                  name="isAdd"
-                  id="isAdd"
+                  name="adding"
+                  id="adding"
                   choices={[{value: 'true', label: "Bổ sung thí sinh?"}]}
-                  value={formData.isAdd}
+                  value={formData.adding}
                   setFormData={setFormData}
                   disabled={statusNum !== 4}
                 />

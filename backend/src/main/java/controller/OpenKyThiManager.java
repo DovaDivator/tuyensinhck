@@ -81,7 +81,7 @@ public class OpenKyThiManager extends HttpServlet {
 			String type = json.optString("type", null);
 			String timeStart = json.optString("timeStart", null);
 			String timeEnd = json.optString("timeEnd", null);
-			String isAdd = json.getString("isAdd").equals("true") ? "1" : "0";
+			String isAdd =  json.has("adding") && json.getString("adding").equalsIgnoreCase("true") ? "1" : "0";
 			boolean success = KyThiManagerDAO.updateExamTime(conn, type, timeStart, timeEnd, isAdd);
 			if (!success) {
 				throw new Exception("Cập nhật thời gian kỳ thi không thành công.");
