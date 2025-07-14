@@ -8,11 +8,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
 
 import dao.KyThiManagerDAO;
 import exception.UnauthorizedException;
+import model.UserBasic;
 import service.HttpJson;
 import util.DBConnectionMain;
 
@@ -51,34 +53,44 @@ public class ExamManagement extends HttpServlet {
 		Connection conn = null;
 		try {
 			String body = HttpJson.readRequestBody(request);
-			JSONObject json = new JSONObject(body);
 			
-//			String token = request.getHeader("Authorization");
-//			if (token == null || !token.startsWith("Bearer ")) {
-//				throw new Exception("Token không hợp lệ hoặc thiếu");
-//			}
-//
-//			token = token.substring(7); // cắt "Bearer "
-//			HttpSession session = request.getSession(false);
-//
-//			// Kiểm tra token và xác minh quyền admin
-//			if (session == null)
-//				throw new Error("Session không tồn tại hoặc đã hết hạn");
-//
-//			UserBasic user = (UserBasic) session.getAttribute("user");
-//			String sessionToken = (String) session.getAttribute("token");
-//
-//			if (user == null || sessionToken == null || !sessionToken.equals(token))
-//				throw new Error("User không tồn tại trong session");
-//
-//			if (!user.isAdmin()) {
-//				throw new Error("Không có quyền truy cập");
-//			}
+			String token = null;
+			String authHeader = request.getHeader("Authorization");
+			if (authHeader != null && authHeader.startsWith("Bearer ")) {
+				token = authHeader.substring(7);
+			} else {
+				throw new UnauthorizedException("Không có Header");
+			}
+
+			response.setContentType("application/json");
+			response.setCharacterEncoding("UTF-8");
+
+			HttpSession session = request.getSession(false);
+			if (session == null) {
+				throw new UnauthorizedException("Session không tồn tại hoặc đã hết hạn");
+			}
+
+			UserBasic user = (UserBasic) session.getAttribute("user");
+			String sessionToken = (String) session.getAttribute("token");
+			if (user == null || sessionToken == null || !sessionToken.equals(token)) {
+				throw new UnauthorizedException("User không tồn tại trong session");
+			}
+			
+			JSONObject json = new JSONObject();
+			try {
+		        json = new JSONObject(body);
+		    } catch (Exception ex) {
+		        // Không thêm json nếu parse lỗi
+		        System.err.println("Lỗi parse JSON: " + ex.getMessage());
+		    }
+			
+			dbConn = new DBConnectionMain();
+			conn = dbConn.getConnection();
+			
 			String type = request.getParameter("type");
 			switch(type) {
 			case "fetch": {
-				String id = json.getString("id");
-				boolean fetchdata = KyThiManagerDAO.fetchExamstatus(conn, id);
+				boolean fetchdata = KyThiManagerDAO.fetchExamstatus(conn, user.getId());
 				jsonResponse.put("data", fetchdata);
 				break;
 			}

@@ -66,14 +66,37 @@ const ExamRegisterContainer = ({listDK}: {listDK: string[]}): JSX.Element => {
     <div className='exam-register-container'>
         <h2>Đăng ký kỳ thi</h2>
         <form>
-            <Dropdown
-                name="typeExam"
-                id="typeExam"
-                choices={Object.values(filtered)}
-                value={String(formData.typeExam)}
-                setFormData={setFormData}
-                label="kỳ thi"
-            />
+            <div className='label-dropdown'>
+                <span>Chọn kỳ thi đang diễn ra:</span>
+                <Dropdown
+                    name="typeExam"
+                    id="typeExam"
+                    choices={Object.values(filtered)}
+                    value={String(formData.typeExam)}
+                    setFormData={setFormData}
+                />
+            </div>
+            <div className='label-dropdown'>
+                <span>Môn tự chọn:</span>
+                <Dropdown
+                    name="monTC"
+                    id="monTC"
+                    choices={Object.values(filtered)}
+                    value={String(formData.typeExam)}
+                    setFormData={setFormData}
+                />
+            </div>
+            <div className='label-dropdown'>
+                <span>Môn ngoại ngữ:</span>
+                <Dropdown
+                    name="monNN"
+                    id="monNN"
+                    choices={Object.values(filtered)}
+                    value={String(formData.typeExam)}
+                    setFormData={setFormData}
+                    label="môn tự chọn"
+                />
+            </div>
         </form>
     </div>
     );
