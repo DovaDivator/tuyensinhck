@@ -8,7 +8,7 @@ import { useAuth } from '../../context/AuthContext';
 import { GetConfirmCccd } from '../../api/StudentCccd';
 import DeniedCccdList from '../../views/feature/ExamRegister/DeniedCccdList';
 import WaitingComfirm from '../../views/feature/ExamRegister/WaitingConfirm';
-import ExamRegisterContainer from '../../views/feature/ExamRegister/ExamRegisterContainer';
+import ExamRegisterCondition from '../../views/feature/ExamRegister/ExamRegisterCondition';
 
 const ManagerCccdPage = (): JSX.Element => {
   const {token} = useAuth();
@@ -31,7 +31,7 @@ const ManagerCccdPage = (): JSX.Element => {
             setJsx(<WaitingComfirm/>);
             break;
           case 1:
-            setJsx(<ExamRegisterContainer token={token}/>);
+            setJsx(<ExamRegisterCondition token={token}/>);
             break;
           default:
             throw new Error("Mã comfirm không khớp " + result.data.comfirm);
