@@ -111,6 +111,12 @@ public class CccdUpdateEdit extends HttpServlet {
 				}
 				break;
 			}
+			case "confirm": {
+				int confirm = CccdUpdateDAO.confirmStudent(conn, user.getId());
+				jsonResponse.put("data", confirm);
+				break;
+
+			}
 			default:
 				throw new Exception("thuộc tính type không hợp lệ " + action);
 			}
