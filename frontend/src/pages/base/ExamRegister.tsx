@@ -18,9 +18,10 @@ const ManagerCccdPage = (): JSX.Element => {
     const fetchDataCase = async () => {
       try{
         const result = await GetConfirmCccd(token);
-        if(!result.success || !result.data.confirm) throw new Error("Lỗi trả về dữ liệu");
+        console.log(result);
+        if(!result.success) throw new Error("Lỗi trả về dữ liệu");
 
-        switch(result.data.comfirm){
+        switch(result.data){
           case -3000:
             setJsx(<DeniedCccdList caseDeny={0}/>);
             break;
@@ -34,7 +35,7 @@ const ManagerCccdPage = (): JSX.Element => {
             setJsx(<ExamRegisterCondition token={token}/>);
             break;
           default:
-            throw new Error("Mã comfirm không khớp " + result.data.comfirm);
+            throw new Error("Mã không khớp " + result.data);
         }
       }catch(error: any){
         console.error(error);

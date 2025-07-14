@@ -106,5 +106,37 @@ public class KyThiManagerDAO {
 		        }
 		    }
 		}
+	
+	public static boolean fetchExamstatus (Connection conn, String id) throws Exception {
+		String fetchLastRegistersql = "SELECT he, khoa from thi_cu WHERE stu_id = ? ORDER BY id DESC LIMIT 1";
+		
+		try (PreparedStatement stmt = conn.prepareStatement(fetchLastRegistersql)) {
+			stmt.setString(1, id);
+			ResultSet rs = stmt.executeQuery();
+			
+			if(!rs.next()) {
+				return true;
+			}
+			
+			String he = rs.getString("he");
+			int khoa = rs.getInt("khoa");
+			
+		String fetchCurrentKyThisql = "SELECT khoa from ky_thi_mgr WHERE loai_thi = ?";
+		
+        try (PreparedStatement stmt2 = conn.prepareStatement(fetchCurrentKyThisql)) {
+            stmt2.setString(1, he);
+            ResultSet rs2 = stmt2.executeQuery();
+            
+            if(!rs2.next()) {
+            	throw new Exception ("Không tìm thấy kỳ thi hiện tại.");
+            }
+            
+            int Currentkhoa = rs2.getInt("khoa");
+            
+            return Currentkhoa != khoa;
+            
+	}
+}
+}
 }
 

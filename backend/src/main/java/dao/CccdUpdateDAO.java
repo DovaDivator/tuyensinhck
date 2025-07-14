@@ -257,4 +257,18 @@ public static boolean removeCccd(Connection conn, String id) throws Exception {
         return rowsAffected > 0;
     }
 }
+
+
+public static int confirmStudent (Connection conn, String id) throws Exception {
+	String isConfirmSql = "SELECT is_confirm FROM stu_cccd WHERE stu_id = ?";
+	try (PreparedStatement stmt = conn.prepareStatement(isConfirmSql)) {
+		stmt.setString (1, id);
+		ResultSet rs = stmt.executeQuery();
+		if (rs.next() ) {
+			return rs.getInt("is_confirm");
+		} else {
+			return -3000;
+		}
+	}
+}
 }
