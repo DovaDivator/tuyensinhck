@@ -1,5 +1,6 @@
 export function parseFlexibleDate(input: string): Date {
   const trimmed = input.trim();
+  console.log(trimmed);
 
   const patterns: [RegExp, (m: RegExpMatchArray) => Date][] = [
     // HH:mm DD/MM/YYYY
