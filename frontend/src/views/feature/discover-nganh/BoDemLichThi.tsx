@@ -10,6 +10,7 @@ import Countdown from "../../ui/components/Countdown";
 import "./BoDemLichThi.scss";
 import { fetchKyThi } from "../../../api/FetchKyThi";
 import { fetchVietnamTime } from "../../../api/FetchVietnamTime";
+import { parseFlexibleDate } from "../../../function/convert/parseFlexibleDate";
 
 interface BoDemLichThiProps extends jsxEleProps {
     type?: string;
@@ -65,7 +66,7 @@ const BoDemLichThi = ({className = "", type = ""}: BoDemLichThiProps): JSX.Eleme
         if(!("timeStart" in item && "timeEnd" in item)) throw new Error("Dữ liệu bị thiếu");
 
         const timeNow = await fetchVietnamTime();
-        if((timeNow.getTime() - item.timeStart.getTime()) < 0){
+        if((timeNow.getTime() - parseFlexibleDate(item.timeStart).getTime()) < 0){
           setTime({
             statusNum: 0,
             target: item.timeStart
@@ -73,7 +74,7 @@ const BoDemLichThi = ({className = "", type = ""}: BoDemLichThiProps): JSX.Eleme
           return;
         }
 
-        if((timeNow.getTime() - item.timeEnd.getTime()) < 0){
+        if((timeNow.getTime() - parseFlexibleDate(item.timeEnd).getTime()) < 0){
           setTime({
             statusNum: 1,
             target: item.timeEnd
