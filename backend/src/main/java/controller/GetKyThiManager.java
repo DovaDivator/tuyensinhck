@@ -47,12 +47,21 @@ public class GetKyThiManager extends HttpServlet {
 		    dbConn = new DBConnectionMain();
 			conn = dbConn.getConnection();
 
-			JSONArray result = KyThiManagerDAO.getKyThi(conn, type);
-
+			
+			switch (type) {
+			case "list":{
+				JSONArray listType = KyThiManagerDAO.listKyThi(conn, type);
+				jsonResponse.put("data", listType);
+				break;
+			}
+			
+			default:
+				JSONArray result = KyThiManagerDAO.getKyThi(conn, type);
+				jsonResponse.put("data", result);
+		    }
 
 			jsonResponse.put("success", true);
 			jsonResponse.put("message", "Lấy dữ liệu thành công!");
-			jsonResponse.put("data", result);
 
 		} catch (Exception e) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
