@@ -14,10 +14,11 @@ import { base64ToFile } from "../../../function/convert/base64ToFile";
 import { useAppContext } from "../../../context/AppContext";
 import { InputValids } from "../../../classes/InputValids";
 import { ChoiceValids } from "../../../classes/ChoiceValids";
+import { checkValidSubmitUtils } from "../../../function/triggers/checkValidSubmitUtils";
 
 const CccdEdit = (): JSX.Element => {
     const {token, user} = useAuth();
-    const {isLoading} = useAppContext();
+    const {isLoading, setIsLoading} = useAppContext();
     const friendlyNote = ["Thông tin của bạn đang chờ phê duyệt!","Bạn đã cập nhật CCCD!"];
 
     const [isUpdated, setIsUpdated] = useState<number>(-1);
@@ -103,7 +104,14 @@ const CccdEdit = (): JSX.Element => {
 
     const handleSubmit = async () =>{
         //Hàm kiểm tra ở đây
-        console.log("Kiểm tra thành công");
+        setIsLoading(true);
+        const validate = checkValidSubmitUtils({...formData, ...imgData}, valids, setErrors);
+        console.log(validate);
+        if(!validate){
+            setIsLoading(false);
+            return;
+        }
+        
         console.log(formData);
         const base64Data = await convertFileDataToBase64(imgData);
         //Thực hiện API cập nhật
@@ -113,6 +121,8 @@ const CccdEdit = (): JSX.Element => {
         }catch(error: any){
             console.error(error)
         }
+
+        setIsLoading(false)
     }
 
     return (
