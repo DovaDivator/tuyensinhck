@@ -131,8 +131,12 @@ const ManagerCccdContainer = (): JSX.Element => {
         //Hàm kiểm tra ở đây
         setIsLoading(true);
         const validate = checkValidSubmitUtils({...formData, ...imgData}, valids, setErrors);
-
         console.log(validate);
+        if(!validate){
+            setIsLoading(false);
+            return;
+        }
+
         const base64Data = await convertFileDataToBase64(imgData);
         try{
             const result = await API.UpdateCccd(token, {...formData, ...base64Data, id: stu_id});

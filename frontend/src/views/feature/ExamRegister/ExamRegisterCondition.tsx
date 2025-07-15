@@ -4,8 +4,14 @@ import { GetExamExist } from '../../../api/StudentExam';
 import { fetchListKyThi } from '../../../api/FetchKyThi';
 import ExistExam from './ExistExam';
 import EmptyList from './EmptyListDK';
-import { FormDataProps } from '../../../types/FormInterfaces';
+import { ErrorLogProps, FormDataProps } from '../../../types/FormInterfaces';
 import Dropdown from '../../ui/input/Dropdown';
+import { DropdownValids } from '../../../classes/DrowdownValids';
+import Button from '../../ui/input/Button';
+import { useAppContext } from '../../../context/AppContext';
+import { checkValidSubmitUtils } from '../../../function/triggers/checkValidSubmitUtils';
+import { updateExam } from '../../../api/StudentExam';
+
 
 const ExamRegisterCondition = ({token = ""}: {token: string}):JSX.Element => {
     const [jsx, setJsx] = useState<JSX.Element>(<></>)
@@ -26,7 +32,7 @@ const ExamRegisterCondition = ({token = ""}: {token: string}):JSX.Element => {
                     return;
                 }
 
-                setJsx(<ExamRegisterContainer listDK={resultList.data}/>);
+                setJsx(<ExamRegisterContainer listDK={resultList.data} token={token}/>);
 
                 console.log(resultList);
             }catch(error: any){
@@ -48,7 +54,8 @@ const ANH_XA = [
     {value: "lt", label: "Liên thông"}
 ];
 
-const ExamRegisterContainer = ({listDK}: {listDK: string[]}): JSX.Element => {
+const ExamRegisterContainer = ({listDK, token}: {listDK: string[], token: string}): JSX.Element => {
+    const {isLoading, setIsLoading} = useAppContext();
     const [searchParams] = useSearchParams();
     const type = searchParams.get("type") || "";
 
@@ -62,6 +69,45 @@ const ExamRegisterContainer = ({listDK}: {listDK: string[]}): JSX.Element => {
         monNN: "",
     })
 
+    const [error, setError] = useState<ErrorLogProps>({
+        typeExam: type,
+        monTC: "",
+        monNN: "",
+    })
+
+    const valids = {
+        typeExam: new DropdownValids({required: true}),
+        monTC: new DropdownValids({required: true}),
+        monNN: new DropdownValids({required: true}),
+    }
+
+    const handleReset = () =>{
+        setFormData({
+            typeExam: type,
+            monTC: "",
+            monNN: "",
+        })
+    }
+
+    const handleSubmit = async () =>{
+            //Hàm kiểm tra ở đây
+            setIsLoading(true);
+            const validate = checkValidSubmitUtils(formData, valids, setError);
+            console.log(validate);
+            if(!validate){
+                setIsLoading(false);
+                return;
+            }
+    
+            try{
+                const result = await updateExam(token, formData);
+                console.log(result);
+            }catch(error: any){
+                console.error(error)
+            }
+            setIsLoading(false);
+        }
+
     return(
     <div className='exam-register-container'>
         <h2>Đăng ký kỳ thi</h2>
@@ -74,6 +120,9 @@ const ExamRegisterContainer = ({listDK}: {listDK: string[]}): JSX.Element => {
                     choices={Object.values(filtered)}
                     value={String(formData.typeExam)}
                     setFormData={setFormData}
+                    errors={error}
+                    setErrors={setError}
+                    valid={valids.typeExam}
                 />
             </div>
             <div className='label-dropdown'>
@@ -84,6 +133,9 @@ const ExamRegisterContainer = ({listDK}: {listDK: string[]}): JSX.Element => {
                     choices={Object.values(filtered)}
                     value={String(formData.typeExam)}
                     setFormData={setFormData}
+                    errors={error}
+                    setErrors={setError}
+                    valid={valids.monTC}
                 />
             </div>
             <div className='label-dropdown'>
@@ -94,10 +146,29 @@ const ExamRegisterContainer = ({listDK}: {listDK: string[]}): JSX.Element => {
                     choices={Object.values(filtered)}
                     value={String(formData.typeExam)}
                     setFormData={setFormData}
-                    label="môn tự chọn"
+                    label="môn ngoại ngữ"
+                    errors={error}
+                    setErrors={setError}
+                    valid={valids.monNN}
                 />
             </div>
         </form>
+        <div className="button-form">
+                    <Button
+                        type="button"
+                        className="btn-confirm"
+                        onClick={handleSubmit}
+                        text="Cập nhật!"
+                        disabled={isLoading}
+                    />
+                    <Button
+                        type="button"
+                        className="btn-cancel"
+                        onClick={handleReset}
+                        text="Khôi phục"
+                        disabled={isLoading}
+                    />            
+        </div>
     </div>
     );
 }
