@@ -50,14 +50,15 @@ public class GetKyThiManager extends HttpServlet {
 			
 			switch (type) {
 			case "list":{
-				JSONArray listType = KyThiManagerDAO.listKyThi(conn, type);
+				JSONArray listType = KyThiManagerDAO.listKyThi(conn);
 				jsonResponse.put("data", listType);
 				break;
 			}
-			
-			default:
+			default:{
 				JSONArray result = KyThiManagerDAO.getKyThi(conn, type);
 				jsonResponse.put("data", result);
+				break;
+				}
 		    }
 
 			jsonResponse.put("success", true);

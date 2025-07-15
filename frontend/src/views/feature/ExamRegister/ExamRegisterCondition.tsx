@@ -20,8 +20,7 @@ const ExamRegisterCondition = ({token = ""}: {token: string}):JSX.Element => {
         const GetData = async () => {
             try{
                 const resultExam = await GetExamExist(token);
-                console.log(resultExam);
-                if(resultExam){
+                if(!resultExam.data){
                     setJsx(<ExistExam/>);
                     return;
                 }
@@ -58,10 +57,8 @@ const ExamRegisterContainer = ({listDK, token}: {listDK: string[], token: string
     const {isLoading, setIsLoading} = useAppContext();
     const [searchParams] = useSearchParams();
     const type = searchParams.get("type") || "";
-
-    const filtered = Object.fromEntries(
-        Object.entries(ANH_XA).filter(([value]) => listDK.includes(value))
-    );
+    
+    const filtered = ANH_XA.filter(item => listDK.includes(item.value));
 
     const [formData, setFormData] = useState<FormDataProps>({
         typeExam: type,
