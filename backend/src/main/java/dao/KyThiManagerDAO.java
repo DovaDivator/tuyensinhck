@@ -138,5 +138,26 @@ public class KyThiManagerDAO {
 	}
 }
 }
+	public static JSONArray listKyThi (Connection conn, String type) throws Exception {
+		String listKyThisql = "SELECT loai_thi FROM ky_thi_mgr WHERE now() BETWEEN time_start and time_end";
+		try (PreparedStatement stmt = conn.prepareStatement(listKyThisql)) {
+			stmt.setString(1, type);
+			ResultSet rs = stmt.executeQuery();
+			
+			JSONArray jsonArray = new JSONArray();
+			
+		    while (rs.next()) {
+				JSONObject listJson = new JSONObject();
+				listJson.put("type", rs.getString("loai_thi"));
+				
+				jsonArray.put(listJson);
+			}    
+//			} else {
+//				throw new Exception ("Không tìm thấy loại thi để thí sinh đăng ký.");
+//			}
+		    return jsonArray;
+	}
 }
+}
+	
 
