@@ -115,34 +115,14 @@ export const EditTaiKhoan = (
             removeCd: (
               <Button
                 type="button"
-                icon="fa-solid fa-person-circle-minus"
-                className="btn-cancel"
+                icon="fa-solid fa-eye"
+                className="btn-confirm"
                 disabled={user.isxacthuc === "Chưa xác thực"}
-                title={user.isxacthuc === "Chưa xác thực" ? "Không thể chọn" : "Xóa thông tin CCCD"}
-                onClick={async () => {
-                  try {
-                    const result = await api.deleteCccd("102", {
-                      id: user.id,
-                    });
-
-                    console.log(result);
-                    // làm gì đó sau khi thành công
-                    setData((prev: any) =>
-                      prev.map((u: any) =>
-                        u.id === user.id
-                          ? {
-                              ...u,
-                              isxacthuc: false
-                            }
-                          : u
-                      )
-                    );
-                    setIsEdit(false);
-                    setTimeout(() => setIsEdit(true), 0);
-                  } catch (error) {
-                    console.error("Xóa thất bại", error);
-                  }
-                }}
+                title="Xem chi tiết"
+                onClick={() => {
+                  window.open(`/quan-ly-cccd?id=${user.id}`, "_blank");
+                }
+                }
               />
             ),
           };

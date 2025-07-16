@@ -10,7 +10,9 @@ import { DropdownValids } from '../../../classes/DrowdownValids';
 import Button from '../../ui/input/Button';
 import { useAppContext } from '../../../context/AppContext';
 import { checkValidSubmitUtils } from '../../../function/triggers/checkValidSubmitUtils';
-import { updateExam } from '../../../api/StudentExam';
+import { getListMonChoice } from '../../../api/GetMonHoc';
+import Card from '../../ui/components/Card';
+import './ExamDesign.scss';
 
 
 const ExamRegisterCondition = ({token = ""}: {token: string}):JSX.Element => {
@@ -57,6 +59,11 @@ const ExamRegisterContainer = ({listDK, token}: {listDK: string[], token: string
     const {isLoading, setIsLoading} = useAppContext();
     const [searchParams] = useSearchParams();
     const type = searchParams.get("type") || "";
+
+    const [dataMon, setDataMon] = useState({
+        monTC: [],
+        monNN: []
+    })
     
     const filtered = ANH_XA.filter(item => listDK.includes(item.value));
 
@@ -78,6 +85,23 @@ const ExamRegisterContainer = ({listDK, token}: {listDK: string[], token: string
         monNN: new DropdownValids({required: true}),
     }
 
+    useEffect(() => {
+        setIsLoading(true);
+        const getDataMon = async () => {
+            try{
+                const result = await getListMonChoice();;
+                console.log(result)
+                if(!result.data) throw new Error("Không có dữ liệu");
+                setDataMon(result.data);
+            }catch(error: any){
+                console.error(error);
+            }
+        }
+
+        getDataMon();
+        setIsLoading(false);
+    }, [])
+
     const handleReset = () =>{
         setFormData({
             typeExam: type,
@@ -97,8 +121,8 @@ const ExamRegisterContainer = ({listDK, token}: {listDK: string[], token: string
             }
     
             try{
-                const result = await updateExam(token, formData);
-                console.log(result);
+                // const result =
+                // console.log(result);
             }catch(error: any){
                 console.error(error)
             }
@@ -106,7 +130,8 @@ const ExamRegisterContainer = ({listDK, token}: {listDK: string[], token: string
         }
 
     return(
-    <div className='exam-register-container'>
+    <section>
+    <Card className='exam-register-container'>
         <h2>Đăng ký kỳ thi</h2>
         <form>
             <div className='label-dropdown'>
@@ -127,7 +152,7 @@ const ExamRegisterContainer = ({listDK, token}: {listDK: string[], token: string
                 <Dropdown
                     name="monTC"
                     id="monTC"
-                    choices={Object.values(filtered)}
+                    choices={dataMon.monTC}
                     value={String(formData.typeExam)}
                     setFormData={setFormData}
                     errors={error}
@@ -140,7 +165,7 @@ const ExamRegisterContainer = ({listDK, token}: {listDK: string[], token: string
                 <Dropdown
                     name="monNN"
                     id="monNN"
-                    choices={Object.values(filtered)}
+                    choices={dataMon.monNN}
                     value={String(formData.typeExam)}
                     setFormData={setFormData}
                     label="môn ngoại ngữ"
@@ -166,7 +191,8 @@ const ExamRegisterContainer = ({listDK, token}: {listDK: string[], token: string
                         disabled={isLoading}
                     />            
         </div>
-    </div>
+    </Card>
+    </section>
     );
 }
 

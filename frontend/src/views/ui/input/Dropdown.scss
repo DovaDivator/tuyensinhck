@@ -1,8 +1,4 @@
 @use '../../../style/variables';
 @use '../../../style/mixins' as mx;
 
-.dropdown-wrapper{
-  @include mx.vertical-grid();
-  
-}
 

@@ -133,7 +133,7 @@ public class KyThiManagerDAO {
             
             int Currentkhoa = rs2.getInt("khoa");
             
-            return Currentkhoa != khoa;
+            return Currentkhoa <= khoa;
             
 	}
 }

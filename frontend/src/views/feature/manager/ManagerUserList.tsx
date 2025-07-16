@@ -162,16 +162,20 @@ const ManagerUserList = ({className = "", name = ""}: ManagerUserListProps): JSX
               params,
               page: pageNum
             });
+
+            console.log(users);
             
             setData(
               users.data.map((user: any) => ({
                 ...user,
                 isFreeze: user.isFreeze === true ? "Tạm đình chỉ" : "Đang hoạt động",
                 isxacthuc: 
-                  user.isFreeze === 0
+                  user.isxacthuc === 0
                   ? "Chờ phê duyệt"
-                  : user.isFreeze === 1
+                  : user.isxacthuc === 1
                   ? "Đã xác thực"
+                  : user.isxacthuc === -1
+                  ? "Đang từ chối"
                   : "Chưa xác thực",
               }))
             );

@@ -14,8 +14,9 @@ import service.HttpJson;
 public class UserManagerDAO {
 	public static String getTaiKhoanQuery() {
 		return "SELECT u.id, u.name, u.created_at, u.is_freezing, "
-				+ "CASE WHEN EXISTS (SELECT 1 FROM stu_cccd c WHERE c.stu_id = u.id) "
-				+ "THEN true ELSE false END AS isxacthuc " + "FROM users u WHERE role = 1";
+		           + "COALESCE((SELECT c.is_confirm FROM stu_cccd c WHERE c.stu_id = u.id LIMIT 1), -3000) as isxacthuc "
+		           + "FROM users u "
+		           + "WHERE u.role = 1";
 	}
 
 	public static JSONArray getTaiKhoan(Connection conn, String search, String isCccd, String isFreeze, int page) {
@@ -54,7 +55,7 @@ public class UserManagerDAO {
 				jsonObject.put("id", rs.getString("id"));
 				jsonObject.put("name", HttpJson.convertStringToJson(rs.getString("name")));
 				jsonObject.put("created_at", HttpJson.convertTime(rs.getTimestamp("created_at"), "HH:mm dd/MM/yyyy"));
-				jsonObject.put("isxacthuc", rs.getBoolean("isxacthuc"));
+				jsonObject.put("isxacthuc", rs.getInt("isxacthuc"));
 				jsonObject.put("isFreeze", rs.getBoolean("is_freezing"));
 
 				jsonArray.put(jsonObject);

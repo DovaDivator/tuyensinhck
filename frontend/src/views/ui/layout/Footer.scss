@@ -8,6 +8,7 @@ footer{
     width: 100%;
     @include mx.vertical-display(0px);
     background: color.adjust(v.$logo-color, $lightness: 0%);
+    z-index: 99;
 
     & > *{
         width: 100%;

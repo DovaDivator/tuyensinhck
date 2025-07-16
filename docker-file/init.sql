@@ -1306,6 +1306,46 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER `trg_before_update_cccd` BEFORE UPDATE ON `stu_cccd` FOR EACH ROW BEGIN
+    -- Kiểm tra nếu dòng bị update có is_confirm chuyển thành -1
+    IF NEW.is_confirm = -1 AND OLD.is_confirm != -1 THEN
+        -- Xoá các dòng trong bảng thi_cu có stu_id = stu_id của dòng cũ trong stu_cccd
+        DELETE FROM thi_cu
+        WHERE stu_id = OLD.stu_id;
+    END IF;
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER `trg_before_delete_cccd` BEFORE DELETE ON `stu_cccd` FOR EACH ROW BEGIN
+    DELETE FROM thi_cu
+    WHERE stu_id = OLD.stu_id;
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
 -- Table structure for table `tch_mgr`
@@ -1372,7 +1412,7 @@ CREATE TABLE `thi_cu` (
 
 LOCK TABLES `thi_cu` WRITE;
 /*!40000 ALTER TABLE `thi_cu` DISABLE KEYS */;
-INSERT INTO `thi_cu` VALUES ('00001',NULL,NULL,'ly',NULL,'eng',NULL,'S0000003',1,0,'dh'),(NULL,NULL,NULL,'ly',NULL,'eng',NULL,'S0000003',2,1,'dh');
+INSERT INTO `thi_cu` VALUES ('00001',NULL,NULL,'ly',NULL,'eng',NULL,'S0000003',1,0,'dh');
 /*!40000 ALTER TABLE `thi_cu` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -1392,6 +1432,32 @@ DELIMITER ;;
   ELSEIF r != 1 THEN
     SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Chỉ được thêm học sinh (role = 1)';
   END IF;
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER `trg_before_insert_thi_cu` BEFORE INSERT ON `thi_cu` FOR EACH ROW BEGIN
+    DECLARE khoa_val tinyint unsigned;
+
+    -- Lấy giá trị khoa từ bảng ky_thi_mgr, dựa vào he = loai_thi
+    SELECT khoa INTO khoa_val
+    FROM ky_thi_mgr
+    WHERE loai_thi = NEW.he
+    LIMIT 1;
+
+    -- Gán giá trị đó vào trường khoa của dòng chuẩn bị insert
+    SET NEW.khoa = khoa_val;
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1468,4 +1534,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-07-15 15:24:33
+-- Dump completed on 2025-07-16 19:26:51
