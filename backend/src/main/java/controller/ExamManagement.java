@@ -183,6 +183,21 @@ public class ExamManagement extends HttpServlet {
 				jsonResponse.put("data", examList);
 				break;
 			}
+			case "insert": {
+				String typeExam = json.getString("typeExam");
+                String monTC = json.getString("monTC");
+                String monNN = json.getString("monNN");
+                boolean isLate = ExamDataDAO.checkDeadline(conn, typeExam);
+                if (isLate) {
+                    throw new UnauthorizedException ("Thời gian hiện tại muộn hơn thời gian đóng của loại thi.");
+                }
+                boolean inserted = ExamDataDAO.insertThiCu(conn, user.getId(), typeExam, monTC, monNN);
+                if (!inserted) {
+                	throw new UnauthorizedException("Thêm dữ liệu không thành công!");
+                }
+                break;
+
+			}
 		
 			default:
 				throw new Exception("thuộc tính type không hợp lệ " + type);
