@@ -91,4 +91,25 @@ public class ExamDataDAO {
 
         return resultArray;
     }
+    
+    public static boolean checkDeadline(Connection conn, String typeExam) throws Exception {
+    	String checkTimeSql = "SELECT * FROM ky_thi_mgr WHERE loai_thi = ? AND NOW() > time_end";
+    	   try (PreparedStatement ps = conn.prepareStatement(checkTimeSql)) {
+    	        ps.setString(1, typeExam);
+    	        try (ResultSet rs = ps.executeQuery()) {
+    	            return rs.next(); // Nếu có dữ liệu thì đã quá hạn
+    	        }
+    	    }
+    }
+    
+    public static boolean insertThiCu(Connection conn, String stuId, String typeExam, String monTC, String monNN) throws SQLException {
+        String insertTCsql = "INSERT INTO thi_cu (stu_id, he, mon_tc, mon_nn) VALUES (?, ?, ?, ?)";
+        try (PreparedStatement ps = conn.prepareStatement(insertTCsql)) {
+            ps.setString(1, stuId);
+            ps.setString(2, typeExam);
+            ps.setString(3, monTC);
+            ps.setString(4, monNN);
+            return ps.executeUpdate() > 0;
+        }
+    }
 }

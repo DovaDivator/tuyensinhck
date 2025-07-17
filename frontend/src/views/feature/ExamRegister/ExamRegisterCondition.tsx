@@ -1,6 +1,6 @@
 import {JSX, useEffect, useState} from 'react';
 import { useSearchParams } from "react-router-dom";
-import { GetExamExist } from '../../../api/StudentExam';
+import { GetExamExist, insertExam } from '../../../api/StudentExam';
 import { fetchListKyThi } from '../../../api/FetchKyThi';
 import ExistExam from './ExistExam';
 import EmptyList from './EmptyListDK';
@@ -121,8 +121,8 @@ const ExamRegisterContainer = ({listDK, token}: {listDK: string[], token: string
             }
     
             try{
-                // const result =
-                // console.log(result);
+                const result = await insertExam(token, formData);
+                console.log(result);
             }catch(error: any){
                 console.error(error)
             }

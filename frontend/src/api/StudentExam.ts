@@ -34,9 +34,9 @@ export const GetExamExist = async (token: string): Promise<any> => {
     }
 };
 
-export const updateExam = async (token: string, dataToSend: Unit): Promise<any> => {
+export const insertExam = async (token: string, dataToSend: Unit): Promise<any> => {
     try {
-        const response = await fetch('http://localhost:8080/api/exam?type=fetch', {
+        const response = await fetch('http://localhost:8080/api/exam?type=insert', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
