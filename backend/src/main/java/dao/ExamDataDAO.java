@@ -68,9 +68,6 @@ public class ExamDataDAO {
 
     		    "FROM thi_cu tc WHERE tc.stu_id = ?;";
     	
-    	System.out.println("id  " + id);
-    	System.out.println(sql);
-    	
         JSONArray resultArray = new JSONArray();
 
         try  {

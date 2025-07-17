@@ -15,18 +15,17 @@ const TraCuuExam = (): JSX.Element => {
 
     useEffect(() => {
         const fetchData = async () => {
-            setIsLoading(true);
             try{
               const result = await getListExam(token);
               console.log(result);
             }catch(error: any){
               console.error(error);
             }
-
-            setIsLoading(false);
         };
 
+        setIsLoading(true);
         if (token) fetchData();
+        setIsLoading(false);
     }, [token]);
 
     return (

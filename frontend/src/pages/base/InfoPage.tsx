@@ -10,6 +10,7 @@ import BaseInfomation from "../../views/feature/info/BaseInfomation";
 import { useAuth } from "../../context/AuthContext";
 import CccdEdit from "../../views/feature/info/CccdEdit";
 import { BasicUserTitle } from "../../classes/BasicUserInfo";
+import TraCuuExam from "../../views/feature/info/TraCuuExam";
 
 const CLASS_PAGE = "info";
 const CLASS_PAGE_GROUPS: Record<string, string[]> = {
@@ -23,7 +24,7 @@ const COMPONENT_MAP:Record<string, JSX.Element> ={
   'thong-tin-ca-nhan': <BaseInfomation />,
   'doi-mat-khau': <SwitchPasswordForm />,
   'cap-nhat-cccd': <CccdEdit/>,
-  'tra-cuu-ky-thi': <></>
+  'tra-cuu-ky-thi': <TraCuuExam/>
 }
 
 const PAGE_LABELS:Record<string, String> ={
