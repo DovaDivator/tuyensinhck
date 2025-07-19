@@ -4,6 +4,9 @@ import { useAuth } from "../../../context/AuthContext";
 import "./TraCuuExam.scss";
 import { useAppContext } from "../../../context/AppContext";
 import { getListExam } from "../../../api/StudentExam";
+import Card from "../../ui/components/Card";
+import { processExamListTS } from "../../../function/convert/ProcessExamListTS";
+import ListTable from "../../ui/components/ListTable";
 
 const TraCuuExam = (): JSX.Element => {
     const {token, user} = useAuth();
@@ -17,7 +20,11 @@ const TraCuuExam = (): JSX.Element => {
         const fetchData = async () => {
             try{
               const result = await getListExam(token);
-              console.log(result);
+              if(result.data instanceof Array){
+                setData(result.data);
+              }else{
+                setData([]);
+              }
             }catch(error: any){
               console.error(error);
             }
@@ -31,6 +38,16 @@ const TraCuuExam = (): JSX.Element => {
     return (
         <section className={`cccd-form-container`}>
             <h3>Tra cứu kỳ thi</h3>
+            {data.length === 0 &&
+              <EmptyExamList/>
+            }
+            {data.length > 0 &&
+              data.map((item, index) => (
+                <div key={index}>
+                  <EleKyThiInfo item={item}/>
+                </div>
+              ))
+            }
         </section>
     );
 };
@@ -45,4 +62,29 @@ const EmptyExamList = () =>{
       </div>
     </div>
   );
+}
+
+const EleKyThiInfo = ({item} : {item: Object}): JSX.Element =>{
+    console.log(item);
+
+    const HEADERS = {
+      mon_thi: "Môn thi",
+      dateExam: "Ngày thi",
+      timeStart: "Bắt đầu",
+      timeEnd: "Kết thúc",
+      maPhong: "Mã phòng",
+      viTri: "Địa điểm",
+      diem: "Điểm",
+    }
+
+    const convertItem = processExamListTS(item);
+    console.log(convertItem);
+    return(
+      <Card>
+        <ListTable
+          struct={convertItem}
+          headers={HEADERS}
+        />
+      </Card>
+    );
 }

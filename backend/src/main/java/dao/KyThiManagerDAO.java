@@ -108,7 +108,7 @@ public class KyThiManagerDAO {
 		}
 	
 	public static boolean fetchExamstatus (Connection conn, String id) throws Exception {
-		String fetchLastRegistersql = "SELECT he, khoa from thi_cu WHERE stu_id = ? ORDER BY stu_id DESC LIMIT 1";
+		String fetchLastRegistersql = "SELECT he, khoa from thi_cu WHERE stu_id = ? ORDER BY id_register DESC LIMIT 1";
 		
 		try (PreparedStatement stmt = conn.prepareStatement(fetchLastRegistersql)) {
 			stmt.setString(1, id);
@@ -133,7 +133,7 @@ public class KyThiManagerDAO {
             
             int Currentkhoa = rs2.getInt("khoa");
             
-            return Currentkhoa <= khoa;
+            return Currentkhoa > khoa;
             
 	}
 }

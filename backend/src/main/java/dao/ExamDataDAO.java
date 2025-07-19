@@ -42,21 +42,21 @@ public class ExamDataDAO {
     		    "          FROM phong_thi pt " +
     		    "          WHERE pt.ma_phong = dst.ma_phong " +
     		    "        ), " +
-    		    "        'dateExam', DATE_ADD( " +
+    		    "        'dateExam', DATE_FORMAT( DATE_ADD( " +
     		    "          dst.ngay_thi, " +
     		    "          INTERVAL ( " +
     		    "            SELECT ct.delay_day " +
     		    "            FROM ca_thi ct " +
     		    "            WHERE ct.ma_ca = dst.ma_ca " +
-    		    "          ) DAY " +
+    		    "          ) DAY), '%d/%m/%Y' " +
     		    "        ), " +
     		    "        'timeStart', ( " +
-    		    "          SELECT ct.time_start " +
+    		    "          SELECT DATE_FORMAT(ct.time_start, '%H:%i') " +
     		    "          FROM ca_thi ct " +
     		    "          WHERE ct.ma_ca = dst.ma_ca " +
     		    "        ), " +
     		    "        'timeEnd', ( " +
-    		    "          SELECT ct.time_end " +
+    		    "          SELECT DATE_FORMAT(ct.time_end, '%H:%i') " +
     		    "          FROM ca_thi ct " +
     		    "          WHERE ct.ma_ca = dst.ma_ca " +
     		    "        ) " +
