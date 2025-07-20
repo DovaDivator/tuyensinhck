@@ -43,9 +43,12 @@ const TraCuuExam = (): JSX.Element => {
             }
             {data.length > 0 &&
               data.map((item, index) => (
-                <div key={index}>
+                <>
+                <section key={index}>
                   <EleKyThiInfo item={item}/>
-                </div>
+                </section>
+                <div style={{height: "1px", width: "50%", backgroundColor: "gray"}}></div>
+                </>
               ))
             }
         </section>
@@ -66,6 +69,7 @@ const EmptyExamList = () =>{
 
 const EleKyThiInfo = ({item} : {item: Object}): JSX.Element =>{
     console.log(item);
+    const itemAny = item as any;
 
     const HEADERS = {
       mon_thi: "Môn thi",
@@ -80,11 +84,17 @@ const EleKyThiInfo = ({item} : {item: Object}): JSX.Element =>{
     const convertItem = processExamListTS(item);
     console.log(convertItem);
     return(
-      <Card>
-        <ListTable
-          struct={convertItem}
-          headers={HEADERS}
-        />
-      </Card>
+      <>
+        <div>
+          <h2>Kỳ thi {itemAny.he} khóa {itemAny.khoa}</h2>
+          <span>ID thí sinh: {itemAny.examId ? itemAny.examId : ""}</span>
+        </div>
+        <div>
+          <ListTable
+            struct={convertItem}
+            headers={HEADERS}
+          />
+        </div>      
+      </>
     );
 }

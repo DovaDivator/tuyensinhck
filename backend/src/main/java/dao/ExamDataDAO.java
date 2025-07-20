@@ -11,7 +11,8 @@ import org.json.JSONObject;
 public class ExamDataDAO {
 
     public static JSONArray fetchExamList(Connection conn, String id) throws SQLException {
-    	String sql =
+    	StringBuilder sqlBuilder = new StringBuilder();
+    	sqlBuilder.append(
     		    "SELECT " +
     		    "  CASE tc.he " +
     		    "    WHEN 'dh' THEN 'Đại học' " +
@@ -21,6 +22,7 @@ public class ExamDataDAO {
     		    "  END AS he, " +
 
     		    "  tc.khoa AS khoa, " +
+    		    "  tc.exam_id, " +
 
     		    "  (SELECT mh.name FROM mon_hoc mh WHERE mh.mon_nn = tc.mon_nn) AS monNN, " +
     		    "  (SELECT mh.name FROM mon_hoc mh WHERE mh.mon_nn = tc.mon_tc) AS monTC, " +
@@ -66,18 +68,21 @@ public class ExamDataDAO {
     		    "    WHERE dst.exam_id = tc.exam_id " +
     		    "  ) AS dsThi " +
 
-    		    "FROM thi_cu tc WHERE tc.stu_id = ?;";
+    		    "FROM thi_cu tc WHERE tc.stu_id = ? ");
     	
+    		sqlBuilder.append(" order by tc.id_register desc;");
+    		// Prepare the SQL statement
         JSONArray resultArray = new JSONArray();
 
         try  {
-        	PreparedStatement stmt = conn.prepareStatement(sql);
+        	PreparedStatement stmt = conn.prepareStatement(sqlBuilder.toString());
         	stmt.setString (1, id);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 JSONObject json = new JSONObject();
                 json.put("he", rs.getString("he"));
                 json.put("khoa", rs.getString("khoa"));
+                json.put("examId", rs.getString("exam_id"));
                 json.put("monNN", rs.getString("monNN"));
                 json.put("monTC", rs.getString("monTC"));
                 json.put("ketQua", new JSONObject(rs.getString("ketQua")));

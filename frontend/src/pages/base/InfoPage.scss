@@ -47,7 +47,7 @@
 }
 
 .info{
-    & > div:nth-child(2){
+    & > .right-side{
         flex-grow: 1;
         background-color: white;
         padding: 2rem;
@@ -64,4 +64,15 @@
         width: 100%;
         text-align: start;
     }
+}
+
+@media (max-width: v.$bp-md) {
+  .info > .right-side {
+    width: 100%;
+    overflow: auto;
+    
+    & > *{
+        align-items: start;
+    }
+  }
 }
