@@ -10,7 +10,7 @@ import org.json.JSONObject;
 
 public class ExamDataDAO {
 
-    public static JSONArray fetchExamList(Connection conn, String id) throws SQLException {
+    public static JSONArray fetchExamList(Connection conn, String id, String kyThi, String khoa) throws SQLException {
     	StringBuilder sqlBuilder = new StringBuilder();
     	sqlBuilder.append(
     		    "SELECT " +
@@ -22,7 +22,7 @@ public class ExamDataDAO {
     		    "  END AS he, " +
 
     		    "  tc.khoa AS khoa, " +
-    		    "  tc.exam_id, " +
+    		    "  tc.exam_id, tc.id_register, " +
 
     		    "  (SELECT mh.name FROM mon_hoc mh WHERE mh.mon_nn = tc.mon_nn) AS monNN, " +
     		    "  (SELECT mh.name FROM mon_hoc mh WHERE mh.mon_nn = tc.mon_tc) AS monTC, " +
@@ -70,6 +70,14 @@ public class ExamDataDAO {
 
     		    "FROM thi_cu tc WHERE tc.stu_id = ? ");
     	
+    		if (!kyThi.isEmpty()) {
+				sqlBuilder.append(" AND tc.he = '" + kyThi + "' ");
+			}
+    		
+    		if (!khoa.isEmpty()) {
+    			sqlBuilder.append(" AND tc.khoa = " + khoa + " ");
+    		}
+    	
     		sqlBuilder.append(" order by tc.id_register desc;");
     		// Prepare the SQL statement
         JSONArray resultArray = new JSONArray();
@@ -80,6 +88,7 @@ public class ExamDataDAO {
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 JSONObject json = new JSONObject();
+                json.put("idRegister", rs.getString("id_register"));
                 json.put("he", rs.getString("he"));
                 json.put("khoa", rs.getString("khoa"));
                 json.put("examId", rs.getString("exam_id"));
@@ -114,6 +123,24 @@ public class ExamDataDAO {
             ps.setString(2, typeExam);
             ps.setString(3, monTC);
             ps.setString(4, monNN);
+            return ps.executeUpdate() > 0;
+        }
+    }
+    
+    public static boolean updateThiCu(Connection conn, String idRegister, String monTC, String monNN) throws SQLException {
+        String insertTCsql = "UPDATE thi_cu SET mon_tc = ?, mon_nn = ? WHERE id_register = ?";
+        try (PreparedStatement ps = conn.prepareStatement(insertTCsql)) {
+            ps.setString(1, monTC);
+            ps.setString(2, monNN);
+            ps.setString(3, idRegister);
+            return ps.executeUpdate() > 0;
+        }
+    }
+    
+    public static boolean deleteThiCu(Connection conn, String idRegister) throws SQLException {
+        String insertTCsql = "DELETE FROM thi_cu WHERE id_register = ?";
+        try (PreparedStatement ps = conn.prepareStatement(insertTCsql)) {
+            ps.setString(1, idRegister);
             return ps.executeUpdate() > 0;
         }
     }
