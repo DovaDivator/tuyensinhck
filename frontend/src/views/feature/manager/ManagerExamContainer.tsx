@@ -79,11 +79,13 @@ const ManagerExamContainer = ({className = ""}: jsxEleProps): JSX.Element =>{
     });
 
     const defaultFormRef = useRef<FormDataProps | null>(null);
+    const defaultDateExamRef = useRef<FormDataProps | null>(null);
 
     const [errors, setErrors] = useState<ErrorLogProps>({
       timeStart: "",
       timeEnd: "",
       adding: "",
+      dateExam: "",
     });
 
     const [valids, setValids] = useState<DataValidsProps>({
@@ -222,6 +224,13 @@ const ManagerExamContainer = ({className = ""}: jsxEleProps): JSX.Element =>{
                         },
                       }),
                     }));
+
+                    const dateExamItem = {
+                      dateExam: item.dateExam ? item.dateExam : "",
+                    }
+
+                    setDateExamData(dateExamItem);
+                    defaultDateExamRef.current = dateExamItem;
                   }
                   // console.log(formDataTemp)
                   setFormData(formDataTemp);
@@ -253,7 +262,7 @@ const ManagerExamContainer = ({className = ""}: jsxEleProps): JSX.Element =>{
 
     }, [statusNum])
     
-    const handleReset = () => {
+    const handleRegisterReset = () => {
         if (defaultFormRef.current) {
             setFormData(defaultFormRef.current);
         } else {
@@ -266,10 +275,43 @@ const ManagerExamContainer = ({className = ""}: jsxEleProps): JSX.Element =>{
         }
     };
 
-        const handleSubmit = async () =>{
+    const handleStartReset = () => {
+        if (defaultDateExamRef.current) {
+            setDateExamData(defaultDateExamRef.current);
+        } else {
+            setDateExamData({
+              dateExam: "",
+            })
+            console.warn("Dữ liệu mặc định chưa được khởi tạo");
+        }
+    };
+
+        const handleRegisterSubmit = async () =>{
             //Hàm kiểm tra ở đây
             setIsLoading(true);
-            const validate = checkValidSubmitUtils(formData, valids, setErrors);
+            const {dateExam, ...validSplit} = valids;
+            const validate = checkValidSubmitUtils(formData, validSplit, setErrors);
+            if(!validate){
+              showToast('error', '', 'Vui lòng kiểm tra lại thông tin đăng nhập!');
+              setIsLoading(false);
+              return;
+            }
+            console.log(validate);
+            try{
+                const addingString = formData.adding instanceof Array ? formData.adding[0] : formData.adding;
+                const result = await UpdateOpenKyThi(token, {...formData, adding: addingString, type: typeCase.type});
+                console.log(result);
+            }catch(error: any){
+                console.error(error)
+            }
+            setIsLoading(false);
+        }
+
+        const handleStartSubmit = async () =>{
+            //Hàm kiểm tra ở đây
+            setIsLoading(true);
+            const { dateExam } = valids;
+            const validate = checkValidSubmitUtils(dateExamData, {dateExam}, setErrors);
             if(!validate){
               showToast('error', '', 'Vui lòng kiểm tra lại thông tin đăng nhập!');
               setIsLoading(false);
@@ -345,14 +387,14 @@ const ManagerExamContainer = ({className = ""}: jsxEleProps): JSX.Element =>{
                     <Button
                         type="button"
                         className="btn-confirm"
-                        onClick={handleSubmit}
+                        onClick={handleRegisterSubmit}
                         text="Cập nhật!"
                         disabled={isLoading || [2, 3].includes(statusNum)}
                     />
                     <Button
                         type="button"
                         className="btn-cancel"
-                        onClick={handleReset}
+                        onClick={handleRegisterReset}
                         text="Khôi phục"
                         disabled={isLoading}
                     />
@@ -385,14 +427,14 @@ const ManagerExamContainer = ({className = ""}: jsxEleProps): JSX.Element =>{
                     <Button
                         type="button"
                         className="btn-confirm"
-                        onClick={handleSubmit}
+                        onClick={handleStartSubmit}
                         text="Cập nhật!"
                         disabled={isLoading || [2, 3].includes(statusNum)}
                     />
                     <Button
                         type="button"
                         className="btn-cancel"
-                        onClick={handleReset}
+                        onClick={handleStartReset}
                         text="Khôi phục"
                         disabled={isLoading}
                     />
