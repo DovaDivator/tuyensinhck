@@ -23,8 +23,13 @@
     }
 }
 
+.form-container-ky-thi{
+    @include mx.vertical-display;
+    width: 100%;;
+}
+
     .form-ky-thi{
-        width: 50% !important;
+        width: 100% !important;
         max-width: 400px;
     }
 

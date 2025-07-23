@@ -18,6 +18,7 @@ import { DateValids } from '../../../classes/DateValids';
 import { fetchVietnamTime } from '../../../api/FetchVietnamTime';
 import { checkValidSubmitUtils } from '../../../function/triggers/checkValidSubmitUtils';
 import { UpdateOpenKyThi } from '../../../api/KyThiEdit';
+import { showToast } from '../../../alert/alertToast';
 
 const HEADERS = {
     loaiThiLabel: "Cấp bậc",
@@ -73,6 +74,10 @@ const ManagerExamContainer = ({className = ""}: jsxEleProps): JSX.Element =>{
       adding: "",
     });
 
+    const [dateExamData, setDateExamData] = useState<FormDataProps>({
+      dateExam: "",
+    });
+
     const defaultFormRef = useRef<FormDataProps | null>(null);
 
     const [errors, setErrors] = useState<ErrorLogProps>({
@@ -85,17 +90,21 @@ const ManagerExamContainer = ({className = ""}: jsxEleProps): JSX.Element =>{
       timeStart: new DateValids({
         required: true,
         cons: {
-          min: DATE_POINT
+          min: {
+            value: DATE_POINT
+          }
         },
       }),
       timeEnd: new DateValids({
         required: true,
         cons: {
-          min: "timeStart"
+          min: {
+            value: "timeStart",
+            dist: {
+              day: 1,
+            }
+          }
         },
-        dist: {
-          day: 1,
-        }
       }),
     })
 
@@ -116,7 +125,7 @@ const ManagerExamContainer = ({className = ""}: jsxEleProps): JSX.Element =>{
           if(durationOne < 24 * 60 * 60 * 1000) return 2;
             // return (<span className='warming'>Đang trong kỳ thi</span>);
 
-          return 3;
+          if(durationOne < 7 * 24 * 60 * 60 * 1000) return 3;
         }
 
         const durationTwo = nowDate.getTime() - parseFlexibleDate(String(row.timeEnd)).getTime();
@@ -165,12 +174,56 @@ const ManagerExamContainer = ({className = ""}: jsxEleProps): JSX.Element =>{
       const check = ANH_XA.find(item => item.value === typeCase.type);
                 if (check) {
                   const item: any = data.find(row => (row as any).loaiThi === typeCase.type);
+
                   const formDataTemp = {
                     timeStart: item.timeStart ? item.timeStart : "",
                     timeEnd: item.timeEnd ? item.timeEnd : "",
                     adding: item.adding,
                   }
-                  console.log(formDataTemp)
+
+                  if(item.dateExam){
+                    setValids(prev => ({
+                      ...prev,
+                      timeEnd: new DateValids({
+                        required: true,
+                        cons: {
+                          min: {
+                            value: "timeStart",
+                            dist: {
+                              day: 1,
+                            }
+                          },
+                          max: {
+                            value: parseFlexibleDate("07:00 " + item.dateExam),
+                            dist: {
+                              day: 6,
+                            }
+                          }
+                        },
+                      }),
+                    }));
+                  }
+
+                  if([4, 5, 6].includes(item.statusEffect)){
+                    const dateTimeEnd = parseFlexibleDate(item.timeEnd);
+                    const duationTiming = dateTimeEnd.getTime() - new Date().getTime();
+
+                    setValids(prev => ({
+                      ...prev,
+                      dateExam: new DateValids({
+                        required: true,
+                        cons: {
+                          min: {
+                            value: duationTiming > 0 ? dateTimeEnd : new Date(),
+                            dist: {
+                              day: 7,
+                            }
+                          },
+                        },
+                      }),
+                    }));
+                  }
+                  // console.log(formDataTemp)
                   setFormData(formDataTemp);
                   defaultFormRef.current = formDataTemp
                   setStatusNum(item.statusEffect ?? 0);
@@ -217,7 +270,11 @@ const ManagerExamContainer = ({className = ""}: jsxEleProps): JSX.Element =>{
             //Hàm kiểm tra ở đây
             setIsLoading(true);
             const validate = checkValidSubmitUtils(formData, valids, setErrors);
-    
+            if(!validate){
+              showToast('error', '', 'Vui lòng kiểm tra lại thông tin đăng nhập!');
+              setIsLoading(false);
+              return;
+            }
             console.log(validate);
             try{
                 const addingString = formData.adding instanceof Array ? formData.adding[0] : formData.adding;
@@ -247,7 +304,9 @@ const ManagerExamContainer = ({className = ""}: jsxEleProps): JSX.Element =>{
                 label='Kỳ thi'
             />
             {ANH_XA.some(item => item.value === typeCase.type) && (
+              <div className='form-container-ky-thi'>
               <Card className='form-ky-thi'>
+              <b>Mở đăng ký</b>
               <form>
                 <DatetimePicker
                   type="datetime"
@@ -256,7 +315,7 @@ const ManagerExamContainer = ({className = ""}: jsxEleProps): JSX.Element =>{
                   value={String(formData.timeStart)}
                   setFormData={setFormData}
                   placeholder='Thời gian mở'
-                  disabled={[2, 3, 5].includes(typeCase.statusNum)}
+                  disabled={[2, 3, 5].includes(statusNum)}
                   errors={errors}
                   setErrors={setErrors}
                   valids={valids.timeStart}
@@ -268,7 +327,7 @@ const ManagerExamContainer = ({className = ""}: jsxEleProps): JSX.Element =>{
                   value={String(formData.timeEnd)}
                   setFormData={setFormData}
                   placeholder='Thời gian đóng'
-                  disabled={[2, 3].includes(typeCase.statusNum)}
+                  disabled={[2, 3].includes(statusNum)}
                   errors={errors}
                   setErrors={setErrors}
                   valids={valids.timeEnd}
@@ -288,7 +347,7 @@ const ManagerExamContainer = ({className = ""}: jsxEleProps): JSX.Element =>{
                         className="btn-confirm"
                         onClick={handleSubmit}
                         text="Cập nhật!"
-                        disabled={isLoading || [2, 3].includes(typeCase.statusNum)}
+                        disabled={isLoading || [2, 3].includes(statusNum)}
                     />
                     <Button
                         type="button"
@@ -299,6 +358,48 @@ const ManagerExamContainer = ({className = ""}: jsxEleProps): JSX.Element =>{
                     />
                 </div>
               </Card>
+              <Card className='form-ky-thi'>
+              <b>Mở kỳ thi</b>
+              { [0, 1].includes(statusNum) && 
+                <p className='error-message'>Bạn cần phải mở đăng ký trước!</p>
+              }
+              { [2, 3].includes(statusNum) && 
+                <p className='error-message'>Kỳ thi đã chuẩn bị, bạn không thể thay đổi kế hoạch</p>
+              }
+              { [4, 5, 6].includes(statusNum) && <>
+              <form>
+                <DatetimePicker
+                  type="date"
+                  name="dateExam"
+                  id="dateExam"
+                  value={String(dateExamData.dateExam)}
+                  setFormData={setDateExamData}
+                  placeholder='Thời gian tổ chức'
+                  disabled={[0, 1, 2, 3].includes(statusNum)}
+                  errors={errors}
+                  setErrors={setErrors}
+                  valids={valids.dateExam}
+                />
+              </form>
+              <div className="button-form">
+                    <Button
+                        type="button"
+                        className="btn-confirm"
+                        onClick={handleSubmit}
+                        text="Cập nhật!"
+                        disabled={isLoading || [2, 3].includes(statusNum)}
+                    />
+                    <Button
+                        type="button"
+                        className="btn-cancel"
+                        onClick={handleReset}
+                        text="Khôi phục"
+                        disabled={isLoading}
+                    />
+                </div>
+                </>}
+              </Card>
+              </div>
             )}
         </section>
     );

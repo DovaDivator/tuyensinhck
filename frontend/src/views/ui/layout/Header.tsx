@@ -82,6 +82,7 @@ const Header = (): JSX.Element => {
                   <li><a href="/quan-ly/tai-khoan">DS Tài khoản</a></li>
                   <li><a href="/quan-ly/thi-sinh">DS Thí sinh</a></li>
                   <li><a href="/quan-ly/giao-vien">DS Giáo viên</a></li>
+                  <li><a href="/quan-ly/ky-thi">Kỳ thi</a></li>
                 </ul>
               </li>
             )}
