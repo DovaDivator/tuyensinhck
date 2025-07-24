@@ -17,7 +17,7 @@ import { parseFlexibleDate } from '../../../function/convert/parseFlexibleDate';
 import { DateValids } from '../../../classes/DateValids';
 import { fetchVietnamTime } from '../../../api/FetchVietnamTime';
 import { checkValidSubmitUtils } from '../../../function/triggers/checkValidSubmitUtils';
-import { UpdateOpenKyThi } from '../../../api/KyThiEdit';
+import { UpdateOpenKyThi, UpdateOpenNgayThi } from '../../../api/KyThiEdit';
 import { showToast } from '../../../alert/alertToast';
 
 const HEADERS = {
@@ -74,7 +74,7 @@ const ManagerExamContainer = ({className = ""}: jsxEleProps): JSX.Element =>{
       adding: "",
     });
 
-    const [dateExamData, setDateExamData] = useState<FormDataProps>({
+    const [dateExamForm, setDateExamForm] = useState<FormDataProps>({
       dateExam: "",
     });
 
@@ -229,7 +229,7 @@ const ManagerExamContainer = ({className = ""}: jsxEleProps): JSX.Element =>{
                       dateExam: item.dateExam ? item.dateExam : "",
                     }
 
-                    setDateExamData(dateExamItem);
+                    setDateExamForm(dateExamItem);
                     defaultDateExamRef.current = dateExamItem;
                   }
                   // console.log(formDataTemp)
@@ -277,9 +277,9 @@ const ManagerExamContainer = ({className = ""}: jsxEleProps): JSX.Element =>{
 
     const handleStartReset = () => {
         if (defaultDateExamRef.current) {
-            setDateExamData(defaultDateExamRef.current);
+            setDateExamForm(defaultDateExamRef.current);
         } else {
-            setDateExamData({
+            setDateExamForm({
               dateExam: "",
             })
             console.warn("Dữ liệu mặc định chưa được khởi tạo");
@@ -311,7 +311,7 @@ const ManagerExamContainer = ({className = ""}: jsxEleProps): JSX.Element =>{
             //Hàm kiểm tra ở đây
             setIsLoading(true);
             const { dateExam } = valids;
-            const validate = checkValidSubmitUtils(dateExamData, {dateExam}, setErrors);
+            const validate = checkValidSubmitUtils(dateExamForm, {dateExam}, setErrors);
             if(!validate){
               showToast('error', '', 'Vui lòng kiểm tra lại thông tin đăng nhập!');
               setIsLoading(false);
@@ -319,8 +319,7 @@ const ManagerExamContainer = ({className = ""}: jsxEleProps): JSX.Element =>{
             }
             console.log(validate);
             try{
-                const addingString = formData.adding instanceof Array ? formData.adding[0] : formData.adding;
-                const result = await UpdateOpenKyThi(token, {...formData, adding: addingString, type: typeCase.type});
+                const result = await UpdateOpenNgayThi(token, {...dateExamForm, type: typeCase.type});
                 console.log(result);
             }catch(error: any){
                 console.error(error)
@@ -414,8 +413,8 @@ const ManagerExamContainer = ({className = ""}: jsxEleProps): JSX.Element =>{
                   type="date"
                   name="dateExam"
                   id="dateExam"
-                  value={String(dateExamData.dateExam)}
-                  setFormData={setDateExamData}
+                  value={String(dateExamForm.dateExam)}
+                  setFormData={setDateExamForm}
                   placeholder='Thời gian tổ chức'
                   disabled={[0, 1, 2, 3].includes(statusNum)}
                   errors={errors}
