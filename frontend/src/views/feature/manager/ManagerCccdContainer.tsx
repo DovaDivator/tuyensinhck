@@ -57,7 +57,7 @@ const ManagerCccdContainer = (): JSX.Element => {
     const valids: DataValidsProps = {
         front: new ImageValids({required: true}),
         back: new ImageValids({required: true}),
-        dateBirth: new DateValids({required: true, cons: {max: new Date(new Date().getFullYear() - 16, 11, 31)}}),
+        dateBirth: new DateValids({required: true, cons: {max: {value: new Date(new Date().getFullYear() - 16, 11, 31)}}}),
         realName: new InputValids({required: true}),
         gender: new ChoiceValids({required: true}),
         address: new InputValids({required: true}),

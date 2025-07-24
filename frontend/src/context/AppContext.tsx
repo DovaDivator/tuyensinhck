@@ -58,7 +58,7 @@ export const AppProvider = ({ children }: AppProviderProps): JSX.Element => {
     const checkScreenSize = (): void => {
       const width = window.innerWidth;
       const height = window.innerHeight;
-      setScreenSize({ width, height });
+      // setScreenSize({ width, height });
 
       setIsTooSmall(width < 250 || height < 250);
     };

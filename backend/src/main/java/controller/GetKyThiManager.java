@@ -49,7 +49,7 @@ public class GetKyThiManager extends HttpServlet {
 
 			
 			switch (type) {
-			case "list":{
+			case "list":{				
 				JSONArray listType = KyThiManagerDAO.listKyThi(conn);
 				jsonResponse.put("data", listType);
 				break;

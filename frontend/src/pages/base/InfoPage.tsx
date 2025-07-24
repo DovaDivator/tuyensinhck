@@ -3,7 +3,6 @@ import { useInView } from "react-intersection-observer";
 import { useParams, useNavigate, Link} from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import InfoBackground from "../../views/ui/layout/InfoBackground";
-import HeroSection from "../../views/feature/home/HeroSection";
 import "./InfoPage.scss";
 import SwitchPasswordForm from "../../views/feature/info/SwitchPasswordForm";
 import BaseInfomation from "../../views/feature/info/BaseInfomation";
@@ -109,7 +108,7 @@ const InfoPage = (): JSX.Element => {
       </Helmet>
       <InfoBackground>
           <LeftMenu/>
-          <div ref={ref} className={animationClass}>
+          <div ref={ref} className={`right-side ${animationClass}`}>
             <RightContent/>
           </div>
       </InfoBackground>

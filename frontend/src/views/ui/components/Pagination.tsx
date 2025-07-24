@@ -1,5 +1,4 @@
-import React, {JSX} from 'react';
-import { useAppContext } from "../../../context/AppContext";
+import React, { JSX, useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from "react-router-dom";
 
 import Button from '../input/Button';
@@ -13,22 +12,34 @@ interface PaginationProps {
 
 type PaginationPageProps = PaginationProps & jsxEleProps;
 
+const useScreenWidth = (): number => {
+    const [width, setWidth] = useState<number>(window.innerWidth);
+
+    useEffect(() => {
+        const handleResize = () => setWidth(window.innerWidth);
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
+
+    return width;
+};
+
 const Pagination = ({
     curNum = 1,
     listLength = 1,
     className = ""
 }: PaginationPageProps): JSX.Element => {
-    const {screenSize} = useAppContext();
+    const screenWidth = useScreenWidth();
     const SMALL_SCREEN_WIDTH = 480;
     let outOfLength = false;
 
     let currentNum = 1;
-    if(curNum > 0 ){
-        if(curNum > listLength){
+    if (curNum > 0) {
+        if (curNum > listLength) {
             outOfLength = true;
             currentNum = listLength;
-        }else{
-            currentNum = curNum
+        } else {
+            currentNum = curNum;
         }
     }
 
@@ -40,7 +51,7 @@ const Pagination = ({
         navigate(`?${searchParams.toString()}`);
     };
 
-    const goToPage = () =>{
+    const goToPage = () => {
         const input = window.prompt(`Nhập số trang: `);
         if (!input) return;
 
@@ -50,11 +61,11 @@ const Pagination = ({
             return;
         }
 
-        if(parsed < 1) parsed = 1;
-        if(parsed > listLength) parsed = listLength;
+        if (parsed < 1) parsed = 1;
+        if (parsed > listLength) parsed = listLength;
 
         if (parsed !== currentNum) {
-            handleClick(parsed);   
+            handleClick(parsed);
         }
     };
 
@@ -76,43 +87,46 @@ const Pagination = ({
         );
     }
 
-    let leftCurNum:number = screenSize.width < SMALL_SCREEN_WIDTH ? currentNum : currentNum < 3 ? 1 : currentNum - 2;
-    let rightCurNum:number = screenSize.width < SMALL_SCREEN_WIDTH ? currentNum : (listLength - currentNum) > 2 ? currentNum + 2 : listLength;
+    const leftCurNum: number = screenWidth < SMALL_SCREEN_WIDTH ? currentNum : currentNum < 3 ? 1 : currentNum - 2;
+    const rightCurNum: number = screenWidth < SMALL_SCREEN_WIDTH ? currentNum : (listLength - currentNum) > 2 ? currentNum + 2 : listLength;
 
-    return(
+    return (
         <div className={`pagination ${className}`}>
-            {currentNum > 1 && <Button text="<<" onClick={() => handleClick(1) }/>}
-            <Button text="<" disabled={currentNum === 1}
-            {...(currentNum > 1 ? { onClick: () => handleClick(currentNum - 1) } : {})}/>
-            {leftCurNum > 1 && (
-                <span onClick={() => goToPage()}>...</span>
-            )}
-            {(() => {
-                const buttons = [];
-                for (let page = leftCurNum; page <= rightCurNum; page++) {
-                    buttons.push(
-                        <Button
-                            key={page}
-                            className={currentNum === page && !outOfLength ? 'current-num' : ''}
-                            text={page.toString()}
-                            disabled={currentNum === page && !outOfLength}
-                            {...(currentNum !== page || outOfLength? { onClick: () => handleClick(page) } : {})}
-                        />
-                    );
-                }
-                return buttons;
-            })()}
+            {currentNum > 1 && <Button text="<<" onClick={() => handleClick(1)} />}
+            <Button
+                text="<"
+                disabled={currentNum === 1}
+                {...(currentNum > 1 ? { onClick: () => handleClick(currentNum - 1) } : {})}
+            />
 
-        {rightCurNum < listLength && <span>...</span>}
-        <Button text=">" disabled={currentNum === listLength}
-        {...(currentNum < listLength ? { onClick: () => handleClick(currentNum + 1) } : {})}/>
-        {currentNum < listLength && <Button text=">>" onClick={() => handleClick(listLength) }/>}
+            {leftCurNum > 1 && (
+                <span onClick={goToPage}>...</span>
+            )}
+
+            {Array.from({ length: rightCurNum - leftCurNum + 1 }, (_, i) => {
+                const page = i + leftCurNum;
+                return (
+                    <Button
+                        key={page}
+                        className={currentNum === page && !outOfLength ? 'current-num' : ''}
+                        text={page.toString()}
+                        disabled={currentNum === page && !outOfLength}
+                        {...(currentNum !== page || outOfLength ? { onClick: () => handleClick(page) } : {})}
+                    />
+                );
+            })}
+
+            {rightCurNum < listLength && <span>...</span>}
+
+            <Button
+                text=">"
+                disabled={currentNum === listLength}
+                {...(currentNum < listLength ? { onClick: () => handleClick(currentNum + 1) } : {})}
+            />
+
+            {currentNum < listLength && <Button text=">>" onClick={() => handleClick(listLength)} />}
         </div>
     );
 };
 
-/**
- * Định nghĩa đầy đủ trong tệp `Pagination.tsx`.
- * @module Pagination
- */
 export default React.memo(Pagination);

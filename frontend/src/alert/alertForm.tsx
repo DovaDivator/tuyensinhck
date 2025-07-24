@@ -11,18 +11,27 @@ type AlertFormProps = {
 export const alertFormReact = (
   Component: (props: any) => ReactElement,
   props: AlertFormProps = {},
-  valids: DataValidsProps = {}
+  valids: DataValidsProps = {},
+  isEdit: boolean = false
 ): Promise<any> => {
   let formData: FormDataProps = {};
   let errors: ErrorLogProps = {};
+  let isNotChange = false
 
   const setFormData = (data: FormDataProps) => {
-    formData = data;
+    formData = {
+      ...formData,  // giữ lại dữ liệu cũ
+      ...data       // ghi đè dữ liệu mới
+    };
   };
 
   const setErrors = (newErrors: ErrorLogProps) => {
     errors = newErrors;
   };
+
+  const setIsNotChange = (value: boolean) => {
+    isNotChange = value;
+  }
 
   const container = document.createElement('div');
 
@@ -34,6 +43,8 @@ export const alertFormReact = (
     confirmButtonText: 'Gửi',
     cancelButtonText: 'Hủy',
     preConfirm: () => {
+      if(isNotChange) return "";
+
       const result = checkValidSubmitUtils(formData, valids, setErrors);
       if (result !== true) {
         const firstErrorEntry = Object.entries(errors).find(([, msg]) => !!msg);
@@ -46,7 +57,7 @@ export const alertFormReact = (
     },
     didOpen: () => {
       const root = ReactDOM.createRoot(container);
-      root.render(<Component {...props} setFormData={setFormData} />);
+      root.render(<Component {...props} setFormData={setFormData} {...(isEdit ? { setIsNotChange: setIsNotChange } : {})}/>);
     },
     customClass: {
       confirmButton: 'btn-confirm',

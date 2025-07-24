@@ -24,6 +24,7 @@ const AskRegister = React.lazy(() => import('./pages/other/AskRegister'));
 const ManagerUserPage = React.lazy(() => import('./pages/admin/ManagerUserPage'));
 const ManagerCccdPage = React.lazy(() => import('./pages/admin/ManagerCccdPage'));
 const ExamRegister = React.lazy(() => import('./pages/base/ExamRegister'));
+const ManagerExamResultPage = React.lazy(() => import('./pages/admin/ManagerExamResultPage'));
 
 interface Props {
   children: JSX.Element;
@@ -74,6 +75,7 @@ const AppContent = (): JSX.Element => {
         <Route path="/tin-tuc" element={<NewsPage />} />
         <Route path="/quan-ly/:type" element={<ManagerUserPage />} />
         <Route path="/quan-ly-cccd" element={<ManagerCccdPage/>} />
+        <Route path="/cham-diem" element={<ManagerExamResultPage/>}/>
         <Route path="*" element={<Navigate to="/a1s2d3f4" replace />} />
         {/* <Route path='/test' element={<DateTimePicker/>}/> */}
       </Routes>
