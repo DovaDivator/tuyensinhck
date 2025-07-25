@@ -6,3 +6,6 @@ docker cp mysql-tuyensinh:/tmp/temp_init.sql ./init.sql
 docker-compose down 
 docker-compose build
 docker-compose up -d
+
+// Tái khởi động tự động hóa
+docker exec -i mysql-tuyensinh mysql -uroot -p123456a@ < automatic.sql
