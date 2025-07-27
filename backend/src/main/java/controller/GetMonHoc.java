@@ -8,11 +8,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import dao.MonThiDAO;
+import model.UserBasic;
 import util.DBConnectionMain;
 
 /**
@@ -59,6 +61,10 @@ public class GetMonHoc extends HttpServlet {
 				jsonResponse.put("data", jsonData);
 				break;
 			}
+			case "cham-diem": {
+				jsonResponse.put("data", getMonListGrading(conn, request));
+				break;
+			}
 			default:
 				throw new Exception("thuộc tính type không hợp lệ " + type);
 			}
@@ -90,6 +96,32 @@ public class GetMonHoc extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
+	}
+	
+	private JSONArray getMonListGrading(Connection conn, HttpServletRequest request) throws Exception{
+		String token = request.getHeader("Authorization");
+		if (token == null || !token.startsWith("Bearer ")) {
+			return new JSONArray();
+		}
+
+		token = token.substring(7); // cắt "Bearer "
+		HttpSession session = request.getSession(false);
+
+		// Kiểm tra token và xác minh quyền admin
+		if (session == null)
+			return new JSONArray();
+
+		UserBasic user = (UserBasic) session.getAttribute("user");
+		String sessionToken = (String) session.getAttribute("token");
+
+		if (user == null || sessionToken == null || !sessionToken.equals(token))
+			return new JSONArray();
+
+		if (!user.isAdmin() && !user.isTeacher()) {
+			return new JSONArray();
+		}
+		
+		return MonThiDAO.getListMonGrading(conn, user.isTeacher() ? user.getId() : "");
 	}
 
 }

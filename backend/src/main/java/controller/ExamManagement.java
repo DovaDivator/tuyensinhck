@@ -58,7 +58,6 @@ public class ExamManagement extends HttpServlet {
 		Connection conn = null;
 		try {
 			String body = HttpJson.readRequestBody(request);
-			JSONObject jsonRequest = new JSONObject(body);
 
 			String token = null;
 			String authHeader = request.getHeader("Authorization");
@@ -82,9 +81,9 @@ public class ExamManagement extends HttpServlet {
 				throw new UnauthorizedException("User không tồn tại trong session");
 			}
 
-			JSONObject json = new JSONObject();
+			JSONObject jsonRequest = new JSONObject();
 			try {
-				json = new JSONObject(body);
+				jsonRequest = new JSONObject(body);
 			} catch (Exception ex) {
 				// Không thêm json nếu parse lỗi
 				System.err.println("Lỗi parse JSON: " + ex.getMessage());
@@ -119,9 +118,9 @@ public class ExamManagement extends HttpServlet {
 				break;
 			}
 			case "insert": {
-				String typeExam = json.getString("typeExam");
-				String monTC = json.getString("monTC");
-				String monNN = json.getString("monNN");
+				String typeExam = jsonRequest.getString("typeExam");
+				String monTC = jsonRequest.getString("monTC");
+				String monNN = jsonRequest.getString("monNN");
 				boolean isLate = ExamDataDAO.checkDeadline(conn, typeExam);
 				if (isLate) {
 					throw new UnauthorizedException("Thời gian hiện tại muộn hơn thời gian đóng của loại thi.");
@@ -134,10 +133,10 @@ public class ExamManagement extends HttpServlet {
 
 			}
 			case "update": {
-				String typeExam = json.getString("typeExam");
-				String idRegister = json.getString("idRegister");
-				String monTC = json.getString("monTC");
-				String monNN = json.getString("monNN");
+				String typeExam = jsonRequest.getString("typeExam");
+				String idRegister = jsonRequest.getString("idRegister");
+				String monTC = jsonRequest.getString("monTC");
+				String monNN = jsonRequest.getString("monNN");
 				boolean isLate = ExamDataDAO.checkDeadline(conn, typeExam);
 				if (isLate) {
 					throw new UnauthorizedException("Thời gian hiện tại muộn hơn thời gian đóng của loại thi.");
@@ -150,7 +149,7 @@ public class ExamManagement extends HttpServlet {
 
 			}
 			case "delete": {
-				String idRegister = json.getString("id");
+				String idRegister = jsonRequest.getString("id");
 				boolean inserted = ExamDataDAO.deleteThiCu(conn, idRegister);
 				if (!inserted) {
 					throw new UnauthorizedException("Thêm dữ liệu không thành công!");

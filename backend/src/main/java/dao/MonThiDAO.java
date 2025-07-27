@@ -33,4 +33,30 @@ public class MonThiDAO {
 
         }
     }
+    
+    public static JSONArray getListMonGrading(Connection conn, String id) throws SQLException {
+    	StringBuilder sql = new StringBuilder();
+        sql.append("SELECT mon_nn, name FROM mon_hoc");
+        
+        if (!id.isEmpty()) {
+            sql.append(" WHERE mon_nn = (select mon_nn from tch_mgr where tch_id = '" + id + "')");
+        }
+
+        sql.append(" order by loai_mon, mon_nn");
+
+        try (PreparedStatement checkStmt = conn.prepareStatement(sql.toString())) {
+            ResultSet rs = checkStmt.executeQuery();
+
+            JSONArray response = new JSONArray();
+            while (rs.next()) {
+                JSONObject jsonObj = new JSONObject();
+                jsonObj.put("value", rs.getString("mon_nn"));
+                jsonObj.put("label", rs.getString("name"));
+                
+                response.put(jsonObj);
+            }
+            return response;
+
+        }
+    }
 }
