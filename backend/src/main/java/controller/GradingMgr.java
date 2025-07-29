@@ -83,23 +83,35 @@ public class GradingMgr extends HttpServlet {
 			conn = dbConn.getConnection();
 			String type = request.getParameter("type") != null ? request.getParameter("type") : "";
 			
+			String he = json.optString("he", "");
+			int khoa = -1; // giá trị mặc định nếu lỗi hoặc không hợp lệ
+			if (json.has("khoa")) {
+			    try {
+			        int tmp = json.getInt("khoa");
+			        if (tmp >= 0) {
+			            khoa = tmp;
+			        }
+			    } catch (JSONException e) {
+			        // Không cần xử lý gì nếu không đúng định dạng số
+			    }
+			}
+			String mon = json.optString("monThi", "");
+			
 			switch (type) {
-			case "list":{
-				String he = json.optString("he", "");
-				int khoa = -1; // giá trị mặc định nếu lỗi hoặc không hợp lệ
-				if (json.has("khoa")) {
-				    try {
-				        int tmp = json.getInt("khoa");
-				        if (tmp >= 0) {
-				            khoa = tmp;
-				        }
-				    } catch (JSONException e) {
-				        // Không cần xử lý gì nếu không đúng định dạng số
-				    }
-				}
-				String mon = json.optString("monThi", "");				
+			case "list":{				
 				JSONObject result = GradingDAO.gradeExamList(conn, he, khoa, mon);
 				jsonResponse.put("data", result);
+				break;
+			}
+			case "update":{
+				JSONObject listUpdate = json.optJSONObject("data", new JSONObject());
+				if(listUpdate.isEmpty()) {
+					jsonResponse.put("notice", "Dữ liệu cập nhật bị rỗng");
+					break;
+				}
+				
+				Boolean success = GradingDAO.updateGrading(conn, he, khoa, mon, listUpdate);
+				if(!success) throw new Error("Cập nhật không thành công");
 				break;
 			}
 			default:{
@@ -108,7 +120,7 @@ public class GradingMgr extends HttpServlet {
 		    }
 
 			jsonResponse.put("success", true);
-			jsonResponse.put("message", "Lấy dữ liệu thành công!");
+			jsonResponse.put("message", "Cập nhật thành công!");
 			
 		} catch (Exception e) {
 			if (e instanceof UnauthorizedException) {

@@ -50,5 +50,12 @@
         @include mx.vertical-display;
         width: 100%;
         // overflow-x: auto;
+
+        .list-table {
+            tbody tr td:last-child {
+                width: 100px !important;
+                max-width: none !important;
+            }
+        }
     }
 }
