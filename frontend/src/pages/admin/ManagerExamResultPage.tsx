@@ -56,6 +56,7 @@ const HEADERS = {
 const ManagerExamResultBody = (): JSX.Element => {
     const {user, token} = useAuth();
     const {setIsLoading, isLoading} = useAppContext();
+    const navigate = useNavigate();
 
     const [listMonThi, setListMonThi] = useState<ChoiceOption[]>([]);
     const [isAllowed, setIsAllowed] = useState<boolean>(true);
@@ -81,7 +82,7 @@ const ManagerExamResultBody = (): JSX.Element => {
     const [errors, setErrors] = useState<ErrorLogProps>({});
     const [ctrlData, setCtrlData] = useState<{[key: string]: number| null}>({});
 
-        // if(!(user.isAdmin() || user.isTeacher())) return <></>;
+    if(!(user.isAdmin() || user.isTeacher())) navigate("/");
     const [typeCase, setTypeCase] = useState<FormDataProps>({
         he: "dh",
         khoa: "",
@@ -89,7 +90,6 @@ const ManagerExamResultBody = (): JSX.Element => {
         search: "",
         phong: "",
     });
-    const navigate = useNavigate();
 
     const [searchParams] = useSearchParams();
     useEffect(() => {

@@ -1,6 +1,7 @@
 import { JSX, useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+import { useAuth } from '../../context/AuthContext';
 
 import IndexBackground from '../../views/ui/layout/IndexBackground';
 import ManagerUserList from '../../views/feature/manager/ManagerUserList';
@@ -13,6 +14,9 @@ const ManagerUserPage = (): JSX.Element => {
     const { type } = useParams();
     const [managerEle, setManagerEle] = useState<JSX.Element>(<></>);
     const [namePg, setNamePg] = useState<string>("");
+
+      const {user} = useAuth();
+      if(!user.isAdmin()) navigate("/");
 
     const CLASS_PAGES = ['giao-vien', 'thi-sinh', 'tai-khoan', 'ky-thi'];
 

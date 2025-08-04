@@ -273,21 +273,21 @@ const ManagerUserList = ({className = "", name = ""}: ManagerUserListProps): JSX
     switch (pathParts[2]) {
       case CLASS_PAGES[1]:
         if(isEdit){
-          editFunc.EditThiSinh({data, setData, setIsEdit});
+          editFunc.EditThiSinh({token, data, setData, setIsEdit});
         }else{
           editFunc.DefaultThiSinh({data, setData});
         }
         break;
       case CLASS_PAGES[2]:
         if(isEdit){
-          editFunc.EditTaiKhoan({data, setData, setIsEdit});
+          editFunc.EditTaiKhoan({token, data, setData, setIsEdit});
         }else{
           editFunc.DefaultTaiKhoan({data, setData});
         }
         break;
       case CLASS_PAGES[0]:
         if(isEdit){
-          editFunc.EditGiaoVien({data, setData, setIsEdit, listMon: mon});
+          editFunc.EditGiaoVien({token, data, setData, setIsEdit, listMon: mon});
         }else{
           editFunc.DefaultGiaoVien({data, setData});
         }
@@ -426,7 +426,7 @@ const ManagerUserList = ({className = "", name = ""}: ManagerUserListProps): JSX
                     title={"Thêm giáo viên"}
                     icon={"fa-solid fa-plus"}
                     onClick={() => {
-                       editFunc.addGV(mon)
+                       editFunc.addGV(token, mon)
                     }}
                     className='btn-confirm'
                   />

@@ -8,12 +8,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
 
-import dao.AddManagerDAO;
 import dao.CccdUpdateDAO;
 import exception.UnauthorizedException;
+import model.UserBasic;
 import service.HttpJson;
 import util.DBConnectionMain;
 
@@ -56,27 +57,27 @@ public class AdminCCCDManager extends HttpServlet {
 					String body = HttpJson.readRequestBody(request);
 					JSONObject json = new JSONObject(body);
 
-//					String token = request.getHeader("Authorization");
-//					if (token == null || !token.startsWith("Bearer ")) {
-//						throw new Exception("Token không hợp lệ hoặc thiếu");
-//					}
-		//
-//					token = token.substring(7); // cắt "Bearer "
-//					HttpSession session = request.getSession(false);
-		//
-//					// Kiểm tra token và xác minh quyền admin
-//					if (session == null)
-//						throw new Error("Session không tồn tại hoặc đã hết hạn");
-		//
-//					UserBasic user = (UserBasic) session.getAttribute("user");
-//					String sessionToken = (String) session.getAttribute("token");
-		//
-//					if (user == null || sessionToken == null || !sessionToken.equals(token))
-//						throw new Error("User không tồn tại trong session");
-		//
-//					if (!user.isAdmin()) {
-//						throw new Error("Không có quyền truy cập");
-//					}
+					String token = request.getHeader("Authorization");
+					if (token == null || !token.startsWith("Bearer ")) {
+						throw new Exception("Token không hợp lệ hoặc thiếu");
+					}
+		
+					token = token.substring(7); // cắt "Bearer "
+					HttpSession session = request.getSession(false);
+		
+					// Kiểm tra token và xác minh quyền admin
+					if (session == null)
+						throw new Error("Session không tồn tại hoặc đã hết hạn");
+		
+					UserBasic user = (UserBasic) session.getAttribute("user");
+					String sessionToken = (String) session.getAttribute("token");
+		
+					if (user == null || sessionToken == null || !sessionToken.equals(token))
+						throw new Error("User không tồn tại trong session");
+		
+					if (!user.isAdmin()) {
+						throw new Error("Không có quyền truy cập");
+					}
 
 
 					dbConn = new DBConnectionMain();

@@ -72,7 +72,8 @@ const Header = (): JSX.Element => {
               <ul className={`submenu${width < SMALL_MENU_NAV ? "_r2" : ""}`}>
                 <li><a href="#">Thể lệ</a></li>
                 <li><a href="#">Tra cứu thông tin</a></li>
-                <li><a href="#">Đăng ký thi</a></li>
+                {(user.isStudent()) && <li><a href="/dang-ky-thi">Đăng ký thi</a></li>}
+                {(user.isAdmin() || user.isTeacher()) && <li><a href="/cham-diem">Chấm điểm kỳ thi</a></li>}
               </ul>
             </li>
             {user.isAdmin() && (
@@ -121,8 +122,10 @@ const Header = (): JSX.Element => {
                 <ul className="submenu">
                   {width < SMALL_MENU_NAV && <UserNav user={user as BasicUserTitle} />}
                   <li><a href="/info/thong-tin-ca-nhan">Xem hồ sơ</a></li>
+                  {(user.isStudent()) && <>
                   <li><a href="/info/cap-nhat-cccd">Cập nhật CCCD</a></li>
                   <li><a href="/info/tra-cuu-ky-thi">Tra cứu kỳ thi</a></li>
+                  </>}
                   <li><a href="/info/doi-mat-khau">Thay đổi mật khẩu</a></li>
                   <li><a onClick={handleLogout}>Đăng xuất</a></li>
                 </ul>

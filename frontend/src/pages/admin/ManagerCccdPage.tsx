@@ -6,8 +6,12 @@ import IndexBackground from '../../views/ui/layout/IndexBackground';
 import ManagerCccdContainer from '../../views/feature/manager/ManagerCccdContainer';
 
 import "./ManagerUserPage.scss";
+import { useAuth } from '../../context/AuthContext';
 
 const ManagerCccdPage = (): JSX.Element => {
+  const {user} = useAuth();
+  const navigate = useNavigate();
+  if(!user.isAdmin()) navigate("/");
 
   return (
       <div>

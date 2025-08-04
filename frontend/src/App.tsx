@@ -1,4 +1,4 @@
-import React, { JSX, useContext, Suspense, useEffect } from 'react';
+import React, { JSX, useContext, Suspense, useEffect, useRef } from 'react';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { Navigate } from 'react-router-dom';
@@ -36,10 +36,13 @@ const AppContent = (): JSX.Element => {
   const location = useLocation(); // Now inside Router context
 
   // Log user object on route change
-  useEffect(() => {
-    setToken(getToken());
-    setIsLoading(false);    
-  }, [location.pathname, token]);
+useEffect(() => {
+  const savedToken = getToken();
+  if (token !== savedToken) {
+    setToken(savedToken);
+  }
+  setIsLoading(false);
+}, [location.pathname]);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -73,8 +76,9 @@ const AppContent = (): JSX.Element => {
         <Route path="/gioi-thieu" element={<IntroducePage />} />
         <Route path="/kham-pha/he/:type" element={<DiscoverUniPage />} />
         <Route path="/tin-tuc" element={<NewsPage />} />
-        <Route path="/quan-ly/:type" element={<ManagerUserPage />} />
-        <Route path="/quan-ly-cccd" element={<ManagerCccdPage/>} />
+        <Route path="/quan-ly/:type" element={<ProtectedRoute><ManagerUserPage /></ProtectedRoute>} />
+        <Route path="/quan-ly-cccd" element={<ProtectedRoute><ManagerCccdPage/></ProtectedRoute>} />
+        {/* <Route path="/cham-diem" element={<ProtectedRoute><ManagerExamResultPage/></ProtectedRoute>}/> */}
         <Route path="/cham-diem" element={<ManagerExamResultPage/>}/>
         <Route path="*" element={<Navigate to="/a1s2d3f4" replace />} />
         {/* <Route path='/test' element={<DateTimePicker/>}/> */}
@@ -110,10 +114,19 @@ const GuestRoute = ({ children }: Props): JSX.Element => {
 const ProtectedRoute = ({ children }: Props): JSX.Element => {
   const { token } = useAuth();
   const { isLoading } = useAppContext();
+  const hasRendered = useRef(false);
+
+  useEffect(() => {
+    if (!hasRendered.current && !isLoading && token) {
+      hasRendered.current = true;
+    }
+  }, [isLoading, token]);
+
+  console.log(isLoading, token);
 
   if (isLoading) return <LoadingScreen />;
 
-  if (token === "") {
+  if (!token || token === "") {
     return <Navigate to="/a1s2d3f4" replace />;
   }
 
@@ -127,5 +140,9 @@ const NeutralRoute = ({ children }: Props): JSX.Element => {
   if (isLoading) return <LoadingScreen />;
   return children;
 };
+
+interface RoleCustomProps extends Props{
+  cause: boolean
+}
 
 export default App;

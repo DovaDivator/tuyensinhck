@@ -9,10 +9,13 @@ import { GetConfirmCccd } from '../../api/StudentCccd';
 import DeniedCccdList from '../../views/feature/ExamRegister/DeniedCccdList';
 import WaitingComfirm from '../../views/feature/ExamRegister/WaitingConfirm';
 import ExamRegisterCondition from '../../views/feature/ExamRegister/ExamRegisterCondition';
+import { useNavigate } from 'react-router-dom';
 
 const ManagerCccdPage = (): JSX.Element => {
-  const {token} = useAuth();
+  const {token, user} = useAuth();
   const [jsx, setJsx] = useState<JSX.Element>(<></>)
+  const navigate = useNavigate();
+  if(!user.isStudent()) navigate("/");
 
   useEffect(() => {
     const fetchDataCase = async () => {

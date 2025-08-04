@@ -9,6 +9,7 @@ import { ErrorLogProps, DataValidsProps } from "../../types/FormInterfaces";
 import { InputValids } from "../../classes/InputValids";
 import { hashPassword } from "./hashPassword";
 import { alertBasic } from "../../alert/alertBasic";
+import { showToast } from "../../alert/alertToast";
 
 interface DefaultProps{
   data: any, 
@@ -16,12 +17,13 @@ interface DefaultProps{
 }
 
 interface UpdateProps extends DefaultProps{
+  token: string
   setIsEdit: React.Dispatch<React.SetStateAction<any>>
 }
 
 
 export const EditThiSinh = (
-    {data, setData, setIsEdit} : UpdateProps
+    {token, data, setData, setIsEdit} : UpdateProps
 ) => {
   setData(
     data.map((user: any) => {
@@ -37,11 +39,12 @@ export const EditThiSinh = (
                 title="Loại bỏ thí sinh"
                 onClick={async () => {
                   try {
-                    const result = await api.deleteThiSinh("102", {
+                    const result = await api.deleteThiSinh(token, {
                       id: user.stu_id,
                     });
 
                     console.log(result);
+                    showToast("success", "Thông báo", "Cập nhật thành công!");
                     // làm gì đó sau khi thành công
                     setData((prev: any) => prev.filter((u: any) => u.id !== user.id));
                   } catch (error) {
@@ -72,7 +75,7 @@ export const DefaultThiSinh = (
 }
 
 export const EditTaiKhoan = (
-    {data, setData, setIsEdit} : UpdateProps
+    {token, data, setData, setIsEdit} : UpdateProps
 ) => {
   setData(
     data.map((user: any) => {
@@ -88,7 +91,7 @@ export const EditTaiKhoan = (
                 title={user.isFreeze === "Đang hoạt động" ? "Đình chỉ nguời dùng" : "Kích hoạt trở lại"}
                 onClick={async () => {
                   try {
-                    const result = await api.setFreeze("102", {
+                    const result = await api.setFreeze(token, {
                       id: user.id,
                     });
 
@@ -104,6 +107,7 @@ export const EditTaiKhoan = (
                           : u
                       )
                     );
+                    showToast("success", "Thông báo", "Cập nhật thành công!");
                     setIsEdit(false);
                     setTimeout(() => setIsEdit(true), 0);
                   } catch (error) {
@@ -151,7 +155,7 @@ interface UpdateMonGVProps extends UpdateProps{
 }
 
 export const EditGiaoVien = (
-    {data, setData, setIsEdit, listMon} : UpdateMonGVProps
+    {token, data, setData, setIsEdit, listMon} : UpdateMonGVProps
 ) => {
   setData(
     data.map((user: any) => {
@@ -167,7 +171,7 @@ export const EditGiaoVien = (
                 title={user.isFreeze === "Đang hoạt động" ? "Đình chỉ nguời dùng" : "Kích hoạt trở lại"}
                 onClick={async () => {
                   try {
-                    const result = await api.setFreeze("102", {
+                    const result = await api.setFreeze(token, {
                       id: user.id,
                     });
 
@@ -183,6 +187,7 @@ export const EditGiaoVien = (
                           : u
                       )
                     );
+                    showToast("success", "Thông báo", "Cập nhật thành công!");
                     setIsEdit(false);
                     setTimeout(() => setIsEdit(true), 0);
                   } catch (error) {
@@ -208,7 +213,7 @@ export const EditGiaoVien = (
                   if (!resultAlert.isConfirmed || resultAlert.value.mon === defaultValue) return;
 
                   try {
-                    const result = await api.updateGVMon("102", {
+                    const result = await api.updateGVMon(token, {
                       id: user.id,
                       mon: resultAlert.value.mon
                     });
@@ -225,6 +230,7 @@ export const EditGiaoVien = (
                           : u
                       )
                     );
+                    showToast("success", "Thông báo", "Cập nhật thành công!");
                     setIsEdit(false);
                     setTimeout(() => setIsEdit(true), 0);
                   } catch (error) {
@@ -254,7 +260,7 @@ export const DefaultGiaoVien = (
         );
 }
 
-export const addGV = async (listMon: { value: string; label: string }[]) => {
+export const addGV = async (token: string, listMon: { value: string; label: string }[]) => {
     const valids: DataValidsProps = {
         name: new InputValids({ required: true }),
         email: new InputValids({ required: true, matchType: ['email'] })
@@ -269,7 +275,7 @@ export const addGV = async (listMon: { value: string; label: string }[]) => {
   if (!resultAlert.isConfirmed) return;
     const hashedPassword = await hashPassword('123456a@');
     try {
-      const result = await api.addGVtoDB("102", {
+      const result = await api.addGVtoDB(token, {
           name: resultAlert.value.name,
           mon: resultAlert.value.mon,
           email: resultAlert.value.email,
