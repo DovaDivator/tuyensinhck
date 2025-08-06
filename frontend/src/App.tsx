@@ -76,7 +76,7 @@ useEffect(() => {
         <Route path="/gioi-thieu" element={<IntroducePage />} />
         <Route path="/kham-pha/he/:type" element={<DiscoverUniPage />} />
         <Route path="/tin-tuc" element={<NewsPage />} />
-        <Route path="/quan-ly/:type" element={<ProtectedRoute><ManagerUserPage /></ProtectedRoute>} />
+        <Route path="/quan-ly/:type" element={<ManagerUserPage />} />
         <Route path="/quan-ly-cccd" element={<ProtectedRoute><ManagerCccdPage/></ProtectedRoute>} />
         {/* <Route path="/cham-diem" element={<ProtectedRoute><ManagerExamResultPage/></ProtectedRoute>}/> */}
         <Route path="/cham-diem" element={<ManagerExamResultPage/>}/>
