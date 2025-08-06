@@ -118,7 +118,7 @@ public class UserManagerDAO {
 				+ "tc.exam_id, tc.he, tc.mon_tc, tc.mon_nn, "
 				+ "(select mh.name from mon_hoc mh where mh.mon_nn = tc.mon_nn) as mon_nn_name, "
 				+ "(select mh.name from mon_hoc mh where mh.mon_nn = tc.mon_tc) as mon_tc_name, "
-				+ "(select dt.khoa_thi from ds_thi dt where dt.exam_id = tc.exam_id) as khoa_thi, "
+				+ "tc.khoa as khoa_thi, "
 				+ "(select dt.ma_phong from ds_thi dt where dt.exam_id = tc.exam_id and dt.ma_ca = 1) as phong1, "
 				+ "(select dt.ma_phong from ds_thi dt where dt.exam_id = tc.exam_id and dt.ma_ca = 2) as phong2, "
 				+ "(select dt.ma_phong from ds_thi dt where dt.exam_id = tc.exam_id and dt.ma_ca = 3) as phong3, "
@@ -139,7 +139,7 @@ public class UserManagerDAO {
 			sql.append(" AND (name LIKE ? OR stu_id LIKE ? OR exam_id LIKE ?) ");
 
 		if (!optionHe.isEmpty())
-			sql.append(" AND he = ").append(optionHe);
+			sql.append(" AND he = '").append(optionHe).append("'");
 
 		if (!optionKhoaThi.isEmpty() && !optionKhoaThi.equals("0"))
 			sql.append(" AND khoa_thi = ").append(optionKhoaThi);
@@ -169,7 +169,7 @@ public class UserManagerDAO {
 				json.put("stu_id", rs.getString("stu_id"));
 				json.put("name", HttpJson.convertStringToJson(rs.getString("name")));
 				json.put("exam_id", rs.getString("exam_id"));
-				json.put("he", rs.getInt("he"));
+				json.put("he", rs.getString("he"));
 				json.put("mon_tc", HttpJson.convertStringToJson(rs.getString("mon_tc_name")));
 				json.put("mon_nn", HttpJson.convertStringToJson(rs.getString("mon_nn_name")));
 				json.put("khoa_thi", rs.getInt("khoa_thi"));
