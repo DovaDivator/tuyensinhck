@@ -42,7 +42,9 @@ const CccdEdit = (): JSX.Element => {
         numCccd: "",
         dateBirth: "",
         gender: "",
-        address: ""
+        address: "",
+        front: "",
+        back: ""
     });
 
     const valids: DataValidsProps = {
@@ -106,7 +108,8 @@ const CccdEdit = (): JSX.Element => {
         //Hàm kiểm tra ở đây
         setIsLoading(true);
         const validate = checkValidSubmitUtils({...formData, ...imgData}, valids, setErrors);
-        // console.log(validate);
+        console.log(validate);
+        console.log(errors);
         if(!validate){
             setIsLoading(false);
             return;
