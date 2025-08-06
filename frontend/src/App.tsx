@@ -122,7 +122,7 @@ const ProtectedRoute = ({ children }: Props): JSX.Element => {
     }
   }, [isLoading, token]);
 
-  console.log(isLoading, token);
+  // console.log(isLoading, token);
 
   if (isLoading) return <LoadingScreen />;
 

@@ -51,7 +51,6 @@ const CccdEdit = (): JSX.Element => {
         front: new ImageValids({required: true}),
         back: new ImageValids({required: true}),
         dateBirth: new DateValids({required: true, cons: {max: {value: new Date(new Date().getFullYear() - 16, 11, 31)}}}),
-        realName: new InputValids({required: true}),
         gender: new ChoiceValids({required: true}),
         address: new InputValids({required: true}),
         numCccd: new InputValids({required: true, minlength: 12, matchType: ['cccd']})
@@ -108,8 +107,6 @@ const CccdEdit = (): JSX.Element => {
         //Hàm kiểm tra ở đây
         setIsLoading(true);
         const validate = checkValidSubmitUtils({...formData, ...imgData}, valids, setErrors);
-        console.log(validate);
-        console.log(errors);
         if(!validate){
             setIsLoading(false);
             return;
